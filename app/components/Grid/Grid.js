@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GridView from 'react-native-super-grid';
-import { Text, View, TouchableHighlight, Dimensions } from 'react-native';
+import { Text, View, TouchableHighlight, Dimensions, ScrollView } from 'react-native';
 import styles from './styles';
 
 
@@ -27,9 +27,13 @@ import styles from './styles';
 // };
 
 
-const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer }) => (
+
+const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) => (
   <View style={{marginTop: 10, marginBottom: 0}}>
+  <ScrollView horizontal={true}>
     <GridView
+
+
 
       ListHeaderComponent={header}
       ListFooterComponent={footer}
@@ -40,7 +44,7 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer }) 
       itemDimension={itemDimension}
       items={items}
 
-      style={{marginTop: 0, marginBottom: 0}}
+      fixed={true}
 
       renderItem={item => (
         <TouchableHighlight
@@ -56,6 +60,7 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer }) 
       )}
 
     />
+  </ScrollView>
   </View>
 );
 
@@ -80,6 +85,7 @@ Grid.propTypes = {
   footer: PropTypes.func
 
 };
+
 
 //      renderItem={({ item }) => (
 //   <GridItem
