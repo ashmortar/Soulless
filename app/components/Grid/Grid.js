@@ -52,7 +52,7 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) =
 
         >
 
-          <View style={{ backgroundColor: '#fff', borderWidth: 1, height: itemDimension}}>
+          <View style={{ backgroundColor: '#fff', borderWidth: 0.5, height: itemDimension}}>
             <Text>{item}</Text>
           </View>
 
