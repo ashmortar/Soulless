@@ -35,10 +35,32 @@ class Game extends Component {
     }
   }
 
-
   getGridLayout = () => {
+    // for (let i = 0; i < 400; i++) {
+    //   this.elements.push(i);
+    // }
+
+
     for (let i = 0; i < 400; i++) {
-      this.elements.push(Math.floor(Math.random() * 5));
+      // this.elements.push(Math.floor(Math.random() * 5));
+      this.elements.push(5);
+    }
+    for (let i = 0; i < 150; i++) {
+      this.elements[Math.floor(Math.random() * 400)] = 0;
+    }
+    for (let i = 0; i < 400; i++) {
+      // left: i+1
+      // right: i-1
+      // top: i-20
+      // bottom: i+20
+      if (this.elements[i] != 0) {
+        let adjacent = 0;
+        if ((i % 20 != 19) && (this.elements[i+1] != 0)) { adjacent++; }
+        if ((i % 20 != 0) && (this.elements[i-1] != 0)) { adjacent++; }
+        if ((i - 20 > 0) && (this.elements[i-20] != 0)) { adjacent++; }
+        if ((i + 20 < 400) && (this.elements[i+20] != 0)) { adjacent++; }
+        this.elements[i] = adjacent;
+      }
     }
   }
 
