@@ -19,6 +19,9 @@ class Game extends Component {
 
     this.scale = 0;
 
+    this.elements = [];
+    this.getGridLayout();
+
 
     // let gridWidth_default = Dimensions.get('window').width * 0.9;
     // let gridItemWidth_default = gridWidth_default / 20;
@@ -31,6 +34,14 @@ class Game extends Component {
       gridWidth: gridWidth_default
     }
   }
+
+
+  getGridLayout = () => {
+    for (let i = 0; i < 400; i++) {
+      this.elements.push(Math.floor(Math.random() * 5));
+    }
+  }
+
 
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
@@ -117,26 +128,21 @@ class Game extends Component {
 
 
   render() {
-    const elements = [];
-    for (let i = 0; i < 400; i++) {
-      elements.push(i);
-    }
+
+
+
+
     return (
       <Container>
 
-
-
         <Grid
-          items={elements}
+          items={this.elements}
           onPress={this.handlePressGridItem}
           header={this.renderHeader}
           footer={this.renderFooter}
           gridDimension={this.state.gridWidth}
           itemDimension={this.state.gridItemWidth}
-
         />
-
-
 
       </Container>
     );

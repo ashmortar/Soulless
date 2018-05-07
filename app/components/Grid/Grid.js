@@ -50,11 +50,12 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) =
       renderItem={item => (
         <TouchableHighlight
           onPress={() => onPress(item)}
-
         >
 
-          <View style={{ backgroundColor: '#fff', borderWidth: 0.5, height: itemDimension}}>
-            <Text>{item}</Text>
+          <View style={ item ?
+            { backgroundColor: '#fff', borderWidth: 0.5, height: itemDimension} :
+            { backgroundColor: '#000', borderWidth: 0.5, height: itemDimension }}>
+            <Text style={{ fontSize: itemDimension * 0.6}}>{item}</Text>
           </View>
 
         </TouchableHighlight>
