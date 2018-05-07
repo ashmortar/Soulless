@@ -29,7 +29,7 @@ import styles from './styles';
 
 
 const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) => (
-  <View style={{marginTop: 10, marginBottom: 0}}>
+  <View style={{marginTop: 10, marginBottom: 0, justifyContent: 'flex-start'}}>
   <ScrollView horizontal={true}>
     <GridView
 
@@ -39,7 +39,8 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) =
       ListFooterComponent={footer}
 
       spacing={0}
-      staticDimension={gridDimension}
+
+      style={{width: gridDimension}}
 
       itemDimension={itemDimension}
       items={items}

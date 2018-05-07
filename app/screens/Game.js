@@ -14,10 +14,16 @@ class Game extends Component {
 
   constructor() {
     super();
-    this.gridItemWidth = 40;
-    this.gridWidth = this.gridItemWidth * 20;
+    // this.gridItemWidth = 40;
+    // this.gridWidth = this.gridItemWidth * 20;
 
-    let gridItemWidth_default = 40;
+    this.scale = 0;
+
+
+    // let gridWidth_default = Dimensions.get('window').width * 0.9;
+    // let gridItemWidth_default = gridWidth_default / 20;
+
+    let gridItemWidth_default = 20;
     let gridWidth_default = gridItemWidth_default * 20;
 
     this.state = {
@@ -37,24 +43,30 @@ class Game extends Component {
 
   onPressZoomIn = () => {
     console.log('ZOOM pressed');
-    let gridItemWidth_new = this.state.gridItemWidth * 2;
-    let gridWidth_new = gridItemWidth_new * 20;
-    console.log(this.state.gridItemWidth);
-    this.setState({
-      gridItemWidth: gridItemWidth_new,
-      gridWidth: gridWidth_new
-    })
+    if (this.scale < 3) {
+      let gridItemWidth_new = this.state.gridItemWidth * 2;
+      let gridWidth_new = gridItemWidth_new * 20;
+      this.scale++;
+      console.log(this.state.gridItemWidth);
+      this.setState({
+        gridItemWidth: gridItemWidth_new,
+        gridWidth: gridWidth_new
+      })
+    }
   };
 
   onPressZoomOut = () => {
     console.log('ZOOM pressed');
-    let gridItemWidth_new = this.state.gridItemWidth / 2;
-    let gridWidth_new = gridItemWidth_new * 20;
-    console.log(this.state.gridItemWidth);
-    this.setState({
-      gridItemWidth: gridItemWidth_new,
-      gridWidth: gridWidth_new
-    })
+    if (this.scale > 0) {
+      let gridItemWidth_new = this.state.gridItemWidth / 2;
+      let gridWidth_new = gridItemWidth_new * 20;
+      this.scale--;
+      console.log(this.state.gridItemWidth);
+      this.setState({
+        gridItemWidth: gridItemWidth_new,
+        gridWidth: gridWidth_new
+      })
+    }
   };
 
 
@@ -68,6 +80,7 @@ class Game extends Component {
             <Text>zoom in</Text>
           </View>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={this.onPressZoomOut}>
           <View>
             <Text>zoom out</Text>
