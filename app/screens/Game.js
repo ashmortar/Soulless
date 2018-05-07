@@ -75,15 +75,30 @@ class Game extends Component {
       <View style={{marginBottom: 20, marginTop: 40}}>
         <Text>Game screen</Text>
 
-        <TouchableOpacity onPress={this.onPressZoomIn}>
-          <View>
-            <Text>zoom in</Text>
+        <TouchableOpacity onPress={this.onPressZoomIn} style={{width: 20}}>
+          <View style={{
+            backgroundColor: '#fff',
+            alignItems: 'center',
+            marginTop: 15,
+            borderRadius: 10,
+            borderColor: '#000',
+            borderWidth: 1
+          }}>
+            <Text style={{fontWeight: 'bold'}}>+</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={this.onPressZoomOut}>
-          <View>
-            <Text>zoom out</Text>
+
+        <TouchableOpacity onPress={this.onPressZoomOut} style={{width: 20}}>
+          <View style={{
+            backgroundColor: '#fff',
+            alignItems: 'center',
+            marginTop: 5,
+            borderRadius: 10,
+            borderColor: '#000',
+            borderWidth: 1
+          }}>
+            <Text style={{fontWeight: 'bold'}}>-</Text>
           </View>
         </TouchableOpacity>
 
