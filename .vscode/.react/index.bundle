@@ -76833,6 +76833,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       this.searched = false;
       this.parent = null;
       this.highlighted = false;
+      this.revealed = false;
+      this.player = false;
+      this.monster = false;
+      this.survivor = false;
     }
 
     _createClass(Cell, [{

@@ -7,6 +7,10 @@ export default class Cell {
     this.searched = false;
     this.parent = null;
     this.highlighted = false;
+    this.revealed = false;
+    this.player = false;
+    this.monster = false;
+    this.survivor = false;
   }
 
   reportEdges() {
