@@ -80,11 +80,23 @@ class Game extends Component {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i + 1]);
           this.elements[i].monsterEdges.push(this.elements[i + 1]);
+          if (i - 19 > 0 && this.elements[i - 19].value != 0) {
+            this.elements[i].monsterEdges.push(this.elements[i - 19]);
+          }
+          if (i + 21 < 400 && this.elements[i + 21].value != 0) {
+            this.elements[i].monsterEdges.push(this.elements[i + 21]);
+          }
         }
         if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i - 1]);
           this.elements[i].monsterEdges.push(this.elements[i - 1]);
+          if ((i - 21 > 0) && (this.elements[i - 21].value != 0)) {
+            this.elements[i].monsterEdges.push(this.elements[i - 21]);
+          }
+          if ((i + 19 < 400) && (this.elements[i + 19].value != 0)) {
+            this.elements[i].monsterEdges.push(this.elements[i + 19]);
+          }
         }
         if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) {
           adjacent++;
@@ -95,18 +107,6 @@ class Game extends Component {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i + 20]);
           this.elements[i].monsterEdges.push(this.elements[i + 20]);
-        }
-        if ((i - 19 > 0) && (this.elements[i - 19].value != 0)) {
-          this.elements[i].monsterEdges.push(this.elements[i - 19]);
-        }
-        if ((i - 21 > 0) && (this.elements[i - 21].value != 0)) {
-          this.elements[i].monsterEdges.push(this.elements[i - 21]);
-        }
-        if ((i + 19 < 400) && (this.elements[i + 19].value != 0)) {
-          this.elements[i].monsterEdges.push(this.elements[i + 19]);
-        }
-        if ((i + 21 < 400) && (this.elements[i + 21].value != 0)) {
-          this.elements[i].monsterEdges.push(this.elements[i + 21]);
         }
         this.elements[i].value = adjacent;
       }

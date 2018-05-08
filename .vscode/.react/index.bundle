@@ -75628,6 +75628,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[_i2].humanEdges.push(_this.elements[_i2 + 1]);
 
               _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 1]);
+
+              if (_i2 - 19 > 0 && _this.elements[_i2 - 19].value != 0) {
+                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 19]);
+              }
+
+              if (_i2 + 21 < 400 && _this.elements[_i2 + 21].value != 0) {
+                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 21]);
+              }
             }
 
             if (_i2 % 20 != 0 && _this.elements[_i2 - 1].value != 0) {
@@ -75636,6 +75644,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[_i2].humanEdges.push(_this.elements[_i2 - 1]);
 
               _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 1]);
+
+              if (_i2 - 21 > 0 && _this.elements[_i2 - 21].value != 0) {
+                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 21]);
+              }
+
+              if (_i2 + 19 < 400 && _this.elements[_i2 + 19].value != 0) {
+                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 19]);
+              }
             }
 
             if (_i2 - 20 > 0 && _this.elements[_i2 - 20].value != 0) {
@@ -75652,22 +75668,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[_i2].humanEdges.push(_this.elements[_i2 + 20]);
 
               _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 20]);
-            }
-
-            if (_i2 - 19 > 0 && _this.elements[_i2 - 19].value != 0) {
-              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 19]);
-            }
-
-            if (_i2 - 21 > 0 && _this.elements[_i2 - 21].value != 0) {
-              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 21]);
-            }
-
-            if (_i2 + 19 < 400 && _this.elements[_i2 + 19].value != 0) {
-              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 19]);
-            }
-
-            if (_i2 + 21 < 400 && _this.elements[_i2 + 21].value != 0) {
-              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 21]);
             }
 
             _this.elements[_i2].value = adjacent;
