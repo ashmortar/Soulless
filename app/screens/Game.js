@@ -4,7 +4,6 @@ import { Text, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid } from '../components/Grid';
-import { Header } from '../components/Header';
 import Cell from '../data/Cell';
 
 
@@ -27,7 +26,8 @@ class Game extends Component {
 
     this.state = {
       gridItemWidth: gridItemWidth_default,
-      gridWidth: gridWidth_default
+      gridWidth: gridWidth_default,
+      redraw: false
     }
   }
 
@@ -86,29 +86,55 @@ class Game extends Component {
   }
 
   findShortestPath(start, end) {
+    // array of cells to be checked
     let queue = [];
+    // all cells already checked
     let visited = [];
+    // shortest path from end to beginning following parents
     let path = [];
+
+    // add starting square to the queue
     queue.push(start);
+
+    // process the queue
     while (queue.length > 0) {
+      // remove the first item
       let cell = queue.shift();
+      // see if we have been to this cell before
       if (!visited.includes(cell)) {
-        if (cell == end) {
+        // if not visited check to see if it is the end
+        if (cell === end) {
+          // if it is the end add it to the path
+          cell = Object.assign(cell, { highlighted: true });
           path.push(cell);
+          // assign the next variable to the parent of the final cell
           let next = cell.parent;
+          // continue up the chain of parents until we run out
           while (next) {
+            // add to path
+            next = Object.assign(next, { highlighted: true });
             path.push(next);
+            // reassign next to parent
             next = next.parent;
           }
+          // log the path
           console.log(path);
+          // quit the function
           break;
+
+        // if not the end find edges
         } else {
-          let next = cell.edges;
-          for (let i = 0; i < next.length; i++) {
-            let adjacent = next[i];
-            queue.push(adjacent);
-            adjacent.parent = next[i];
+          // assign connections array as all edges from cell
+          let connections = cell.edges;
+          // iterate through the edges and push them into the queue
+          for (let i = 0; i < connections.length; i++) {
+            let neighbor = connections[i];
+            if (neighbor !== start && neighbor.parent === null) {
+              neighbor.parent = cell;
+            }
+            queue.push(neighbor);
           }
+          // add our cell to the visited array
           visited.push(cell);
         }
       }
@@ -116,6 +142,7 @@ class Game extends Component {
     for (let i = 0; i < path.length; i++) {
       console.log(path[i]);
     }
+    this.setState({ redraw: true });
   }
 
 

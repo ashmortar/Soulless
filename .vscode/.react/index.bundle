@@ -75518,6 +75518,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
   var _class,
@@ -75536,9 +75538,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _Grid = _require(_dependencyMap[6], "../components/Grid");
 
-  var _Header = _require(_dependencyMap[7], "../components/Header");
-
-  var _Cell = _require(_dependencyMap[8], "../data/Cell");
+  var _Cell = _require(_dependencyMap[7], "../data/Cell");
 
   var _Cell2 = _interopRequireDefault(_Cell);
 
@@ -75684,7 +75684,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 141
+              lineNumber: 168
             }
           },
           _react3.default.createElement(
@@ -75692,7 +75692,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 142
+                lineNumber: 169
               }
             },
             "Game screen"
@@ -75706,7 +75706,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 144
+                lineNumber: 171
               }
             },
             _react3.default.createElement(
@@ -75722,7 +75722,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 145
+                  lineNumber: 172
                 }
               },
               _react3.default.createElement(
@@ -75733,7 +75733,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 153
+                    lineNumber: 180
                   }
                 },
                 "+"
@@ -75749,7 +75749,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 158
+                lineNumber: 185
               }
             },
             _react3.default.createElement(
@@ -75765,7 +75765,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 159
+                  lineNumber: 186
                 }
               },
               _react3.default.createElement(
@@ -75776,7 +75776,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 167
+                    lineNumber: 194
                   }
                 },
                 "-"
@@ -75796,7 +75796,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 177
+              lineNumber: 204
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -75804,7 +75804,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 178
+              lineNumber: 205
             }
           })
         );
@@ -75822,7 +75822,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       var gridWidth_default = gridItemWidth_default * 20;
       _this.state = {
         gridItemWidth: gridItemWidth_default,
-        gridWidth: gridWidth_default
+        gridWidth: gridWidth_default,
+        redraw: false
       };
       return _this;
     }
@@ -75839,11 +75840,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           var cell = queue.shift();
 
           if (!visited.includes(cell)) {
-            if (cell == end) {
+            if (cell === end) {
+              cell = _extends(cell, {
+                highlighted: true
+              });
               path.push(cell);
               var next = cell.parent;
 
               while (next) {
+                next = _extends(next, {
+                  highlighted: true
+                });
                 path.push(next);
                 next = next.parent;
               }
@@ -75851,12 +75858,16 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               console.log(path);
               break;
             } else {
-              var _next = cell.edges;
+              var connections = cell.edges;
 
-              for (var i = 0; i < _next.length; i++) {
-                var adjacent = _next[i];
-                queue.push(adjacent);
-                adjacent.parent = _next[i];
+              for (var i = 0; i < connections.length; i++) {
+                var neighbor = connections[i];
+
+                if (neighbor !== start && neighbor.parent === null) {
+                  neighbor.parent = cell;
+                }
+
+                queue.push(neighbor);
               }
 
               visited.push(cell);
@@ -75867,6 +75878,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         for (var _i3 = 0; _i3 < path.length; _i3++) {
           console.log(path[_i3]);
         }
+
+        this.setState({
+          redraw: true
+        });
       }
     }, {
       key: "render",
@@ -75876,7 +75891,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 187
+              lineNumber: 214
             }
           },
           _react3.default.createElement(_Grid.Grid, {
@@ -75888,7 +75903,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             itemDimension: this.state.gridItemWidth,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 189
+              lineNumber: 216
             }
           })
         );
@@ -75901,7 +75916,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Game;
-},598,[118,179,129,12,586,589,599,592,605],"app\\screens\\Game.js");
+},598,[118,179,129,12,586,589,599,605],"app\\screens\\Game.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76014,7 +76029,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 _react2.default.createElement(
                   _reactNative.Text,
                   {
-                    style: {
+                    style: item.highlighted ? {
+                      color: '#fff',
+                      fontSize: itemDimension * 0.6
+                    } : {
                       fontSize: itemDimension * 0.6
                     },
                     __source: {
