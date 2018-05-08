@@ -18,10 +18,10 @@ class Game extends Component {
     this.elements = [];
     this.start = null;
     this.end = null;
-    this.getGridLayout();
-    this.counter = 0;
     this.playerSpace = null;
     this.monsterSpace = null;
+    this.counter = 0;
+    this.getGridLayout();
 
     let gridItemWidth_default = 20;
     let gridWidth_default = gridItemWidth_default * 20;
@@ -30,8 +30,8 @@ class Game extends Component {
       gridItemWidth: gridItemWidth_default,
       gridWidth: gridWidth_default,
       redraw: false,
-      player: 'human'
-    }
+      player: 'human',
+    };
   }
 
   onPressZoomIn = () => {
@@ -43,7 +43,7 @@ class Game extends Component {
       console.log(this.state.gridItemWidth);
       this.setState({
         gridItemWidth: gridItemWidth_new,
-        gridWidth: gridWidth_new
+        gridWidth: gridWidth_new,
       });
     }
   };
@@ -57,36 +57,17 @@ class Game extends Component {
       console.log(this.state.gridItemWidth);
       this.setState({
         gridItemWidth: gridItemWidth_new,
-        gridWidth: gridWidth_new
-      })
+        gridWidth: gridWidth_new,
+      });
     }
   };
-  
-  assignPlayerStart = () => {
-    let cell = this.elements[Math.floor(Math.random() * 400)];
-    if (cell.value != 0) {
-      cell.player = true;
-      this.playerSpace = cell;
-    } else {
-      this.assignPlayerStart();
-    }
-  }
-  assignMonsterStart = () => {
-    let cell = this.elements[Math.floor(Math.random() * 400)];
-    if (cell.value != 0) {
-      cell.monster = true;
-      this.monsterSpace = cell;
-    } else {
-      this.assignMonsterStart();
-    }
-  }
 
   getGridLayout = () => {
     for (let i = 0; i < 400; i++) {
       // this.elements.push(Math.floor(Math.random() * 5));
       this.elements.push(new Cell(i));
     }
-    console.log("initial elements: ", this.elements);
+    console.log('initial elements: ', this.elements);
     for (let i = 0; i < 150; i++) {
       this.elements[Math.floor(Math.random() * 400)].value = 0;
     }
@@ -134,7 +115,26 @@ class Game extends Component {
     }
     this.assignPlayerStart();
     this.assignMonsterStart();
-    console.log("final elements: ", this.elements);
+    console.log('final elements: ', this.elements);
+  }
+
+  assignPlayerStart = () => {
+    let cell = this.elements[Math.floor(Math.random() * 400)];
+    if (cell.value != 0) {
+      cell.player = true;
+      this.playerSpace = cell;
+    } else {
+      this.assignPlayerStart();
+    }
+  }
+  assignMonsterStart = () => {
+    let cell = this.elements[Math.floor(Math.random() * 400)];
+    if (cell.value != 0) {
+      cell.monster = true;
+      this.monsterSpace = cell;
+    } else {
+      this.assignMonsterStart();
+    }
   }
 
   findShortestPath(start, end) {
@@ -304,6 +304,3 @@ class Game extends Component {
 
 
 export default Game;
-
-
-// node needs to know its "value" and its edges

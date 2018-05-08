@@ -75891,12 +75891,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.elements = [];
       _this.start = null;
       _this.end = null;
+      _this.playerSpace = null;
+      _this.monsterSpace = null;
+      _this.counter = 0;
 
       _this.getGridLayout();
 
-      _this.counter = 0;
-      _this.playerSpace = null;
-      _this.monsterSpace = null;
       var gridItemWidth_default = 20;
       var gridWidth_default = gridItemWidth_default * 20;
       _this.state = {
