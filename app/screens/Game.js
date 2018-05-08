@@ -13,16 +13,20 @@ class Game extends Component {
   }
 
   constructor() {
+    console.log("constructor called");
     super();
     this.scale = 0;
     this.elements = [];
     this.start = null;
     this.end = null;
-    this.getGridLayout();
     this.counter = 0;
 
-    let gridItemWidth_default = 20;
-    let gridWidth_default = gridItemWidth_default * 20;
+    this.cellsInRow = 40;
+    this.cellsTotal = 1600;
+
+
+    let gridItemWidth_default = 10;
+    let gridWidth_default = gridItemWidth_default * this.cellsInRow;
 
     this.state = {
       gridItemWidth: gridItemWidth_default,
@@ -30,13 +34,21 @@ class Game extends Component {
       redraw: false,
       player: 'human'
     }
+
+
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount");
+    this.getGridLayout();
+
   }
 
   onPressZoomIn = () => {
     console.log('ZOOM pressed');
     if (this.scale < 3) {
       let gridItemWidth_new = this.state.gridItemWidth * 2;
-      let gridWidth_new = gridItemWidth_new * 20;
+      let gridWidth_new = gridItemWidth_new * this.cellsInRow;
       this.scale++;
       console.log(this.state.gridItemWidth);
       this.setState({
@@ -50,7 +62,7 @@ class Game extends Component {
     console.log('ZOOM pressed');
     if (this.scale > 0) {
       let gridItemWidth_new = this.state.gridItemWidth / 2;
-      let gridWidth_new = gridItemWidth_new * 20;
+      let gridWidth_new = gridItemWidth_new * this.cellsInRow;
       this.scale--;
       console.log(this.state.gridItemWidth);
       this.setState({
@@ -61,57 +73,85 @@ class Game extends Component {
   };
 
   getGridLayout = () => {
-    for (let i = 0; i < 400; i++) {
+    console.log("getGridLayout called");
+    for (let i = 0; i < this.cellsTotal+20; i++) {
       // this.elements.push(Math.floor(Math.random() * 5));
       this.elements.push(new Cell(i));
     }
     console.log("initial elements: ", this.elements);
-    for (let i = 0; i < 150; i++) {
-      this.elements[Math.floor(Math.random() * 400)].value = 0;
-    }
-    for (let i = 0; i < 400; i++) {
-      // left: i+1
-      // right: i-1
-      // top: i-20
-      // bottom: i+20
-      if (this.elements[i].value != 0) {
-        let adjacent = 0;
-        if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) {
-          adjacent++;
-          this.elements[i].humanEdges.push(this.elements[i + 1]);
-          this.elements[i].monsterEdges.push(this.elements[i + 1]);
-          if (i - 19 > 0 && this.elements[i - 19].value != 0) {
-            this.elements[i].monsterEdges.push(this.elements[i - 19]);
-          }
-          if (i + 21 < 400 && this.elements[i + 21].value != 0) {
-            this.elements[i].monsterEdges.push(this.elements[i + 21]);
-          }
-        }
-        if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
-          adjacent++;
-          this.elements[i].humanEdges.push(this.elements[i - 1]);
-          this.elements[i].monsterEdges.push(this.elements[i - 1]);
-          if ((i - 21 > 0) && (this.elements[i - 21].value != 0)) {
-            this.elements[i].monsterEdges.push(this.elements[i - 21]);
-          }
-          if ((i + 19 < 400) && (this.elements[i + 19].value != 0)) {
-            this.elements[i].monsterEdges.push(this.elements[i + 19]);
-          }
-        }
-        if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) {
-          adjacent++;
-          this.elements[i].humanEdges.push(this.elements[i - 20]);
-          this.elements[i].monsterEdges.push(this.elements[i - 20]);
-        }
-        if ((i + 20 < 400) && (this.elements[i + 20].value != 0)) {
-          adjacent++;
-          this.elements[i].humanEdges.push(this.elements[i + 20]);
-          this.elements[i].monsterEdges.push(this.elements[i + 20]);
-        }
-        this.elements[i].value = adjacent;
+    for (let i = 0; i < 45; i++) {
+      console.log(i);
+      let rand = Math.floor(Math.random() * this.cellsTotal);
+      console.log("rand");
+      console.log(rand);
+      console.log("el");
+      console.log(this.elements[rand]);
+      this.elements[rand].value = 0;
+      console.log('value=0');
+      console.log(this.elements[rand]);
+      if (rand - this.cellsInRow >= 0) {
+        this.elements[rand - this.cellsInRow].value = 0;
       }
+      if (rand - 2 * this.cellsInRow >= 0) {
+        this.elements[rand - 2 * this.cellsInRow].value = 0;
+      }
+
+      if ((rand + 1) % this.cellsInRow != 0) {
+        this.elements[rand + 1].value = 0;
+      }
+      if ((rand - this.cellsInRow + 1) % this.cellsInRow != 0) {
+        this.elements[rand - this.cellsInRow + 1].value = 0;
+      }
+      if ((rand - 2 * this.cellsInRow + 1) % this.cellsInRow != 0) {
+        this.elements[rand - 2 * this.cellsInRow + 1].value = 0;
+      }
+
+
+
     }
-    console.log("final elements: ", this.elements);
+    // for (let i = 0; i < this.cellsTotal; i++) {
+    //   // left: i+1
+    //   // right: i-1
+    //   // top: i-20
+    //   // bottom: i+20
+    //   if (this.elements[i].value != 0) {
+    //     let adjacent = 0;
+    //     if ((i % this.cellsInRow != (this.cellsInRow - 1)) && (this.elements[i + 1].value != 0)) {
+    //       adjacent++;
+    //       this.elements[i].humanEdges.push(this.elements[i + 1]);
+    //       this.elements[i].monsterEdges.push(this.elements[i + 1]);
+    //       if (i - (this.cellsInRow - 1) > 0 && this.elements[i - (this.cellsInRow - 1)].value != 0) {
+    //         this.elements[i].monsterEdges.push(this.elements[i - (this.cellsInRow - 1)]);
+    //       }
+    //       if (i + (this.cellsInRow + 1) < this.cellsTotal && this.elements[i + (this.cellsInRow + 1)].value != 0) {
+    //         this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow + 1)]);
+    //       }
+    //     }
+    //     if ((i % this.cellsInRow != 0) && (this.elements[i - 1].value != 0)) {
+    //       adjacent++;
+    //       this.elements[i].humanEdges.push(this.elements[i - 1]);
+    //       this.elements[i].monsterEdges.push(this.elements[i - 1]);
+    //       if ((i - (this.cellsInRow + 1) > 0) && (this.elements[i - (this.cellsInRow + 1)].value != 0)) {
+    //         this.elements[i].monsterEdges.push(this.elements[i - 21]);
+    //       }
+    //       if ((i + (this.cellsInRow - 1) < this.cellsTotal) && (this.elements[i + (this.cellsInRow - 1)].value != 0)) {
+    //         this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow - 1)]);
+    //       }
+    //     }
+    //     if ((i - this.cellsInRow >= 0) && (this.elements[i - this.cellsInRow].value != 0)) {
+    //       adjacent++;
+    //       this.elements[i].humanEdges.push(this.elements[i - this.cellsInRow]);
+    //       this.elements[i].monsterEdges.push(this.elements[i - this.cellsInRow]);
+    //     }
+    //     if ((i + this.cellsInRow < this.cellsTotal) && (this.elements[i + this.cellsInRow].value != 0)) {
+    //       adjacent++;
+    //       this.elements[i].humanEdges.push(this.elements[i + this.cellsInRow]);
+    //       this.elements[i].monsterEdges.push(this.elements[i + this.cellsInRow]);
+    //     }
+    //     this.elements[i].value = adjacent;
+    //   }
+    // }
+    // console.log("final elements: ", this.elements);
   }
 
   findShortestPath(start, end) {

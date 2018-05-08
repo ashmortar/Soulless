@@ -59,6 +59,7 @@ const Grid = ({
                       borderWidth: 0.5,
                       height: itemDimension
                     }
+
               }
             >
               <Text
