@@ -24,39 +24,57 @@ import { Text, View, TouchableHighlight, ScrollView } from 'react-native';
 //   return <Text>Footer</Text>;
 // };
 
-const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) => (
-  <View style={{marginTop: 10, marginBottom: 0, justifyContent: 'flex-start'}}>
-  <ScrollView horizontal={true}>
-    <GridView
-
-      ListHeaderComponent={header}
-      ListFooterComponent={footer}
-
-      spacing={0}
-
-      style={{width: gridDimension}}
-
-      itemDimension={itemDimension}
-      items={items}
-
-      fixed={true}
-
-      renderItem={item => (
-        <TouchableHighlight
-          onPress={() => onPress(item)}
-        >
-
-          <View style={item.value ?
-            { backgroundColor: '#fff', borderWidth: 0.5, height: itemDimension } :
-            { backgroundColor: '#000', borderWidth: 0.5, height: itemDimension }}>
-            <Text style={item.highlighted ? { color: '#fff', fontSize: itemDimension * 0.6 } : {fontSize: itemDimension * 0.6}}>{item.value}</Text>
-          </View>
-
-        </TouchableHighlight>
-      )}
-
-    />
-  </ScrollView>
+const Grid = ({
+  items,
+  itemDimension,
+  gridDimension,
+  onPress,
+  header,
+  footer
+}) => (
+  <View
+    style={{ marginTop: 10, marginBottom: 0, justifyContent: "flex-start" }}
+  >
+    <ScrollView horizontal={true}>
+      <GridView
+        ListHeaderComponent={header}
+        ListFooterComponent={footer}
+        spacing={0}
+        style={{ width: gridDimension }}
+        itemDimension={itemDimension}
+        items={items}
+        fixed={true}
+        renderItem={item => (
+          <TouchableHighlight onPress={() => onPress(item)}>
+            <View
+              style={
+                item.value
+                  ? {
+                      backgroundColor: "#fff",
+                      borderWidth: 0.5,
+                      height: itemDimension
+                    }
+                  : {
+                      backgroundColor: "#000",
+                      borderWidth: 0.5,
+                      height: itemDimension
+                    }
+              }
+            >
+              <Text
+                style={
+                  item.highlighted
+                    ? { color: "#FF00FF", fontWeight: '900', fontSize: itemDimension * 0.6 }
+                    : { fontSize: itemDimension * 0.6 }
+                }
+              >
+                {item.value}
+              </Text>
+            </View>
+          </TouchableHighlight>
+        )}
+      />
+    </ScrollView>
   </View>
 );
 

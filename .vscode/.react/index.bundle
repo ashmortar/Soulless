@@ -76023,11 +76023,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         style: {
           marginTop: 10,
           marginBottom: 0,
-          justifyContent: 'flex-start'
+          justifyContent: "flex-start"
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 28
+          lineNumber: 35
         }
       },
       _react2.default.createElement(
@@ -76036,7 +76036,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           horizontal: true,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 29
+            lineNumber: 38
           }
         },
         _react2.default.createElement(_reactNativeSuperGrid2.default, {
@@ -76058,18 +76058,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 45
+                  lineNumber: 48
                 }
               },
               _react2.default.createElement(
                 _reactNative.View,
                 {
                   style: item.value ? {
-                    backgroundColor: '#fff',
+                    backgroundColor: "#fff",
                     borderWidth: 0.5,
                     height: itemDimension
                   } : {
-                    backgroundColor: '#000',
+                    backgroundColor: "#000",
                     borderWidth: 0.5,
                     height: itemDimension
                   },
@@ -76082,14 +76082,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   _reactNative.Text,
                   {
                     style: item.highlighted ? {
-                      color: '#fff',
+                      color: "#FF00FF",
+                      fontWeight: '900',
                       fontSize: itemDimension * 0.6
                     } : {
                       fontSize: itemDimension * 0.6
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 52
+                      lineNumber: 64
                     }
                   },
                   item.value
@@ -76099,7 +76100,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           },
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 30
+            lineNumber: 39
           }
         })
       )
