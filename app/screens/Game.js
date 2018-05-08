@@ -27,7 +27,8 @@ class Game extends Component {
     this.state = {
       gridItemWidth: gridItemWidth_default,
       gridWidth: gridWidth_default,
-      redraw: false
+      redraw: false,
+      player: 'human'
     }
   }
 
@@ -75,10 +76,38 @@ class Game extends Component {
       // bottom: i+20
       if (this.elements[i].value != 0) {
         let adjacent = 0;
-        if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) { adjacent++; this.elements[i].edges.push(this.elements[i + 1]); }
-        if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) { adjacent++; this.elements[i].edges.push(this.elements[i - 1]); }
-        if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) { adjacent++; this.elements[i].edges.push(this.elements[i - 20]); }
-        if ((i + 20 < 400) && (this.elements[i + 20].value != 0)) { adjacent++; this.elements[i].edges.push(this.elements[i + 20]); }
+        if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) {
+          adjacent++;
+          this.elements[i].humanEdges.push(this.elements[i + 1]);
+          this.elements[i].monsterEdges.push(this.elements[i + 1]);
+        }
+        if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
+          adjacent++;
+          this.elements[i].humanEdges.push(this.elements[i - 1]);
+          this.elements[i].monsterEdges.push(this.elements[i - 1]);
+        }
+        if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) {
+          adjacent++;
+          this.elements[i].humanEdges.push(this.elements[i - 20]);
+          this.elements[i].monsterEdges.push(this.elements[i - 20]);
+        }
+        if ((i + 20 < 400) && (this.elements[i + 20].value != 0)) {
+          adjacent++;
+          this.elements[i].humanEdges.push(this.elements[i + 20]);
+          this.elements[i].monsterEdges.push(this.elements[i + 20]);
+        }
+        if ((i - 19 > 0) && (this.elements[i - 19].value != 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i - 19]);
+        }
+        if ((i - 21 > 0) && (this.elements[i - 21].value != 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i - 21]);
+        }
+        if ((i + 19 < 400) && (this.elements[i + 19].value != 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i + 19]);
+        }
+        if ((i + 21 < 400) && (this.elements[i + 21].value != 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i + 21]);
+        }
         this.elements[i].value = adjacent;
       }
     }
@@ -118,14 +147,20 @@ class Game extends Component {
             next = next.parent;
           }
           // log the path
-          console.log(path);
+          // console.log(path);
           // quit the function
           break;
 
         // if not the end find edges
         } else {
           // assign connections array as all edges from cell
-          let connections = cell.edges;
+          let connections;
+          if (this.state.player == 'human') {
+            connections = cell.humanEdges;
+          }
+          if (this.state.player == 'monster') {
+            connections = cell.monsterEdges;
+          }
           // iterate through the edges and push them into the queue
           for (let i = 0; i < connections.length; i++) {
             let neighbor = connections[i];
@@ -139,11 +174,11 @@ class Game extends Component {
         }
       }
     }
-    for (let i = 0; i < path.length; i++) {
-      console.log(path[i]);
-    }
-    this.setState({ redraw: true });
-    setTimeout(this.resetGrid, 500);
+    // for (let i = 0; i < path.length; i++) {
+    //   console.log(path[i]);
+    // }
+    this.setState({ redraw: !this.state.redraw });
+    setTimeout(this.resetGrid, 50);
   }
 
   resetGrid = () => {
@@ -169,6 +204,15 @@ class Game extends Component {
       this.counter = 0;
     }
   };
+
+  handleChangePlayer = () => {
+    if (this.state.player == 'human') {
+      this.setState({ player: 'monster' });
+    }
+    if (this.state.player == 'monster') {
+      this.setState({ player: 'human' });
+    }
+  }
 
   renderHeader = () => {
     return (
@@ -209,6 +253,7 @@ class Game extends Component {
   renderFooter = () => {
     return (
       <View style={{marginBottom: 20, marginTop: 0}}>
+        <NavButton onPress={this.handleChangePlayer} text={this.state.player} />
         <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
       </View>
 
