@@ -5,6 +5,7 @@ import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid } from '../components/Grid';
 import { Header } from '../components/Header';
+import Cell from '../data/Cell';
 
 
 class Game extends Component {
@@ -14,17 +15,12 @@ class Game extends Component {
 
   constructor() {
     super();
-    // this.gridItemWidth = 40;
-    // this.gridWidth = this.gridItemWidth * 20;
-
     this.scale = 0;
-
     this.elements = [];
+    this.start = null;
+    this.end = null;
     this.getGridLayout();
-
-
-    // let gridWidth_default = Dimensions.get('window').width * 0.9;
-    // let gridItemWidth_default = gridWidth_default / 20;
+    this.counter = 0;
 
     let gridItemWidth_default = 20;
     let gridWidth_default = gridItemWidth_default * 20;
@@ -34,45 +30,6 @@ class Game extends Component {
       gridWidth: gridWidth_default
     }
   }
-
-  getGridLayout = () => {
-    // for (let i = 0; i < 400; i++) {
-    //   this.elements.push(i);
-    // }
-
-
-    for (let i = 0; i < 400; i++) {
-      // this.elements.push(Math.floor(Math.random() * 5));
-      this.elements.push(5);
-    }
-    for (let i = 0; i < 150; i++) {
-      this.elements[Math.floor(Math.random() * 400)] = 0;
-    }
-    for (let i = 0; i < 400; i++) {
-      // left: i+1
-      // right: i-1
-      // top: i-20
-      // bottom: i+20
-      if (this.elements[i] != 0) {
-        let adjacent = 0;
-        if ((i % 20 != 19) && (this.elements[i+1] != 0)) { adjacent++; }
-        if ((i % 20 != 0) && (this.elements[i-1] != 0)) { adjacent++; }
-        if ((i - 20 > 0) && (this.elements[i-20] != 0)) { adjacent++; }
-        if ((i + 20 < 400) && (this.elements[i+20] != 0)) { adjacent++; }
-        this.elements[i] = adjacent;
-      }
-    }
-  }
-
-
-  handlePressNavButton = () => {
-    this.props.navigation.navigate('Home');
-  };
-
-  handlePressGridItem = (item) => {
-    console.log('item pressed');
-    console.log(item);
-  };
 
   onPressZoomIn = () => {
     console.log('ZOOM pressed');
@@ -84,7 +41,7 @@ class Game extends Component {
       this.setState({
         gridItemWidth: gridItemWidth_new,
         gridWidth: gridWidth_new
-      })
+      });
     }
   };
 
@@ -102,6 +59,82 @@ class Game extends Component {
     }
   };
 
+  getGridLayout = () => {
+    for (let i = 0; i < 400; i++) {
+      // this.elements.push(Math.floor(Math.random() * 5));
+      this.elements.push(new Cell(i));
+    }
+    console.log("initial elements: ", this.elements);
+    for (let i = 0; i < 150; i++) {
+      this.elements[Math.floor(Math.random() * 400)].value = 0;
+    }
+    for (let i = 0; i < 400; i++) {
+      // left: i+1
+      // right: i-1
+      // top: i-20
+      // bottom: i+20
+      if (this.elements[i].value != 0) {
+        let adjacent = 0;
+        if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) { adjacent++; this.elements[i].edges.push(this.elements[i + 1]); }
+        if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) { adjacent++; this.elements[i].edges.push(this.elements[i - 1]); }
+        if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) { adjacent++; this.elements[i].edges.push(this.elements[i - 20]); }
+        if ((i + 20 < 400) && (this.elements[i + 20].value != 0)) { adjacent++; this.elements[i].edges.push(this.elements[i + 20]); }
+        this.elements[i].value = adjacent;
+      }
+    }
+    console.log("final elements: ", this.elements);
+  }
+
+  findShortestPath(start, end) {
+    let queue = [];
+    let visited = [];
+    let path = [];
+    queue.push(start);
+    while (queue.length > 0) {
+      let cell = queue.shift();
+      if (!visited.includes(cell)) {
+        if (cell == end) {
+          path.push(cell);
+          let next = cell.parent;
+          while (next) {
+            path.push(next);
+            next = next.parent;
+          }
+          console.log(path);
+          break;
+        } else {
+          let next = cell.edges;
+          for (let i = 0; i < next.length; i++) {
+            let adjacent = next[i];
+            queue.push(adjacent);
+            adjacent.parent = next[i];
+          }
+          visited.push(cell);
+        }
+      }
+    }
+    for (let i = 0; i < path.length; i++) {
+      console.log(path[i]);
+    }
+  }
+
+
+  handlePressNavButton = () => {
+    this.props.navigation.navigate('Home');
+  };
+
+  handlePressGridItem = (item) => {
+    if (this.counter === 0) {
+      this.start = item;
+      console.log('start position: ', item);
+      this.counter = 1;
+    } else if (this.counter === 1) {
+      this.end = item;
+      console.log('end position: ', item);
+      this.findShortestPath(this.start, this.end);
+      this.counter = 0;
+    }
+  };
 
   renderHeader = () => {
     return (
@@ -136,24 +169,20 @@ class Game extends Component {
         </TouchableOpacity>
 
       </View>
-    )
+    );
   };
 
   renderFooter = () => {
-    return(
+    return (
       <View style={{marginBottom: 20, marginTop: 0}}>
         <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
       </View>
 
-    )
+    );
   };
 
 
   render() {
-
-
-
-
     return (
       <Container>
 
@@ -173,3 +202,6 @@ class Game extends Component {
 
 
 export default Game;
+
+
+// node needs to know its "value" and its edges

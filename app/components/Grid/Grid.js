@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GridView from 'react-native-super-grid';
-import { Text, View, TouchableHighlight, Dimensions, ScrollView } from 'react-native';
-import styles from './styles';
-
+import { Text, View, TouchableHighlight, ScrollView } from 'react-native';
 
 // renderSeparator = () => {
 //   return (
@@ -26,14 +24,10 @@ import styles from './styles';
 //   return <Text>Footer</Text>;
 // };
 
-
-
 const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) => (
   <View style={{marginTop: 10, marginBottom: 0, justifyContent: 'flex-start'}}>
   <ScrollView horizontal={true}>
     <GridView
-
-
 
       ListHeaderComponent={header}
       ListFooterComponent={footer}
@@ -52,10 +46,10 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) =
           onPress={() => onPress(item)}
         >
 
-          <View style={ item ?
+          <View style={ item.value ?
             { backgroundColor: '#fff', borderWidth: 0.5, height: itemDimension} :
             { backgroundColor: '#000', borderWidth: 0.5, height: itemDimension }}>
-            <Text style={{ fontSize: itemDimension * 0.6}}>{item}</Text>
+            <Text style={{ fontSize: itemDimension * 0.6}}>{item.value}</Text>
           </View>
 
         </TouchableHighlight>

@@ -19,6 +19,7 @@
     "no-console": "off",
     "linebreak-style": "off",
     "global-require": [0],
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "class-methods-use-this": "off"
   }
 }
