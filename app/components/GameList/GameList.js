@@ -13,11 +13,10 @@ const GameList = ({ currentGames, onPress }) => (
       data={currentGames}
       renderItem={({ item }) => (
         <ListItem
-          text={item}
+          text={item.name}
           onPress={onPress}
         />
       )}
-      keyExtrator={item => item}
       ItemSeparatorComponent={Separator}
     />
   </View>
