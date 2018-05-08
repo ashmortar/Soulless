@@ -77038,16 +77038,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         renderItem: function renderItem(_ref2) {
           var item = _ref2.item;
           return _react2.default.createElement(_ListItem2.default, {
-            text: item,
+            text: item.name,
             onPress: onPress,
             __source: {
               fileName: _jsxFileName,
               lineNumber: 15
             }
           });
-        },
-        keyExtrator: function keyExtrator(item) {
-          return item;
         },
         ItemSeparatorComponent: _Separator2.default,
         __source: {
@@ -77201,7 +77198,19 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = ['nearby device 1', 'internet device', 'nearby device 2', 'game the third'];
+  exports.default = [{
+    key: '0',
+    name: 'nearby device 1'
+  }, {
+    key: '1',
+    name: 'internet device'
+  }, {
+    key: '2',
+    name: 'nearby device 2'
+  }, {
+    key: '3',
+    name: 'game the third'
+  }];
 },612,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
