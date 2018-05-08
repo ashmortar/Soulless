@@ -20,6 +20,8 @@ class Game extends Component {
     this.end = null;
     this.getGridLayout();
     this.counter = 0;
+    this.playerSpace = null;
+    this.monsterSpace = null;
 
     let gridItemWidth_default = 20;
     let gridWidth_default = gridItemWidth_default * 20;
@@ -59,6 +61,25 @@ class Game extends Component {
       })
     }
   };
+  
+  assignPlayerStart = () => {
+    let cell = this.elements[Math.floor(Math.random() * 400)];
+    if (cell.value != 0) {
+      cell.player = true;
+      this.playerSpace = cell;
+    } else {
+      this.assignPlayerStart();
+    }
+  }
+  assignMonsterStart = () => {
+    let cell = this.elements[Math.floor(Math.random() * 400)];
+    if (cell.value != 0) {
+      cell.monster = true;
+      this.monsterSpace = cell;
+    } else {
+      this.assignMonsterStart();
+    }
+  }
 
   getGridLayout = () => {
     for (let i = 0; i < 400; i++) {
@@ -111,6 +132,8 @@ class Game extends Component {
         this.elements[i].value = adjacent;
       }
     }
+    this.assignPlayerStart();
+    this.assignMonsterStart();
     console.log("final elements: ", this.elements);
   }
 
