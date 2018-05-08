@@ -5,6 +5,7 @@ export default class Cell {
     this.edges = [];
     this.searched = false;
     this.parent = null;
+    this.highlighted = false;
   }
 
   reportEdges() {

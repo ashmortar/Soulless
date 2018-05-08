@@ -75518,8 +75518,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
   var _class,
@@ -75655,6 +75653,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         console.log("final elements: ", _this.elements);
       };
 
+      _this.resetGrid = function () {
+        for (var i = 0; i < _this.elements.length; i++) {
+          _this.elements[i].highlighted = false;
+          _this.elements[i].parent = null;
+        }
+      };
+
       _this.handlePressNavButton = function () {
         _this.props.navigation.navigate('Home');
       };
@@ -75684,7 +75689,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 168
+              lineNumber: 175
             }
           },
           _react3.default.createElement(
@@ -75692,7 +75697,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 169
+                lineNumber: 176
               }
             },
             "Game screen"
@@ -75706,7 +75711,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 171
+                lineNumber: 178
               }
             },
             _react3.default.createElement(
@@ -75722,7 +75727,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 172
+                  lineNumber: 179
                 }
               },
               _react3.default.createElement(
@@ -75733,7 +75738,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 180
+                    lineNumber: 187
                   }
                 },
                 "+"
@@ -75749,7 +75754,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 185
+                lineNumber: 192
               }
             },
             _react3.default.createElement(
@@ -75765,7 +75770,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 186
+                  lineNumber: 193
                 }
               },
               _react3.default.createElement(
@@ -75776,7 +75781,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 194
+                    lineNumber: 201
                   }
                 },
                 "-"
@@ -75796,7 +75801,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 204
+              lineNumber: 211
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -75804,7 +75809,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 205
+              lineNumber: 212
             }
           })
         );
@@ -75841,16 +75846,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
           if (!visited.includes(cell)) {
             if (cell === end) {
-              cell = _extends(cell, {
-                highlighted: true
-              });
+              cell.highlighted = true;
               path.push(cell);
               var next = cell.parent;
 
               while (next) {
-                next = _extends(next, {
-                  highlighted: true
-                });
+                next.highlighted = true;
                 path.push(next);
                 next = next.parent;
               }
@@ -75882,6 +75883,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         this.setState({
           redraw: true
         });
+        setTimeout(this.resetGrid, 500);
       }
     }, {
       key: "render",
@@ -75891,7 +75893,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 214
+              lineNumber: 221
             }
           },
           _react3.default.createElement(_Grid.Grid, {
@@ -75903,7 +75905,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             itemDimension: this.state.gridItemWidth,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 216
+              lineNumber: 223
             }
           })
         );
@@ -76778,6 +76780,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       this.edges = [];
       this.searched = false;
       this.parent = null;
+      this.highlighted = false;
     }
 
     _createClass(Cell, [{

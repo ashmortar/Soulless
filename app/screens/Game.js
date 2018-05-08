@@ -105,14 +105,14 @@ class Game extends Component {
         // if not visited check to see if it is the end
         if (cell === end) {
           // if it is the end add it to the path
-          cell = Object.assign(cell, { highlighted: true });
+          cell.highlighted = true;
           path.push(cell);
           // assign the next variable to the parent of the final cell
           let next = cell.parent;
           // continue up the chain of parents until we run out
           while (next) {
             // add to path
-            next = Object.assign(next, { highlighted: true });
+            next.highlighted = true;
             path.push(next);
             // reassign next to parent
             next = next.parent;
@@ -143,8 +143,15 @@ class Game extends Component {
       console.log(path[i]);
     }
     this.setState({ redraw: true });
+    setTimeout(this.resetGrid, 500);
   }
 
+  resetGrid = () => {
+    for (let i = 0; i < this.elements.length; i++) {
+      this.elements[i].highlighted = false;
+      this.elements[i].parent = null;
+    }
+  }
 
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
