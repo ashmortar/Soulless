@@ -76,6 +76,26 @@ class Game extends Component {
 
   getGridLayout = () => {
 
+
+    this.createWalls();
+
+
+    for (let i=0; i<this.cellsTotal; i++) {
+      if (this.elements[i].value === 0) {
+        console.log(i);
+        this.fillGaps(i);
+      }
+    }
+
+    //adding values to white cells
+    this.addValuesToCells();
+
+
+    // console.log("final elements: ", this.elements);
+  }
+
+
+  createWalls = () => {
     for (let i = 0; i < this.cellsTotal; i++) {
       // this.elements.push(Math.floor(Math.random() * 5));
       this.elements.push(new Cell(i));
@@ -85,9 +105,6 @@ class Game extends Component {
 
       let rand = Math.floor(Math.random() * this.cellsTotal);
 
-      console.log(WallTemplate[0]);
-      console.log(WallTemplate[1]);
-      console.log(WallTemplate[2]);
 
       if ((rand - 2 * this.cellsInRow >= -1) && ((rand + 1) % this.cellsInRow != 0)) {
         this.elements[rand].value = "";//starting cell
@@ -96,35 +113,34 @@ class Game extends Component {
         this.elements[rand + 1].value = "";//right cell
         this.elements[rand - this.cellsInRow + 1].value = "";//right top first
         this.elements[rand - 2 * this.cellsInRow + 1].value = 0;//right top second
+
+
+        let typeOfWall = Math.floor(Math.random() * 2);
+
+        let rand2 = rand + WallTemplate[typeOfWall].x;
+        if ((rand2 < this.cellsTotal) && ((rand2 + 1) % this.cellsInRow != 0)) {
+          this.elements[rand2].value = "";//starting cell
+          this.elements[rand2 - this.cellsInRow].value = "";//top first
+          this.elements[rand2 - 2 * this.cellsInRow].value = 0;//top second
+          if (typeOfWall != 1) {
+            this.elements[rand2 + 1].value = "";//right cell
+            this.elements[rand2 - this.cellsInRow + 1].value = "";//right top first
+            this.elements[rand2 - 2 * this.cellsInRow + 1].value = 0;//right top second
+          }
+
+          let rand3 = rand + WallTemplate[typeOfWall].y;
+          if ((rand3 < this.cellsTotal) && ((rand3 + 1) % this.cellsInRow != 0)) {
+            this.elements[rand3].value = "";//starting cell
+            this.elements[rand3 - this.cellsInRow].value = "";//top first
+            this.elements[rand3 - 2 * this.cellsInRow].value = 0;//top second
+            if (typeOfWall != 1) {
+              this.elements[rand3 + 1].value = "";//right cell
+              this.elements[rand3 - this.cellsInRow + 1].value = "";//right top first
+              this.elements[rand3 - 2 * this.cellsInRow + 1].value = 0;//right top second
+            }
+          }
+        }
       }
-
-
-      // let typeOfWall = Math.floor(Math.random() * 3);
-
-      let rand2 = rand + WallTemplate[0].x;
-      if ((rand2 - 2 * this.cellsInRow >= -1) && ((rand2 + 1) % this.cellsInRow != 0)) {
-        this.elements[rand2].value = "";//starting cell
-        this.elements[rand2 - this.cellsInRow].value = "";//top first
-        this.elements[rand2 - 2 * this.cellsInRow].value = 0;//top second
-        this.elements[rand2 + 1].value = "";//right cell
-        this.elements[rand2 - this.cellsInRow + 1].value = "";//right top first
-        this.elements[rand2 - 2 * this.cellsInRow + 1].value = 0;//right top second
-      }
-
-
-      let rand3 = rand + WallTemplate[0].y;
-      if ((rand3 - 2 * this.cellsInRow >= -1) && ((rand3 + 1) % this.cellsInRow != 0)) {
-        this.elements[rand3].value = "";//starting cell
-        this.elements[rand3 - this.cellsInRow].value = "";//top first
-        this.elements[rand3 - 2 * this.cellsInRow].value = 0;//top second
-        this.elements[rand3 + 1].value = "";//right cell
-        this.elements[rand3 - this.cellsInRow + 1].value = "";//right top first
-        this.elements[rand3 - 2 * this.cellsInRow + 1].value = 0;//right top second
-      }
-
-
-
-
 
       // if (rand - 2 * this.cellsInRow >= 0) {
       // }
@@ -135,10 +151,38 @@ class Game extends Component {
       // }
       // if (((rand - 2 * this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - 2 * this.cellsInRow + 1 >= 0)) {
       // }
-
-
-
     }
+
+  }
+
+
+  fillGaps = (i) => {
+    let counter = 0;
+    i += this.cellsInRow;
+    while (true) {
+      if (this.elements[i].value === 0) {
+        console.log("black");
+        for (let c=0; c<counter; c++) {
+          i -= this.cellsInRow;
+          this.elements[i].value = 0;
+        }
+        break;
+      }
+      else if ((this.elements[i].value === "") && (i + this.cellsInRow <= this.cellsTotal)) {
+        console.log("grey");
+        i += this.cellsInRow;
+        counter++;
+      }
+      else {
+        console.log("white");
+        break;
+      }
+    }
+  }
+
+
+  addValuesToCells = () => {
+    //adding values to white cells
     for (let i = 0; i < this.cellsTotal; i++) {
       // left: i+1
       // right: i-1
@@ -181,7 +225,6 @@ class Game extends Component {
         this.elements[i].value = adjacent;
       }
     }
-    console.log("final elements: ", this.elements);
   }
 
   findShortestPath(start, end) {
