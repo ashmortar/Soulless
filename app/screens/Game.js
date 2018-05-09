@@ -218,37 +218,7 @@ class Game extends Component {
     }
   }
 
-  pingRadius = (item) => {
-    const i = item.name;
-    if ((i % 20 != 0) && (i - 21 > 0) && (this.elements[i - 21].value != 0)) {
-      this.elements[i - 21].isRevealed = true;
-    }
-    if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) {
-      this.elements[i - 20].isRevealed = true;
-    }
-    if ((i % 20 != 19) && (i - 19 > 0 && this.elements[i - 19].value != 0)) {
-      this.elements[i - 19].isRevealed = true;
-    }
-    if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) {
-      this.elements[i + 1].isRevealed = true;
-    }
-    if ((i % 20 != 19) && (i + 21 < 400 && this.elements[i + 21].value != 0)) {
-      this.elements[i + 21].isRevealed = true;
-    }
-    if ((i + 20 < 400) && (this.elements[i + 20].value != 0)) {
-      this.elements[i + 20].isRevealed = true;
-    }
-    if ((i % 20 != 0) && (i + 19 < 400 && this.elements[i + 19].value != 0)) {
-      this.elements[i + 19].isRevealed = true;
-    }
-    if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
-      this.elements[i - 1].isRevealed = true;
-    }
-    this.setState({ redraw: !this.state.redraw });
-  }
-
-  pingDirection = (direction, item) => {
-    
+  echoLocate = (direction, item) => {
     switch (direction) {
       case 'north':
         if (item.name - 20 < 0) {
@@ -308,6 +278,33 @@ class Game extends Component {
               cell = this.elements[cell.name - 1];
             }
           }
+        }
+        break;
+      case 'radius':
+        const i = item.name;
+        if ((i % 20 != 0) && (i - 21 > 0) && (this.elements[i - 21].value != 0)) {
+          this.elements[i - 21].isRevealed = true;
+        }
+        if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) {
+          this.elements[i - 20].isRevealed = true;
+        }
+        if ((i % 20 != 19) && (i - 19 > 0 && this.elements[i - 19].value != 0)) {
+          this.elements[i - 19].isRevealed = true;
+        }
+        if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) {
+          this.elements[i + 1].isRevealed = true;
+        }
+        if ((i % 20 != 19) && (i + 21 < 400 && this.elements[i + 21].value != 0)) {
+          this.elements[i + 21].isRevealed = true;
+        }
+        if ((i + 20 < 400) && (this.elements[i + 20].value != 0)) {
+          this.elements[i + 20].isRevealed = true;
+        }
+        if ((i % 20 != 0) && (i + 19 < 400 && this.elements[i + 19].value != 0)) {
+          this.elements[i + 19].isRevealed = true;
+        }
+        if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
+          this.elements[i - 1].isRevealed = true;
         }
         break;
       default:
@@ -392,7 +389,7 @@ class Game extends Component {
 
         <Grid
           items={this.elements}
-          onPress={this.pingDirection}
+          onPress={this.echoLocate}
           header={this.renderHeader}
           footer={this.renderFooter}
           gridDimension={this.state.gridWidth}

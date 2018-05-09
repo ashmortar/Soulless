@@ -26,26 +26,29 @@ import styles from './styles';
 //   return <Text>Footer</Text>;
 // };
 
-const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer, isHuman}) => (
+const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer, isHuman }) => (
   <View style={styles.grid}>
     <ScrollView horizontal={true}>
       <GridView
         ListHeaderComponent={header}
         ListFooterComponent={footer}
         spacing={0}
-        style={{width: gridDimension}}
+        style={{ width: gridDimension }}
         itemDimension={itemDimension}
         items={items}
         fixed={true}
 
         renderItem={item => (
           <TouchableHighlight
-            onPress={() => onPress('west', item)}
+            onPress={() => onPress('radius', item)}
           >
             <View style={[{ borderWidth: 0.5, height: itemDimension },
-              isHuman ? (!item.isRevealed ? styles.wallTop : (item.value ? styles.space : styles.wallTop)) : (item.value ? styles.space : styles.wallTop),
+              isHuman ?
+              (!item.isRevealed ? styles.wallTop : (item.value ? styles.space : styles.wallTop))
+              : (item.value ? styles.space : styles.wallTop),
               item.highlighted ? styles.highlighted : null,
-              ]}>
+              ]}
+            >
               <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.player ? 'P' : null}{item.monster ? 'M' : null}</Text>
             </View>
 

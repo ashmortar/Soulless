@@ -75711,47 +75711,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
-      _this.pingRadius = function (item) {
-        var i = item.name;
-
-        if (i % 20 != 0 && i - 21 > 0 && _this.elements[i - 21].value != 0) {
-          _this.elements[i - 21].isRevealed = true;
-        }
-
-        if (i - 20 > 0 && _this.elements[i - 20].value != 0) {
-          _this.elements[i - 20].isRevealed = true;
-        }
-
-        if (i % 20 != 19 && i - 19 > 0 && _this.elements[i - 19].value != 0) {
-          _this.elements[i - 19].isRevealed = true;
-        }
-
-        if (i % 20 != 19 && _this.elements[i + 1].value != 0) {
-          _this.elements[i + 1].isRevealed = true;
-        }
-
-        if (i % 20 != 19 && i + 21 < 400 && _this.elements[i + 21].value != 0) {
-          _this.elements[i + 21].isRevealed = true;
-        }
-
-        if (i + 20 < 400 && _this.elements[i + 20].value != 0) {
-          _this.elements[i + 20].isRevealed = true;
-        }
-
-        if (i % 20 != 0 && i + 19 < 400 && _this.elements[i + 19].value != 0) {
-          _this.elements[i + 19].isRevealed = true;
-        }
-
-        if (i % 20 != 0 && _this.elements[i - 1].value != 0) {
-          _this.elements[i - 1].isRevealed = true;
-        }
-
-        _this.setState({
-          redraw: !_this.state.redraw
-        });
-      };
-
-      _this.pingDirection = function (direction, item) {
+      _this.echoLocate = function (direction, item) {
         switch (direction) {
           case 'north':
             if (item.name - 20 < 0) {
@@ -75829,6 +75789,43 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
             break;
 
+          case 'radius':
+            var i = item.name;
+
+            if (i % 20 != 0 && i - 21 > 0 && _this.elements[i - 21].value != 0) {
+              _this.elements[i - 21].isRevealed = true;
+            }
+
+            if (i - 20 > 0 && _this.elements[i - 20].value != 0) {
+              _this.elements[i - 20].isRevealed = true;
+            }
+
+            if (i % 20 != 19 && i - 19 > 0 && _this.elements[i - 19].value != 0) {
+              _this.elements[i - 19].isRevealed = true;
+            }
+
+            if (i % 20 != 19 && _this.elements[i + 1].value != 0) {
+              _this.elements[i + 1].isRevealed = true;
+            }
+
+            if (i % 20 != 19 && i + 21 < 400 && _this.elements[i + 21].value != 0) {
+              _this.elements[i + 21].isRevealed = true;
+            }
+
+            if (i + 20 < 400 && _this.elements[i + 20].value != 0) {
+              _this.elements[i + 20].isRevealed = true;
+            }
+
+            if (i % 20 != 0 && i + 19 < 400 && _this.elements[i + 19].value != 0) {
+              _this.elements[i + 19].isRevealed = true;
+            }
+
+            if (i % 20 != 0 && _this.elements[i - 1].value != 0) {
+              _this.elements[i - 1].isRevealed = true;
+            }
+
+            break;
+
           default:
             break;
         }
@@ -75873,7 +75870,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 342
+              lineNumber: 339
             }
           },
           _react3.default.createElement(
@@ -75881,7 +75878,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 343
+                lineNumber: 340
               }
             },
             "Game screen"
@@ -75895,7 +75892,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 345
+                lineNumber: 342
               }
             },
             _react3.default.createElement(
@@ -75911,7 +75908,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 346
+                  lineNumber: 343
                 }
               },
               _react3.default.createElement(
@@ -75922,7 +75919,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 355
+                    lineNumber: 352
                   }
                 },
                 "+"
@@ -75938,7 +75935,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 360
+                lineNumber: 357
               }
             },
             _react3.default.createElement(
@@ -75954,7 +75951,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 361
+                  lineNumber: 358
                 }
               },
               _react3.default.createElement(
@@ -75965,7 +75962,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 370
+                    lineNumber: 367
                   }
                 },
                 "-"
@@ -75985,7 +75982,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 380
+              lineNumber: 377
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -75993,7 +75990,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 381
+              lineNumber: 378
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76001,7 +75998,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 382
+              lineNumber: 379
             }
           })
         );
@@ -76104,12 +76101,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 391
+              lineNumber: 388
             }
           },
           _react3.default.createElement(_Grid.Grid, {
             items: this.elements,
-            onPress: this.pingDirection,
+            onPress: this.echoLocate,
             header: this.renderHeader,
             footer: this.renderFooter,
             gridDimension: this.state.gridWidth,
@@ -76117,7 +76114,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             isHuman: this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 393
+              lineNumber: 390
             }
           })
         );
@@ -76217,7 +76214,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _reactNative.TouchableHighlight,
               {
                 onPress: function onPress() {
-                  return _onPress('west', item);
+                  return _onPress('radius', item);
                 },
                 __source: {
                   fileName: _jsxFileName,
@@ -76245,7 +76242,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 49
+                      lineNumber: 52
                     }
                   },
                   item.player ? 'P' : null,
