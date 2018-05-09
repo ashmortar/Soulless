@@ -18,7 +18,7 @@ class Game extends Component {
     this.elements = [];
     this.start = null;
     this.end = null;
-    this.playerSpace = null;
+    this.humanSpace = null;
     this.monsterSpace = null;
     this.counter = 0;
     this.getGridLayout();
@@ -124,7 +124,7 @@ class Game extends Component {
     if (cell.value != 0) {
       cell.player = true;
       cell.isRevealed = true;
-      this.playerSpace = cell;
+      this.humanSpace = cell;
     } else {
       this.assignPlayerStart();
     }
@@ -218,7 +218,7 @@ class Game extends Component {
   }
 
   echoLocate = () => {
-    const item = this.playerSpace;
+    const item = this.humanSpace;
     const direction = this.state.echoDirection;
     switch (direction) {
       case 'north':

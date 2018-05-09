@@ -49,7 +49,7 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer, is
               item.highlighted ? styles.highlighted : null,
               ]}
             >
-              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.player ? 'P' : null}{item.monster ? 'M' : null}</Text>
+              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.player ? 'H' : null}{item.monster ? 'M' : null}</Text>
             </View>
 
           </TouchableHighlight>

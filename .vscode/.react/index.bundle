@@ -75687,7 +75687,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (cell.value != 0) {
           cell.player = true;
           cell.isRevealed = true;
-          _this.playerSpace = cell;
+          _this.humanSpace = cell;
         } else {
           _this.assignPlayerStart();
         }
@@ -75712,7 +75712,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.echoLocate = function () {
-        var item = _this.playerSpace;
+        var item = _this.humanSpace;
         var direction = _this.state.echoDirection;
 
         switch (direction) {
@@ -76078,7 +76078,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.elements = [];
       _this.start = null;
       _this.end = null;
-      _this.playerSpace = null;
+      _this.humanSpace = null;
       _this.monsterSpace = null;
       _this.counter = 0;
 
@@ -76316,7 +76316,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                       lineNumber: 52
                     }
                   },
-                  item.player ? 'P' : null,
+                  item.player ? 'H' : null,
                   item.monster ? 'M' : null
                 )
               )
@@ -77055,7 +77055,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       this.highlighted = false;
       this.isRevealed = false;
       this.player = false;
-      this.playerName = 'P';
+      this.playerName = 'H';
       this.monster = false;
       this.survivor = false;
     }

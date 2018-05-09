@@ -9,7 +9,7 @@ export default class Cell {
     this.highlighted = false;
     this.isRevealed = false;
     this.player = false;
-    this.playerName = 'P';
+    this.playerName = 'H';
     this.monster = false;
     this.survivor = false;
   }
