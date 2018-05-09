@@ -74,35 +74,35 @@ class Game extends Component {
 
   getGridLayout = () => {
     console.log("getGridLayout called");
-    for (let i = 0; i < this.cellsTotal+20; i++) {
+    for (let i = 0; i < this.cellsTotal; i++) {
       // this.elements.push(Math.floor(Math.random() * 5));
       this.elements.push(new Cell(i));
     }
     console.log("initial elements: ", this.elements);
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < 150; i++) {
       console.log(i);
       let rand = Math.floor(Math.random() * this.cellsTotal);
       console.log("rand");
       console.log(rand);
       console.log("el");
       console.log(this.elements[rand]);
-      this.elements[rand].value = 0;
+      this.elements[rand].value = -1;
       console.log('value=0');
       console.log(this.elements[rand]);
       if (rand - this.cellsInRow >= 0) {
-        this.elements[rand - this.cellsInRow].value = 0;
+        this.elements[rand - this.cellsInRow].value = -1;
       }
       if (rand - 2 * this.cellsInRow >= 0) {
         this.elements[rand - 2 * this.cellsInRow].value = 0;
       }
 
       if ((rand + 1) % this.cellsInRow != 0) {
-        this.elements[rand + 1].value = 0;
+        this.elements[rand + 1].value = -1;
       }
-      if ((rand - this.cellsInRow + 1) % this.cellsInRow != 0) {
-        this.elements[rand - this.cellsInRow + 1].value = 0;
+      if (((rand - this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - this.cellsInRow + 1 >= 0)) {
+        this.elements[rand - this.cellsInRow + 1].value = -1;
       }
-      if ((rand - 2 * this.cellsInRow + 1) % this.cellsInRow != 0) {
+      if (((rand - 2 * this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - 2 * this.cellsInRow + 1 >= 0)) {
         this.elements[rand - 2 * this.cellsInRow + 1].value = 0;
       }
 
@@ -300,6 +300,27 @@ class Game extends Component {
     );
   };
 
+  getCellStyle = (value) => {
+    if (value === 0) {
+      return {
+        backgroundColor: "#000",
+        borderWidth: 0.5,
+        height: this.state.gridItemWidth
+      }
+    } else if (value === -1) {
+      return {
+        backgroundColor: "#777",
+        borderWidth: 0.5,
+        height: this.state.gridItemWidth
+      }
+    } else {
+      return {
+        backgroundColor: "#fff",
+        borderWidth: 0.5,
+        height: this.state.gridItemWidth
+      }
+    }
+  }
 
   render() {
     return (
@@ -312,6 +333,7 @@ class Game extends Component {
           footer={this.renderFooter}
           gridDimension={this.state.gridWidth}
           itemDimension={this.state.gridItemWidth}
+          getCellStyle={this.getCellStyle}
         />
 
       </Container>

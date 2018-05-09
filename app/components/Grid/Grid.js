@@ -24,13 +24,36 @@ import { Text, View, TouchableHighlight, ScrollView } from 'react-native';
 //   return <Text>Footer</Text>;
 // };
 
+// getCellStyle(value) {
+//   if (value === 0) {
+//     return {
+//       backgroundColor: "#000",
+//       borderWidth: 0.5,
+//       height: itemDimension
+//     }
+//   } else if (value === -1) {
+//     return {
+//       backgroundColor: "#ccc",
+//       borderWidth: 0.5,
+//       height: itemDimension
+//     }
+//   } else {
+//     return {
+//       backgroundColor: "#fff",
+//       borderWidth: 0.5,
+//       height: itemDimension
+//     }
+//   }
+// }
+
 const Grid = ({
   items,
   itemDimension,
   gridDimension,
   onPress,
   header,
-  footer
+  footer,
+  getCellStyle
 }) => (
   <View
     style={{ marginTop: 10, marginBottom: 0, justifyContent: "flex-start" }}
@@ -48,18 +71,7 @@ const Grid = ({
           <TouchableHighlight onPress={() => onPress(item)}>
             <View
               style={
-                item.value
-                  ? {
-                      backgroundColor: "#fff",
-                      borderWidth: 0.5,
-                      height: itemDimension
-                    }
-                  : {
-                      backgroundColor: "#000",
-                      borderWidth: 0.5,
-                      height: itemDimension
-                    }
-
+                getCellStyle(item.value)
               }
             >
               <Text
@@ -78,6 +90,23 @@ const Grid = ({
     </ScrollView>
   </View>
 );
+// <View
+//   style={
+//     item.value
+//       ? {
+//           backgroundColor: "#fff",
+//           borderWidth: 0.5,
+//           height: itemDimension
+//         }
+//       : {
+//           backgroundColor: "#000",
+//           borderWidth: 0.5,
+//           height: itemDimension
+//         }
+//
+//   }
+// >
+
 
 // <GridView
 //
@@ -97,7 +126,8 @@ Grid.propTypes = {
   gridDimension: PropTypes.number,
   onPress: PropTypes.func,
   header: PropTypes.func,
-  footer: PropTypes.func
+  footer: PropTypes.func,
+  getCellStyle: PropTypes.func
 
 };
 
