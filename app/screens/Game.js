@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Picker } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid } from '../components/Grid';
@@ -31,6 +31,7 @@ class Game extends Component {
       gridWidth: gridWidth_default,
       redraw: false,
       isHuman: true,
+      echoDirection: 'radius',
     };
   }
 
@@ -145,10 +146,8 @@ class Game extends Component {
     let visited = [];
     // shortest path from end to beginning following parents
     let path = [];
-
     // add starting square to the queue
     queue.push(start);
-
     // process the queue
     while (queue.length > 0) {
       // remove the first item
@@ -218,7 +217,9 @@ class Game extends Component {
     }
   }
 
-  echoLocate = (direction, item) => {
+  echoLocate = () => {
+    const item = this.playerSpace;
+    const direction = this.state.echoDirection;
     switch (direction) {
       case 'north':
         if (item.name - 20 < 0) {
@@ -376,6 +377,18 @@ class Game extends Component {
     return (
       <View style={{ marginBottom: 20, marginTop: 0 }}>
         <NavButton onPress={this.handleChangePlayer} text={`human? ${this.state.isHuman}`} />
+        <Picker
+          selectedValue={this.state.echoDirection}
+          style={{ height: 50, width: 100 }}
+          onValueChange={(itemValue, itemIndex) => this.setState({ echoDirection: itemValue })}
+        >
+          <Picker.Item label="radius" value="radius" />
+          <Picker.Item label="north" value="north" />
+          <Picker.Item label="east" value="east" />
+          <Picker.Item label="south" value="south" />
+          <Picker.Item label="west" value="west" />
+        </Picker>
+        <NavButton onPress={this.echoLocate} text="echo-locate" />
         <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
       </View>
 
@@ -389,7 +402,7 @@ class Game extends Component {
 
         <Grid
           items={this.elements}
-          onPress={this.echoLocate}
+          onPress={this.handlePressGridItem}
           header={this.renderHeader}
           footer={this.renderFooter}
           gridDimension={this.state.gridWidth}

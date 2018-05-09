@@ -40,7 +40,7 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer, is
 
         renderItem={item => (
           <TouchableHighlight
-            onPress={() => onPress('radius', item)}
+            onPress={() => onPress(item)}
           >
             <View style={[{ borderWidth: 0.5, height: itemDimension },
               isHuman ?
