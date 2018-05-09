@@ -75751,6 +75751,93 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         });
       };
 
+      _this.pingDirection = function (direction, item) {
+        switch (direction) {
+          case 'north':
+            if (item.name - 20 < 0) {
+              console.log('cannot ping north from here');
+            } else {
+              var cell = _this.elements[item.name - 20];
+
+              while (cell.value > 0) {
+                cell.isRevealed = true;
+
+                if (cell.name - 20 > 0) {
+                  cell = _this.elements[cell.name - 20];
+                } else {
+                  break;
+                }
+              }
+            }
+
+            break;
+
+          case 'east':
+            if (item.name % 20 === 19) {
+              console.log('cannot ping east from here');
+            } else {
+              var _cell = _this.elements[item.name + 1];
+
+              while (_cell.value > 0) {
+                _cell.isRevealed = true;
+
+                if ((_cell.name + 1) % 20 === 0) {
+                  break;
+                } else {
+                  _cell = _this.elements[_cell.name + 1];
+                }
+              }
+            }
+
+            break;
+
+          case 'south':
+            if (item.name + 20 > 400) {
+              console.log('cannot ping south from here');
+            } else {
+              var _cell2 = _this.elements[item.name + 20];
+
+              while (_cell2.value > 0) {
+                _cell2.isRevealed = true;
+
+                if (_cell2.name + 20 < 400) {
+                  _cell2 = _this.elements[_cell2.name + 20];
+                } else {
+                  break;
+                }
+              }
+            }
+
+            break;
+
+          case 'west':
+            if (item.name % 20 === 0) {
+              console.log('cannot ping west from here');
+            } else {
+              var _cell3 = _this.elements[item.name - 1];
+
+              while (_cell3.value > 0) {
+                _cell3.isRevealed = true;
+
+                if ((_cell3.name - 1) % 20 === 0) {
+                  break;
+                } else {
+                  _cell3 = _this.elements[_cell3.name - 1];
+                }
+              }
+            }
+
+            break;
+
+          default:
+            break;
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
       _this.handlePressNavButton = function () {
         _this.props.navigation.navigate('Home');
       };
@@ -75786,7 +75873,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 273
+              lineNumber: 342
             }
           },
           _react3.default.createElement(
@@ -75794,7 +75881,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 274
+                lineNumber: 343
               }
             },
             "Game screen"
@@ -75808,7 +75895,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 276
+                lineNumber: 345
               }
             },
             _react3.default.createElement(
@@ -75824,7 +75911,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 277
+                  lineNumber: 346
                 }
               },
               _react3.default.createElement(
@@ -75835,7 +75922,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 286
+                    lineNumber: 355
                   }
                 },
                 "+"
@@ -75851,7 +75938,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 291
+                lineNumber: 360
               }
             },
             _react3.default.createElement(
@@ -75867,7 +75954,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 292
+                  lineNumber: 361
                 }
               },
               _react3.default.createElement(
@@ -75878,7 +75965,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 301
+                    lineNumber: 370
                   }
                 },
                 "-"
@@ -75898,7 +75985,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 311
+              lineNumber: 380
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -75906,7 +75993,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 312
+              lineNumber: 381
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75914,7 +76001,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 313
+              lineNumber: 382
             }
           })
         );
@@ -76017,12 +76104,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 322
+              lineNumber: 391
             }
           },
           _react3.default.createElement(_Grid.Grid, {
             items: this.elements,
-            onPress: this.pingRadius,
+            onPress: this.pingDirection,
             header: this.renderHeader,
             footer: this.renderFooter,
             gridDimension: this.state.gridWidth,
@@ -76030,7 +76117,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             isHuman: this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 324
+              lineNumber: 393
             }
           })
         );
@@ -76130,7 +76217,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _reactNative.TouchableHighlight,
               {
                 onPress: function onPress() {
-                  return _onPress(item);
+                  return _onPress('west', item);
                 },
                 __source: {
                   fileName: _jsxFileName,
@@ -76146,7 +76233,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   }, isHuman ? !item.isRevealed ? _styles2.default.wallTop : item.value ? _styles2.default.space : _styles2.default.wallTop : item.value ? _styles2.default.space : _styles2.default.wallTop, item.highlighted ? _styles2.default.highlighted : null],
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 46
+                    lineNumber: 45
                   }
                 },
                 _react2.default.createElement(
@@ -76158,7 +76245,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 50
+                      lineNumber: 49
                     }
                   },
                   item.player ? 'P' : null,

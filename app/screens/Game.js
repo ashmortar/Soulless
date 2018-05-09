@@ -247,6 +247,75 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw });
   }
 
+  pingDirection = (direction, item) => {
+    
+    switch (direction) {
+      case 'north':
+        if (item.name - 20 < 0) {
+          console.log('cannot ping north from here');
+        } else {
+          let cell = this.elements[item.name - 20];
+          while (cell.value > 0) {
+            cell.isRevealed = true;
+            if (cell.name - 20 > 0) {
+              cell = this.elements[cell.name - 20];
+            } else {
+              break;
+            }
+          }
+        }
+        break;
+      case 'east':
+        if (item.name % 20 === 19) {
+          console.log('cannot ping east from here');
+        } else {
+          let cell = this.elements[item.name + 1];
+          while (cell.value > 0) {
+            cell.isRevealed = true;
+            if ((cell.name + 1) % 20 === 0) {
+              break;
+            } else {
+              cell = this.elements[cell.name + 1];
+            }
+          }
+        }
+        break;
+      case 'south':
+        if (item.name + 20 > 400) {
+          console.log('cannot ping south from here');
+        } else {
+          let cell = this.elements[item.name + 20];
+          while (cell.value > 0) {
+            cell.isRevealed = true;
+            if (cell.name + 20 < 400) {
+              cell = this.elements[cell.name + 20];
+            } else {
+              break;
+            }
+          }
+        }
+        break;
+      case 'west':
+        if (item.name % 20 === 0) {
+          console.log('cannot ping west from here');
+        } else {
+          let cell = this.elements[item.name - 1];
+          while (cell.value > 0) {
+            cell.isRevealed = true;
+            if ((cell.name - 1) % 20 === 0) {
+              break;
+            } else {
+              cell = this.elements[cell.name - 1];
+            }
+          }
+        }
+        break;
+      default:
+        break;
+    }
+    this.setState({ redraw: !this.state.redraw });
+  }
+
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
   };
@@ -323,7 +392,7 @@ class Game extends Component {
 
         <Grid
           items={this.elements}
-          onPress={this.pingRadius}
+          onPress={this.pingDirection}
           header={this.renderHeader}
           footer={this.renderFooter}
           gridDimension={this.state.gridWidth}
