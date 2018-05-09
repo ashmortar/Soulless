@@ -76,9 +76,7 @@ class Game extends Component {
 
   getGridLayout = () => {
 
-
     this.createWalls();
-
 
     for (let i=0; i<this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
@@ -89,7 +87,6 @@ class Game extends Component {
 
     //adding values to white cells
     this.addValuesToCells();
-
 
     // console.log("final elements: ", this.elements);
   }
@@ -105,52 +102,7 @@ class Game extends Component {
 
       let rand = Math.floor(Math.random() * this.cellsTotal);
 
-
-      if ((rand - 2 * this.cellsInRow >= -1) && ((rand + 1) % this.cellsInRow != 0)) {
-        this.elements[rand].value = "";//starting cell
-        this.elements[rand - this.cellsInRow].value = "";//top first
-        this.elements[rand - 2 * this.cellsInRow].value = 0;//top second
-        this.elements[rand + 1].value = "";//right cell
-        this.elements[rand - this.cellsInRow + 1].value = "";//right top first
-        this.elements[rand - 2 * this.cellsInRow + 1].value = 0;//right top second
-
-
-        let typeOfWall = Math.floor(Math.random() * 2);
-
-        let rand2 = rand + WallTemplate[typeOfWall].x;
-        if ((rand2 < this.cellsTotal) && ((rand2 + 1) % this.cellsInRow != 0)) {
-          this.elements[rand2].value = "";//starting cell
-          this.elements[rand2 - this.cellsInRow].value = "";//top first
-          this.elements[rand2 - 2 * this.cellsInRow].value = 0;//top second
-          if (typeOfWall != 1) {
-            this.elements[rand2 + 1].value = "";//right cell
-            this.elements[rand2 - this.cellsInRow + 1].value = "";//right top first
-            this.elements[rand2 - 2 * this.cellsInRow + 1].value = 0;//right top second
-          }
-
-          let rand3 = rand + WallTemplate[typeOfWall].y;
-          if ((rand3 < this.cellsTotal) && ((rand3 + 1) % this.cellsInRow != 0)) {
-            this.elements[rand3].value = "";//starting cell
-            this.elements[rand3 - this.cellsInRow].value = "";//top first
-            this.elements[rand3 - 2 * this.cellsInRow].value = 0;//top second
-            if (typeOfWall != 1) {
-              this.elements[rand3 + 1].value = "";//right cell
-              this.elements[rand3 - this.cellsInRow + 1].value = "";//right top first
-              this.elements[rand3 - 2 * this.cellsInRow + 1].value = 0;//right top second
-            }
-          }
-        }
-      }
-
-      // if (rand - 2 * this.cellsInRow >= 0) {
-      // }
-      //
-      // if ((rand + 1) % this.cellsInRow != 0) {
-      // }
-      // if (((rand - this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - this.cellsInRow + 1 >= 0)) {
-      // }
-      // if (((rand - 2 * this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - 2 * this.cellsInRow + 1 >= 0)) {
-      // }
+      this.createWall_straightHorizontal(rand);
     }
 
   }
@@ -226,6 +178,59 @@ class Game extends Component {
       }
     }
   }
+
+
+  createWall_straightHorizontal = (i) => {
+    if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
+      this.elements[i].value = "";//starting cell
+      this.elements[i - this.cellsInRow].value = "";//top first
+      this.elements[i - 2 * this.cellsInRow].value = 0;//top second
+      this.elements[i + 1].value = "";//right cell
+      this.elements[i - this.cellsInRow + 1].value = "";//right top first
+      this.elements[i - 2 * this.cellsInRow + 1].value = 0;//right top second
+
+
+      let typeOfWall = Math.floor(Math.random() * 2);
+      // let typeOfWall = 0;
+
+      let rand2 = i + WallTemplate[typeOfWall].x;
+      if ((rand2 < this.cellsTotal) && ((rand2 + 1) % this.cellsInRow != 0)) {
+        this.elements[rand2].value = "";//starting cell
+        this.elements[rand2 - this.cellsInRow].value = "";//top first
+        this.elements[rand2 - 2 * this.cellsInRow].value = 0;//top second
+        if (typeOfWall != 1) {
+          this.elements[rand2 + 1].value = "";//right cell
+          this.elements[rand2 - this.cellsInRow + 1].value = "";//right top first
+          this.elements[rand2 - 2 * this.cellsInRow + 1].value = 0;//right top second
+        }
+
+        let rand3 = i + WallTemplate[typeOfWall].y;
+        if ((rand3 < this.cellsTotal) && ((rand3 + 1) % this.cellsInRow != 0)) {
+          this.elements[rand3].value = "";//starting cell
+          this.elements[rand3 - this.cellsInRow].value = "";//top first
+          this.elements[rand3 - 2 * this.cellsInRow].value = 0;//top second
+          if (typeOfWall != 1) {
+            this.elements[rand3 + 1].value = "";//right cell
+            this.elements[rand3 - this.cellsInRow + 1].value = "";//right top first
+            this.elements[rand3 - 2 * this.cellsInRow + 1].value = 0;//right top second
+          }
+        }
+      }
+    }
+  }
+
+  createWall_straightVertical = () => {
+
+  }
+
+  createWall_squareColumn = () => {
+
+  }
+
+  createWall_corner = () => {
+
+  }
+
 
   findShortestPath(start, end) {
     // array of cells to be checked
