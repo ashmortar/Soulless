@@ -75628,14 +75628,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[_i2].humanEdges.push(_this.elements[_i2 + 1]);
 
               _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 1]);
-
-              if (_i2 - 19 > 0 && _this.elements[_i2 - 19].value != 0) {
-                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 19]);
-              }
-
-              if (_i2 + 21 < 400 && _this.elements[_i2 + 21].value != 0) {
-                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 21]);
-              }
             }
 
             if (_i2 % 20 != 0 && _this.elements[_i2 - 1].value != 0) {
@@ -75644,14 +75636,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[_i2].humanEdges.push(_this.elements[_i2 - 1]);
 
               _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 1]);
-
-              if (_i2 - 21 > 0 && _this.elements[_i2 - 21].value != 0) {
-                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 21]);
-              }
-
-              if (_i2 + 19 < 400 && _this.elements[_i2 + 19].value != 0) {
-                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 19]);
-              }
             }
 
             if (_i2 - 20 > 0 && _this.elements[_i2 - 20].value != 0) {
@@ -75668,6 +75652,22 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[_i2].humanEdges.push(_this.elements[_i2 + 20]);
 
               _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 20]);
+            }
+
+            if (_i2 % 20 != 19 && _i2 - 19 > 0 && _this.elements[_i2 - 19].value != 0) {
+              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 19]);
+            }
+
+            if (_i2 % 20 != 19 && _i2 + 21 < 400 && _this.elements[_i2 + 21].value != 0) {
+              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 21]);
+            }
+
+            if (_i2 % 20 != 0 && _i2 - 21 > 0 && _this.elements[_i2 - 21].value != 0) {
+              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 21]);
+            }
+
+            if (_i2 % 20 != 0 && _i2 + 19 < 400 && _this.elements[_i2 + 19].value != 0) {
+              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 19]);
             }
 
             _this.elements[_i2].value = adjacent;
@@ -75699,6 +75699,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (cell.value != 0) {
           cell.monster = true;
           _this.monsterSpace = cell;
+
+          var distance = _this.findShortestPath(_this.monsterSpace, _this.humanSpace);
+
+          if (distance < 30) {
+            cell.monster = false;
+            _this.monsterSpace = null;
+
+            _this.assignMonsterStart();
+          }
         } else {
           _this.assignMonsterStart();
         }
@@ -75838,6 +75847,86 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         });
       };
 
+      _this.showHumanMoves = function () {
+        var i = _this.humanSpace.name;
+
+        if (i - 20 > 0) {
+          var cell = _this.elements[i - 20];
+
+          while (cell.value > 0 && cell.isRevealed) {
+            cell.highlighted = true;
+
+            if (cell.name - 20 > 0) {
+              cell = _this.elements[cell.name - 20];
+            } else {
+              break;
+            }
+          }
+        }
+
+        if (i % 20 !== 19) {
+          var _cell4 = _this.elements[i + 1];
+
+          while (_cell4.value > 0 && _cell4.isRevealed) {
+            _cell4.highlighted = true;
+
+            if ((_cell4.name + 1) % 20 === 0) {
+              break;
+            } else {
+              _cell4 = _this.elements[_cell4.name + 1];
+            }
+          }
+        }
+
+        if (i + 20 < 400) {
+          var _cell5 = _this.elements[i + 20];
+
+          while (_cell5.value > 0 && _cell5.isRevealed) {
+            _cell5.highlighted = true;
+
+            if (_cell5.name + 20 < 400) {
+              _cell5 = _this.elements[_cell5.name + 20];
+            } else {
+              break;
+            }
+          }
+        }
+
+        if (i % 20 !== 0) {
+          var _cell6 = _this.elements[i - 1];
+
+          while (_cell6.value > 0 && _cell6.isRevealed) {
+            _cell6.highlighted = true;
+
+            if ((_cell6.name - 1) % 20 === 19) {
+              break;
+            } else {
+              _cell6 = _this.elements[_cell6.name - 1];
+            }
+          }
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
+      _this.moveHuman = function (item) {
+        if (item.highlighted) {
+          _this.elements[_this.humanSpace.name].player = false;
+          item.player = true;
+          _this.humanSpace = item;
+
+          _this.resetGrid();
+        } else {
+          console.log('please select a highlighted space');
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
       _this.handlePressNavButton = function () {
         _this.props.navigation.navigate('Home');
       };
@@ -75873,7 +75962,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 340
+              lineNumber: 407
             }
           },
           _react3.default.createElement(
@@ -75881,7 +75970,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 341
+                lineNumber: 408
               }
             },
             "Game screen"
@@ -75895,7 +75984,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 343
+                lineNumber: 410
               }
             },
             _react3.default.createElement(
@@ -75911,7 +76000,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 344
+                  lineNumber: 411
                 }
               },
               _react3.default.createElement(
@@ -75922,7 +76011,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 353
+                    lineNumber: 420
                   }
                 },
                 "+"
@@ -75938,7 +76027,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 358
+                lineNumber: 425
               }
             },
             _react3.default.createElement(
@@ -75954,7 +76043,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 359
+                  lineNumber: 426
                 }
               },
               _react3.default.createElement(
@@ -75965,7 +76054,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 368
+                    lineNumber: 435
                   }
                 },
                 "-"
@@ -75985,7 +76074,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 378
+              lineNumber: 445
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -75993,7 +76082,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 379
+              lineNumber: 446
             }
           }),
           _react3.default.createElement(
@@ -76011,7 +76100,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 380
+                lineNumber: 447
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76019,7 +76108,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 385
+                lineNumber: 452
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76027,7 +76116,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 386
+                lineNumber: 453
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76035,7 +76124,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 387
+                lineNumber: 454
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76043,7 +76132,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 388
+                lineNumber: 455
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76051,7 +76140,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 389
+                lineNumber: 456
               }
             })
           ),
@@ -76060,7 +76149,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 391
+              lineNumber: 458
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: _this.showHumanMoves,
+            text: "move human",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 459
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76068,7 +76165,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 392
+              lineNumber: 460
             }
           })
         );
@@ -76117,7 +76214,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 next.highlighted = true;
                 path.push(next);
 
-                if (path.length > 200) {
+                if (path.length > 100) {
                   break;
                 }
 
@@ -76126,13 +76223,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
               break;
             } else {
-              var connections = void 0;
-
-              if (this.state.isHuman) {
-                connections = cell.humanEdges;
-              } else {
-                connections = cell.monsterEdges;
-              }
+              var connections = cell.monsterEdges;
 
               for (var i = 0; i < connections.length; i++) {
                 var neighbor = connections[i];
@@ -76157,9 +76248,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           console.log('something went wrong probably');
         }
 
-        this.setState({
-          redraw: !this.state.redraw
-        });
         setTimeout(this.resetGrid, 50);
         return path.length - 1;
       }
@@ -76171,12 +76259,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 401
+              lineNumber: 469
             }
           },
           _react3.default.createElement(_Grid.Grid, {
             items: this.elements,
-            onPress: this.handlePressGridItem,
+            onPress: this.moveHuman,
             header: this.renderHeader,
             footer: this.renderFooter,
             gridDimension: this.state.gridWidth,
@@ -76184,7 +76272,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             isHuman: this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 403
+              lineNumber: 471
             }
           })
         );

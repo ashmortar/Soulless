@@ -83,23 +83,11 @@ class Game extends Component {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i + 1]);
           this.elements[i].monsterEdges.push(this.elements[i + 1]);
-          if (i - 19 > 0 && this.elements[i - 19].value != 0) {
-            this.elements[i].monsterEdges.push(this.elements[i - 19]);
-          }
-          if (i + 21 < 400 && this.elements[i + 21].value != 0) {
-            this.elements[i].monsterEdges.push(this.elements[i + 21]);
-          }
         }
         if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i - 1]);
           this.elements[i].monsterEdges.push(this.elements[i - 1]);
-          if ((i - 21 > 0) && (this.elements[i - 21].value != 0)) {
-            this.elements[i].monsterEdges.push(this.elements[i - 21]);
-          }
-          if ((i + 19 < 400) && (this.elements[i + 19].value != 0)) {
-            this.elements[i].monsterEdges.push(this.elements[i + 19]);
-          }
         }
         if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) {
           adjacent++;
@@ -110,6 +98,18 @@ class Game extends Component {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i + 20]);
           this.elements[i].monsterEdges.push(this.elements[i + 20]);
+        }
+        if ((i % 20 != 19) && (i - 19 > 0 && this.elements[i - 19].value != 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i - 19]);
+        }
+        if ((i % 20 != 19) && (i + 21 < 400 && this.elements[i + 21].value != 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i + 21]);
+        }
+        if ((i % 20 != 0) && (i - 21 > 0) && (this.elements[i - 21].value != 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i - 21]);
+        }
+        if ((i % 20 != 0) && (i + 19 < 400) && (this.elements[i + 19].value != 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i + 19]);
         }
         this.elements[i].value = adjacent;
       }
@@ -134,6 +134,12 @@ class Game extends Component {
     if (cell.value != 0) {
       cell.monster = true;
       this.monsterSpace = cell;
+      let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
+      if (distance < 30) {
+        cell.monster = false;
+        this.monsterSpace = null;
+        this.assignMonsterStart();
+      }
     } else {
       this.assignMonsterStart();
     }
@@ -166,7 +172,7 @@ class Game extends Component {
             // add to path
             next.highlighted = true;
             path.push(next);
-            if (path.length > 200) {
+            if (path.length > 100) {
               break;
             }
             // reassign next to parent
@@ -180,12 +186,8 @@ class Game extends Component {
         // if not the end find edges
         } else {
           // assign connections array as all edges from cell
-          let connections;
-          if (this.state.isHuman) {
-            connections = cell.humanEdges;
-          } else {
-            connections = cell.monsterEdges;
-          }
+          let connections = cell.monsterEdges;
+
           // iterate through the edges and push them into the queue
           for (let i = 0; i < connections.length; i++) {
             let neighbor = connections[i];
@@ -205,7 +207,7 @@ class Game extends Component {
     if (path.length > 100) {
       console.log('something went wrong probably');
     }
-    this.setState({ redraw: !this.state.redraw });
+    // this.setState({ redraw: !this.state.redraw });
     setTimeout(this.resetGrid, 50);
     return path.length - 1;
   }
@@ -314,6 +316,71 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw });
   }
 
+  showHumanMoves = () => {
+    let i = this.humanSpace.name;
+    // north
+    if (i - 20 > 0) {
+      let cell = this.elements[i - 20];
+      while (cell.value > 0 && cell.isRevealed) {
+        cell.highlighted = true;
+        if (cell.name - 20 > 0) {
+          cell = this.elements[cell.name - 20];
+        } else {
+          break;
+        }
+      }
+    }
+    // east
+    if (i % 20 !== 19) {
+      let cell = this.elements[i + 1];
+      while (cell.value > 0 && cell.isRevealed) {
+        cell.highlighted = true;
+        if ((cell.name + 1) % 20 === 0) {
+          break;
+        } else {
+          cell = this.elements[cell.name + 1];
+        }
+      }
+    }
+    // south
+    if (i + 20 < 400) {
+      let cell = this.elements[i + 20];
+      while (cell.value > 0 && cell.isRevealed) {
+        cell.highlighted = true;
+        if (cell.name + 20 < 400) {
+          cell = this.elements[cell.name + 20];
+        } else {
+          break;
+        }
+      }
+    }
+    // west
+    if (i % 20 !== 0) {
+      let cell = this.elements[i - 1];
+      while (cell.value > 0 && cell.isRevealed) {
+        cell.highlighted = true;
+        if ((cell.name - 1) % 20 === 19) {
+          break;
+        } else {
+          cell = this.elements[cell.name - 1];
+        }
+      }
+    }
+    this.setState({ redraw: !this.state.redraw });
+  }
+
+  moveHuman = (item) => {
+    if (item.highlighted) {
+      this.elements[this.humanSpace.name].player = false;
+      item.player = true;
+      this.humanSpace = item;
+      this.resetGrid();
+    } else {
+      console.log('please select a highlighted space');
+    }
+    this.setState({ redraw: !this.state.redraw });
+  }
+
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
   };
@@ -389,6 +456,7 @@ class Game extends Component {
           <Picker.Item label="west" value="west" />
         </Picker>
         <NavButton onPress={this.echoLocate} text="echo-locate" />
+        <NavButton onPress={this.showHumanMoves} text="move human" />
         <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
       </View>
 
@@ -402,7 +470,7 @@ class Game extends Component {
 
         <Grid
           items={this.elements}
-          onPress={this.handlePressGridItem}
+          onPress={this.moveHuman}
           header={this.renderHeader}
           footer={this.renderFooter}
           gridDimension={this.state.gridWidth}
