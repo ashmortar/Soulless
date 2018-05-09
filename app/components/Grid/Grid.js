@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import GridView from 'react-native-super-grid';
 import { Text, View, TouchableHighlight, ScrollView } from 'react-native';
 
+import styles from './styles';
+
 // renderSeparator = () => {
 //   return (
 //     <View
@@ -25,41 +27,33 @@ import { Text, View, TouchableHighlight, ScrollView } from 'react-native';
 // };
 
 const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer}) => (
-  <View style={{marginTop: 10, marginBottom: 0, justifyContent: 'flex-start'}}>
-  <ScrollView horizontal={true}>
-    <GridView
+  <View style={styles.grid}>
+    <ScrollView horizontal={true}>
+      <GridView
+        ListHeaderComponent={header}
+        ListFooterComponent={footer}
+        spacing={0}
+        style={{width: gridDimension}}
+        itemDimension={itemDimension}
+        items={items}
+        fixed={true}
 
-      ListHeaderComponent={header}
-      ListFooterComponent={footer}
+        renderItem={item => (
+          <TouchableHighlight
+            onPress={() => onPress(item)}
+          >
 
-      spacing={0}
+            <View style={[{ borderWidth: 0.5, height: itemDimension },
+              item.value ? styles.space : styles.wallTop,
+              item.highlighted ? styles.highlighted : null ]}>
+              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.player ? 'P' : null}{item.monster ? 'M' : null}</Text>
+            </View>
 
-      style={{width: gridDimension}}
+          </TouchableHighlight>
+        )}
 
-      itemDimension={itemDimension}
-      items={items}
-
-      fixed={true}
-
-      renderItem={item => (
-        <TouchableHighlight
-          onPress={() => onPress(item)}
-        >
-
-          <View style={[item.value ?
-            { backgroundColor: '#fff', borderWidth: 0.5, height: itemDimension } :
-            { backgroundColor: '#000', borderWidth: 0.5, height: itemDimension },
-            item.highlighted ?
-            { backgroundColor: '#ff00ff', borderWidth: 0.5, height: itemDimension } :
-            {}]}>
-            <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.player ? 'P' : null}{item.monster ? 'M' : null}</Text>
-          </View>
-
-        </TouchableHighlight>
-      )}
-
-    />
-  </ScrollView>
+      />
+    </ScrollView>
   </View>
 );
 

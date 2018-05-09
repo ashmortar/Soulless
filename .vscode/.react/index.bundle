@@ -75607,34 +75607,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
-      _this.assignPlayerStart = function () {
-        var cell = _this.elements[Math.floor(Math.random() * 400)];
-
-        if (cell.value != 0) {
-          cell.player = true;
-          _this.playerSpace = cell;
-        } else {
-          _this.assignPlayerStart();
-        }
-      };
-
-      _this.assignMonsterStart = function () {
-        var cell = _this.elements[Math.floor(Math.random() * 400)];
-
-        if (cell.value != 0) {
-          cell.monster = true;
-          _this.monsterSpace = cell;
-        } else {
-          _this.assignMonsterStart();
-        }
-      };
-
       _this.getGridLayout = function () {
         for (var i = 0; i < 400; i++) {
           _this.elements.push(new _Cell2.default(i));
         }
 
-        console.log("initial elements: ", _this.elements);
+        console.log('initial elements: ', _this.elements);
 
         for (var _i = 0; _i < 150; _i++) {
           _this.elements[Math.floor(Math.random() * 400)].value = 0;
@@ -75700,7 +75678,29 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         _this.assignMonsterStart();
 
-        console.log("final elements: ", _this.elements);
+        console.log('final elements: ', _this.elements);
+      };
+
+      _this.assignPlayerStart = function () {
+        var cell = _this.elements[Math.floor(Math.random() * 400)];
+
+        if (cell.value != 0) {
+          cell.player = true;
+          _this.playerSpace = cell;
+        } else {
+          _this.assignPlayerStart();
+        }
+      };
+
+      _this.assignMonsterStart = function () {
+        var cell = _this.elements[Math.floor(Math.random() * 400)];
+
+        if (cell.value != 0) {
+          cell.monster = true;
+          _this.monsterSpace = cell;
+        } else {
+          _this.assignMonsterStart();
+        }
       };
 
       _this.resetGrid = function () {
@@ -76036,6 +76036,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _reactNative = _require(_dependencyMap[3], "react-native");
 
+  var _styles = _require(_dependencyMap[4], "./styles");
+
+  var _styles2 = _interopRequireDefault(_styles);
+
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   var Grid = function Grid(_ref) {
@@ -76048,14 +76052,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     return _react2.default.createElement(
       _reactNative.View,
       {
-        style: {
-          marginTop: 10,
-          marginBottom: 0,
-          justifyContent: 'flex-start'
-        },
+        style: _styles2.default.grid,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 28
+          lineNumber: 30
         }
       },
       _react2.default.createElement(
@@ -76064,7 +76064,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           horizontal: true,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 29
+            lineNumber: 31
           }
         },
         _react2.default.createElement(_reactNativeSuperGrid2.default, {
@@ -76086,28 +76086,19 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 45
+                  lineNumber: 42
                 }
               },
               _react2.default.createElement(
                 _reactNative.View,
                 {
-                  style: [item.value ? {
-                    backgroundColor: '#fff',
+                  style: [{
                     borderWidth: 0.5,
                     height: itemDimension
-                  } : {
-                    backgroundColor: '#000',
-                    borderWidth: 0.5,
-                    height: itemDimension
-                  }, item.highlighted ? {
-                    backgroundColor: '#ff00ff',
-                    borderWidth: 0.5,
-                    height: itemDimension
-                  } : {}],
+                  }, item.value ? _styles2.default.space : _styles2.default.wallTop, item.highlighted ? _styles2.default.highlighted : null],
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 49
+                    lineNumber: 46
                   }
                 },
                 _react2.default.createElement(
@@ -76119,7 +76110,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 55
+                      lineNumber: 49
                     }
                   },
                   item.player ? 'P' : null,
@@ -76130,7 +76121,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           },
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 30
+            lineNumber: 32
           }
         })
       )
@@ -76146,7 +76137,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     footer: _propTypes2.default.func
   };
   exports.default = Grid;
-},600,[118,129,601,12],"app\\components\\Grid\\Grid.js");
+},600,[118,129,601,12,604],"app\\components\\Grid\\Grid.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76816,33 +76807,28 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _reactNativeExtendedStylesheet2 = _interopRequireDefault(_reactNativeExtendedStylesheet);
 
-  var _reactNative = _require(_dependencyMap[1], "react-native");
-
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   exports.default = _reactNativeExtendedStylesheet2.default.create({
-    container: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 10,
-      marginBottom: 40
+    grid: {
+      marginTop: 10,
+      marginBottom: 0,
+      justifyContent: 'flex-start'
     },
-    wrapper: {
-      flexDirection: 'row',
-      backgroundColor: '#fff',
-      marginTop: 60,
-      marginBottom: 40,
-      height: 100
+    space: {
+      backgroundColor: '#fff'
     },
-    separator: {
-      backgroundColor: '#000',
-      height: _reactNative.StyleSheet.hairlineWidth,
-      flex: 1,
-      marginLeft: 20
+    wallTop: {
+      backgroundColor: '#000'
+    },
+    wallFacing: {
+      backgroundColor: '#eee'
+    },
+    highlighted: {
+      backgroundColor: '#ff00ff'
     }
   });
-},604,[493,12],"app\\components\\Grid\\styles.js");
+},604,[493],"app\\components\\Grid\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
