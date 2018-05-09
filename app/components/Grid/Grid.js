@@ -44,7 +44,7 @@ const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer, is
           >
 
             <View style={[{ borderWidth: 0.5, height: itemDimension },
-              !item.isRevealed ? styles.wallTop : (item.value ? styles.space : styles.wallTop),
+              isHuman ? (!item.isRevealed ? styles.wallTop : (item.value ? styles.space : styles.wallTop)) : (item.value ? styles.space : styles.wallTop),
               item.highlighted ? styles.highlighted : null,
               ]}>
               <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.player ? 'P' : null}{item.monster ? 'M' : null}</Text>
@@ -76,7 +76,8 @@ Grid.propTypes = {
   gridDimension: PropTypes.number,
   onPress: PropTypes.func,
   header: PropTypes.func,
-  footer: PropTypes.func
+  footer: PropTypes.func,
+  isHuman: PropTypes.bool,
 
 };
 

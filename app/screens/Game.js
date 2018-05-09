@@ -30,7 +30,7 @@ class Game extends Component {
       gridItemWidth: gridItemWidth_default,
       gridWidth: gridWidth_default,
       redraw: false,
-      player: 'human',
+      isHuman: true,
     };
   }
 
@@ -167,6 +167,9 @@ class Game extends Component {
             // add to path
             next.highlighted = true;
             path.push(next);
+            if (path.length > 200) {
+              break;
+            }
             // reassign next to parent
             next = next.parent;
           }
@@ -198,9 +201,12 @@ class Game extends Component {
         }
       }
     }
-    // for (let i = 0; i < path.length; i++) {
-    //   console.log(path[i]);
-    // }
+    if (path.length === 0) {
+      console.log('path is unreachable');
+    }
+    if (path.length > 100) {
+      console.log('something went wrong probably');
+    }
     this.setState({ redraw: !this.state.redraw });
     setTimeout(this.resetGrid, 50);
   }
@@ -259,12 +265,7 @@ class Game extends Component {
   };
 
   handleChangePlayer = () => {
-    if (this.state.player == 'human') {
-      this.setState({ player: 'monster' });
-    }
-    if (this.state.player == 'monster') {
-      this.setState({ player: 'human' });
-    }
+    this.setState({ isHuman: !this.state.isHuman });
   }
 
   renderHeader = () => {
@@ -308,7 +309,7 @@ class Game extends Component {
   renderFooter = () => {
     return (
       <View style={{ marginBottom: 20, marginTop: 0 }}>
-        <NavButton onPress={this.handleChangePlayer} text={this.state.player} />
+        <NavButton onPress={this.handleChangePlayer} text={`human? ${this.state.isHuman}`} />
         <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
       </View>
 
@@ -327,6 +328,7 @@ class Game extends Component {
           footer={this.renderFooter}
           gridDimension={this.state.gridWidth}
           itemDimension={this.state.gridItemWidth}
+          isHuman={this.state.isHuman}
         />
 
       </Container>
