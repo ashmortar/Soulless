@@ -75616,13 +75616,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         for (var i = 0; i < _this.cellsTotal; i++) {
           if (_this.elements[i].value === 0) {
-            console.log(i);
-
             _this.fillGaps(i);
           }
         }
 
         _this.addValuesToCells();
+
+        _this.assignHumanStart();
+
+        _this.assignMonsterStart();
       };
 
       _this.createWalls = function () {
@@ -75678,8 +75680,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         while (true) {
           if (_this.elements[i].value === 0) {
-            console.log("black");
-
             for (var c = 0; c < counter; c++) {
               i -= _this.cellsInRow;
               _this.elements[i].value = 0;
@@ -75687,11 +75687,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
             break;
           } else if (_this.elements[i].value === "" && i + _this.cellsInRow <= _this.cellsTotal) {
-            console.log("grey");
             i += _this.cellsInRow;
             counter++;
           } else {
-            console.log("white");
             break;
           }
         }
@@ -75755,11 +75753,254 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
+      _this.assignHumanStart = function () {
+        var cell = _this.elements[Math.floor(Math.random() * _this.cellsTotal)];
+
+        if (cell.value > 0) {
+          cell.hasHuman = true;
+          cell.isRevealed = true;
+          _this.humanSpace = cell;
+        } else {
+          _this.assignHumanStart();
+        }
+
+        console.log('human space: ', cell);
+      };
+
+      _this.assignMonsterStart = function () {
+        var cell = _this.elements[Math.floor(Math.random() * _this.cellsTotal)];
+
+        if (cell.value > 0) {
+          cell.hasMonster = true;
+          _this.monsterSpace = cell;
+
+          var distance = _this.findShortestPath(_this.monsterSpace, _this.humanSpace);
+
+          if (distance < 30) {
+            cell.hasMonster = false;
+            _this.monsterSpace = null;
+
+            _this.assignMonsterStart();
+          }
+        } else {
+          _this.assignMonsterStart();
+        }
+
+        console.log('monster space: ', cell);
+      };
+
       _this.resetGrid = function () {
         for (var i = 0; i < _this.elements.length; i++) {
           _this.elements[i].highlighted = false;
           _this.elements[i].parent = null;
         }
+      };
+
+      _this.echoLocate = function () {
+        var item = _this.humanSpace;
+        var direction = _this.state.echoDirection;
+
+        switch (direction) {
+          case 'north':
+            if (item.name - _this.cellsInRow < 0) {
+              console.log('cannot ping north from here');
+            } else {
+              var cell = _this.elements[item.name - _this.cellsInRow];
+
+              while (cell.value > 0) {
+                cell.isRevealed = true;
+
+                if (cell.name - _this.cellsInRow > 0) {
+                  cell = _this.elements[cell.name - _this.cellsInRow];
+                } else {
+                  break;
+                }
+              }
+            }
+
+            break;
+
+          case 'east':
+            if (item.name % _this.cellsInRow === _this.cellsInRow - 1) {
+              console.log('cannot ping east from here');
+            } else {
+              var _cell = _this.elements[item.name + 1];
+
+              while (_cell.value > 0) {
+                _cell.isRevealed = true;
+
+                if ((_cell.name + 1) % _this.cellsInRow === 0) {
+                  break;
+                } else {
+                  _cell = _this.elements[_cell.name + 1];
+                }
+              }
+            }
+
+            break;
+
+          case 'south':
+            if (item.name + _this.cellsInRow > _this.cellsTotal) {
+              console.log('cannot ping south from here');
+            } else {
+              var _cell2 = _this.elements[item.name + _this.cellsInRow];
+
+              while (_cell2.value > 0) {
+                _cell2.isRevealed = true;
+
+                if (_cell2.name + _this.cellsInRow < _this.cellsTotal) {
+                  _cell2 = _this.elements[_cell2.name + _this.cellsInRow];
+                } else {
+                  break;
+                }
+              }
+            }
+
+            break;
+
+          case 'west':
+            if (item.name % _this.cellsInRow === 0) {
+              console.log('cannot ping west from here');
+            } else {
+              var _cell3 = _this.elements[item.name - 1];
+
+              while (_cell3.value > 0) {
+                _cell3.isRevealed = true;
+
+                if ((_cell3.name - 1) % _this.cellsInRow === 0) {
+                  break;
+                } else {
+                  _cell3 = _this.elements[_cell3.name - 1];
+                }
+              }
+            }
+
+            break;
+
+          case 'radius':
+            var i = item.name;
+
+            if (i % _this.cellsInRow != 0 && i - (_this.cellsInRow + 1) > 0 && _this.elements[i - (_this.cellsInRow + 1)].value != 0) {
+              _this.elements[i - (_this.cellsInRow + 1)].isRevealed = true;
+            }
+
+            if (i - _this.cellsInRow > 0 && _this.elements[i - _this.cellsInRow].value != 0) {
+              _this.elements[i - _this.cellsInRow].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i - (_this.cellsInRow - 1) > 0 && _this.elements[i - (_this.cellsInRow - 1)].value != 0) {
+              _this.elements[i - (_this.cellsInRow - 1)].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && _this.elements[i + 1].value != 0) {
+              _this.elements[i + 1].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i + (_this.cellsInRow + 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow + 1)].value != 0) {
+              _this.elements[i + (_this.cellsInRow + 1)].isRevealed = true;
+            }
+
+            if (i + _this.cellsInRow < _this.cellsTotal && _this.elements[i + _this.cellsInRow].value != 0) {
+              _this.elements[i + _this.cellsInRow].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != 0 && i + (_this.cellsInRow - 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow - 1)].value != 0) {
+              _this.elements[i + (_this.cellsInRow - 1)].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != 0 && _this.elements[i - 1].value != 0) {
+              _this.elements[i - 1].isRevealed = true;
+            }
+
+            break;
+
+          default:
+            break;
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
+      _this.showHumanMoves = function () {
+        var i = _this.humanSpace.name;
+
+        if (i - _this.cellsInRow > 0) {
+          var cell = _this.elements[i - _this.cellsInRow];
+
+          while (cell.value > 0 && cell.isRevealed) {
+            cell.highlighted = true;
+
+            if (cell.name - _this.cellsInRow > 0) {
+              cell = _this.elements[cell.name - _this.cellsInRow];
+            } else {
+              break;
+            }
+          }
+        }
+
+        if (i % _this.cellsInRow !== _this.cellsInRow - 1) {
+          var _cell4 = _this.elements[i + 1];
+
+          while (_cell4.value > 0 && _cell4.isRevealed) {
+            _cell4.highlighted = true;
+
+            if ((_cell4.name + 1) % _this.cellsInRow === 0) {
+              break;
+            } else {
+              _cell4 = _this.elements[_cell4.name + 1];
+            }
+          }
+        }
+
+        if (i + _this.cellsInRow < _this.cellsTotal) {
+          var _cell5 = _this.elements[i + _this.cellsInRow];
+
+          while (_cell5.value > 0 && _cell5.isRevealed) {
+            _cell5.highlighted = true;
+
+            if (_cell5.name + _this.cellsInRow < _this.cellsTotal) {
+              _cell5 = _this.elements[_cell5.name + _this.cellsInRow];
+            } else {
+              break;
+            }
+          }
+        }
+
+        if (i % _this.cellsInRow !== 0) {
+          var _cell6 = _this.elements[i - 1];
+
+          while (_cell6.value > 0 && _cell6.isRevealed) {
+            _cell6.highlighted = true;
+
+            if ((_cell6.name - 1) % _this.cellsInRow === _this.cellsInRow - 1) {
+              break;
+            } else {
+              _cell6 = _this.elements[_cell6.name - 1];
+            }
+          }
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
+      _this.moveHuman = function (item) {
+        if (item.highlighted) {
+          _this.elements[_this.humanSpace.name].hasHuman = false;
+          item.hasHuman = true;
+          _this.humanSpace = item;
+
+          _this.resetGrid();
+        } else {
+          console.log('please select a highlighted space');
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
       };
 
       _this.handlePressNavButton = function () {
@@ -75797,7 +76038,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 312
+              lineNumber: 514
             }
           },
           _react3.default.createElement(
@@ -75805,7 +76046,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 313
+                lineNumber: 515
               }
             },
             "Game screen"
@@ -75819,7 +76060,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 315
+                lineNumber: 517
               }
             },
             _react3.default.createElement(
@@ -75835,7 +76076,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 316
+                  lineNumber: 518
                 }
               },
               _react3.default.createElement(
@@ -75846,7 +76087,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 324
+                    lineNumber: 526
                   }
                 },
                 "+"
@@ -75862,7 +76103,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 329
+                lineNumber: 531
               }
             },
             _react3.default.createElement(
@@ -75878,7 +76119,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 330
+                  lineNumber: 532
                 }
               },
               _react3.default.createElement(
@@ -75889,7 +76130,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 338
+                    lineNumber: 540
                   }
                 },
                 "-"
@@ -75909,7 +76150,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 348
+              lineNumber: 550
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -75917,7 +76158,82 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 349
+              lineNumber: 551
+            }
+          }),
+          _react3.default.createElement(
+            _reactNative.Picker,
+            {
+              selectedValue: _this.state.echoDirection,
+              style: {
+                height: 50,
+                width: 100
+              },
+              onValueChange: function onValueChange(itemValue, itemIndex) {
+                return _this.setState({
+                  echoDirection: itemValue
+                });
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 552
+              }
+            },
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "radius",
+              value: "radius",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 557
+              }
+            }),
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "north",
+              value: "north",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 558
+              }
+            }),
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "east",
+              value: "east",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 559
+              }
+            }),
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "south",
+              value: "south",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 560
+              }
+            }),
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "west",
+              value: "west",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 561
+              }
+            })
+          ),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: _this.echoLocate,
+            text: "echo-locate",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 563
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: _this.showHumanMoves,
+            text: "move human",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 564
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75925,13 +76241,49 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 350
+              lineNumber: 565
             }
           })
         );
       };
 
       _this.getCellStyle = function (item) {
+        if (_this.state.isHuman) {
+          if (item.isRevealed) {
+            if (item.value === 0) {
+              return {
+                backgroundColor: "#000",
+                borderWidth: 0.5,
+                height: _this.state.gridItemWidth
+              };
+            } else if (item.value === -1) {
+              return {
+                backgroundColor: "#777",
+                borderWidth: 0.5,
+                height: _this.state.gridItemWidth
+              };
+            } else if (item.highlighted) {
+              return {
+                backgroundColor: '#ff00ff',
+                borderWidth: 0.5,
+                height: _this.state.gridItemWidth
+              };
+            } else {
+              return {
+                backgroundColor: "#fff",
+                borderWidth: 0.5,
+                height: _this.state.gridItemWidth
+              };
+            }
+          } else {
+            return {
+              backgroundColor: "#000",
+              borderWidth: 0.5,
+              height: _this.state.gridItemWidth
+            };
+          }
+        }
+
         if (item.value === 0) {
           return {
             backgroundColor: "#000",
@@ -76007,6 +76359,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 next.highlighted = true;
                 path.push(next);
                 next = next.parent;
+
+                if (path.length > 150) {
+                  break;
+                }
               }
 
               break;
@@ -76028,10 +76384,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }
         }
 
-        this.setState({
-          redraw: !this.state.redraw
-        });
+        if (path.length === 0) {
+          console.log('path is unreachable');
+        }
+
         setTimeout(this.resetGrid, 50);
+        console.log(path.length - 1);
+        return path.length - 1;
       }
     }, {
       key: "render",
@@ -76041,12 +76400,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 386
+              lineNumber: 636
             }
           },
           _react3.default.createElement(_Grid.Grid, {
             items: this.elements,
-            onPress: this.handlePressGridItem,
+            onPress: this.moveHuman,
             header: this.renderHeader,
             footer: this.renderFooter,
             gridDimension: this.state.gridWidth,
@@ -76054,7 +76413,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             getCellStyle: this.getCellStyle,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 388
+              lineNumber: 638
             }
           })
         );
