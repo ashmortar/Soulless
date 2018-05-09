@@ -6,14 +6,10 @@ export default class Cell {
     this.monsterEdges = [];
     this.searched = false;
     this.parent = null;
-    this.highlighted = false;
-    this.revealed = false;
-    this.player = false;
-    this.monster = false;
-    this.survivor = false;
-  }
-
-  reportEdges() {
-    console.log(this.edges);
+    this.isHighlighted = false;
+    this.isRevealed = false;
+    this.hasHuman = false;
+    this.hasMonster = false;
+    this.hasCache = false;
   }
 }
