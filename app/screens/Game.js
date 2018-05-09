@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Dimensions, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid } from '../components/Grid';
@@ -214,29 +214,29 @@ class Game extends Component {
 
   pingRadius = (item) => {
     const i = item.name;
-    if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) {
-      this.elements[i + 1].isRevealed = true;
-      if (i - 19 > 0 && this.elements[i - 19].value != 0) {
-        this.elements[i - 19].isRevealed = true;
-      }
-      if (i + 21 < 400 && this.elements[i + 21].value != 0) {
-        this.elements[i + 21].isRevealed = true;
-      }
-    }
-    if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
-      this.elements[i - 1].isRevealed = true;
-      if ((i - 21 > 0) && (this.elements[i - 21].value != 0)) {
-        this.elements[i - 21].isRevealed = true;
-      }
-      if ((i + 19 < 400) && (this.elements[i + 19].value != 0)) {
-        this.elements[i + 19].isRevealed = true;
-      }
+    if ((i % 20 != 0) && (i - 21 > 0) && (this.elements[i - 21].value != 0)) {
+      this.elements[i - 21].isRevealed = true;
     }
     if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) {
       this.elements[i - 20].isRevealed = true;
     }
+    if ((i % 20 != 19) && (i - 19 > 0 && this.elements[i - 19].value != 0)) {
+      this.elements[i - 19].isRevealed = true;
+    }
+    if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) {
+      this.elements[i + 1].isRevealed = true;
+    }
+    if ((i % 20 != 19) && (i + 21 < 400 && this.elements[i + 21].value != 0)) {
+      this.elements[i + 21].isRevealed = true;
+    }
     if ((i + 20 < 400) && (this.elements[i + 20].value != 0)) {
       this.elements[i + 20].isRevealed = true;
+    }
+    if ((i % 20 != 0) && (i + 19 < 400 && this.elements[i + 19].value != 0)) {
+      this.elements[i + 19].isRevealed = true;
+    }
+    if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
+      this.elements[i - 1].isRevealed = true;
     }
     this.setState({ redraw: !this.state.redraw });
   }
@@ -269,33 +269,35 @@ class Game extends Component {
 
   renderHeader = () => {
     return (
-      <View style={{marginBottom: 20, marginTop: 40}}>
+      <View style={{ marginBottom: 20, marginTop: 40 }}>
         <Text>Game screen</Text>
 
-        <TouchableOpacity onPress={this.onPressZoomIn} style={{width: 20}}>
+        <TouchableOpacity onPress={this.onPressZoomIn} style={{ width: 20 }}>
           <View style={{
             backgroundColor: '#fff',
             alignItems: 'center',
             marginTop: 15,
             borderRadius: 10,
             borderColor: '#000',
-            borderWidth: 1
-          }}>
-            <Text style={{fontWeight: 'bold'}}>+</Text>
+            borderWidth: 1,
+            }}
+          >
+            <Text style={{ fontWeight: 'bold' }}>+</Text>
           </View>
         </TouchableOpacity>
 
 
-        <TouchableOpacity onPress={this.onPressZoomOut} style={{width: 20}}>
+        <TouchableOpacity onPress={this.onPressZoomOut} style={{ width: 20 }}>
           <View style={{
             backgroundColor: '#fff',
             alignItems: 'center',
             marginTop: 5,
             borderRadius: 10,
             borderColor: '#000',
-            borderWidth: 1
-          }}>
-            <Text style={{fontWeight: 'bold'}}>-</Text>
+            borderWidth: 1,
+            }}
+          >
+            <Text style={{ fontWeight: 'bold' }}>-</Text>
           </View>
         </TouchableOpacity>
 
@@ -305,7 +307,7 @@ class Game extends Component {
 
   renderFooter = () => {
     return (
-      <View style={{marginBottom: 20, marginTop: 0}}>
+      <View style={{ marginBottom: 20, marginTop: 0 }}>
         <NavButton onPress={this.handleChangePlayer} text={this.state.player} />
         <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
       </View>
