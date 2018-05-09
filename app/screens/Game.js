@@ -94,17 +94,27 @@ class Game extends Component {
 
   createWalls = () => {
     for (let i = 0; i < this.cellsTotal; i++) {
-      // this.elements.push(Math.floor(Math.random() * 5));
       this.elements.push(new Cell(i));
     }
-    // console.log("initial elements: ", this.elements);
-    for (let i = 0; i < 50; i++) {
 
-      let rand = Math.floor(Math.random() * this.cellsTotal);
 
-      this.createWall_straightHorizontal(rand);
+    for (let i = 0; i < 50; i++) {//bug: block goes beyond boundaries
+
+      let randWallType = Math.floor(Math.random() * 2);
+      let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
+      let randLength = Math.floor(Math.random() * 8) + 2;
+
+      switch (randWallType) {
+        case 0:
+          this.createWall_straightHorizontal(randStartingPoint, Math.floor(randLength/2));
+          break;
+        case 1:
+          this.createWall_straightVertical(randStartingPoint, randLength);
+          break;
+        default:
+          console.log('');
+      }
     }
-
   }
 
 
@@ -180,47 +190,40 @@ class Game extends Component {
   }
 
 
-  createWall_straightHorizontal = (i) => {
+  createWall_straightHorizontal = (i, length) => {
     if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
-      this.elements[i].value = "";//starting cell
-      this.elements[i - this.cellsInRow].value = "";//top first
-      this.elements[i - 2 * this.cellsInRow].value = 0;//top second
-      this.elements[i + 1].value = "";//right cell
-      this.elements[i - this.cellsInRow + 1].value = "";//right top first
-      this.elements[i - 2 * this.cellsInRow + 1].value = 0;//right top second
 
+      //first block:
 
-      let typeOfWall = Math.floor(Math.random() * 2);
-      // let typeOfWall = 0;
-
-      let rand2 = i + WallTemplate[typeOfWall].x;
-      if ((rand2 < this.cellsTotal) && ((rand2 + 1) % this.cellsInRow != 0)) {
-        this.elements[rand2].value = "";//starting cell
-        this.elements[rand2 - this.cellsInRow].value = "";//top first
-        this.elements[rand2 - 2 * this.cellsInRow].value = 0;//top second
-        if (typeOfWall != 1) {
-          this.elements[rand2 + 1].value = "";//right cell
-          this.elements[rand2 - this.cellsInRow + 1].value = "";//right top first
-          this.elements[rand2 - 2 * this.cellsInRow + 1].value = 0;//right top second
-        }
-
-        let rand3 = i + WallTemplate[typeOfWall].y;
-        if ((rand3 < this.cellsTotal) && ((rand3 + 1) % this.cellsInRow != 0)) {
-          this.elements[rand3].value = "";//starting cell
-          this.elements[rand3 - this.cellsInRow].value = "";//top first
-          this.elements[rand3 - 2 * this.cellsInRow].value = 0;//top second
-          if (typeOfWall != 1) {
-            this.elements[rand3 + 1].value = "";//right cell
-            this.elements[rand3 - this.cellsInRow + 1].value = "";//right top first
-            this.elements[rand3 - 2 * this.cellsInRow + 1].value = 0;//right top second
-          }
-        }
+      for (let j=0; j<length; j++) {
+        i = i + 2;
+        this.elements[i].value = "";//starting cell
+        this.elements[i - this.cellsInRow].value = "";//top first
+        this.elements[i - 2 * this.cellsInRow].value = 0;//top second
+        this.elements[i + 1].value = "";//right cell
+        this.elements[i - this.cellsInRow + 1].value = "";//right top first
+        this.elements[i - 2 * this.cellsInRow + 1].value = 0;//right top second
       }
     }
   }
 
-  createWall_straightVertical = () => {
 
+  createWall_straightVertical = (i, length) => {
+
+    if (i + this.cellsInRow * length > this.cellsTotal) {
+      length = Math.floor((this.cellsTotal - i) / this.cellsInRow);
+    }
+
+
+    if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
+
+      for (let j=0; j<length; j++) {
+        i = i + 40;
+        this.elements[i].value = "";//starting cell
+        this.elements[i - this.cellsInRow].value = "";//top first
+        this.elements[i - 2 * this.cellsInRow].value = 0;//top second
+      }
+    }
   }
 
   createWall_squareColumn = () => {
