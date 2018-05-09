@@ -7,7 +7,7 @@ export default class Cell {
     this.searched = false;
     this.parent = null;
     this.highlighted = false;
-    this.revealed = false;
+    this.isRevealed = false;
     this.player = false;
     this.playerName = 'P';
     this.monster = false;

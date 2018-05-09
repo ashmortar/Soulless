@@ -122,6 +122,7 @@ class Game extends Component {
     let cell = this.elements[Math.floor(Math.random() * 400)];
     if (cell.value != 0) {
       cell.player = true;
+      cell.isRevealed = true;
       this.playerSpace = cell;
     } else {
       this.assignPlayerStart();
@@ -211,6 +212,35 @@ class Game extends Component {
     }
   }
 
+  pingRadius = (item) => {
+    const i = item.name;
+    if ((i % 20 != 19) && (this.elements[i + 1].value != 0)) {
+      this.elements[i + 1].isRevealed = true;
+      if (i - 19 > 0 && this.elements[i - 19].value != 0) {
+        this.elements[i - 19].isRevealed = true;
+      }
+      if (i + 21 < 400 && this.elements[i + 21].value != 0) {
+        this.elements[i + 21].isRevealed = true;
+      }
+    }
+    if ((i % 20 != 0) && (this.elements[i - 1].value != 0)) {
+      this.elements[i - 1].isRevealed = true;
+      if ((i - 21 > 0) && (this.elements[i - 21].value != 0)) {
+        this.elements[i - 21].isRevealed = true;
+      }
+      if ((i + 19 < 400) && (this.elements[i + 19].value != 0)) {
+        this.elements[i + 19].isRevealed = true;
+      }
+    }
+    if ((i - 20 > 0) && (this.elements[i - 20].value != 0)) {
+      this.elements[i - 20].isRevealed = true;
+    }
+    if ((i + 20 < 400) && (this.elements[i + 20].value != 0)) {
+      this.elements[i + 20].isRevealed = true;
+    }
+    this.setState({ redraw: !this.state.redraw });
+  }
+
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
   };
@@ -290,7 +320,7 @@ class Game extends Component {
 
         <Grid
           items={this.elements}
-          onPress={this.handlePressGridItem}
+          onPress={this.pingRadius}
           header={this.renderHeader}
           footer={this.renderFooter}
           gridDimension={this.state.gridWidth}

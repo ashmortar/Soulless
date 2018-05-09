@@ -75686,6 +75686,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         if (cell.value != 0) {
           cell.player = true;
+          cell.isRevealed = true;
           _this.playerSpace = cell;
         } else {
           _this.assignPlayerStart();
@@ -75708,6 +75709,46 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           _this.elements[i].highlighted = false;
           _this.elements[i].parent = null;
         }
+      };
+
+      _this.pingRadius = function (item) {
+        var i = item.name;
+
+        if (i % 20 != 19 && _this.elements[i + 1].value != 0) {
+          _this.elements[i + 1].isRevealed = true;
+
+          if (i - 19 > 0 && _this.elements[i - 19].value != 0) {
+            _this.elements[i - 19].isRevealed = true;
+          }
+
+          if (i + 21 < 400 && _this.elements[i + 21].value != 0) {
+            _this.elements[i + 21].isRevealed = true;
+          }
+        }
+
+        if (i % 20 != 0 && _this.elements[i - 1].value != 0) {
+          _this.elements[i - 1].isRevealed = true;
+
+          if (i - 21 > 0 && _this.elements[i - 21].value != 0) {
+            _this.elements[i - 21].isRevealed = true;
+          }
+
+          if (i + 19 < 400 && _this.elements[i + 19].value != 0) {
+            _this.elements[i + 19].isRevealed = true;
+          }
+        }
+
+        if (i - 20 > 0 && _this.elements[i - 20].value != 0) {
+          _this.elements[i - 20].isRevealed = true;
+        }
+
+        if (i + 20 < 400 && _this.elements[i + 20].value != 0) {
+          _this.elements[i + 20].isRevealed = true;
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
       };
 
       _this.handlePressNavButton = function () {
@@ -75753,7 +75794,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 242
+              lineNumber: 272
             }
           },
           _react3.default.createElement(
@@ -75761,7 +75802,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 243
+                lineNumber: 273
               }
             },
             "Game screen"
@@ -75775,7 +75816,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 245
+                lineNumber: 275
               }
             },
             _react3.default.createElement(
@@ -75791,7 +75832,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 246
+                  lineNumber: 276
                 }
               },
               _react3.default.createElement(
@@ -75802,7 +75843,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 254
+                    lineNumber: 284
                   }
                 },
                 "+"
@@ -75818,7 +75859,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 259
+                lineNumber: 289
               }
             },
             _react3.default.createElement(
@@ -75834,7 +75875,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 260
+                  lineNumber: 290
                 }
               },
               _react3.default.createElement(
@@ -75845,7 +75886,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 268
+                    lineNumber: 298
                   }
                 },
                 "-"
@@ -75865,7 +75906,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 278
+              lineNumber: 308
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -75873,7 +75914,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: _this.state.player,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 279
+              lineNumber: 309
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75881,7 +75922,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 280
+              lineNumber: 310
             }
           })
         );
@@ -75971,19 +76012,19 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 289
+              lineNumber: 319
             }
           },
           _react3.default.createElement(_Grid.Grid, {
             items: this.elements,
-            onPress: this.handlePressGridItem,
+            onPress: this.pingRadius,
             header: this.renderHeader,
             footer: this.renderFooter,
             gridDimension: this.state.gridWidth,
             itemDimension: this.state.gridItemWidth,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 291
+              lineNumber: 321
             }
           })
         );
@@ -76048,7 +76089,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         gridDimension = _ref.gridDimension,
         _onPress = _ref.onPress,
         header = _ref.header,
-        footer = _ref.footer;
+        footer = _ref.footer,
+        isHuman = _ref.isHuman;
     return _react2.default.createElement(
       _reactNative.View,
       {
@@ -76095,7 +76137,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   style: [{
                     borderWidth: 0.5,
                     height: itemDimension
-                  }, item.value ? _styles2.default.space : _styles2.default.wallTop, item.highlighted ? _styles2.default.highlighted : null],
+                  }, !item.isRevealed ? _styles2.default.wallTop : item.value ? _styles2.default.space : _styles2.default.wallTop, item.highlighted ? _styles2.default.highlighted : null],
                   __source: {
                     fileName: _jsxFileName,
                     lineNumber: 46
@@ -76110,7 +76152,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 49
+                      lineNumber: 50
                     }
                   },
                   item.player ? 'P' : null,
@@ -76849,7 +76891,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       this.searched = false;
       this.parent = null;
       this.highlighted = false;
-      this.revealed = false;
+      this.isRevealed = false;
       this.player = false;
       this.playerName = 'P';
       this.monster = false;
