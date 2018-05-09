@@ -76128,11 +76128,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             } else {
               var connections = void 0;
 
-              if (this.state.player == 'human') {
+              if (this.state.isHuman) {
                 connections = cell.humanEdges;
-              }
-
-              if (this.state.player == 'monster') {
+              } else {
                 connections = cell.monsterEdges;
               }
 
@@ -76163,6 +76161,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           redraw: !this.state.redraw
         });
         setTimeout(this.resetGrid, 50);
+        return path.length - 1;
       }
     }, {
       key: "render",

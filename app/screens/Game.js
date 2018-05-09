@@ -181,10 +181,9 @@ class Game extends Component {
         } else {
           // assign connections array as all edges from cell
           let connections;
-          if (this.state.player == 'human') {
+          if (this.state.isHuman) {
             connections = cell.humanEdges;
-          }
-          if (this.state.player == 'monster') {
+          } else {
             connections = cell.monsterEdges;
           }
           // iterate through the edges and push them into the queue
@@ -208,6 +207,7 @@ class Game extends Component {
     }
     this.setState({ redraw: !this.state.redraw });
     setTimeout(this.resetGrid, 50);
+    return path.length - 1;
   }
 
   resetGrid = () => {
