@@ -75063,7 +75063,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             }
           },
           _react3.default.createElement(_Header.Header, {
-            text: "Home Screen jhdskjhb",
+            text: "Home Screen",
             __source: {
               fileName: _jsxFileName,
               lineNumber: 27
@@ -75708,14 +75708,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[i].humanEdges.push(_this.elements[i + 1]);
 
               _this.elements[i].monsterEdges.push(_this.elements[i + 1]);
-
-              if (i - (_this.cellsInRow - 1) > 0 && _this.elements[i - (_this.cellsInRow - 1)].value > 0) {
-                _this.elements[i].monsterEdges.push(_this.elements[i - (_this.cellsInRow - 1)]);
-              }
-
-              if (i + (_this.cellsInRow + 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow + 1)].value > 0) {
-                _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow + 1)]);
-              }
             }
 
             if (i % _this.cellsInRow > 0 && _this.elements[i - 1].value > 0) {
@@ -75724,14 +75716,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[i].humanEdges.push(_this.elements[i - 1]);
 
               _this.elements[i].monsterEdges.push(_this.elements[i - 1]);
-
-              if (i - (_this.cellsInRow + 1) > 0 && _this.elements[i - (_this.cellsInRow + 1)].value > 0) {
-                _this.elements[i].monsterEdges.push(_this.elements[i - 21]);
-              }
-
-              if (i + (_this.cellsInRow - 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow - 1)].value > 0) {
-                _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow - 1)]);
-              }
             }
 
             if (i - _this.cellsInRow >= 0 && _this.elements[i - _this.cellsInRow].value > 0) {
@@ -75748,6 +75732,22 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               _this.elements[i].humanEdges.push(_this.elements[i + _this.cellsInRow]);
 
               _this.elements[i].monsterEdges.push(_this.elements[i + _this.cellsInRow]);
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i - (_this.cellsInRow - 1) > 0 && _this.elements[i - (_this.cellsInRow - 1)].value > 0) {
+              _this.elements[i].monsterEdges.push(_this.elements[i - (_this.cellsInRow - 1)]);
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i + (_this.cellsInRow + 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow + 1)].value > 0) {
+              _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow + 1)]);
+            }
+
+            if (i % _this.cellsInRow != 0 && i - (_this.cellsInRow + 1) > 0 && _this.elements[i - (_this.cellsInRow + 1).value > 0]) {
+              _this.elements[i].monsterEdges.push(_this.elements[i - (_this.cellsInRow + 1)]);
+            }
+
+            if (i % 20 != 0 && i + (_this.cellsInRow - 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow - 1)].value > 0) {
+              _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow - 1)]);
             }
 
             _this.elements[i].value = adjacent;
@@ -75782,17 +75782,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.handleChangePlayer = function () {
-        if (_this.state.player == 'human') {
-          _this.setState({
-            player: 'monster'
-          });
-        }
-
-        if (_this.state.player == 'monster') {
-          _this.setState({
-            player: 'human'
-          });
-        }
+        _this.setState({
+          isHuman: !_this.state.isHuman
+        });
       };
 
       _this.renderHeader = function () {
@@ -75805,7 +75797,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 332
+              lineNumber: 312
             }
           },
           _react3.default.createElement(
@@ -75813,7 +75805,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 333
+                lineNumber: 313
               }
             },
             "Game screen"
@@ -75827,7 +75819,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 335
+                lineNumber: 315
               }
             },
             _react3.default.createElement(
@@ -75843,7 +75835,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 336
+                  lineNumber: 316
                 }
               },
               _react3.default.createElement(
@@ -75854,7 +75846,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 344
+                    lineNumber: 324
                   }
                 },
                 "+"
@@ -75870,7 +75862,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 349
+                lineNumber: 329
               }
             },
             _react3.default.createElement(
@@ -75886,7 +75878,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 350
+                  lineNumber: 330
                 }
               },
               _react3.default.createElement(
@@ -75897,7 +75889,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 358
+                    lineNumber: 338
                   }
                 },
                 "-"
@@ -75917,15 +75909,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 368
+              lineNumber: 348
             }
           },
           _react3.default.createElement(_Button.NavButton, {
             onPress: _this.handleChangePlayer,
-            text: _this.state.player,
+            text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 369
+              lineNumber: 349
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75933,22 +75925,28 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 370
+              lineNumber: 350
             }
           })
         );
       };
 
-      _this.getCellStyle = function (value) {
-        if (value === 0) {
+      _this.getCellStyle = function (item) {
+        if (item.value === 0) {
           return {
             backgroundColor: "#000",
             borderWidth: 0.5,
             height: _this.state.gridItemWidth
           };
-        } else if (value === -1) {
+        } else if (item.value === -1) {
           return {
             backgroundColor: "#777",
+            borderWidth: 0.5,
+            height: _this.state.gridItemWidth
+          };
+        } else if (item.highlighted) {
+          return {
+            backgroundColor: '#ff00ff',
             borderWidth: 0.5,
             height: _this.state.gridItemWidth
           };
@@ -75966,6 +75964,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.start = null;
       _this.end = null;
       _this.counter = 0;
+      _this.humanSpace = null;
+      _this.monsterSpace = null;
       _this.cellsInRow = 40;
       _this.cellsTotal = 1600;
       var gridItemWidth_default = 10;
@@ -75974,7 +75974,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         gridItemWidth: gridItemWidth_default,
         gridWidth: gridWidth_default,
         redraw: false,
-        player: 'human'
+        isHuman: true,
+        echoDirection: 'radius'
       };
       return _this;
     }
@@ -76010,15 +76011,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
               break;
             } else {
-              var connections = void 0;
-
-              if (this.state.player == 'human') {
-                connections = cell.humanEdges;
-              }
-
-              if (this.state.player == 'monster') {
-                connections = cell.monsterEdges;
-              }
+              var connections = cell.monsterEdges;
 
               for (var i = 0; i < connections.length; i++) {
                 var neighbor = connections[i];
@@ -76048,7 +76041,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 400
+              lineNumber: 386
             }
           },
           _react3.default.createElement(_Grid.Grid, {
@@ -76061,7 +76054,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             getCellStyle: this.getCellStyle,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 402
+              lineNumber: 388
             }
           })
         );
@@ -76134,7 +76127,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 58
+          lineNumber: 15
         }
       },
       _react2.default.createElement(
@@ -76143,7 +76136,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           horizontal: true,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 61
+            lineNumber: 18
           }
         },
         _react2.default.createElement(_reactNativeSuperGrid2.default, {
@@ -76165,41 +76158,39 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 71
+                  lineNumber: 28
                 }
               },
               _react2.default.createElement(
                 _reactNative.View,
                 {
-                  style: getCellStyle(item.value),
+                  style: getCellStyle(item),
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 72
+                    lineNumber: 29
                   }
                 },
                 _react2.default.createElement(
                   _reactNative.Text,
                   {
-                    style: item.highlighted ? {
-                      color: "#FF00FF",
-                      fontWeight: '900',
-                      fontSize: itemDimension * 0.6
-                    } : {
-                      fontSize: itemDimension * 0.6
+                    style: {
+                      fontSize: itemDimension * 0.6,
+                      textAlign: 'center'
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 77
+                      lineNumber: 34
                     }
                   },
-                  item.value
+                  item.hasHuman ? 'H' : null,
+                  item.hasMonster ? 'M' : null
                 )
               )
             );
           },
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 62
+            lineNumber: 19
           }
         })
       )
@@ -76886,68 +76877,50 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _reactNativeExtendedStylesheet2 = _interopRequireDefault(_reactNativeExtendedStylesheet);
 
-  var _reactNative = _require(_dependencyMap[1], "react-native");
-
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   exports.default = _reactNativeExtendedStylesheet2.default.create({
-    container: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 10,
-      marginBottom: 40
+    grid: {
+      marginTop: 10,
+      marginBottom: 0,
+      justifyContent: 'flex-start'
     },
-    wrapper: {
-      flexDirection: 'row',
-      backgroundColor: '#fff',
-      marginTop: 60,
-      marginBottom: 40,
-      height: 100
+    space: {
+      backgroundColor: '#fff'
     },
-    separator: {
-      backgroundColor: '#000',
-      height: _reactNative.StyleSheet.hairlineWidth,
-      flex: 1,
-      marginLeft: 20
+    wallTop: {
+      backgroundColor: '#000'
+    },
+    wallFacing: {
+      backgroundColor: '#eee'
+    },
+    highlighted: {
+      backgroundColor: '#ff00ff'
     }
   });
-},604,[493,12],"app\\components\\Grid\\styles.js");
+},604,[493],"app\\components\\Grid\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  var Cell = function () {
-    function Cell(name) {
-      _classCallCheck(this, Cell);
+  var Cell = function Cell(name) {
+    _classCallCheck(this, Cell);
 
-      this.name = name;
-      this.value = 5;
-      this.humanEdges = [];
-      this.monsterEdges = [];
-      this.searched = false;
-      this.parent = null;
-      this.highlighted = false;
-      this.revealed = false;
-      this.player = false;
-      this.monster = false;
-      this.survivor = false;
-    }
-
-    _createClass(Cell, [{
-      key: "reportEdges",
-      value: function reportEdges() {
-        console.log(this.edges);
-      }
-    }]);
-
-    return Cell;
-  }();
+    this.name = name;
+    this.value = 5;
+    this.humanEdges = [];
+    this.monsterEdges = [];
+    this.searched = false;
+    this.parent = null;
+    this.isHighlighted = false;
+    this.isRevealed = false;
+    this.hasHuman = false;
+    this.hasMonster = false;
+    this.hasCache = false;
+  };
 
   exports.default = Cell;
 },605,[],"app\\data\\Cell.js");

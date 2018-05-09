@@ -3,49 +3,6 @@ import PropTypes from 'prop-types';
 import GridView from 'react-native-super-grid';
 import { Text, View, TouchableHighlight, ScrollView } from 'react-native';
 
-// renderSeparator = () => {
-//   return (
-//     <View
-//       style={{
-//         height: 10,
-//         width: "86%",
-//         backgroundColor: "#ea2323",
-//         marginLeft: "0%"
-//       }}
-//     />
-//   );
-// };
-
-// renderHeader = () => {
-//   return <Text>Header</Text>;
-// };
-//
-// renderFooter = () => {
-//   return <Text>Footer</Text>;
-// };
-
-// getCellStyle(value) {
-//   if (value === 0) {
-//     return {
-//       backgroundColor: "#000",
-//       borderWidth: 0.5,
-//       height: itemDimension
-//     }
-//   } else if (value === -1) {
-//     return {
-//       backgroundColor: "#ccc",
-//       borderWidth: 0.5,
-//       height: itemDimension
-//     }
-//   } else {
-//     return {
-//       backgroundColor: "#fff",
-//       borderWidth: 0.5,
-//       height: itemDimension
-//     }
-//   }
-// }
-
 const Grid = ({
   items,
   itemDimension,
@@ -53,7 +10,7 @@ const Grid = ({
   onPress,
   header,
   footer,
-  getCellStyle
+  getCellStyle,
 }) => (
   <View
     style={{ marginTop: 10, marginBottom: 0, justifyContent: "flex-start" }}
@@ -71,18 +28,10 @@ const Grid = ({
           <TouchableHighlight onPress={() => onPress(item)}>
             <View
               style={
-                getCellStyle(item.value)
+                getCellStyle(item)
               }
             >
-              <Text
-                style={
-                  item.highlighted
-                    ? { color: "#FF00FF", fontWeight: '900', fontSize: itemDimension * 0.6 }
-                    : { fontSize: itemDimension * 0.6 }
-                }
-              >
-                {item.value}
-              </Text>
+              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}</Text>
             </View>
           </TouchableHighlight>
         )}

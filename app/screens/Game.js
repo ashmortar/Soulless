@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Dimensions, View, TouchableOpacity } from 'react-native';
+import { Text, Picker, View, TouchableOpacity } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid } from '../components/Grid';
@@ -15,13 +15,14 @@ class Game extends Component {
   }
 
   constructor() {
-
     super();
     this.scale = 0;
     this.elements = [];
     this.start = null;
     this.end = null;
     this.counter = 0;
+    this.humanSpace = null;
+    this.monsterSpace = null;
 
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
@@ -34,16 +35,14 @@ class Game extends Component {
       gridItemWidth: gridItemWidth_default,
       gridWidth: gridWidth_default,
       redraw: false,
-      player: 'human'
-    }
-
-
+      isHuman: true,
+      echoDirection: 'radius',
+    };
   }
 
   componentDidMount() {
     console.log("componentDidMount");
     this.getGridLayout();
-
   }
 
   onPressZoomIn = () => {
@@ -55,7 +54,7 @@ class Game extends Component {
       console.log(this.state.gridItemWidth);
       this.setState({
         gridItemWidth: gridItemWidth_new,
-        gridWidth: gridWidth_new
+        gridWidth: gridWidth_new,
       });
     }
   };
@@ -69,16 +68,13 @@ class Game extends Component {
       console.log(this.state.gridItemWidth);
       this.setState({
         gridItemWidth: gridItemWidth_new,
-        gridWidth: gridWidth_new
-      })
+        gridWidth: gridWidth_new,
+      });
     }
   };
 
   getGridLayout = () => {
-
-
     this.createWalls();
-
 
     for (let i=0; i<this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
@@ -86,14 +82,12 @@ class Game extends Component {
         this.fillGaps(i);
       }
     }
-
-    //adding values to white cells
+    // adding values to white cells
     this.addValuesToCells();
-
-
     // console.log("final elements: ", this.elements);
+    // this.assignHumanStart();
+    // this.assignMonsterStart();
   }
-
 
   createWalls = () => {
     for (let i = 0; i < this.cellsTotal; i++) {
@@ -152,9 +146,7 @@ class Game extends Component {
       // if (((rand - 2 * this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - 2 * this.cellsInRow + 1 >= 0)) {
       // }
     }
-
   }
-
 
   fillGaps = (i) => {
     let counter = 0;
@@ -180,7 +172,6 @@ class Game extends Component {
     }
   }
 
-
   addValuesToCells = () => {
     //adding values to white cells
     for (let i = 0; i < this.cellsTotal; i++) {
@@ -194,23 +185,11 @@ class Game extends Component {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i + 1]);
           this.elements[i].monsterEdges.push(this.elements[i + 1]);
-          if (i - (this.cellsInRow - 1) > 0 && this.elements[i - (this.cellsInRow - 1)].value > 0) {
-            this.elements[i].monsterEdges.push(this.elements[i - (this.cellsInRow - 1)]);
-          }
-          if (i + (this.cellsInRow + 1) < this.cellsTotal && this.elements[i + (this.cellsInRow + 1)].value > 0) {
-            this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow + 1)]);
-          }
         }
         if ((i % this.cellsInRow > 0) && (this.elements[i - 1].value > 0)) {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i - 1]);
           this.elements[i].monsterEdges.push(this.elements[i - 1]);
-          if ((i - (this.cellsInRow + 1) > 0) && (this.elements[i - (this.cellsInRow + 1)].value > 0)) {
-            this.elements[i].monsterEdges.push(this.elements[i - 21]);
-          }
-          if ((i + (this.cellsInRow - 1) < this.cellsTotal) && (this.elements[i + (this.cellsInRow - 1)].value > 0)) {
-            this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow - 1)]);
-          }
         }
         if ((i - this.cellsInRow >= 0) && (this.elements[i - this.cellsInRow].value > 0)) {
           adjacent++;
@@ -221,6 +200,18 @@ class Game extends Component {
           adjacent++;
           this.elements[i].humanEdges.push(this.elements[i + this.cellsInRow]);
           this.elements[i].monsterEdges.push(this.elements[i + this.cellsInRow]);
+        }
+        if (i % this.cellsInRow != (this.cellsInRow - 1) && (i - (this.cellsInRow - 1) > 0) && this.elements[i - (this.cellsInRow - 1)].value > 0) {
+          this.elements[i].monsterEdges.push(this.elements[i - (this.cellsInRow - 1)]);
+        }
+        if (i % this.cellsInRow != (this.cellsInRow - 1) && (i + (this.cellsInRow + 1) < this.cellsTotal && this.elements[i + (this.cellsInRow + 1)].value > 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow + 1)]);
+        }
+        if (i % this.cellsInRow != 0 && (i - (this.cellsInRow + 1) > 0) && (this.elements[i - (this.cellsInRow + 1).value > 0])) {
+          this.elements[i].monsterEdges.push(this.elements[i - (this.cellsInRow + 1)]);
+        }
+        if (i % 20 != 0 && (i + (this.cellsInRow - 1) < this.cellsTotal) && (this.elements[i + (this.cellsInRow - 1)].value > 0)) {
+          this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow - 1)]);
         }
         this.elements[i].value = adjacent;
       }
@@ -267,13 +258,7 @@ class Game extends Component {
         // if not the end find edges
         } else {
           // assign connections array as all edges from cell
-          let connections;
-          if (this.state.player == 'human') {
-            connections = cell.humanEdges;
-          }
-          if (this.state.player == 'monster') {
-            connections = cell.monsterEdges;
-          }
+          let connections = cell.monsterEdges;
           // iterate through the edges and push them into the queue
           for (let i = 0; i < connections.length; i++) {
             let neighbor = connections[i];
@@ -319,12 +304,7 @@ class Game extends Component {
   };
 
   handleChangePlayer = () => {
-    if (this.state.player == 'human') {
-      this.setState({ player: 'monster' });
-    }
-    if (this.state.player == 'monster') {
-      this.setState({ player: 'human' });
-    }
+    this.setState({ isHuman: !this.state.isHuman });
   }
 
   renderHeader = () => {
@@ -339,7 +319,7 @@ class Game extends Component {
             marginTop: 15,
             borderRadius: 10,
             borderColor: '#000',
-            borderWidth: 1
+            borderWidth: 1,
           }}>
             <Text style={{fontWeight: 'bold'}}>+</Text>
           </View>
@@ -366,23 +346,29 @@ class Game extends Component {
   renderFooter = () => {
     return (
       <View style={{marginBottom: 20, marginTop: 0}}>
-        <NavButton onPress={this.handleChangePlayer} text={this.state.player} />
+        <NavButton onPress={this.handleChangePlayer} text={`human? ${this.state.isHuman}`} />
         <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
       </View>
 
     );
   };
 
-  getCellStyle = (value) => {
-    if (value === 0) {
+  getCellStyle = (item) => {
+    if (item.value === 0) {
       return {
         backgroundColor: "#000",
         borderWidth: 0.5,
         height: this.state.gridItemWidth
       }
-    } else if (value === -1) {
+    } else if (item.value === -1) {
       return {
         backgroundColor: "#777",
+        borderWidth: 0.5,
+        height: this.state.gridItemWidth
+      }
+    } else if (item.highlighted) {
+      return {
+        backgroundColor: '#ff00ff',
         borderWidth: 0.5,
         height: this.state.gridItemWidth
       }
