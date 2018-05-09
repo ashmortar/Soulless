@@ -6,6 +6,8 @@ import { NavButton } from '../components/Button';
 import { Grid } from '../components/Grid';
 import Cell from '../data/Cell';
 
+import WallTemplate from '../data/WallTemplate';
+
 
 class Game extends Component {
   static propTypes = {
@@ -79,28 +81,60 @@ class Game extends Component {
       this.elements.push(new Cell(i));
     }
     // console.log("initial elements: ", this.elements);
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 50; i++) {
 
       let rand = Math.floor(Math.random() * this.cellsTotal);
 
-      this.elements[rand].value = -1;
+      console.log(WallTemplate[0]);
+      console.log(WallTemplate[1]);
+      console.log(WallTemplate[2]);
 
-      if (rand - this.cellsInRow >= 0) {
-        this.elements[rand - this.cellsInRow].value = -1;
-      }
-      if (rand - 2 * this.cellsInRow >= 0) {
-        this.elements[rand - 2 * this.cellsInRow].value = 0;
+      if ((rand - 2 * this.cellsInRow >= -1) && ((rand + 1) % this.cellsInRow != 0)) {
+        this.elements[rand].value = "";//starting cell
+        this.elements[rand - this.cellsInRow].value = "";//top first
+        this.elements[rand - 2 * this.cellsInRow].value = 0;//top second
+        this.elements[rand + 1].value = "";//right cell
+        this.elements[rand - this.cellsInRow + 1].value = "";//right top first
+        this.elements[rand - 2 * this.cellsInRow + 1].value = 0;//right top second
       }
 
-      if ((rand + 1) % this.cellsInRow != 0) {
-        this.elements[rand + 1].value = -1;
+
+      // let typeOfWall = Math.floor(Math.random() * 3);
+
+      let rand2 = rand + WallTemplate[0].x;
+      if ((rand2 - 2 * this.cellsInRow >= -1) && ((rand2 + 1) % this.cellsInRow != 0)) {
+        this.elements[rand2].value = "";//starting cell
+        this.elements[rand2 - this.cellsInRow].value = "";//top first
+        this.elements[rand2 - 2 * this.cellsInRow].value = 0;//top second
+        this.elements[rand2 + 1].value = "";//right cell
+        this.elements[rand2 - this.cellsInRow + 1].value = "";//right top first
+        this.elements[rand2 - 2 * this.cellsInRow + 1].value = 0;//right top second
       }
-      if (((rand - this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - this.cellsInRow + 1 >= 0)) {
-        this.elements[rand - this.cellsInRow + 1].value = -1;
+
+
+      let rand3 = rand + WallTemplate[0].y;
+      if ((rand3 - 2 * this.cellsInRow >= -1) && ((rand3 + 1) % this.cellsInRow != 0)) {
+        this.elements[rand3].value = "";//starting cell
+        this.elements[rand3 - this.cellsInRow].value = "";//top first
+        this.elements[rand3 - 2 * this.cellsInRow].value = 0;//top second
+        this.elements[rand3 + 1].value = "";//right cell
+        this.elements[rand3 - this.cellsInRow + 1].value = "";//right top first
+        this.elements[rand3 - 2 * this.cellsInRow + 1].value = 0;//right top second
       }
-      if (((rand - 2 * this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - 2 * this.cellsInRow + 1 >= 0)) {
-        this.elements[rand - 2 * this.cellsInRow + 1].value = 0;
-      }
+
+
+
+
+
+      // if (rand - 2 * this.cellsInRow >= 0) {
+      // }
+      //
+      // if ((rand + 1) % this.cellsInRow != 0) {
+      // }
+      // if (((rand - this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - this.cellsInRow + 1 >= 0)) {
+      // }
+      // if (((rand - 2 * this.cellsInRow + 1) % this.cellsInRow != 0) && (rand - 2 * this.cellsInRow + 1 >= 0)) {
+      // }
 
 
 
@@ -303,7 +337,7 @@ class Game extends Component {
         borderWidth: 0.5,
         height: this.state.gridItemWidth
       }
-    } else if (value === -1) {
+    } else if (value === "") {
       return {
         backgroundColor: "#777",
         borderWidth: 0.5,
