@@ -24,7 +24,7 @@ class Home extends Component {
   render() {
     return (
       <Container>
-        <Header text="Home Screen yyyy" />
+        <Header text="Home Screen" />
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules.  Who knows?" />
         <NavButton onPress={this.handlePressWaitingButton} text="go to waiting screen" />
         <NavButton onPress={this.handlePressConnectButton} text="go to connect screen" />
