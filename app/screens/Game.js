@@ -78,18 +78,14 @@ class Game extends Component {
   getGridLayout = () => {
     this.createWalls();
 
+    this.fillAngles();
+
     for (let i=0; i<this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
-        // console.log(i);
         this.fillGaps(i);
       }
     }
-    for (let i=0; i<this.cellsTotal; i++) {
-      if (this.elements[i].value === 0) {
-        // console.log(i);
-        this.fillGaps(i);
-      }
-    }
+
     //adding values to white cells
     this.addValuesToCells();
   }
@@ -146,7 +142,7 @@ class Game extends Component {
     i += this.cellsInRow;
     while (true) {
       if (this.elements[i].value === 0) {
-        // console.log("black");
+        //black
         for (let c=0; c<counter; c++) {
           i -= this.cellsInRow;
           this.elements[i].value = 0;
@@ -154,14 +150,13 @@ class Game extends Component {
         break;
       }
       else if ((this.elements[i].value === "") && (i + this.cellsInRow < this.cellsTotal)) {
-        // console.log("grey");
+        //grey
         i += this.cellsInRow;
         counter++;
         counterForExtraGreyCells++;
       }
       else {
-        // console.log("white");
-
+        //white
         if (counterForExtraGreyCells > 2) {
           let j = i;
           while (counterForExtraGreyCells != 2) {
@@ -170,12 +165,60 @@ class Game extends Component {
             this.elements[j].value = 1;
           }
         }
-
+        else if (counterForExtraGreyCells < 2) {
+          //go back to black
+          
+        }
         break;
       }
     }
   }
 
+
+
+  fillAngles = () => {
+    for (var i = 0; i < this.cellsTotal; i++) {
+      if ((i - 1 >= 0) && (i + 3 * this.cellsInRow < this.cellsTotal)) {
+        console.log(i);
+        if (this.elements[i].value === 0) {
+          if (this.elements[i - 1].value > 0) {
+            if (this.elements[i + this.cellsInRow].value === "") {
+
+              if (this.elements[i + 3*this.cellsInRow - 1].value === 0) {
+                this.elements[i + 3*this.cellsInRow].value = 0;
+              }
+              if (this.elements[i + 2*this.cellsInRow - 1].value === 0) {
+                this.elements[i + 2*this.cellsInRow].value = 0;
+              }
+              if (this.elements[i + this.cellsInRow - 1].value === 0) {
+                this.elements[i + this.cellsInRow].value = 0;
+              }
+            }
+          }
+        }
+      }
+
+      if ((i + 1 % this.cellsInRow != 0) && (i + 3 * this.cellsInRow < this.cellsTotal)) {
+        console.log(i);
+        if (this.elements[i].value === 0) {
+          if (this.elements[i + 1].value > 0) {
+            if (this.elements[i + this.cellsInRow].value === "") {
+
+              if (this.elements[i + 3*this.cellsInRow + 1].value === 0) {
+                this.elements[i + 3*this.cellsInRow].value = 0;
+              }
+              if (this.elements[i + 2*this.cellsInRow + 1].value === 0) {
+                this.elements[i + 2*this.cellsInRow].value = 0;
+              }
+              if (this.elements[i + this.cellsInRow + 1].value === 0) {
+                this.elements[i + this.cellsInRow].value = 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
 
 
@@ -247,9 +290,7 @@ class Game extends Component {
       length = Math.floor((this.cellsTotal - i) / this.cellsInRow);
     }
 
-    // if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
     if ((i - 2 * this.cellsInRow >= -1)) {
-
       for (let j=0; j<length; j++) {
         k = i + 40 * j;
         this.elements[k].value = "";//starting cell
@@ -260,7 +301,6 @@ class Game extends Component {
   }
 
   createWall_squareColumn = (i) => {
-    // if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
     if ((i - 3 * this.cellsInRow >= 0) && (i+1 % this.cellsInRow != 0) && (i+1 < this.cellsTotal)) {
 
       for (let j=0; j<2; j++) {
