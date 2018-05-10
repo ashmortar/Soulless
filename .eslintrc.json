@@ -22,6 +22,14 @@
     "no-plusplus": "off",
     "class-methods-use-this": "off",
     "camelcase": "off",
-    "prefer-const": "off"
+    "prefer-const": "off",
+    "no-case-declarations": "off",
+    "eqeqeq": "off",
+    "object-curly-newline": "off",
+    "react/jsx-boolean-value": "off",
+    "no-nested-ternary": "off",
+    "quotes": "off",
+    "no-else-return": "off",
+    "react/sort-comp": "off"
   }
 }
