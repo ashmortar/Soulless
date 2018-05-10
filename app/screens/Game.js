@@ -76,7 +76,7 @@ class Game extends Component {
   getGridLayout = () => {
     this.createWalls();
 
-    for (let i=0; i<this.cellsTotal; i++) {
+    for (let i = 0; i < this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
         // console.log(i);
         this.fillGaps(i);
@@ -101,36 +101,36 @@ class Game extends Component {
 
 
       if ((rand - 2 * this.cellsInRow >= -1) && ((rand + 1) % this.cellsInRow != 0)) {
-        this.elements[rand].value = -1;//starting cell
-        this.elements[rand - this.cellsInRow].value = -1;//top first
-        this.elements[rand - 2 * this.cellsInRow].value = 0;//top second
-        this.elements[rand + 1].value = -1;//right cell
-        this.elements[rand - this.cellsInRow + 1].value = -1;//right top first
-        this.elements[rand - 2 * this.cellsInRow + 1].value = 0;//right top second
+        this.elements[rand].value = -1; // starting cell
+        this.elements[rand - this.cellsInRow].value = -1; // top first
+        this.elements[rand - 2 * this.cellsInRow].value = 0; // top second
+        this.elements[rand + 1].value = -1; // right cell
+        this.elements[rand - this.cellsInRow + 1].value = -1; // right top first
+        this.elements[rand - 2 * this.cellsInRow + 1].value = 0; // right top second
 
 
         let typeOfWall = Math.floor(Math.random() * 2);
 
         let rand2 = rand + WallTemplate[typeOfWall].x;
         if ((rand2 < this.cellsTotal) && ((rand2 + 1) % this.cellsInRow != 0)) {
-          this.elements[rand2].value = -1;//starting cell
-          this.elements[rand2 - this.cellsInRow].value = -1;//top first
-          this.elements[rand2 - 2 * this.cellsInRow].value = 0;//top second
+          this.elements[rand2].value = -1; // starting cell
+          this.elements[rand2 - this.cellsInRow].value = -1; // top first
+          this.elements[rand2 - 2 * this.cellsInRow].value = 0; // top second
           if (typeOfWall != 1) {
-            this.elements[rand2 + 1].value = -1;//right cell
-            this.elements[rand2 - this.cellsInRow + 1].value = -1;//right top first
-            this.elements[rand2 - 2 * this.cellsInRow + 1].value = 0;//right top second
+            this.elements[rand2 + 1].value = -1; // right cell
+            this.elements[rand2 - this.cellsInRow + 1].value = -1; // right top first
+            this.elements[rand2 - 2 * this.cellsInRow + 1].value = 0; // right top second
           }
 
           let rand3 = rand + WallTemplate[typeOfWall].y;
           if ((rand3 < this.cellsTotal) && ((rand3 + 1) % this.cellsInRow != 0)) {
-            this.elements[rand3].value = -1;//starting cell
-            this.elements[rand3 - this.cellsInRow].value = -1;//top first
-            this.elements[rand3 - 2 * this.cellsInRow].value = 0;//top second
+            this.elements[rand3].value = -1; // starting cell
+            this.elements[rand3 - this.cellsInRow].value = -1; // top first
+            this.elements[rand3 - 2 * this.cellsInRow].value = 0; // top second
             if (typeOfWall != 1) {
-              this.elements[rand3 + 1].value = -1;//right cell
-              this.elements[rand3 - this.cellsInRow + 1].value = -1;//right top first
-              this.elements[rand3 - 2 * this.cellsInRow + 1].value = 0;//right top second
+              this.elements[rand3 + 1].value = -1; // right cell
+              this.elements[rand3 - this.cellsInRow + 1].value = -1; // right top first
+              this.elements[rand3 - 2 * this.cellsInRow + 1].value = 0; // right top second
             }
           }
         }
@@ -154,18 +154,16 @@ class Game extends Component {
     while (true) {
       if (this.elements[i].value === 0) {
         // console.log("black");
-        for (let c=0; c<counter; c++) {
+        for (let c = 0; c < counter; c++) {
           i -= this.cellsInRow;
           this.elements[i].value = 0;
         }
         break;
-      }
-      else if ((this.elements[i].value === "") && (i + this.cellsInRow <= this.cellsTotal)) {
+      } else if ((this.elements[i].value === "") && (i + this.cellsInRow <= this.cellsTotal)) {
         // console.log("grey");
         i += this.cellsInRow;
         counter++;
-      }
-      else {
+      } else {
         // console.log("white");
         break;
       }
@@ -173,7 +171,7 @@ class Game extends Component {
   }
 
   addValuesToCells = () => {
-    //adding values to white cells
+    // adding values to white cells
     for (let i = 0; i < this.cellsTotal; i++) {
       // left: i+1
       // right: i-1
@@ -324,7 +322,6 @@ class Game extends Component {
     const item = this.humanSpace;
     const direction = this.state.echoDirection;
     switch (direction) {
-
       case 'north':
         if (item.name - this.cellsInRow < 0) {
           console.log('cannot ping north from here');
@@ -488,6 +485,69 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw });
   }
 
+  getCellStyle = (item) => {
+    if (this.state.isHuman) {
+      if (item.isRevealed) {
+        if (item.value === 0) {
+          return {
+            backgroundColor: "#000",
+            borderWidth: 0.5,
+            height: this.state.gridItemWidth,
+          };
+        } else if (item.value === -1) {
+          return {
+            backgroundColor: "#777",
+            borderWidth: 0.5,
+            height: this.state.gridItemWidth,
+          };
+        } else if (item.highlighted) {
+          return {
+            backgroundColor: '#ff00ff',
+            borderWidth: 0.5,
+            height: this.state.gridItemWidth,
+          };
+        } else {
+          return {
+            backgroundColor: "#fff",
+            borderWidth: 0.5,
+            height: this.state.gridItemWidth,
+          };
+        }
+      } else {
+        return {
+          backgroundColor: "#000",
+          borderWidth: 0.5,
+          height: this.state.gridItemWidth,
+        };
+      }
+    }
+    if (item.value === 0) {
+      return {
+        backgroundColor: "#000",
+        borderWidth: 0.5,
+        height: this.state.gridItemWidth,
+      };
+    } else if (item.value === -1) {
+      return {
+        backgroundColor: "#777",
+        borderWidth: 0.5,
+        height: this.state.gridItemWidth,
+      };
+    } else if (item.highlighted) {
+      return {
+        backgroundColor: '#ff00ff',
+        borderWidth: 0.5,
+        height: this.state.gridItemWidth,
+      };
+    } else {
+      return {
+        backgroundColor: "#fff",
+        borderWidth: 0.5,
+        height: this.state.gridItemWidth,
+      };
+    }
+  }
+
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
   };
@@ -511,10 +571,10 @@ class Game extends Component {
 
   renderHeader = () => {
     return (
-      <View style={{marginBottom: 20, marginTop: 40}}>
+      <View style={{ marginBottom: 20, marginTop: 40 }}>
         <Text>Game screen</Text>
 
-        <TouchableOpacity onPress={this.onPressZoomIn} style={{width: 20}}>
+        <TouchableOpacity onPress={this.onPressZoomIn} style={{ width: 20 }}>
           <View style={{
             backgroundColor: '#fff',
             alignItems: 'center',
@@ -522,22 +582,23 @@ class Game extends Component {
             borderRadius: 10,
             borderColor: '#000',
             borderWidth: 1,
-          }}>
-            <Text style={{fontWeight: 'bold'}}>+</Text>
+            }}
+          >
+            <Text style={{ fontWeight: 'bold' }}>+</Text>
           </View>
         </TouchableOpacity>
 
 
-        <TouchableOpacity onPress={this.onPressZoomOut} style={{width: 20}}>
+        <TouchableOpacity onPress={this.onPressZoomOut} style={{ width: 20 }}>
           <View style={{
             backgroundColor: '#fff',
             alignItems: 'center',
             marginTop: 5,
             borderRadius: 10,
             borderColor: '#000',
-            borderWidth: 1
+            borderWidth: 1,
           }}>
-            <Text style={{fontWeight: 'bold'}}>-</Text>
+            <Text style={{ fontWeight: 'bold' }}>-</Text>
           </View>
         </TouchableOpacity>
 
@@ -567,69 +628,6 @@ class Game extends Component {
 
     );
   };
-
-  getCellStyle = (item) => {
-    if (this.state.isHuman) {
-      if(item.isRevealed) {
-        if (item.value === 0) {
-          return {
-            backgroundColor: "#000",
-            borderWidth: 0.5,
-            height: this.state.gridItemWidth
-          }
-        } else if (item.value === -1) {
-          return {
-            backgroundColor: "#777",
-            borderWidth: 0.5,
-            height: this.state.gridItemWidth
-          }
-        } else if (item.highlighted) {
-          return {
-            backgroundColor: '#ff00ff',
-            borderWidth: 0.5,
-            height: this.state.gridItemWidth
-          }
-        } else {
-          return {
-            backgroundColor: "#fff",
-            borderWidth: 0.5,
-            height: this.state.gridItemWidth
-          }
-        }
-      } else {
-        return {
-          backgroundColor: "#000",
-          borderWidth: 0.5,
-          height: this.state.gridItemWidth
-        }
-      }
-    } 
-    if (item.value === 0) {
-      return {
-        backgroundColor: "#000",
-        borderWidth: 0.5,
-        height: this.state.gridItemWidth
-      }
-    } else if (item.value === -1) {
-      return {
-        backgroundColor: "#777",
-        borderWidth: 0.5,
-        height: this.state.gridItemWidth
-      }
-    } else if (item.highlighted) {
-      return {
-        backgroundColor: '#ff00ff',
-        borderWidth: 0.5,
-        height: this.state.gridItemWidth
-      }
-    } else {
-      return {
-        backgroundColor: "#fff",
-        borderWidth: 0.5,
-        height: this.state.gridItemWidth
-      }
-    }
-  }
 
   render() {
     return (
