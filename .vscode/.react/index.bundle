@@ -62927,7 +62927,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     }
   });
-},509,[510,585,598,606,613],"app\\config\\routes.js");
+},509,[510,585,598,607,614],"app\\config\\routes.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -75536,7 +75536,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _Grid = _require(_dependencyMap[6], "../components/Grid");
 
-  var _Cell = _require(_dependencyMap[7], "../data/Cell");
+  var _WallTemplate = _require(_dependencyMap[7], "../data/WallTemplate");
+
+  var _WallTemplate2 = _interopRequireDefault(_WallTemplate);
+
+  var _Cell = _require(_dependencyMap[8], "../data/Cell");
 
   var _Cell2 = _interopRequireDefault(_Cell);
 
@@ -75580,7 +75584,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         if (_this.scale < 3) {
           var gridItemWidth_new = _this.state.gridItemWidth * 2;
-          var gridWidth_new = gridItemWidth_new * 20;
+          var gridWidth_new = gridItemWidth_new * _this.cellsInRow;
           _this.scale++;
           console.log(_this.state.gridItemWidth);
 
@@ -75596,7 +75600,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         if (_this.scale > 0) {
           var gridItemWidth_new = _this.state.gridItemWidth / 2;
-          var gridWidth_new = gridItemWidth_new * 20;
+          var gridWidth_new = gridItemWidth_new * _this.cellsInRow;
           _this.scale--;
           console.log(_this.state.gridItemWidth);
 
@@ -75608,79 +75612,469 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.getGridLayout = function () {
-        for (var i = 0; i < 400; i++) {
-          _this.elements.push(new _Cell2.default(i));
-        }
+        _this.createWalls();
 
-        console.log("initial elements: ", _this.elements);
-
-        for (var _i = 0; _i < 150; _i++) {
-          _this.elements[Math.floor(Math.random() * 400)].value = 0;
-        }
-
-        for (var _i2 = 0; _i2 < 400; _i2++) {
-          if (_this.elements[_i2].value != 0) {
-            var adjacent = 0;
-
-            if (_i2 % 20 != 19 && _this.elements[_i2 + 1].value != 0) {
-              adjacent++;
-
-              _this.elements[_i2].humanEdges.push(_this.elements[_i2 + 1]);
-
-              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 1]);
-
-              if (_i2 - 19 > 0 && _this.elements[_i2 - 19].value != 0) {
-                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 19]);
-              }
-
-              if (_i2 + 21 < 400 && _this.elements[_i2 + 21].value != 0) {
-                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 21]);
-              }
-            }
-
-            if (_i2 % 20 != 0 && _this.elements[_i2 - 1].value != 0) {
-              adjacent++;
-
-              _this.elements[_i2].humanEdges.push(_this.elements[_i2 - 1]);
-
-              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 1]);
-
-              if (_i2 - 21 > 0 && _this.elements[_i2 - 21].value != 0) {
-                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 21]);
-              }
-
-              if (_i2 + 19 < 400 && _this.elements[_i2 + 19].value != 0) {
-                _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 19]);
-              }
-            }
-
-            if (_i2 - 20 > 0 && _this.elements[_i2 - 20].value != 0) {
-              adjacent++;
-
-              _this.elements[_i2].humanEdges.push(_this.elements[_i2 - 20]);
-
-              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 - 20]);
-            }
-
-            if (_i2 + 20 < 400 && _this.elements[_i2 + 20].value != 0) {
-              adjacent++;
-
-              _this.elements[_i2].humanEdges.push(_this.elements[_i2 + 20]);
-
-              _this.elements[_i2].monsterEdges.push(_this.elements[_i2 + 20]);
-            }
-
-            _this.elements[_i2].value = adjacent;
+        for (var i = 0; i < _this.cellsTotal; i++) {
+          if (_this.elements[i].value === 0) {
+            _this.fillGaps(i);
           }
         }
 
-        console.log("final elements: ", _this.elements);
+        _this.addValuesToCells();
+
+        _this.assignHumanStart();
+
+        _this.assignMonsterStart();
+
+        _this.assignCacheLocations();
+      };
+
+      _this.createWalls = function () {
+        for (var i = 0; i < _this.cellsTotal; i++) {
+          _this.elements.push(new _Cell2.default(i));
+        }
+
+        for (var _i = 0; _i < 50; _i++) {
+          var rand = Math.floor(Math.random() * _this.cellsTotal);
+
+          if (rand - 2 * _this.cellsInRow >= -1 && (rand + 1) % _this.cellsInRow != 0) {
+            _this.elements[rand].value = -1;
+            _this.elements[rand - _this.cellsInRow].value = -1;
+            _this.elements[rand - 2 * _this.cellsInRow].value = 0;
+            _this.elements[rand + 1].value = -1;
+            _this.elements[rand - _this.cellsInRow + 1].value = -1;
+            _this.elements[rand - 2 * _this.cellsInRow + 1].value = 0;
+            var typeOfWall = Math.floor(Math.random() * 2);
+            var rand2 = rand + _WallTemplate2.default[typeOfWall].x;
+
+            if (rand2 < _this.cellsTotal && (rand2 + 1) % _this.cellsInRow != 0) {
+              _this.elements[rand2].value = -1;
+              _this.elements[rand2 - _this.cellsInRow].value = -1;
+              _this.elements[rand2 - 2 * _this.cellsInRow].value = 0;
+
+              if (typeOfWall != 1) {
+                _this.elements[rand2 + 1].value = -1;
+                _this.elements[rand2 - _this.cellsInRow + 1].value = -1;
+                _this.elements[rand2 - 2 * _this.cellsInRow + 1].value = 0;
+              }
+
+              var rand3 = rand + _WallTemplate2.default[typeOfWall].y;
+
+              if (rand3 < _this.cellsTotal && (rand3 + 1) % _this.cellsInRow != 0) {
+                _this.elements[rand3].value = -1;
+                _this.elements[rand3 - _this.cellsInRow].value = -1;
+                _this.elements[rand3 - 2 * _this.cellsInRow].value = 0;
+
+                if (typeOfWall != 1) {
+                  _this.elements[rand3 + 1].value = -1;
+                  _this.elements[rand3 - _this.cellsInRow + 1].value = -1;
+                  _this.elements[rand3 - 2 * _this.cellsInRow + 1].value = 0;
+                }
+              }
+            }
+          }
+        }
+      };
+
+      _this.fillGaps = function (i) {
+        var counter = 0;
+        i += _this.cellsInRow;
+
+        while (true) {
+          if (_this.elements[i].value === 0) {
+            for (var c = 0; c < counter; c++) {
+              i -= _this.cellsInRow;
+              _this.elements[i].value = 0;
+            }
+
+            break;
+          } else if (_this.elements[i].value === "" && i + _this.cellsInRow <= _this.cellsTotal) {
+            i += _this.cellsInRow;
+            counter++;
+          } else {
+            break;
+          }
+        }
+      };
+
+      _this.addValuesToCells = function () {
+        for (var i = 0; i < _this.cellsTotal; i++) {
+          if (_this.elements[i].value > 0) {
+            var adjacent = 0;
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && _this.elements[i + 1].value > 0) {
+              adjacent++;
+
+              _this.elements[i].humanEdges.push(_this.elements[i + 1]);
+
+              _this.elements[i].monsterEdges.push(_this.elements[i + 1]);
+            }
+
+            if (i % _this.cellsInRow > 0 && _this.elements[i - 1].value > 0) {
+              adjacent++;
+
+              _this.elements[i].humanEdges.push(_this.elements[i - 1]);
+
+              _this.elements[i].monsterEdges.push(_this.elements[i - 1]);
+            }
+
+            if (i - _this.cellsInRow >= 0 && _this.elements[i - _this.cellsInRow].value > 0) {
+              adjacent++;
+
+              _this.elements[i].humanEdges.push(_this.elements[i - _this.cellsInRow]);
+
+              _this.elements[i].monsterEdges.push(_this.elements[i - _this.cellsInRow]);
+            }
+
+            if (i + _this.cellsInRow < _this.cellsTotal && _this.elements[i + _this.cellsInRow].value > 0) {
+              adjacent++;
+
+              _this.elements[i].humanEdges.push(_this.elements[i + _this.cellsInRow]);
+
+              _this.elements[i].monsterEdges.push(_this.elements[i + _this.cellsInRow]);
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i - (_this.cellsInRow - 1) > 0 && _this.elements[i - (_this.cellsInRow - 1)].value > 0) {
+              _this.elements[i].monsterEdges.push(_this.elements[i - (_this.cellsInRow - 1)]);
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i + (_this.cellsInRow + 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow + 1)].value > 0) {
+              _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow + 1)]);
+            }
+
+            if (i % _this.cellsInRow != 0 && i - (_this.cellsInRow + 1) > 0 && _this.elements[i - (_this.cellsInRow + 1).value > 0]) {
+              _this.elements[i].monsterEdges.push(_this.elements[i - (_this.cellsInRow + 1)]);
+            }
+
+            if (i % 20 != 0 && i + (_this.cellsInRow - 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow - 1)].value > 0) {
+              _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow - 1)]);
+            }
+
+            _this.elements[i].value = adjacent;
+          }
+        }
+      };
+
+      _this.assignHumanStart = function () {
+        var cell = _this.getRandomCell();
+
+        while (cell.value < 1) {
+          cell = _this.getRandomCell();
+        }
+
+        cell.hasHuman = true;
+        cell.isRevealed = true;
+        _this.humanSpace = cell;
+        console.log('human space: ', cell);
+      };
+
+      _this.assignMonsterStart = function () {
+        var cell = _this.getRandomCell();
+
+        var distance = _this.findShortestPath(cell, _this.humanSpace);
+
+        while (cell.value < 1 || distance < 30) {
+          cell = _this.getRandomCell();
+          distance = _this.findShortestPath(cell, _this.humanSpace);
+        }
+
+        cell.hasMonster = true;
+        _this.monsterSpace = cell;
+        console.log('monster space: ', cell);
+      };
+
+      _this.assignCacheLocations = function () {
+        for (var i = 0; i <= _this.cacheTotal; i++) {
+          var cell = _this.getRandomCell();
+
+          while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache) {
+            cell = _this.getRandomCell();
+          }
+
+          cell.hasCache = true;
+          cell.isRevealed = true;
+        }
+      };
+
+      _this.getRandomCell = function () {
+        return _this.elements[Math.floor(Math.random() * _this.cellsTotal)];
       };
 
       _this.resetGrid = function () {
         for (var i = 0; i < _this.elements.length; i++) {
           _this.elements[i].highlighted = false;
           _this.elements[i].parent = null;
+        }
+      };
+
+      _this.echoLocate = function () {
+        var item = _this.humanSpace;
+        var direction = _this.state.echoDirection;
+
+        switch (direction) {
+          case 'north':
+            if (item.name - _this.cellsInRow < 0) {
+              _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate North from here..');
+            } else {
+              var cell = _this.elements[item.name - _this.cellsInRow];
+
+              while (cell.value > 0) {
+                cell.isRevealed = true;
+
+                if (cell.name - _this.cellsInRow > 0) {
+                  cell = _this.elements[cell.name - _this.cellsInRow];
+                } else {
+                  break;
+                }
+              }
+            }
+
+            break;
+
+          case 'east':
+            if (item.name % _this.cellsInRow === _this.cellsInRow - 1) {
+              _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate East from here..');
+            } else {
+              var _cell = _this.elements[item.name + 1];
+
+              while (_cell.value > 0) {
+                _cell.isRevealed = true;
+
+                if ((_cell.name + 1) % _this.cellsInRow === 0) {
+                  break;
+                } else {
+                  _cell = _this.elements[_cell.name + 1];
+                }
+              }
+            }
+
+            break;
+
+          case 'south':
+            if (item.name + _this.cellsInRow > _this.cellsTotal) {
+              _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate South from here..');
+            } else {
+              var _cell2 = _this.elements[item.name + _this.cellsInRow];
+
+              while (_cell2.value > 0) {
+                _cell2.isRevealed = true;
+
+                if (_cell2.name + _this.cellsInRow < _this.cellsTotal) {
+                  _cell2 = _this.elements[_cell2.name + _this.cellsInRow];
+                } else {
+                  break;
+                }
+              }
+            }
+
+            break;
+
+          case 'west':
+            if (item.name % _this.cellsInRow === 0) {
+              _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate West from here..');
+            } else {
+              var _cell3 = _this.elements[item.name - 1];
+
+              while (_cell3.value > 0) {
+                _cell3.isRevealed = true;
+
+                if ((_cell3.name - 1) % _this.cellsInRow === 0) {
+                  break;
+                } else {
+                  _cell3 = _this.elements[_cell3.name - 1];
+                }
+              }
+            }
+
+            break;
+
+          case 'radius':
+            var i = item.name;
+
+            if (i % _this.cellsInRow != 0 && i - (_this.cellsInRow + 1) > 0 && _this.elements[i - (_this.cellsInRow + 1)].value != 0) {
+              _this.elements[i - (_this.cellsInRow + 1)].isRevealed = true;
+            }
+
+            if (i - _this.cellsInRow > 0 && _this.elements[i - _this.cellsInRow].value != 0) {
+              _this.elements[i - _this.cellsInRow].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i - (_this.cellsInRow - 1) > 0 && _this.elements[i - (_this.cellsInRow - 1)].value != 0) {
+              _this.elements[i - (_this.cellsInRow - 1)].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && _this.elements[i + 1].value != 0) {
+              _this.elements[i + 1].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i + (_this.cellsInRow + 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow + 1)].value != 0) {
+              _this.elements[i + (_this.cellsInRow + 1)].isRevealed = true;
+            }
+
+            if (i + _this.cellsInRow < _this.cellsTotal && _this.elements[i + _this.cellsInRow].value != 0) {
+              _this.elements[i + _this.cellsInRow].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != 0 && i + (_this.cellsInRow - 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow - 1)].value != 0) {
+              _this.elements[i + (_this.cellsInRow - 1)].isRevealed = true;
+            }
+
+            if (i % _this.cellsInRow != 0 && _this.elements[i - 1].value != 0) {
+              _this.elements[i - 1].isRevealed = true;
+            }
+
+            break;
+
+          default:
+            break;
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
+      _this.showHumanMoves = function () {
+        var i = _this.humanSpace.name;
+
+        if (i - _this.cellsInRow > 0) {
+          var cell = _this.elements[i - _this.cellsInRow];
+
+          while (cell.value > 0 && cell.isRevealed) {
+            cell.highlighted = true;
+
+            if (cell.name - _this.cellsInRow > 0) {
+              cell = _this.elements[cell.name - _this.cellsInRow];
+            } else {
+              break;
+            }
+          }
+        }
+
+        if (i % _this.cellsInRow !== _this.cellsInRow - 1) {
+          var _cell4 = _this.elements[i + 1];
+
+          while (_cell4.value > 0 && _cell4.isRevealed) {
+            _cell4.highlighted = true;
+
+            if ((_cell4.name + 1) % _this.cellsInRow === 0) {
+              break;
+            } else {
+              _cell4 = _this.elements[_cell4.name + 1];
+            }
+          }
+        }
+
+        if (i + _this.cellsInRow < _this.cellsTotal) {
+          var _cell5 = _this.elements[i + _this.cellsInRow];
+
+          while (_cell5.value > 0 && _cell5.isRevealed) {
+            _cell5.highlighted = true;
+
+            if (_cell5.name + _this.cellsInRow < _this.cellsTotal) {
+              _cell5 = _this.elements[_cell5.name + _this.cellsInRow];
+            } else {
+              break;
+            }
+          }
+        }
+
+        if (i % _this.cellsInRow !== 0) {
+          var _cell6 = _this.elements[i - 1];
+
+          while (_cell6.value > 0 && _cell6.isRevealed) {
+            _cell6.highlighted = true;
+
+            if ((_cell6.name - 1) % _this.cellsInRow === _this.cellsInRow - 1) {
+              break;
+            } else {
+              _cell6 = _this.elements[_cell6.name - 1];
+            }
+          }
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
+      _this.moveHuman = function (item) {
+        if (item.highlighted) {
+          _this.elements[_this.humanSpace.name].hasHuman = false;
+          item.hasHuman = true;
+          _this.humanSpace = item;
+
+          _this.resetGrid();
+        } else {
+          _reactNative.Alert.alert('Uh-Oh', 'Please select a highlighted space');
+        }
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
+      _this.getCellStyle = function (item) {
+        if (_this.state.isHuman) {
+          if (item.isRevealed) {
+            if (item.value === 0) {
+              return {
+                backgroundColor: "#000",
+                borderWidth: 0.5,
+                height: _this.state.gridItemWidth
+              };
+            } else if (item.value === -1) {
+              return {
+                backgroundColor: "#777",
+                borderWidth: 0.5,
+                height: _this.state.gridItemWidth
+              };
+            } else if (item.highlighted) {
+              return {
+                backgroundColor: '#ff00ff',
+                borderWidth: 0.5,
+                height: _this.state.gridItemWidth
+              };
+            } else {
+              return {
+                backgroundColor: "#fff",
+                borderWidth: 0.5,
+                height: _this.state.gridItemWidth
+              };
+            }
+          } else {
+            return {
+              backgroundColor: "#000",
+              borderWidth: 0.5,
+              height: _this.state.gridItemWidth
+            };
+          }
+        }
+
+        if (item.value === 0) {
+          return {
+            backgroundColor: "#000",
+            borderWidth: 0.5,
+            height: _this.state.gridItemWidth
+          };
+        } else if (item.value === -1) {
+          return {
+            backgroundColor: "#777",
+            borderWidth: 0.5,
+            height: _this.state.gridItemWidth
+          };
+        } else if (item.highlighted) {
+          return {
+            backgroundColor: '#ff00ff',
+            borderWidth: 0.5,
+            height: _this.state.gridItemWidth
+          };
+        } else {
+          return {
+            backgroundColor: "#fff",
+            borderWidth: 0.5,
+            height: _this.state.gridItemWidth
+          };
         }
       };
 
@@ -75704,17 +76098,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.handleChangePlayer = function () {
-        if (_this.state.player == 'human') {
-          _this.setState({
-            player: 'monster'
-          });
-        }
-
-        if (_this.state.player == 'monster') {
-          _this.setState({
-            player: 'human'
-          });
-        }
+        _this.setState({
+          isHuman: !_this.state.isHuman
+        });
       };
 
       _this.renderHeader = function () {
@@ -75727,7 +76113,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 219
+              lineNumber: 597
             }
           },
           _react3.default.createElement(
@@ -75735,7 +76121,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 220
+                lineNumber: 598
               }
             },
             "Game screen"
@@ -75749,7 +76135,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 222
+                lineNumber: 600
               }
             },
             _react3.default.createElement(
@@ -75765,7 +76151,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 223
+                  lineNumber: 601
                 }
               },
               _react3.default.createElement(
@@ -75776,7 +76162,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 231
+                    lineNumber: 610
                   }
                 },
                 "+"
@@ -75792,7 +76178,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 236
+                lineNumber: 615
               }
             },
             _react3.default.createElement(
@@ -75808,7 +76194,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 237
+                  lineNumber: 616
                 }
               },
               _react3.default.createElement(
@@ -75819,7 +76205,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 245
+                    lineNumber: 624
                   }
                 },
                 "-"
@@ -75839,15 +76225,90 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 255
+              lineNumber: 634
             }
           },
           _react3.default.createElement(_Button.NavButton, {
             onPress: _this.handleChangePlayer,
-            text: _this.state.player,
+            text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 256
+              lineNumber: 635
+            }
+          }),
+          _react3.default.createElement(
+            _reactNative.Picker,
+            {
+              selectedValue: _this.state.echoDirection,
+              style: {
+                height: 50,
+                width: 100
+              },
+              onValueChange: function onValueChange(itemValue, itemIndex) {
+                return _this.setState({
+                  echoDirection: itemValue
+                });
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 636
+              }
+            },
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "radius",
+              value: "radius",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 641
+              }
+            }),
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "north",
+              value: "north",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 642
+              }
+            }),
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "east",
+              value: "east",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 643
+              }
+            }),
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "south",
+              value: "south",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 644
+              }
+            }),
+            _react3.default.createElement(_reactNative.Picker.Item, {
+              label: "west",
+              value: "west",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 645
+              }
+            })
+          ),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: _this.echoLocate,
+            text: "echo-locate",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 647
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: _this.showHumanMoves,
+            text: "move human",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 648
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75855,7 +76316,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 257
+              lineNumber: 649
             }
           })
         );
@@ -75865,22 +76326,31 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.elements = [];
       _this.start = null;
       _this.end = null;
-
-      _this.getGridLayout();
-
       _this.counter = 0;
-      var gridItemWidth_default = 20;
-      var gridWidth_default = gridItemWidth_default * 20;
+      _this.humanSpace = null;
+      _this.monsterSpace = null;
+      _this.cacheTotal = 13;
+      _this.cellsInRow = 40;
+      _this.cellsTotal = 1600;
+      var gridItemWidth_default = 10;
+      var gridWidth_default = gridItemWidth_default * _this.cellsInRow;
       _this.state = {
         gridItemWidth: gridItemWidth_default,
         gridWidth: gridWidth_default,
         redraw: false,
-        player: 'human'
+        isHuman: true,
+        echoDirection: 'radius'
       };
       return _this;
     }
 
     _createClass(Game, [{
+      key: "componentWillMount",
+      value: function componentWillMount() {
+        console.log("component Will Mount");
+        this.getGridLayout();
+      }
+    }, {
       key: "findShortestPath",
       value: function findShortestPath(start, end) {
         var queue = [];
@@ -75901,19 +76371,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 next.highlighted = true;
                 path.push(next);
                 next = next.parent;
+
+                if (path.length > 150) {
+                  break;
+                }
               }
 
               break;
             } else {
-              var connections = void 0;
-
-              if (this.state.player == 'human') {
-                connections = cell.humanEdges;
-              }
-
-              if (this.state.player == 'monster') {
-                connections = cell.monsterEdges;
-              }
+              var connections = cell.monsterEdges;
 
               for (var i = 0; i < connections.length; i++) {
                 var neighbor = connections[i];
@@ -75930,10 +76396,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }
         }
 
-        this.setState({
-          redraw: !this.state.redraw
-        });
+        if (path.length === 0) {
+          console.log('path is unreachable');
+        }
+
         setTimeout(this.resetGrid, 50);
+        console.log(path.length - 1);
+        return path.length - 1;
       }
     }, {
       key: "render",
@@ -75943,19 +76412,20 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 266
+              lineNumber: 657
             }
           },
           _react3.default.createElement(_Grid.Grid, {
             items: this.elements,
-            onPress: this.handlePressGridItem,
+            onPress: this.moveHuman,
             header: this.renderHeader,
             footer: this.renderFooter,
             gridDimension: this.state.gridWidth,
             itemDimension: this.state.gridItemWidth,
+            getCellStyle: this.getCellStyle,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 268
+              lineNumber: 659
             }
           })
         );
@@ -75968,7 +76438,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Game;
-},598,[118,179,129,12,586,589,599,605],"app\\screens\\Game.js");
+},598,[118,179,129,12,586,589,599,605,606],"app\\screens\\Game.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76016,7 +76486,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         gridDimension = _ref.gridDimension,
         _onPress = _ref.onPress,
         header = _ref.header,
-        footer = _ref.footer;
+        footer = _ref.footer,
+        getCellStyle = _ref.getCellStyle;
     return _react2.default.createElement(
       _reactNative.View,
       {
@@ -76027,7 +76498,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 35
+          lineNumber: 15
         }
       },
       _react2.default.createElement(
@@ -76036,7 +76507,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           horizontal: true,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 38
+            lineNumber: 18
           }
         },
         _react2.default.createElement(_reactNativeSuperGrid2.default, {
@@ -76058,49 +76529,40 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 48
+                  lineNumber: 28
                 }
               },
               _react2.default.createElement(
                 _reactNative.View,
                 {
-                  style: item.value ? {
-                    backgroundColor: "#fff",
-                    borderWidth: 0.5,
-                    height: itemDimension
-                  } : {
-                    backgroundColor: "#000",
-                    borderWidth: 0.5,
-                    height: itemDimension
-                  },
+                  style: getCellStyle(item),
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 49
+                    lineNumber: 29
                   }
                 },
                 _react2.default.createElement(
                   _reactNative.Text,
                   {
-                    style: item.highlighted ? {
-                      color: "#FF00FF",
-                      fontWeight: '900',
-                      fontSize: itemDimension * 0.6
-                    } : {
-                      fontSize: itemDimension * 0.6
+                    style: {
+                      fontSize: itemDimension * 0.6,
+                      textAlign: 'center'
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 64
+                      lineNumber: 34
                     }
                   },
-                  item.value
+                  item.hasHuman ? 'H' : null,
+                  item.hasMonster ? 'M' : null,
+                  item.hasCache ? 'C' : null
                 )
               )
             );
           },
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 39
+            lineNumber: 19
           }
         })
       )
@@ -76113,7 +76575,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     gridDimension: _propTypes2.default.number,
     onPress: _propTypes2.default.func,
     header: _propTypes2.default.func,
-    footer: _propTypes2.default.func
+    footer: _propTypes2.default.func,
+    getCellStyle: _propTypes2.default.func
   };
   exports.default = Grid;
 },600,[118,129,601,12],"app\\components\\Grid\\Grid.js");
@@ -76786,71 +77249,70 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _reactNativeExtendedStylesheet2 = _interopRequireDefault(_reactNativeExtendedStylesheet);
 
-  var _reactNative = _require(_dependencyMap[1], "react-native");
-
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   exports.default = _reactNativeExtendedStylesheet2.default.create({
-    container: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 10,
-      marginBottom: 40
+    grid: {
+      marginTop: 10,
+      marginBottom: 0,
+      justifyContent: 'flex-start'
     },
-    wrapper: {
-      flexDirection: 'row',
-      backgroundColor: '#fff',
-      marginTop: 60,
-      marginBottom: 40,
-      height: 100
+    space: {
+      backgroundColor: '#fff'
     },
-    separator: {
-      backgroundColor: '#000',
-      height: _reactNative.StyleSheet.hairlineWidth,
-      flex: 1,
-      marginLeft: 20
+    wallTop: {
+      backgroundColor: '#000'
+    },
+    wallFacing: {
+      backgroundColor: '#eee'
+    },
+    highlighted: {
+      backgroundColor: '#ff00ff'
     }
   });
-},604,[493,12],"app\\components\\Grid\\styles.js");
+},604,[493],"app\\components\\Grid\\styles.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = [{
+    'x': 2,
+    'y': 4
+  }, {
+    'x': 40,
+    'y': 80,
+    'z': 120,
+    'k': 160
+  }, {
+    'x': 2,
+    'y': 42
+  }];
+},605,[],"app\\data\\WallTemplate.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  var Cell = function () {
-    function Cell(name) {
-      _classCallCheck(this, Cell);
+  var Cell = function Cell(name) {
+    _classCallCheck(this, Cell);
 
-      this.name = name;
-      this.value = 5;
-      this.humanEdges = [];
-      this.monsterEdges = [];
-      this.searched = false;
-      this.parent = null;
-      this.highlighted = false;
-      this.revealed = false;
-      this.player = false;
-      this.monster = false;
-      this.survivor = false;
-    }
-
-    _createClass(Cell, [{
-      key: "reportEdges",
-      value: function reportEdges() {
-        console.log(this.edges);
-      }
-    }]);
-
-    return Cell;
-  }();
+    this.name = name;
+    this.value = 5;
+    this.humanEdges = [];
+    this.monsterEdges = [];
+    this.searched = false;
+    this.parent = null;
+    this.isHighlighted = false;
+    this.isRevealed = false;
+    this.hasHuman = false;
+    this.hasMonster = false;
+    this.hasCache = false;
+  };
 
   exports.default = Cell;
-},605,[],"app\\data\\Cell.js");
+},606,[],"app\\data\\Cell.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76976,7 +77438,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Connect;
-},606,[118,179,129,586,589,592,607,612],"app\\screens\\Connect.js");
+},607,[118,179,129,586,589,592,608,613],"app\\screens\\Connect.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -76995,7 +77457,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.GameList = _GameList2.default;
   exports.styles = _styles2.default;
-},607,[608,609],"app\\components\\GameList\\index.js");
+},608,[609,610],"app\\components\\GameList\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77065,7 +77527,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = GameList;
-},608,[118,12,129,609,610,611],"app\\components\\GameList\\GameList.js");
+},609,[118,12,129,610,611,612],"app\\components\\GameList\\GameList.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77103,7 +77565,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       alignItems: 'center'
     }
   });
-},609,[493,12],"app\\components\\GameList\\styles.js");
+},610,[493,12],"app\\components\\GameList\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77168,7 +77630,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = ListItem;
-},610,[129,118,12,609],"app\\components\\GameList\\ListItem.js");
+},611,[129,118,12,610],"app\\components\\GameList\\ListItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77198,7 +77660,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = Separator;
-},611,[118,12,609],"app\\components\\GameList\\Separator.js");
+},612,[118,12,610],"app\\components\\GameList\\Separator.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77216,7 +77678,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     key: '3',
     name: 'game the third'
   }];
-},612,[],"app\\data\\testGames.js");
+},613,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77337,7 +77799,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Waiting;
-},613,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+},614,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
 require(44);
 require(11);
 //# sourceMappingURL=index.map
