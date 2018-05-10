@@ -24,6 +24,8 @@ class Game extends Component {
     this.humanSpace = null;
     this.monsterSpace = null;
 
+    this.cacheTotal = 13;
+
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
 
@@ -87,6 +89,7 @@ class Game extends Component {
     // console.log("final elements: ", this.elements);
     this.assignHumanStart();
     this.assignMonsterStart();
+    this.assignCacheLocations();
   }
 
   createWalls = () => {
@@ -310,6 +313,19 @@ class Game extends Component {
     }
     console.log('monster space: ', cell);
   }
+
+  assignCacheLocations = () => {
+    for (let i = 0; i <= this.cacheTotal; i++) {
+      let cell = this.getRandomCell();
+      while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache) {
+        cell = this.getRandomCell();
+      }
+      cell.hasCache = true;
+      cell.isRevealed = true;
+    }
+  }
+
+  getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
 
   resetGrid = () => {
     for (let i = 0; i < this.elements.length; i++) {

@@ -29,6 +29,7 @@
     "react/jsx-boolean-value": "off",
     "no-nested-ternary": "off",
     "quotes": "off",
-    "no-else-return": "off"
+    "no-else-return": "off",
+    "react/sort-comp": "off"
   }
 }

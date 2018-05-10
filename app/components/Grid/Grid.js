@@ -31,7 +31,7 @@ const Grid = ({
                 getCellStyle(item)
               }
             >
-              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}</Text>
+              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
             </View>
           </TouchableHighlight>
         )}
