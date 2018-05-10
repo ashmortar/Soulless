@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Picker, View, TouchableOpacity } from 'react-native';
+import { Text, Picker, View, TouchableOpacity, Alert } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid } from '../components/Grid';
-import Cell from '../data/Cell';
-
 import WallTemplate from '../data/WallTemplate';
-
+import Cell from '../data/Cell';
 
 class Game extends Component {
   static propTypes = {
@@ -38,13 +36,29 @@ class Game extends Component {
       gridWidth: gridWidth_default,
       redraw: false,
       isHuman: true,
+      isLoading: true,
       echoDirection: 'radius',
     };
   }
 
-  componentDidMount() {
-    console.log("componentDidMount");
+  componentWillMount() {
+    console.log("component Will Mount");
     this.getGridLayout();
+  }
+
+  componentDidMount() {
+    this.setState({ isLoading: false });
+    console.log("component did mount");
+  }
+
+  componentWillUpdate() {
+    this.setState({ isLoading: true });
+    console.log("component wlil update");
+  }
+
+  componentDidUpdate() {
+    this.setState({ isLoading: false });
+    console.log("component did update");
   }
 
   onPressZoomIn = () => {
@@ -286,31 +300,25 @@ class Game extends Component {
   }
 
   assignHumanStart = () => {
-    let cell = this.elements[Math.floor(Math.random() * this.cellsTotal)];
-    if (cell.value > 0) {
-      cell.hasHuman = true;
-      cell.isRevealed = true;
-      this.humanSpace = cell;
-    } else {
-      this.assignHumanStart();
+    let cell = this.getRandomCell();
+    while (cell.value < 1) {
+      cell = this.getRandomCell();
     }
+    cell.hasHuman = true;
+    cell.isRevealed = true;
+    this.humanSpace = cell;    
     console.log('human space: ', cell);
   }
 
   assignMonsterStart = () => {
-    let cell = this.elements[Math.floor(Math.random() * this.cellsTotal)];
-    if (cell.value > 0) {
-      cell.hasMonster = true;
-      this.monsterSpace = cell;
-      let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
-      if (distance < 30) {
-        cell.hasMonster = false;
-        this.monsterSpace = null;
-        this.assignMonsterStart();
-      }
-    } else {
-      this.assignMonsterStart();
+    let cell = this.getRandomCell();
+    let distance = this.findShortestPath(cell, this.humanSpace);
+    while (cell.value < 1 || distance < 30) {
+      cell = this.getRandomCell();
+      distance = this.findShortestPath(cell, this.humanSpace);
     }
+    cell.hasMonster = true;
+    this.monsterSpace = cell;
     console.log('monster space: ', cell);
   }
 
@@ -340,7 +348,10 @@ class Game extends Component {
     switch (direction) {
       case 'north':
         if (item.name - this.cellsInRow < 0) {
-          console.log('cannot ping north from here');
+          Alert.alert(
+            'Uh-Oh',
+            'Cannot Echo-locate North from here..',
+          );
         } else {
           let cell = this.elements[item.name - this.cellsInRow];
           while (cell.value > 0) {
@@ -356,7 +367,10 @@ class Game extends Component {
 
       case 'east':
         if (item.name % this.cellsInRow === (this.cellsInRow - 1)) {
-          console.log('cannot ping east from here');
+          Alert.alert(
+            'Uh-Oh',
+            'Cannot Echo-locate East from here..',
+          );
         } else {
           let cell = this.elements[item.name + 1];
           while (cell.value > 0) {
@@ -372,7 +386,10 @@ class Game extends Component {
 
       case 'south':
         if (item.name + this.cellsInRow > this.cellsTotal) {
-          console.log('cannot ping south from here');
+          Alert.alert(
+            'Uh-Oh',
+            'Cannot Echo-locate South from here..',
+          );
         } else {
           let cell = this.elements[item.name + this.cellsInRow];
           while (cell.value > 0) {
@@ -388,7 +405,10 @@ class Game extends Component {
 
       case 'west':
         if (item.name % this.cellsInRow === 0) {
-          console.log('cannot ping west from here');
+          Alert.alert(
+            'Uh-Oh',
+            'Cannot Echo-locate West from here..',
+          );
         } else {
           let cell = this.elements[item.name - 1];
           while (cell.value > 0) {
@@ -496,7 +516,10 @@ class Game extends Component {
       this.humanSpace = item;
       this.resetGrid();
     } else {
-      console.log('please select a highlighted space');
+      Alert.alert(
+        'Uh-Oh',
+        'Please select a highlighted space',
+      );
     }
     this.setState({ redraw: !this.state.redraw });
   }
@@ -648,7 +671,7 @@ class Game extends Component {
   render() {
     return (
       <Container>
-
+        
         <Grid
           items={this.elements}
           onPress={this.moveHuman}
