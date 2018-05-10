@@ -147,7 +147,7 @@ class Game extends Component {
         }
         break;
       }
-      else if ((this.elements[i].value === "") && (i + this.cellsInRow < this.cellsTotal)) {
+      else if ((this.elements[i].value === -1) && (i + this.cellsInRow < this.cellsTotal)) {
         // console.log("grey");
         i += this.cellsInRow;
         counter++;
@@ -220,11 +220,11 @@ class Game extends Component {
     if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
       for (let j=0; j<length; j++) {
         k = i + 2 * j;
-        this.elements[k].value = "";//starting cell
-        this.elements[k - this.cellsInRow].value = "";//top first
+        this.elements[k].value = -1;//starting cell
+        this.elements[k - this.cellsInRow].value = -1;//top first
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
-        this.elements[k + 1].value = "";//right cell
-        this.elements[k - this.cellsInRow + 1].value = "";//right top first
+        this.elements[k + 1].value = -1;//right cell
+        this.elements[k - this.cellsInRow + 1].value = -1;//right top first
         this.elements[k - 2 * this.cellsInRow + 1].value = 0;//right top second
       }
     }
@@ -242,8 +242,8 @@ class Game extends Component {
 
       for (let j=0; j<length; j++) {
         k = i + 40 * j;
-        this.elements[k].value = "";//starting cell
-        this.elements[k - this.cellsInRow].value = "";//top first
+        this.elements[k].value = -1;//starting cell
+        this.elements[k - this.cellsInRow].value = -1;//top first
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
       }
     }
@@ -255,8 +255,8 @@ class Game extends Component {
 
       for (let j=0; j<2; j++) {
         k = i + j;
-        this.elements[k].value = "";//starting cell
-        this.elements[k - this.cellsInRow].value = "";//top first
+        this.elements[k].value = -1;//starting cell
+        this.elements[k - this.cellsInRow].value = -1;//top first
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
         this.elements[k - 3 * this.cellsInRow].value = 0;//top third
       }

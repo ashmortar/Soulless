@@ -75630,54 +75630,55 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.createWalls = function () {
-        for (var i = 0; i < _this.cellsTotal; i++) {
+        for (var i = 1; i <= _this.cellsTotal; i++) {
           _this.elements.push(new _Cell2.default(i));
         }
 
-        for (var _i = 0; _i < 50; _i++) {
-          var rand = Math.floor(Math.random() * _this.cellsTotal);
+        for (var _i = 0; _i < 70; _i++) {
+          var randWallType = Math.floor(Math.random() * 2);
+          var randStartingPoint = Math.floor(Math.random() * _this.cellsTotal);
+          var randLength = Math.floor(Math.random() * 4) + 2;
 
-          if (rand - 2 * _this.cellsInRow >= -1 && (rand + 1) % _this.cellsInRow != 0) {
-            _this.elements[rand].value = -1;
-            _this.elements[rand - _this.cellsInRow].value = -1;
-            _this.elements[rand - 2 * _this.cellsInRow].value = 0;
-            _this.elements[rand + 1].value = -1;
-            _this.elements[rand - _this.cellsInRow + 1].value = -1;
-            _this.elements[rand - 2 * _this.cellsInRow + 1].value = 0;
-            var typeOfWall = Math.floor(Math.random() * 2);
-            var rand2 = rand + _WallTemplate2.default[typeOfWall].x;
+          switch (randWallType) {
+            case 0:
+              _this.createWall_straightVertical(randStartingPoint, randLength);
 
-            if (rand2 < _this.cellsTotal && (rand2 + 1) % _this.cellsInRow != 0) {
-              _this.elements[rand2].value = -1;
-              _this.elements[rand2 - _this.cellsInRow].value = -1;
-              _this.elements[rand2 - 2 * _this.cellsInRow].value = 0;
+              break;
 
-              if (typeOfWall != 1) {
-                _this.elements[rand2 + 1].value = -1;
-                _this.elements[rand2 - _this.cellsInRow + 1].value = -1;
-                _this.elements[rand2 - 2 * _this.cellsInRow + 1].value = 0;
-              }
+            case 1:
+              _this.createWall_straightHorizontal(randStartingPoint, Math.floor(randLength - 1));
 
-              var rand3 = rand + _WallTemplate2.default[typeOfWall].y;
+              break;
 
-              if (rand3 < _this.cellsTotal && (rand3 + 1) % _this.cellsInRow != 0) {
-                _this.elements[rand3].value = -1;
-                _this.elements[rand3 - _this.cellsInRow].value = -1;
-                _this.elements[rand3 - 2 * _this.cellsInRow].value = 0;
-
-                if (typeOfWall != 1) {
-                  _this.elements[rand3 + 1].value = -1;
-                  _this.elements[rand3 - _this.cellsInRow + 1].value = -1;
-                  _this.elements[rand3 - 2 * _this.cellsInRow + 1].value = 0;
-                }
-              }
-            }
+            default:
+              console.log('');
           }
         }
+
+        var randColAmount = Math.floor(Math.random() * 3);
+
+        for (var _i2 = 0; _i2 < randColAmount; _i2++) {
+          var _randStartingPoint = Math.floor(Math.random() * _this.cellsTotal);
+
+          _this.createWall_squareColumn(_randStartingPoint);
+        }
+
+        _this.createBorderWalls();
+      };
+
+      _this.createBorderWalls = function () {
+        _this.createWall_straightHorizontal(80, _this.cellsInRow / 2);
+
+        _this.createWall_straightHorizontal(_this.cellsTotal - _this.cellsInRow, _this.cellsInRow / 2);
+
+        _this.createWall_straightVertical(80, _this.cellsInRow - 2);
+
+        _this.createWall_straightVertical(80 + _this.cellsInRow - 1, _this.cellsInRow - 2);
       };
 
       _this.fillGaps = function (i) {
         var counter = 0;
+        var counterForExtraGreyCells = 0;
         i += _this.cellsInRow;
 
         while (true) {
@@ -75688,10 +75689,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             }
 
             break;
-          } else if (_this.elements[i].value === "" && i + _this.cellsInRow <= _this.cellsTotal) {
+          } else if (_this.elements[i].value === -1 && i + _this.cellsInRow < _this.cellsTotal) {
             i += _this.cellsInRow;
             counter++;
+            counterForExtraGreyCells++;
           } else {
+            if (counterForExtraGreyCells > 2) {
+              var j = i;
+
+              while (counterForExtraGreyCells != 2) {
+                j -= _this.cellsInRow;
+                counterForExtraGreyCells--;
+                _this.elements[j].value = 1;
+              }
+            }
+
             break;
           }
         }
@@ -75754,6 +75766,49 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }
         }
       };
+
+      _this.createWall_straightHorizontal = function (i, length) {
+        if (i - 2 * _this.cellsInRow >= -1 && (i + 1) % _this.cellsInRow != 0) {
+          for (var j = 0; j < length; j++) {
+            k = i + 2 * j;
+            _this.elements[k].value = -1;
+            _this.elements[k - _this.cellsInRow].value = -1;
+            _this.elements[k - 2 * _this.cellsInRow].value = 0;
+            _this.elements[k + 1].value = -1;
+            _this.elements[k - _this.cellsInRow + 1].value = -1;
+            _this.elements[k - 2 * _this.cellsInRow + 1].value = 0;
+          }
+        }
+      };
+
+      _this.createWall_straightVertical = function (i, length) {
+        if (i + _this.cellsInRow * length > _this.cellsTotal) {
+          length = Math.floor((_this.cellsTotal - i) / _this.cellsInRow);
+        }
+
+        if (i - 2 * _this.cellsInRow >= -1) {
+          for (var j = 0; j < length; j++) {
+            k = i + 40 * j;
+            _this.elements[k].value = -1;
+            _this.elements[k - _this.cellsInRow].value = -1;
+            _this.elements[k - 2 * _this.cellsInRow].value = 0;
+          }
+        }
+      };
+
+      _this.createWall_squareColumn = function (i) {
+        if (i - 3 * _this.cellsInRow >= 0 && i + 1 % _this.cellsInRow != 0 && i + 1 < _this.cellsTotal) {
+          for (var j = 0; j < 2; j++) {
+            k = i + j;
+            _this.elements[k].value = -1;
+            _this.elements[k - _this.cellsInRow].value = -1;
+            _this.elements[k - 2 * _this.cellsInRow].value = 0;
+            _this.elements[k - 3 * _this.cellsInRow].value = 0;
+          }
+        }
+      };
+
+      _this.createWall_corner = function () {};
 
       _this.assignHumanStart = function () {
         var cell = _this.getRandomCell();
@@ -76113,7 +76168,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 597
+              lineNumber: 647
             }
           },
           _react3.default.createElement(
@@ -76121,7 +76176,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 598
+                lineNumber: 648
               }
             },
             "Game screen"
@@ -76135,7 +76190,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 600
+                lineNumber: 650
               }
             },
             _react3.default.createElement(
@@ -76151,7 +76206,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 601
+                  lineNumber: 651
                 }
               },
               _react3.default.createElement(
@@ -76162,7 +76217,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 610
+                    lineNumber: 660
                   }
                 },
                 "+"
@@ -76178,7 +76233,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 615
+                lineNumber: 665
               }
             },
             _react3.default.createElement(
@@ -76194,7 +76249,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 616
+                  lineNumber: 666
                 }
               },
               _react3.default.createElement(
@@ -76205,7 +76260,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 624
+                    lineNumber: 674
                   }
                 },
                 "-"
@@ -76225,7 +76280,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 634
+              lineNumber: 684
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76233,7 +76288,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 635
+              lineNumber: 685
             }
           }),
           _react3.default.createElement(
@@ -76251,7 +76306,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 636
+                lineNumber: 686
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76259,7 +76314,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 641
+                lineNumber: 691
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76267,7 +76322,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 642
+                lineNumber: 692
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76275,7 +76330,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 643
+                lineNumber: 693
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76283,7 +76338,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 644
+                lineNumber: 694
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76291,7 +76346,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 645
+                lineNumber: 695
               }
             })
           ),
@@ -76300,7 +76355,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 647
+              lineNumber: 697
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76308,7 +76363,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 648
+              lineNumber: 698
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76316,7 +76371,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 649
+              lineNumber: 699
             }
           })
         );
@@ -76412,7 +76467,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 657
+              lineNumber: 707
             }
           },
           _react3.default.createElement(_Grid.Grid, {
@@ -76425,7 +76480,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             getCellStyle: this.getCellStyle,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 659
+              lineNumber: 709
             }
           })
         );
