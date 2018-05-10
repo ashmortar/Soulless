@@ -80,13 +80,13 @@ class Game extends Component {
 
     for (let i=0; i<this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
-        console.log(i);
+        // console.log(i);
         this.fillGaps(i);
       }
     }
     for (let i=0; i<this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
-        console.log(i);
+        // console.log(i);
         this.fillGaps(i);
       }
     }
@@ -100,9 +100,8 @@ class Game extends Component {
       this.elements.push(new Cell(i));
     }
 
-
     //creating straight lines of walls
-    for (let i = 0; i < 50; i++) {//bug: block goes beyond boundaries
+    for (let i = 0; i < 70; i++) {//bug: block goes beyond boundaries
 
       let randWallType = Math.floor(Math.random() * 2);
       let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
@@ -110,23 +109,24 @@ class Game extends Component {
 
       switch (randWallType) {
         case 0:
-          this.createWall_straightHorizontal(randStartingPoint, Math.floor(randLength));
+          // this.createWall_straightHorizontal(randStartingPoint, Math.floor(randLength));
+          this.createWall_straightVertical(randStartingPoint, randLength);
           break;
         case 1:
-          this.createWall_straightVertical(randStartingPoint, randLength);
+          // this.createWall_straightVertical(randStartingPoint, randLength);
+          this.createWall_straightHorizontal(randStartingPoint, Math.floor(randLength - 1));
           break;
         default:
           console.log('');
       }
     }
 
-    //columns
-    // let randColAmount = Math.floor(Math.random() * 8) + 2;
-    // for (let i=0; i < randColAmount; i++) {
-    //   let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
-    //   this.createWall_squareColumn(randStartingPoint);
-    // }
-
+    // columns
+    let randColAmount = Math.floor(Math.random() * 3);
+    for (let i=0; i < randColAmount; i++) {
+      let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
+      this.createWall_squareColumn(randStartingPoint);
+    }
 
     this.createBorderWalls();
   }
@@ -146,7 +146,7 @@ class Game extends Component {
     i += this.cellsInRow;
     while (true) {
       if (this.elements[i].value === 0) {
-        console.log("black");
+        // console.log("black");
         for (let c=0; c<counter; c++) {
           i -= this.cellsInRow;
           this.elements[i].value = 0;
@@ -154,13 +154,13 @@ class Game extends Component {
         break;
       }
       else if ((this.elements[i].value === "") && (i + this.cellsInRow < this.cellsTotal)) {
-        console.log("grey");
+        // console.log("grey");
         i += this.cellsInRow;
         counter++;
         counterForExtraGreyCells++;
       }
       else {
-        console.log("white");
+        // console.log("white");
 
         if (counterForExtraGreyCells > 2) {
           let j = i;
@@ -243,7 +243,7 @@ class Game extends Component {
 
   createWall_straightVertical = (i, length) => {
 
-    if (this.cellsInRow * length >= this.cellsTotal) {
+    if (i + this.cellsInRow * length > this.cellsTotal) {
       length = Math.floor((this.cellsTotal - i) / this.cellsInRow);
     }
 
