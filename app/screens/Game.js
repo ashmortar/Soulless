@@ -85,6 +85,8 @@ class Game extends Component {
       }
     }
 
+
+
     //adding values to white cells
     this.addValuesToCells();
 
@@ -98,11 +100,12 @@ class Game extends Component {
     }
 
 
-    for (let i = 0; i < 50; i++) {//bug: block goes beyond boundaries
+
+    for (let i = 0; i < 4; i++) {//bug: block goes beyond boundaries
 
       let randWallType = Math.floor(Math.random() * 2);
       let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
-      let randLength = Math.floor(Math.random() * 8) + 2;
+      let randLength = Math.floor(Math.random() * 6) + 2;
 
       switch (randWallType) {
         case 0:
@@ -115,11 +118,25 @@ class Game extends Component {
           console.log('');
       }
     }
+    this.createBorderWalls();
+  }
+
+  createBorderWalls = () => {
+    this.createWall_straightHorizontal(80, this.cellsInRow/2);
+    this.createWall_straightHorizontal(this.cellsTotal - this.cellsInRow - 2, this.cellsInRow/2);
+
+    // this.createWall_straightHorizontal(1500 - 2, 5);
+    this.createWall_straightVertical(80, this.cellsInRow - 3);
+    this.createWall_straightVertical(80 + this.cellsInRow - 1, this.cellsInRow - 3);
+
+
+    // this.createWall_straightHorizontal(2*this.cellsInRow, this.cellsInRow);
   }
 
 
   fillGaps = (i) => {
     let counter = 0;
+    let counterForExtraGreyCells = 0;
     i += this.cellsInRow;
     while (true) {
       if (this.elements[i].value === 0) {
@@ -134,13 +151,26 @@ class Game extends Component {
         console.log("grey");
         i += this.cellsInRow;
         counter++;
+        counterForExtraGreyCells++;
       }
       else {
         console.log("white");
+
+        if (counterForExtraGreyCells > 2) {
+          let j = i;
+          while (counterForExtraGreyCells != 2) {
+            j -= this.cellsInRow;
+            counterForExtraGreyCells--;
+            this.elements[j].value = 1;
+          }
+        }
+
         break;
       }
     }
   }
+
+
 
 
   addValuesToCells = () => {
@@ -215,7 +245,8 @@ class Game extends Component {
     }
 
 
-    if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
+    // if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
+    if ((i - 2 * this.cellsInRow >= -1)) {
 
       for (let j=0; j<length; j++) {
         i = i + 40;
@@ -227,11 +258,9 @@ class Game extends Component {
   }
 
   createWall_squareColumn = () => {
-
   }
 
   createWall_corner = () => {
-
   }
 
 
