@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Picker, View, TouchableOpacity, Alert } from 'react-native';
+import { Text, Picker, View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid } from '../components/Grid';
@@ -36,7 +36,6 @@ class Game extends Component {
       gridWidth: gridWidth_default,
       redraw: false,
       isHuman: true,
-      isLoading: true,
       echoDirection: 'radius',
     };
   }
@@ -44,21 +43,6 @@ class Game extends Component {
   componentWillMount() {
     console.log("component Will Mount");
     this.getGridLayout();
-  }
-
-  componentDidMount() {
-    this.setState({ isLoading: false });
-    console.log("component did mount");
-  }
-
-  componentWillUpdate() {
-    this.setState({ isLoading: true });
-    console.log("component wlil update");
-  }
-
-  componentDidUpdate() {
-    this.setState({ isLoading: false });
-    console.log("component did update");
   }
 
   onPressZoomIn = () => {
@@ -671,7 +655,7 @@ class Game extends Component {
   render() {
     return (
       <Container>
-        
+        {/* <ActivityIndicator size="large" color="#ff00ff" animating={this.state.isLoading} /> */}
         <Grid
           items={this.elements}
           onPress={this.moveHuman}
