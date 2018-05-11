@@ -32,7 +32,7 @@ const Grid = ({
                 getCellStyle(item)
               }
             >
-              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center', color: '#ff00ff' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
+              <Text style={{ fontSize: itemDimension * 0.3, textAlign: 'center' }}>{item.name}</Text>
             </View>
           </TouchableHighlight>
         )}
@@ -40,6 +40,10 @@ const Grid = ({
     </ScrollView>
   </View>
 );
+// <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
+
+
+
 // <View
 //   style={
 //     item.value
