@@ -35,7 +35,7 @@ class Game extends Component {
       gridItemWidth: gridItemWidth_default,
       gridWidth: gridWidth_default,
       redraw: false,
-      isHuman: true,
+      isHuman: false,
       echoDirection: 'radius',
     };
   }
@@ -91,10 +91,19 @@ class Game extends Component {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
+
+    for (let i=0; i<this.cellsTotal; i++) {
+      if (this.elements[i].value === 0) {
+        this.fillGaps(i);
+      }
+    }
+
+    this.fixClosedLoops();
+    this.setState({ redraw: !this.state.redraw });
   }
 
   createWalls = () => {
-    for (let i = 1; i <= this.cellsTotal; i++) {
+    for (let i = 0; i < this.cellsTotal; i++) {
       this.elements.push(new Cell(i));
     }
 
@@ -166,7 +175,13 @@ class Game extends Component {
           }
         }
         else if (counterForExtraGreyCells < 2) {
+          let k = i;
           //go back to black
+          while (this.elements[k].value != 0) {
+            k -= this.cellsInRow;
+          }
+          this.elements[k + this.cellsInRow].value = -1;
+          this.elements[k + 2 * this.cellsInRow].value = -1;
 
         }
         break;
@@ -175,14 +190,141 @@ class Game extends Component {
   }
 
 
+  fixClosedLoops = () => {
+    // cellsInLoop.push(currentItem);
+    let prevDirection;
+
+    for (let j = this.cellsInRow + 1; j < this.cellsTotal - this.cellsInRow - 1; j++) {
+      let i = j;
+      let cellsInLoop = [];
+      let firstCellIndex = i;
+      if (this.elements[i].value > 0) {
+        // console.log(i);
+        // console.log('----------------------');
+
+
+        while(true) {
+          // console.log(i);
+          // console.log('size:');
+          // console.log(cellsInLoop.length);
+          cellsInLoop.push(this.elements[i]);
+
+          if ((cellsInLoop.length > 1) && (i === firstCellIndex)) {
+            this.elements[i].isHighlighted = true;
+            console.log('LOOP. at:');
+            console.log(i);
+            console.log('size:');
+            console.log(cellsInLoop.length);
+
+            break;
+          }
+
+          if (cellsInLoop.length > 80) {
+            break;
+          }
+
+          if ((i - 1 < 0) || (i - this.cellsInRow < 0) || (i + 1 > this.cellsTotal) || (i + this.cellsInRow > this.cellsTotal)) {
+            continue;
+          }
+
+          if ((this.elements[i - 1].value <= 0) && (this.elements[i - this.cellsInRow].value <= 0) && (this.elements[i + 1].value > 0)) {
+            // console.log('->');
+            //->
+            prevDirection = 0;
+            i++;
+
+          }
+          else if ((this.elements[i - 1].value <= 0) && (this.elements[i + this.cellsInRow].value <= 0) && (this.elements[i + 1].value > 0)) {
+            if (cellsInLoop.length === 1) {
+              break;
+            }
+            // console.log('^');
+            //^
+            prevDirection = 1;
+            i -= this.cellsInRow;
+
+          }
+          else if ((this.elements[i + 1].value <= 0) && (this.elements[i - this.cellsInRow].value <= 0) && (this.elements[i - 1].value > 0)) {
+            if (cellsInLoop.length === 1) {
+              break;
+            }
+            //v
+            // console.log('v');
+            prevDirection = 2;
+            i += this.cellsInRow;
+
+          }
+          else if ((this.elements[i + 1].value <= 0) && (this.elements[i + this.cellsInRow].value <= 0) && (this.elements[i - 1].value > 0)) {
+            if (cellsInLoop.length === 1) {
+              break;
+            }
+            //<-
+            // console.log('<-');
+            prevDirection = 3;
+            i--;
+          }
+          else if ((this.elements[i + 1].value > 0) && (this.elements[i + this.cellsInRow].value > 0) && (this.elements[i - 1].value > 0) && (this.elements[i - this.cellsInRow].value > 0)) {
+            //surr by white
+            // console.log('surr by white');
+            if (cellsInLoop.length === 1) {
+              break;
+            }
+            switch (prevDirection) {
+              case 0://->
+                i -= this.cellsInRow;//^
+                prevDirection = 1;
+                break;
+              case 1://^
+                i--;//<-
+                prevDirection = 3;
+                break;
+              case 2://v
+                i++;//->
+                prevDirection = 0;
+                break;
+              case 3://<-
+                i += this.cellsInRow;//v
+                prevDirection = 2;
+                break;
+              default:
+              console.log('');
+            }
+          }
+          else {
+            // console.log('else');
+            if (cellsInLoop.length === 1) {
+              break;
+            }
+            switch (prevDirection) {
+              case 0://->
+                i++;//->
+                break;
+              case 1://^
+                i -= this.cellsInRow;//^
+                break;
+              case 2://v
+                i += this.cellsInRow;//v
+                break;
+              case 3://<-
+                i--;//<-
+                break;
+              default:
+              console.log('');
+            }
+          }
+        }
+      }
+    }
+
+  }
+
 
   fillAngles = () => {
     for (var i = 0; i < this.cellsTotal; i++) {
       if ((i - 1 >= 0) && (i + 3 * this.cellsInRow < this.cellsTotal)) {
-        console.log(i);
         if (this.elements[i].value === 0) {
           if (this.elements[i - 1].value > 0) {
-            if (this.elements[i + this.cellsInRow].value === "") {
+            if (this.elements[i + this.cellsInRow].value === -1) {
 
               if (this.elements[i + 3*this.cellsInRow - 1].value === 0) {
                 this.elements[i + 3*this.cellsInRow].value = 0;
@@ -199,10 +341,9 @@ class Game extends Component {
       }
 
       if ((i + 1 % this.cellsInRow != 0) && (i + 3 * this.cellsInRow < this.cellsTotal)) {
-        console.log(i);
         if (this.elements[i].value === 0) {
           if (this.elements[i + 1].value > 0) {
-            if (this.elements[i + this.cellsInRow].value === "") {
+            if (this.elements[i + this.cellsInRow].value === -1) {
 
               if (this.elements[i + 3*this.cellsInRow + 1].value === 0) {
                 this.elements[i + 3*this.cellsInRow].value = 0;
@@ -219,7 +360,6 @@ class Game extends Component {
       }
     }
   }
-
 
 
   addValuesToCells = () => {
@@ -375,11 +515,11 @@ class Game extends Component {
       }
     }
     if (path.length === 0) {
-      console.log('path is unreachable');
+      // console.log('path is unreachable');
     }
     // this.setState({ redraw: !this.state.redraw });
     setTimeout(this.resetGrid, 50);
-    console.log(path.length - 1);
+    // console.log(path.length - 1);
     return path.length - 1;
   }
 
@@ -391,7 +531,7 @@ class Game extends Component {
     cell.hasHuman = true;
     cell.isRevealed = true;
     this.humanSpace = cell;
-    console.log('human space: ', cell);
+    // console.log('human space: ', cell);
   }
 
   assignMonsterStart = () => {
@@ -403,7 +543,7 @@ class Game extends Component {
     }
     cell.hasMonster = true;
     this.monsterSpace = cell;
-    console.log('monster space: ', cell);
+    // console.log('monster space: ', cell);
   }
 
   assignCacheLocations = () => {
@@ -678,11 +818,11 @@ class Game extends Component {
   handlePressGridItem = (item) => {
     if (this.counter === 0) {
       this.start = item;
-      console.log('start position: ', item);
+      // console.log('start position: ', item);
       this.counter = 1;
     } else if (this.counter === 1) {
       this.end = item;
-      console.log('end position: ', item);
+      // console.log('end position: ', item);
       this.findShortestPath(this.start, this.end);
       this.counter = 0;
     }
