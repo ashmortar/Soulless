@@ -32,6 +32,7 @@ const Grid = ({
               }
             >
               <Text style={{ fontSize: itemDimension * 0.3, textAlign: 'center' }}>{item.name}</Text>
+              <Text style={{ fontSize: itemDimension * 0.2, textAlign: 'right' }}>{item.value}</Text>
             </View>
           </TouchableHighlight>
         )}

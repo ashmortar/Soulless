@@ -98,7 +98,7 @@ class Game extends Component {
       }
     }
 
-    this.fixClosedLoops();
+    // this.fixClosedLoops();
     this.setState({ redraw: !this.state.redraw });
   }
 
@@ -108,7 +108,7 @@ class Game extends Component {
     }
 
     //creating straight lines of walls
-    for (let i = 0; i < 70; i++) {//bug: block goes beyond boundaries
+    for (let i = 0; i < 30; i++) {//bug: block goes beyond boundaries
       let randWallType = Math.floor(Math.random() * 2);
       let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
       let randLength = Math.floor(Math.random() * 4) + 2;
@@ -127,12 +127,16 @@ class Game extends Component {
       }
     }
 
-    // columns
-    let randColAmount = Math.floor(Math.random() * 3);
-    for (let i=0; i < randColAmount; i++) {
-      let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
-      this.createWall_squareColumn(randStartingPoint);
-    }
+    // // columns
+    // let randColAmount = Math.floor(Math.random() * 3);
+    // for (let i=0; i < randColAmount; i++) {
+    //   let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
+    //   this.createWall_squareColumn(randStartingPoint);
+    // }
+
+    this.fillWhiteGaps();
+    this.fillWhiteVertLines();
+    this.fillWhiteHorLines();
 
     this.createBorderWalls();
   }
@@ -189,6 +193,86 @@ class Game extends Component {
     }
   }
 
+  fillWhiteGaps = () => {
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 10*this.cellsInRow + 9; i++) {
+      if (this.elements[i].value > 0) {
+
+
+        //square spaces with columns
+        let flag = true;
+        for (let j=0; j<8; j++) {
+          for (let k=0; k<8; k++) {
+            if (this.elements[i + j*this.cellsInRow + k].value <= 0) {
+              flag = false;
+              // break;
+            }
+          }
+        }
+        if (flag) {
+          //white space 9x9 detected
+          console.log('white space at:');
+          console.log(i);
+          this.createWall_squareColumn(i + 4 + 5 * this.cellsInRow);
+          // break;
+        }
+
+      }
+    }
+  }
+
+  fillWhiteHorLines = () => {
+    console.log('fillWhiteHorLines called');
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 2*this.cellsInRow - 11; i++) {
+      // if ((this.elements[i].value > 0) && (i + 10 % this.cellsInRow != 0)) {
+      if (this.elements[i].value > 0) {
+
+        //horizontal white lines
+        let flag = true;
+        for (let k=0; k<11; k++) {
+          if (this.elements[i + k].value <= 0) {
+            flag = false;
+            // break;
+          }
+        }
+
+        if (flag) {
+          //white hor line detected
+          console.log('white line at:');
+          console.log(i);
+          this.createWall_straightVertical(i + 10 + 2 * this.cellsInRow, 2);
+          // this.createWall_squareColumn(i + 4 + 5 * this.cellsInRow);
+          // break;
+        }
+      }
+    }
+  }
+
+
+  fillWhiteVertLines = () => {
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 10*this.cellsInRow; i++) {
+
+
+      if (this.elements[i].value > 0) {
+
+        //horizontal white lines
+        let flag = true;
+        for (let j=0; j<10; j++) {
+          if (this.elements[i + j*this.cellsInRow].value <= 0) {
+            flag = false;
+            // break;
+          }
+        }
+        if (flag) {
+          //white space 9x9 detected
+          // console.log('white space at:');
+          // console.log(i);
+          this.createWall_straightHorizontal(i + 10 * this.cellsInRow, 1);
+          // break;
+        }
+      }
+    }
+  }
+
 
   fixClosedLoops = () => {
     // cellsInLoop.push(currentItem);
@@ -215,6 +299,10 @@ class Game extends Component {
             console.log(i);
             console.log('size:');
             console.log(cellsInLoop.length);
+            console.log('in loop:--------------');
+            for (let z = 0; z < cellsInLoop.length; z++) {
+              console.log(cellsInLoop[z].name);
+            }
 
             break;
           }
@@ -227,41 +315,100 @@ class Game extends Component {
             continue;
           }
 
-          if ((this.elements[i - 1].value <= 0) && (this.elements[i - this.cellsInRow].value <= 0) && (this.elements[i + 1].value > 0)) {
-            // console.log('->');
-            //->
-            prevDirection = 0;
-            i++;
+
+
+          if (this.elements[i].value <= 0) {
+            break;
+          }
+          else if ((this.elements[i].value === 1) && (cellsInLoop.length != 1)) {
+            switch (prevDirection) {
+              case 0://->
+                i--;//<-
+                prevDirection = 3;
+                break;
+              case 1://^
+                i += this.cellsInRow;//v
+                prevDirection = 2;
+                break;
+              case 2://v
+                i -= this.cellsInRow;//^
+                prevDirection = 1;
+                break;
+              case 3://<-
+                i++;//->
+                prevDirection = 0;
+                break;
+              default:
+                console.log('');
+            }
+          }
+          else if ((this.elements[i - 1].value <= 0) && (this.elements[i - this.cellsInRow].value <= 0) && (this.elements[i + 1].value > 0)) {
+            //  0
+            //0 w
+            if ((prevDirection === 1) || (cellsInLoop.length === 1)) {
+              //->
+              prevDirection = 0;
+              i++;
+            }
+            else if (prevDirection === 3) {
+              //v
+              prevDirection = 2;
+              i += this.cellsInRow;
+            }
 
           }
           else if ((this.elements[i - 1].value <= 0) && (this.elements[i + this.cellsInRow].value <= 0) && (this.elements[i + 1].value > 0)) {
             if (cellsInLoop.length === 1) {
               break;
             }
-            // console.log('^');
-            //^
-            prevDirection = 1;
-            i -= this.cellsInRow;
+            // 0 w
+            //   0
+            if (prevDirection === 3) {
+              //^
+              prevDirection = 1;
+              i -= this.cellsInRow;
+            }
+            else if (prevDirection === 2) {
+              //->
+              prevDirection = 0;
+              i++;
+            }
 
           }
           else if ((this.elements[i + 1].value <= 0) && (this.elements[i - this.cellsInRow].value <= 0) && (this.elements[i - 1].value > 0)) {
             if (cellsInLoop.length === 1) {
               break;
             }
-            //v
-            // console.log('v');
-            prevDirection = 2;
-            i += this.cellsInRow;
+            //0
+            //w 0
+            if (prevDirection === 0) {
+              //v
+              prevDirection = 2;
+              i += this.cellsInRow;
+            }
+            else if (prevDirection === 1) {
+              //<-
+              prevDirection = 3;
+              i--;
+            }
 
           }
           else if ((this.elements[i + 1].value <= 0) && (this.elements[i + this.cellsInRow].value <= 0) && (this.elements[i - 1].value > 0)) {
             if (cellsInLoop.length === 1) {
               break;
             }
-            //<-
-            // console.log('<-');
-            prevDirection = 3;
-            i--;
+            //w 0
+            //0
+            if (prevDirection === 2) {
+              //<-
+              prevDirection = 3;
+              i--;
+            }
+            else if (prevDirection === 0) {
+              //^
+              prevDirection = 1;
+              i -= this.cellsInRow;
+            }
           }
           else if ((this.elements[i + 1].value > 0) && (this.elements[i + this.cellsInRow].value > 0) && (this.elements[i - 1].value > 0) && (this.elements[i - this.cellsInRow].value > 0)) {
             //surr by white
