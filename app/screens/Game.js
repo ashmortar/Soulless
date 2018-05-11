@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Picker, View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { Text, Picker, View, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
-import { Grid } from '../components/Grid';
+import { Grid, AnimatedGrid } from '../components/Grid';
 import WallTemplate from '../data/WallTemplate';
 import Cell from '../data/Cell';
 
@@ -21,9 +21,8 @@ class Game extends Component {
     this.counter = 0;
     this.humanSpace = null;
     this.monsterSpace = null;
-
     this.cacheTotal = 13;
-
+    this.screenWidth = null;
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
 
@@ -42,7 +41,16 @@ class Game extends Component {
 
   componentWillMount() {
     console.log("component Will Mount");
+    let { width } = Dimensions.get('window');
+    this.screenWidth = width;
     this.getGridLayout();
+  }
+
+  componentDidMount() {
+    console.log("component did mount");
+    this.assignHumanStart();
+    this.assignMonsterStart();
+    this.assignCacheLocations();
   }
 
   onPressZoomIn = () => {
@@ -86,13 +94,10 @@ class Game extends Component {
     // adding values to white cells
     this.addValuesToCells();
     // console.log("final elements: ", this.elements);
-    this.assignHumanStart();
-    this.assignMonsterStart();
-    this.assignCacheLocations();
   }
 
   createWalls = () => {
-    for (let i = 1; i <= this.cellsTotal; i++) {
+    for (let i = 0; i < this.cellsTotal; i++) {
       this.elements.push(new Cell(i));
     }
 
@@ -347,7 +352,7 @@ class Game extends Component {
   assignMonsterStart = () => {
     let cell = this.getRandomCell();
     let distance = this.findShortestPath(cell, this.humanSpace);
-    while (cell.value < 1 || distance < 30) {
+    while (cell.value < 1 || distance < 20) {
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
     }
@@ -681,7 +686,7 @@ class Game extends Component {
 
   renderFooter = () => {
     return (
-      <View style={{ marginBottom: 20, marginTop: 0 }}>
+      <View style={{ marginBottom: 20, marginTop: 0, flex: 1, flexDirection: 'horizontal' }}>
         <NavButton onPress={this.handleChangePlayer} text={`human? ${this.state.isHuman}`} />
         <Picker
           selectedValue={this.state.echoDirection}
@@ -705,17 +710,17 @@ class Game extends Component {
   render() {
     return (
       <Container>
-        {/* <ActivityIndicator size="large" color="#ff00ff" animating={this.state.isLoading} /> */}
-        <Grid
+        <AnimatedGrid
           items={this.elements}
           onPress={this.moveHuman}
-          header={this.renderHeader}
-          footer={this.renderFooter}
           gridDimension={this.state.gridWidth}
           itemDimension={this.state.gridItemWidth}
           getCellStyle={this.getCellStyle}
+          screenWidth={this.screenWidth}
+          numColumns={this.cellsInRow}
+          isHuman={this.state.isHuman}
         />
-
+        {this.renderFooter()}
       </Container>
     );
   }

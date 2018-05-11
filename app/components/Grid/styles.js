@@ -6,6 +6,9 @@ export default EStyleSheet.create({
     marginBottom: 0,
     justifyContent: 'flex-start',
   },
+  cell: {
+    
+  },
   space: {
     backgroundColor: '#fff',
   },

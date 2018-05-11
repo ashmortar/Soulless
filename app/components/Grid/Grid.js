@@ -11,14 +11,15 @@ const Grid = ({
   header,
   footer,
   getCellStyle,
+  screenWidth,
 }) => (
   <View
-    style={{ marginTop: 10, marginBottom: 0, justifyContent: "flex-start" }}
+    style={{ marginTop: 10, marginBottom: 0, justifyContent: "flex-start", width: (screenWidth - 15), height: (screenWidth - 15) }}
   >
-    <ScrollView horizontal={true}>
+    <ScrollView horizontal={true} style={{ width: gridDimension }}>
       <GridView
-        ListHeaderComponent={header}
-        ListFooterComponent={footer}
+        // ListHeaderComponent={header}
+        // ListFooterComponent={footer}
         spacing={0}
         style={{ width: gridDimension }}
         itemDimension={itemDimension}
@@ -31,7 +32,7 @@ const Grid = ({
                 getCellStyle(item)
               }
             >
-              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
+              <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center', color: '#ff00ff' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
             </View>
           </TouchableHighlight>
         )}
@@ -76,7 +77,8 @@ Grid.propTypes = {
   onPress: PropTypes.func,
   header: PropTypes.func,
   footer: PropTypes.func,
-  getCellStyle: PropTypes.func
+  getCellStyle: PropTypes.func,
+  screenWidth: PropTypes.number,
 
 };
 
