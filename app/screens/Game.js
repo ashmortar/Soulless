@@ -26,6 +26,7 @@ class Game extends Component {
 
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
+    this.allowedLengthOfWhiteLine = 14;//density
 
 
     let gridItemWidth_default = 10;
@@ -85,6 +86,14 @@ class Game extends Component {
       }
     }
 
+    // for (let i=0; i<this.cellsTotal; i++) {
+    //   if (this.elements[i].value === 0) {
+    //     this.fillGaps(i);
+    //   }
+    // }
+
+    // this.fillAngles();
+
     //adding values to white cells
     this.addValuesToCells();
     // console.log("final elements: ", this.elements);
@@ -92,15 +101,12 @@ class Game extends Component {
     this.assignMonsterStart();
     this.assignCacheLocations();
 
-    for (let i=0; i<this.cellsTotal; i++) {
-      if (this.elements[i].value === 0) {
-        this.fillGaps(i);
-      }
-    }
+
 
     // this.fixClosedLoops();
     this.setState({ redraw: !this.state.redraw });
   }
+
 
   createWalls = () => {
     for (let i = 0; i < this.cellsTotal; i++) {
@@ -184,13 +190,21 @@ class Game extends Component {
           while (this.elements[k].value != 0) {
             k -= this.cellsInRow;
           }
-          this.elements[k + this.cellsInRow].value = -1;
-          this.elements[k + 2 * this.cellsInRow].value = -1;
+          if (this.elements[k + this.cellsInRow].value != 0) {
+            this.elements[k + this.cellsInRow].value = -1;
+          }
+          if (this.elements[k + 2 * this.cellsInRow].value != 0) {
+            this.elements[k + 2 * this.cellsInRow].value = -1;
+          }
 
         }
         break;
       }
     }
+  }
+
+  fillGreyGaps = () => {
+
   }
 
   fillWhiteGaps = () => {
@@ -222,13 +236,13 @@ class Game extends Component {
 
   fillWhiteHorLines = () => {
     console.log('fillWhiteHorLines called');
-    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 2*this.cellsInRow - 11; i++) {
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 2*this.cellsInRow - this.allowedLengthOfWhiteLine; i++) {
       // if ((this.elements[i].value > 0) && (i + 10 % this.cellsInRow != 0)) {
       if (this.elements[i].value > 0) {
 
         //horizontal white lines
         let flag = true;
-        for (let k=0; k<11; k++) {
+        for (let k = 0; k < this.allowedLengthOfWhiteLine + 1; k++) {
           if (this.elements[i + k].value <= 0) {
             flag = false;
             // break;
@@ -239,7 +253,7 @@ class Game extends Component {
           //white hor line detected
           console.log('white line at:');
           console.log(i);
-          this.createWall_straightVertical(i + 10 + 2 * this.cellsInRow, 2);
+          this.createWall_straightVertical(i + this.allowedLengthOfWhiteLine + 2 * this.cellsInRow, 2);
           // this.createWall_squareColumn(i + 4 + 5 * this.cellsInRow);
           // break;
         }
@@ -249,14 +263,14 @@ class Game extends Component {
 
 
   fillWhiteVertLines = () => {
-    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 10*this.cellsInRow; i++) {
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - this.allowedLengthOfWhiteLine*this.cellsInRow; i++) {
 
 
       if (this.elements[i].value > 0) {
 
         //horizontal white lines
         let flag = true;
-        for (let j=0; j<10; j++) {
+        for (let j=0; j<this.allowedLengthOfWhiteLine + 1; j++) {
           if (this.elements[i + j*this.cellsInRow].value <= 0) {
             flag = false;
             // break;
@@ -266,7 +280,7 @@ class Game extends Component {
           //white space 9x9 detected
           // console.log('white space at:');
           // console.log(i);
-          this.createWall_straightHorizontal(i + 10 * this.cellsInRow, 1);
+          this.createWall_straightHorizontal(i + this.allowedLengthOfWhiteLine * this.cellsInRow, 1);
           // break;
         }
       }
@@ -560,11 +574,20 @@ class Game extends Component {
     if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
       for (let j=0; j<length; j++) {
         k = i + 2 * j;
-        this.elements[k].value = -1;//starting cell
-        this.elements[k - this.cellsInRow].value = -1;//top first
+        if (this.elements[k].value != 0) {
+          this.elements[k].value = -1;//starting cell
+        }
+        if (this.elements[k - this.cellsInRow].value != 0) {
+          this.elements[k - this.cellsInRow].value = -1;//top first
+        }
+
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
-        this.elements[k + 1].value = -1;//right cell
-        this.elements[k - this.cellsInRow + 1].value = -1;//right top first
+        if (this.elements[k + 1].value != 0) {
+          this.elements[k + 1].value = -1;//right cell
+        }
+        if (this.elements[k - this.cellsInRow + 1].value != 0) {
+          this.elements[k - this.cellsInRow + 1].value = -1;//right top first
+        }
         this.elements[k - 2 * this.cellsInRow + 1].value = 0;//right top second
       }
     }
@@ -580,8 +603,12 @@ class Game extends Component {
     if ((i - 2 * this.cellsInRow >= -1)) {
       for (let j=0; j<length; j++) {
         k = i + 40 * j;
-        this.elements[k].value = -1;//starting cell
-        this.elements[k - this.cellsInRow].value = -1;//top first
+        if (this.elements[k].value != 0){
+          this.elements[k].value = -1;//starting cell
+        }
+        if (this.elements[k - this.cellsInRow].value != 0){
+          this.elements[k - this.cellsInRow].value = -1;//top first
+        }
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
       }
     }
@@ -592,8 +619,12 @@ class Game extends Component {
 
       for (let j=0; j<2; j++) {
         k = i + j;
-        this.elements[k].value = -1;//starting cell
-        this.elements[k - this.cellsInRow].value = -1;//top first
+        if (this.elements[k].value != 0){
+          this.elements[k].value = -1;//starting cell
+        }
+        if (this.elements[k - this.cellsInRow].value != 0){
+          this.elements[k - this.cellsInRow].value = -1;//top first
+        }
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
         this.elements[k - 3 * this.cellsInRow].value = 0;//top third
       }
