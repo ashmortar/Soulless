@@ -52,7 +52,6 @@ export default class AnimatedGrid extends React.Component {
 
   state = {
     itemDimension: new Animated.Value(this.props.zoomedInValue),
-    gridDimension: new Animated.Value(this.props.zoomedInValue * this.props.cellsInRow),
   }
 
   getIndex = () => {
@@ -78,7 +77,6 @@ export default class AnimatedGrid extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('animated grid did update', this.props.zoom, this.props.itemDimension, this.props.itemDimension);
     if (this.state.itemDimension._value === (this.props.zoomedInValue) && this.props.zoom === "far") {
       Animated.timing(
         this.state.itemDimension,
@@ -86,14 +84,9 @@ export default class AnimatedGrid extends React.Component {
           toValue: this.props.zoomedOutValue,
           duration: ANIMATION_DURATION,
         },
-        this.state.gridDimension,
-        {
-          toValue: this.props.zoomedOutValue * this.props.cellsInRow,
-          duration: ANIMATION_DURATION,
-        },
       ).start();
       setTimeout(() => {
-        // this.scrollViewRef.scrollTo({ x: 0, y: 0, animated: true });
+        this.scrollViewRef.scrollTo({ x: 0, y: 0, animated: true });
       }, ANIMATION_DURATION + 500);
     } else if (this.state.itemDimension._value === (this.props.zoomedOutValue) && this.props.zoom === "close") {
       Animated.timing(
@@ -102,19 +95,14 @@ export default class AnimatedGrid extends React.Component {
           toValue: this.props.zoomedInValue,
           duration: ANIMATION_DURATION,
         },
-        this.state.gridDimension,
-        {
-          toValue: this.props.zoomedInValue * this.props.cellsInRow,
-          duration: ANIMATION_DURATION,
-        },
       ).start();
       setTimeout(() => {
-        // this.scrollViewRef.scrollTo({ x: this.getXScrollPos(), animated: true });
+        this.scrollViewRef.scrollTo({ x: this.getXScrollPos(), animated: true });
         this.flatListRef.scrollToIndex({ animated: true, index: this.getIndex() });
       }, ANIMATION_DURATION + 500);
     } else if (this.props.zoom === "close") {
       setTimeout(() => {
-        // this.scrollViewRef.scrollTo({ x: this.getXScrollPos(), animated: true });
+        this.scrollViewRef.scrollTo({ x: this.getXScrollPos(), animated: true });
         this.flatListRef.scrollToIndex({ animated: true, index: this.getIndex() });
       }, 500);
     }
@@ -128,18 +116,15 @@ export default class AnimatedGrid extends React.Component {
   }
 
   renderItem = ({ item, index }) => {
-    console.log('renderItem', itemDimension);
     return (
       <AnimatedGridItem style={{ width: itemDimension, height: itemDimension }} {...this.props} index={index} animatedViewDimension={itemDimension} />
     );
   }
   
   render() {
-    let { itemDimension, gridDimension } = this.state;
-    // let { itemDimension } = this.state
+    let { itemDimension } = this.state;
     return (
-      <View style={{}}></View>
-      <Animated.View style={{ margin: 5, justifyContent: "center", width: gridDimension, height: gridDimension }}>
+      <View style={{ margin: 5, justifyContent: "center", width: (this.props.screenWidth), height: (this.props.screenWidth + 100) }}>
         <ScrollView ref={(ref) => { this.scrollViewRef = ref; }} horizontal>
           <FlatList
             ref={(ref) => { this.flatListRef = ref; }}
@@ -149,7 +134,6 @@ export default class AnimatedGrid extends React.Component {
             numColumns={this.props.numColumns}
             keyExtractor={item => item.name.toString()}
             renderItem={({ item, index }) => {
-              console.log('renderItem', itemDimension._value);
               return (
                 <AnimatedGridItem
                   {...this.props}
@@ -163,7 +147,7 @@ export default class AnimatedGrid extends React.Component {
             initialScrollIndex={this.getIndex()}
           />
         </ScrollView>
-      </Animated.View>
+      </View>
     );
   }
 }
