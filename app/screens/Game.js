@@ -40,7 +40,7 @@ class Game extends Component {
       gridItemWidth: gridItemWidth_default,
       gridWidth: gridWidth_default,
       redraw: false,
-      isHuman: true,
+      isHuman: false,
       echoDirection: 'radius',
       zoom: 'close',
       playerSpace: { name: 0 },

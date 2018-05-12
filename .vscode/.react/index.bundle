@@ -76619,7 +76619,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         gridItemWidth: gridItemWidth_default,
         gridWidth: gridWidth_default,
         redraw: false,
-        isHuman: true,
+        isHuman: false,
         echoDirection: 'radius',
         zoom: 'close',
         playerSpace: {
@@ -77606,6 +77606,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _reactNative = _require(_dependencyMap[4], "react-native");
 
+  var _AnimatedGridItem = _require(_dependencyMap[5], "./AnimatedGridItem");
+
+  var _AnimatedGridItem2 = _interopRequireDefault(_AnimatedGridItem);
+
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -77717,7 +77721,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 93
+                  lineNumber: 95
                 }
               },
               _react3.default.createElement(
@@ -77729,7 +77733,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   }, styles.cell, item.value === 0 ? styles.wallTop : null, item.value === -1 ? styles.wallFacing : null, item.value > 0 ? styles.space : null, item.isHighlighted ? styles.highlighted : null],
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 94
+                    lineNumber: 96
                   }
                 },
                 _react3.default.createElement(
@@ -77742,7 +77746,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 103
+                      lineNumber: 105
                     }
                   },
                   item.hasHuman ? 'H' : null,
@@ -77759,56 +77763,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               }, styles.cell, styles.wallTop],
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 108
+                lineNumber: 110
               }
             });
           }
         } else {
-          return _react3.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              onPress: function onPress() {
-                return _this.props.onPress(item);
-              },
-              style: {
-                width: _this.props.itemDimension
-              },
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 117
-              }
-            },
-            _react3.default.createElement(
-              _reactNative.View,
-              {
-                style: [{
-                  height: _this.props.itemDimension,
-                  width: _this.props.itemDimension
-                }, styles.cell, item.value === 0 ? styles.wallTop : null, item.value === -1 ? styles.wallFacing : null, item.value > 0 ? styles.space : null, item.isHighlighted ? styles.highlighted : null],
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 118
-                }
-              },
-              _react3.default.createElement(
-                _reactNative.Text,
-                {
-                  style: {
-                    fontSize: _this.props.itemDimension * 0.6,
-                    textAlign: 'center',
-                    color: '#ff00ff'
-                  },
-                  __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 127
-                  }
-                },
-                item.hasHuman ? 'H' : null,
-                item.hasMonster ? 'M' : null,
-                item.hasCache ? 'C' : null
-              )
-            )
-          );
+          return _react3.default.createElement(_AnimatedGridItem2.default, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 132
+            }
+          });
         }
       }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -77856,7 +77821,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 135
+              lineNumber: 139
             }
           },
           _react3.default.createElement(
@@ -77868,7 +77833,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               horizontal: true,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 136
+                lineNumber: 140
               }
             },
             _react3.default.createElement(_reactNative.FlatList, {
@@ -77888,7 +77853,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               initialScrollIndex: this.getIndex(),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 137
+                lineNumber: 141
               }
             })
           )
@@ -77913,7 +77878,111 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = AnimatedGrid;
-},605,[118,179,129,493,12],"app\\components\\Grid\\AnimatedGrid.js");
+},605,[118,179,129,493,12,617],"app\\components\\Grid\\AnimatedGrid.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react2 = _require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = _require(_dependencyMap[1], "./../../../node_modules/react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\Grid\\AnimatedGridItem.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _reactNative = _require(_dependencyMap[2], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    AnimatedGridITem: {
+      displayName: "AnimatedGridITem"
+    }
+  };
+
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/components/Grid/AnimatedGridItem.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var AnimatedGridITem = _wrapComponent("AnimatedGridITem")(function (_React$Component) {
+    _inherits(AnimatedGridITem, _React$Component);
+
+    function AnimatedGridITem() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      _classCallCheck(this, AnimatedGridITem);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AnimatedGridITem.__proto__ || Object.getPrototypeOf(AnimatedGridITem)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+        fadeAnim: new _reactNative.Animated.Value(0)
+      }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(AnimatedGridITem, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        console.log('animated grid item');
+
+        _reactNative.Animated.timing(this.state.fadeAnim, {
+          toValue: 1,
+          duration: 1000
+        }).start();
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var fadeAnim = this.state.fadeAnim;
+        return _react3.default.createElement(
+          _reactNative.Animated.View,
+          {
+            style: {
+              width: 50,
+              height: 50,
+              border: 2,
+              backgroundColor: '#000',
+              opacity: fadeAnim
+            },
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 25
+            }
+          },
+          this.props.children
+        );
+      }
+    }]);
+
+    return AnimatedGridITem;
+  }(_react3.default.Component));
+
+  exports.default = AnimatedGridITem;
+},617,[118,179,12],"app\\components\\Grid\\AnimatedGridItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true

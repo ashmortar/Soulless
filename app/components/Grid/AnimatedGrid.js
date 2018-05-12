@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Text, View, TouchableHighlight, ScrollView, Animated, FlatList } from "react-native";
+import { Text, View, TouchableHighlight, ScrollView, FlatList } from "react-native";
+
+import AnimatedGridItem from './AnimatedGridItem';
 
 const styles = EStyleSheet.create({
   grid: {
@@ -69,7 +71,7 @@ export default class AnimatedGrid extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('animated grid did update', this.props.zoom, this.props.itemDimension, this.props.gridDimension);
+    // console.log('animated grid did update', this.props.zoom, this.props.itemDimension, this.props.gridDimension);
     if (this.props.zoom === "close") {
       setTimeout(() => {
         this.scrollViewRef.scrollTo({ x: this.getXScrollPos(), animated: true });
@@ -114,19 +116,21 @@ export default class AnimatedGrid extends React.Component {
       }
     } else {
       return (
-        <TouchableHighlight onPress={() => this.props.onPress(item)} style={{ width: this.props.itemDimension }}>
-          <View style={[
-            { height: this.props.itemDimension, width: this.props.itemDimension },
-            styles.cell,
-            item.value === 0 ? styles.wallTop : null,
-            item.value === -1 ? styles.wallFacing : null,
-            item.value > 0 ? styles.space : null,
-            item.isHighlighted ? styles.highlighted : null,
-          ]}
-          >
-            <Text style={{ fontSize: this.props.itemDimension * 0.6, textAlign: 'center', color: '#ff00ff' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
-          </View>
-        </TouchableHighlight>);
+        // <TouchableHighlight onPress={() => this.props.onPress(item)} style={{ width: this.props.itemDimension }}>
+        //   <View style={[
+        //     { height: this.props.itemDimension, width: this.props.itemDimension },
+        //     styles.cell,
+        //     item.value === 0 ? styles.wallTop : null,
+        //     item.value === -1 ? styles.wallFacing : null,
+        //     item.value > 0 ? styles.space : null,
+        //     item.isHighlighted ? styles.highlighted : null,
+        //   ]}
+        //   >
+        //     <Text style={{ fontSize: this.props.itemDimension * 0.6, textAlign: 'center', color: '#ff00ff' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
+        //   </View>
+        // </TouchableHighlight>
+        <AnimatedGridItem {...this.props} />
+      );
     }
   }
 
