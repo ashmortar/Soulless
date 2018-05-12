@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Text, View, TouchableHighlight, ScrollView, FlatList } from "react-native";
+import { Text, View, TouchableHighlight, ScrollView, FlatList, Animated } from "react-native";
 
 import AnimatedGridItem from './AnimatedGridItem';
 
@@ -32,6 +32,8 @@ const styles = EStyleSheet.create({
   },
 });
 
+const ANIMATION_DURATION = 500;
+
 export default class AnimatedGrid extends React.Component {
   static propTypes = {
     items: PropTypes.array,
@@ -46,6 +48,11 @@ export default class AnimatedGrid extends React.Component {
     zoom: PropTypes.string,
     cellsInRow: PropTypes.number,
     scrollOffset: PropTypes.number,
+  }
+
+  state = {
+    itemDimension: new Animated.Value(this.props.zoomedInValue),
+    gridDimension: new Animated.Value(this.props.zoomedInValue * this.props.cellsInRow),
   }
 
   getIndex = () => {
@@ -63,78 +70,75 @@ export default class AnimatedGrid extends React.Component {
     const xOffset = ((this.props.itemDimension * (this.props.playerSpace.name % this.props.cellsInRow)) - (this.props.itemDimension * this.props.scrollOffset));
     if (xOffset < 0) {
       return 0;
-    } else if (xOffset > this.props.gridDimension) {
-      return this.props.gridDimension;
+    } else if (xOffset > this.props.itemDimension) {
+      return this.props.itemDimension;
     } else {
       return xOffset;
     }
   }
 
   componentDidUpdate() {
-    // console.log('animated grid did update', this.props.zoom, this.props.itemDimension, this.props.gridDimension);
-    if (this.props.zoom === "close") {
+    console.log('animated grid did update', this.props.zoom, this.props.itemDimension, this.props.itemDimension);
+    if (this.state.itemDimension._value === (this.props.zoomedInValue) && this.props.zoom === "far") {
+      Animated.timing(
+        this.state.itemDimension,
+        {
+          toValue: this.props.zoomedOutValue,
+          duration: ANIMATION_DURATION,
+        },
+        this.state.gridDimension,
+        {
+          toValue: this.props.zoomedOutValue * this.props.cellsInRow,
+          duration: ANIMATION_DURATION,
+        },
+      ).start();
       setTimeout(() => {
-        this.scrollViewRef.scrollTo({ x: this.getXScrollPos(), animated: true });
+        // this.scrollViewRef.scrollTo({ x: 0, y: 0, animated: true });
+      }, ANIMATION_DURATION + 500);
+    } else if (this.state.itemDimension._value === (this.props.zoomedOutValue) && this.props.zoom === "close") {
+      Animated.timing(
+        this.state.itemDimension,
+        {
+          toValue: this.props.zoomedInValue,
+          duration: ANIMATION_DURATION,
+        },
+        this.state.gridDimension,
+        {
+          toValue: this.props.zoomedInValue * this.props.cellsInRow,
+          duration: ANIMATION_DURATION,
+        },
+      ).start();
+      setTimeout(() => {
+        // this.scrollViewRef.scrollTo({ x: this.getXScrollPos(), animated: true });
+        this.flatListRef.scrollToIndex({ animated: true, index: this.getIndex() });
+      }, ANIMATION_DURATION + 500);
+    } else if (this.props.zoom === "close") {
+      setTimeout(() => {
+        // this.scrollViewRef.scrollTo({ x: this.getXScrollPos(), animated: true });
         this.flatListRef.scrollToIndex({ animated: true, index: this.getIndex() });
       }, 500);
-    } else {
-      this.scrollViewRef.scrollTo({ x: 0, y: 0, animated: true });
     }
   }
 
-  getItemLayout = (data, index) => (
-    { length: this.props.itemDimension, offset: this.props.itemDimension * index, index }
-  )
+  getItemLayout = (data, index) => {
+    let { itemDimension } = this.state;
+    return (
+      { length: itemDimension._value, offset: itemDimension._value * index, index }
+    );
+  }
 
   renderItem = ({ item, index }) => {
-    if (this.props.isHuman) {
-      if (item.isRevealed) {
-        return (
-          <TouchableHighlight onPress={() => this.props.onPress(item)} style={{ width: this.props.itemDimension }}>
-            <View style={[
-              { height: this.props.itemDimension, width: this.props.itemDimension },
-              styles.cell,
-              item.value === 0 ? styles.wallTop : null,
-              item.value === -1 ? styles.wallFacing : null,
-              item.value > 0 ? styles.space : null,
-              item.isHighlighted ? styles.highlighted : null,
-            ]}
-            >
-              <Text style={{ fontSize: this.props.itemDimension * 0.6, textAlign: 'center', color: '#ff00ff' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
-            </View>
-          </TouchableHighlight>);
-      } else {
-        return (
-          <View style={[
-            { height: this.props.itemDimension, width: this.props.itemDimension },
-            styles.cell,
-            styles.wallTop,
-          ]}
-          />);
-      }
-    } else {
-      return (
-        // <TouchableHighlight onPress={() => this.props.onPress(item)} style={{ width: this.props.itemDimension }}>
-        //   <View style={[
-        //     { height: this.props.itemDimension, width: this.props.itemDimension },
-        //     styles.cell,
-        //     item.value === 0 ? styles.wallTop : null,
-        //     item.value === -1 ? styles.wallFacing : null,
-        //     item.value > 0 ? styles.space : null,
-        //     item.isHighlighted ? styles.highlighted : null,
-        //   ]}
-        //   >
-        //     <Text style={{ fontSize: this.props.itemDimension * 0.6, textAlign: 'center', color: '#ff00ff' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
-        //   </View>
-        // </TouchableHighlight>
-        <AnimatedGridItem {...this.props} index={index} />
-      );
-    }
-  }
-
-  render() {
+    console.log('renderItem', itemDimension);
     return (
-      <View style={{ margin: 5, justifyContent: "center", width: (this.props.screenWidth), height: (this.props.screenWidth + 100) }}>
+      <AnimatedGridItem style={{ width: itemDimension, height: itemDimension }} {...this.props} index={index} animatedViewDimension={itemDimension} />
+    );
+  }
+  
+  render() {
+    let { itemDimension, gridDimension } = this.state;
+    // let { itemDimension } = this.state
+    return (
+      <Animated.View style={{ margin: 5, justifyContent: "center", width: gridDimension, height: gridDimension }}>
         <ScrollView ref={(ref) => { this.scrollViewRef = ref; }} horizontal>
           <FlatList
             ref={(ref) => { this.flatListRef = ref; }}
@@ -143,13 +147,22 @@ export default class AnimatedGrid extends React.Component {
             horizontal={false}
             numColumns={this.props.numColumns}
             keyExtractor={item => item.name.toString()}
-            renderItem={this.renderItem}
+            renderItem={({ item, index }) => {
+              console.log('renderItem', itemDimension._value);
+              return (
+                <AnimatedGridItem
+                  {...this.props}
+                  index={index}
+                  animatedViewDimension={itemDimension}
+                />
+              );
+            }}
             extraData={[this.props.isHuman, this.props.items, this.props.zoom]}
             getItemLayout={this.getItemLayout}
             initialScrollIndex={this.getIndex()}
           />
         </ScrollView>
-      </View>
+      </Animated.View>
     );
   }
 }

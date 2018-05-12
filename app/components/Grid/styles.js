@@ -10,13 +10,13 @@ export default EStyleSheet.create({
     flex: 1,
   },
   space: {
-    backgroundColor: "#fff",
+    backgroundColor: "#784800",
   },
   wallTop: {
     backgroundColor: "#000",
   },
   wallFacing: {
-    backgroundColor: "#777",
+    backgroundColor: "#888",
   },
   highlighted: {
     backgroundColor: "#ff00ff",

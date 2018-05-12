@@ -30,6 +30,7 @@
     "no-nested-ternary": "off",
     "quotes": "off",
     "no-else-return": "off",
-    "react/sort-comp": "off"
+    "react/sort-comp": "off",
+    "no-underscore-dangle": "off"
   }
 }
