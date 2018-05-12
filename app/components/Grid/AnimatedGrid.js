@@ -138,6 +138,7 @@ export default class AnimatedGrid extends React.Component {
     let { itemDimension, gridDimension } = this.state;
     // let { itemDimension } = this.state
     return (
+      <View style={{}}></View>
       <Animated.View style={{ margin: 5, justifyContent: "center", width: gridDimension, height: gridDimension }}>
         <ScrollView ref={(ref) => { this.scrollViewRef = ref; }} horizontal>
           <FlatList
