@@ -78,9 +78,7 @@ export default class AnimatedGrid extends React.Component {
         this.flatListRef.scrollToIndex({ animated: true, index: this.getIndex() });
       }, 500);
     } else {
-      setTimeout(() => {
-        this.scrollViewRef.scrollToEnd({ animated: true })
-      }, 100);
+      this.scrollViewRef.scrollTo({ x: 0, y: 0, animated: true });
     }
   }
 
@@ -129,7 +127,7 @@ export default class AnimatedGrid extends React.Component {
         //     <Text style={{ fontSize: this.props.itemDimension * 0.6, textAlign: 'center', color: '#ff00ff' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
         //   </View>
         // </TouchableHighlight>
-        <AnimatedGridItem {...this.props} />
+        <AnimatedGridItem {...this.props} index={index} />
       );
     }
   }

@@ -4,21 +4,25 @@ export default EStyleSheet.create({
   grid: {
     marginTop: 10,
     marginBottom: 0,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
   },
   cell: {
-    
+    flex: 1,
   },
   space: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   wallTop: {
-    backgroundColor: '#000',
+    backgroundColor: "#000",
   },
   wallFacing: {
-    backgroundColor: '#eee',
+    backgroundColor: "#777",
   },
   highlighted: {
-    backgroundColor: '#ff00ff',
+    backgroundColor: "#ff00ff",
+  },
+  container: {
+    flex: 1,
+    marginVertical: 20,
   },
 });

@@ -29,11 +29,11 @@ class Game extends Component {
     this.scrollOffset = this.viewPortAdjustment / 2;
     let { width } = Dimensions.get("window");
     this.screenWidth = width;
-    this.closeWidth = this.screenWidth / this.viewPortAdjustment;
-    this.farWidth = this.screenWidth / this.cellsInRow;
+    this.zoomedInValue = Math.floor(this.screenWidth / this.viewPortAdjustment);
+    this.zoomedOutValue = Math.floor(this.screenWidth / this.cellsInRow);
 
 
-    let gridItemWidth_default = this.closeWidth;
+    let gridItemWidth_default = this.zoomedInValue;
     let gridWidth_default = gridItemWidth_default * this.cellsInRow;
 
     this.state = {
@@ -699,18 +699,18 @@ class Game extends Component {
 
   alterZoom = () => {
     if (this.state.zoom === "close") {
-      console.log('zoom far new dimensions: ', this.farWidth, this.farWidth * this.cellsInRow);
+      console.log('zoom far new dimensions: ', this.zoomedOutValue, this.zoomedOutValue * this.cellsInRow);
       this.setState({
         zoom: 'far',
-        gridItemWidth: this.farWidth,
-        gridWidth: this.farWidth * this.cellsInRow,
+        gridItemWidth: this.zoomedOutValue,
+        gridWidth: this.zoomedOutValue * this.cellsInRow,
       });
     } else {
-      console.log("zoom close new dimensions: ", this.closeWidth, this.closeWidth * this.cellsInRow);
+      console.log("zoom close new dimensions: ", this.zoomedInValue, this.zoomedInValue * this.cellsInRow);
       this.setState({
         zoom: 'close',
-        gridItemWidth: this.closeWidth,
-        gridWidth: this.closeWidth * this.cellsInRow,
+        gridItemWidth: this.zoomedInValue,
+        gridWidth: this.zoomedInValue * this.cellsInRow,
       })
     }
   }
@@ -955,6 +955,8 @@ class Game extends Component {
           cellsInRow={this.cellsInRow}
           cellsTotal={this.cellsTotal}
           scrollOffset={this.scrollOffset}
+          zoomedInValue={this.zoomedInValue}
+          zoomedOutValue={this.zoomedOutValue}
         />
         {this.renderFooter()}
       </Container>

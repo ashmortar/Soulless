@@ -1,42 +1,75 @@
 import React from "react";
 import { Animated, Text, View } from "react-native";
 
+import styles from './styles';
+
+const ANIMATION_DURATION = 500;
+
  export default class AnimatedGridITem extends React.Component {
   state = {
     fadeAnim: new Animated.Value(0), // Initial value for opacity: 0
+    itemDimension: new Animated.Value(this.props.zoomedInValue)
   };
 
   componentDidMount() {
-    // console.log('animated grid item', this.props);
-    Animated.timing(
-      // Animate over time
-      this.state.fadeAnim, // The animated value to drive
-      {
-        toValue: 1, // Animate to opacity: 1 (opaque)
-        duration: 500 // Make it take a while
-      }
-    ).start(); // Starts the animation
+    // console.log('value', this.props.index)
   }
-
+  //   this.zoomIn = Animated.timing(
+  //   this.state.itemDimension,
+  //   {
+  //     toValue: { zoomedInValue },
+  //   },
+  // );
+  // this.zoomOut = Animated.timing(
+  //   this.state.itemDimension,
+  //   { toValue: { zoomedOutValue },
+  //   },
+  // );
   componentDidUpdate() {
-    console.log('__item updated___', this.props.zoom, this.props.itemDimension, this.props.gridDimension);
-
+    if (this.state.itemDimension._value === this.props.zoomedInValue && this.props.zoom === "far") {
+      // console.log('__dimensions__', this.props.zoomedInValue, this.props.zoomedOutValue)
+      // console.log('zoom out began');
+      // console.log("__itemDimension__", this.state.itemDimension);
+      Animated.timing(
+        this.state.itemDimension,
+        {
+          toValue: this.props.zoomedOutValue,
+          duration: ANIMATION_DURATION,
+        }
+      ).start();
+      // console.log("zoom out ended?");
+      // console.log('__itemDimension__', this.state.itemDimension);
+    }
+    if (this.state.itemDimension._value === this.props.zoomedOutValue && this.props.zoom === "close") {
+      // console.log('zoom in began');
+      // console.log('__itemDimension__', this.state.itemDimension);
+      Animated.timing(
+        this.state.itemDimension,
+        {
+          toValue: this.props.zoomedInValue,
+          duration: ANIMATION_DURATION,
+        }
+      ).start();
+      // console.log('zoom in ended?');
+      // console.log('__itemDimension__', this.state.itemDimension);
+    }
   }
 
   render() {
-    let { fadeAnim } = this.state;
+    let { itemDimension } = this.state;
 
     return (
-      <Animated.View // Special animatable View
-        style={{
-          width: 50,
-          height: 50,
-          borderWidth: 2,
-          backgroundColor: '#000',
-          opacity: fadeAnim, // Bind opacity to animated value
-        }}
+      <Animated.View
+        style={[
+          { width: itemDimension, height: itemDimension },
+          styles.cell,
+          this.props.items[this.props.index].value === 0 ? styles.wallTop : null,
+          this.props.items[this.props.index].value === -1 ? styles.wallFacing : null,
+          this.props.items[this.props.index].value > 0 ? styles.space : null,
+          this.props.items[this.props.index].isHighlighted ? styles.highlighted : null,
+        ]}
       >
-        {this.props.children}
+        { this.props.children }
       </Animated.View>
     );
   }
