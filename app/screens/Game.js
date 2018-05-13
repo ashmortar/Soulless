@@ -488,14 +488,14 @@ class Game extends Component {
         // if not visited check to see if it is the end
         if (cell === end) {
           // if it is the end add it to the path
-          cell.isHighlighted = true;
+          // cell.isHighlighted = true;
           path.push(cell);
           // assign the next variable to the parent of the final cell
           let next = cell.parent;
           // continue up the chain of parents until we run out
           while (next) {
             // add to path
-            next.isHighlighted = true;
+            // next.isHighlighted = true;
             path.push(next);
             // reassign next to parent
             next = next.parent;

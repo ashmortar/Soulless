@@ -32,7 +32,7 @@ const styles = EStyleSheet.create({
   },
 });
 
-const ANIMATION_DURATION = 500;
+const ANIMATION_DURATION = 5000;
 
 export default class AnimatedGrid extends React.Component {
   static propTypes = {
@@ -51,6 +51,8 @@ export default class AnimatedGrid extends React.Component {
   }
 
   state = {
+    // working height/width animation but laggy since not run by native driver
+    // itemDimension: new Animated.Value(this.props.zoomedInValue),
     itemDimension: new Animated.Value(this.props.zoomedInValue),
   }
 
@@ -77,23 +79,28 @@ export default class AnimatedGrid extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.itemDimension._value === (this.props.zoomedInValue) && this.props.zoom === "far") {
-      Animated.timing(
-        this.state.itemDimension,
-        {
-          toValue: this.props.zoomedOutValue,
-          duration: ANIMATION_DURATION,
-        },
-      ).start();
+    if (this.state.itemDimension._value === this.props.zoomedInValue && this.props.zoom === "far") {
+      console.log('_zoom puss_', this.state.itemDimension._value);
+      this.scrollViewRef.scrollTo({ x: 0, animated: true });
+      this.flatListRef.scrollToIndex({ animated: true, index: 0 });
+      Animated.timing(this.state.itemDimension, {
+        // working height/width animation but laggy since not run by native driver
+        toValue: this.props.zoomedOutValue,
+        duration: ANIMATION_DURATION,
+        // useNativeDriver: true,
+      }).start();
       setTimeout(() => {
-        this.scrollViewRef.scrollTo({ x: 0, y: 0, animated: true });
-      }, ANIMATION_DURATION + 500);
-    } else if (this.state.itemDimension._value === (this.props.zoomedOutValue) && this.props.zoom === "close") {
+        console.log('_zoom_ ended', this.state.itemDimension._value)
+      }, ANIMATION_DURATION + 5000);
+    } else if (this.state.itemDimension._value === this.props.zoomedOutValue && this.props.zoom === "close") {
+      // console.log("zoom out should happen");
       Animated.timing(
         this.state.itemDimension,
         {
+          // working height/width animation but laggy since not run by native driver
           toValue: this.props.zoomedInValue,
           duration: ANIMATION_DURATION,
+          // useNativeDriver: true,
         },
       ).start();
       setTimeout(() => {
@@ -120,9 +127,10 @@ export default class AnimatedGrid extends React.Component {
       <AnimatedGridItem style={{ width: itemDimension, height: itemDimension }} {...this.props} index={index} animatedViewDimension={itemDimension} />
     );
   }
-  
+
   render() {
     let { itemDimension } = this.state;
+    console.log('"<><><><>"');
     return (
       <View style={{ margin: 5, justifyContent: "center", width: (this.props.screenWidth), height: (this.props.screenWidth + 100) }}>
         <ScrollView ref={(ref) => { this.scrollViewRef = ref; }} horizontal>
@@ -145,6 +153,8 @@ export default class AnimatedGrid extends React.Component {
             extraData={[this.props.isHuman, this.props.items, this.props.zoom]}
             getItemLayout={this.getItemLayout}
             initialScrollIndex={this.getIndex()}
+            initialNumToRender={this.props.cellsInRow / 2}
+            pagingEnabled={true}
           />
         </ScrollView>
       </View>

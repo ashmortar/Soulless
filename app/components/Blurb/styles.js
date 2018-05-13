@@ -5,7 +5,7 @@ export default EStyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '$primaryBlue',
+    backgroundColor: '#212121',
     height: 100,
     position: 'absolute',
     top: 100,
