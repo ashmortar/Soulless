@@ -22,71 +22,37 @@ class Game extends Component {
     this.humanSpace = null;
     this.monsterSpace = null;
     this.cacheTotal = 13;
-    this.screenWidth = null;
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
-    this.viewPortAdjustment = 13;
-    this.scrollOffset = this.viewPortAdjustment / 2;
-    let { width } = Dimensions.get("window");
-    this.screenWidth = width;
-    this.zoomedInValue = Math.floor(this.screenWidth / this.viewPortAdjustment);
-    this.zoomedOutValue = Math.floor(this.screenWidth / this.cellsInRow);
-
-
-    let gridItemWidth_default = this.zoomedInValue;
-    let gridWidth_default = gridItemWidth_default * this.cellsInRow;
+    // offset should be so that edge walls correspond to scroll bounce
+    this.cellsPerScreen = 20;
+    this.scrollOffset = Math.floor(this.cellsPerScreen / 2);
+    let { width, height } = Dimensions.get("window");
+    this.viewPortWidth = width * 0.98;
+    this.viewPortHeight = height * 0.8;
+    this.zoomedInValue = Math.ceil(this.viewPortWidth / this.cellsPerScreen);
+    this.zoomedOutValue = Math.ceil(this.viewPortWidth / this.cellsInRow);
+    this.zoom = 'close';
 
     this.state = {
-      gridItemWidth: gridItemWidth_default,
-      gridWidth: gridWidth_default,
       redraw: false,
       isHuman: false,
       echoDirection: 'radius',
-      zoom: 'close',
       playerSpace: { name: 0 },
     };
   }
 
   componentWillMount() {
-    console.log("component Will Mount");
+    // console.log("component Will Mount");
     this.getGridLayout();
   }
 
   componentDidMount() {
-    console.log("component did mount");
+    // console.log("component did mount");
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
   }
-
-  onPressZoomIn = () => {
-    console.log('ZOOM pressed');
-    if (this.scale < 3) {
-      let gridItemWidth_new = this.state.gridItemWidth * 2;
-      let gridWidth_new = gridItemWidth_new * this.cellsInRow;
-      this.scale++;
-      console.log(this.state.gridItemWidth);
-      this.setState({
-        gridItemWidth: gridItemWidth_new,
-        gridWidth: gridWidth_new,
-      });
-    }
-  };
-
-  onPressZoomOut = () => {
-    console.log('ZOOM pressed');
-    if (this.scale > 0) {
-      let gridItemWidth_new = this.state.gridItemWidth / 2;
-      let gridWidth_new = gridItemWidth_new * this.cellsInRow;
-      this.scale--;
-      console.log(this.state.gridItemWidth);
-      this.setState({
-        gridItemWidth: gridItemWidth_new,
-        gridWidth: gridWidth_new,
-      });
-    }
-  };
-
 
   getGridLayout = () => {
     this.createWalls();
@@ -697,24 +663,6 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw });
   }
 
-  alterZoom = () => {
-    if (this.state.zoom === "close") {
-      console.log('zoom far new dimensions: ', this.zoomedOutValue, this.zoomedOutValue * this.cellsInRow);
-      this.setState({
-        zoom: 'far',
-        gridItemWidth: this.zoomedOutValue,
-        gridWidth: this.zoomedOutValue * this.cellsInRow,
-      });
-    } else {
-      console.log("zoom close new dimensions: ", this.zoomedInValue, this.zoomedInValue * this.cellsInRow);
-      this.setState({
-        zoom: 'close',
-        gridItemWidth: this.zoomedInValue,
-        gridWidth: this.zoomedInValue * this.cellsInRow,
-      })
-    }
-  }
-
   showHumanMoves = () => {
     let i = this.humanSpace.name;
     // north
@@ -782,69 +730,6 @@ class Game extends Component {
       );
     }
     this.setState({ redraw: !this.state.redraw });
-  }
-
-  getCellStyle = (item) => {
-    if (this.state.isHuman) {
-      if (item.isRevealed) {
-        if (item.value === 0) {
-          return {
-            backgroundColor: "#000",
-            borderWidth: 0.5,
-            height: this.state.gridItemWidth,
-          };
-        } else if (item.value === -1) {
-          return {
-            backgroundColor: "#777",
-            borderWidth: 0.5,
-            height: this.state.gridItemWidth,
-          };
-        } else if (item.isHighlighted) {
-          return {
-            backgroundColor: '#ff00ff',
-            borderWidth: 0.5,
-            height: this.state.gridItemWidth,
-          };
-        } else {
-          return {
-            backgroundColor: "#fff",
-            borderWidth: 0.5,
-            height: this.state.gridItemWidth,
-          };
-        }
-      } else {
-        return {
-          backgroundColor: "#000",
-          borderWidth: 0.5,
-          height: this.state.gridItemWidth,
-        };
-      }
-    }
-    if (item.value === 0) {
-      return {
-        backgroundColor: "#000",
-        borderWidth: 0.5,
-        height: this.state.gridItemWidth,
-      };
-    } else if (item.value === -1) {
-      return {
-        backgroundColor: "#777",
-        borderWidth: 0.5,
-        height: this.state.gridItemWidth,
-      };
-    } else if (item.isHighlighted) {
-      return {
-        backgroundColor: '#ff00ff',
-        borderWidth: 0.5,
-        height: this.state.gridItemWidth,
-      };
-    } else {
-      return {
-        backgroundColor: "#fff",
-        borderWidth: 0.5,
-        height: this.state.gridItemWidth,
-      };
-    }
   }
 
   handlePressNavButton = () => {
@@ -932,7 +817,7 @@ class Game extends Component {
         </Picker>
         <NavButton onPress={this.echoLocate} text="echo-locate" />
         <NavButton onPress={this.showHumanMoves} text="move human" />
-        <NavButton onPress={this.alterZoom} text="go to home screen" />
+        <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
       </View>
 
     );
@@ -944,14 +829,12 @@ class Game extends Component {
         <AnimatedGrid
           items={this.elements}
           onPress={this.moveHuman}
-          gridDimension={this.state.gridWidth}
-          itemDimension={this.state.gridItemWidth}
-          getCellStyle={this.getCellStyle}
-          screenWidth={this.screenWidth}
+          viewPortWidth={this.viewPortWidth}
+          viewPortHeight={this.viewPortHeight}
           numColumns={this.cellsInRow}
           isHuman={this.state.isHuman}
           playerSpace={this.state.playerSpace}
-          zoom={this.state.zoom}
+          zoom={this.zoom}
           cellsInRow={this.cellsInRow}
           cellsTotal={this.cellsTotal}
           scrollOffset={this.scrollOffset}
