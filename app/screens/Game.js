@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Picker, View, TouchableOpacity, Alert, Dimensions } from 'react-native';
+import { Text, Picker, View, TouchableOpacity, Alert, Dimensions, ActivityIndicator } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid, AnimatedGrid } from '../components/Grid';
 import WallTemplate from '../data/WallTemplate';
 import Cell from '../data/Cell';
+import Engine from './Engine';
 
 class Game extends Component {
   static propTypes = {
@@ -25,13 +26,14 @@ class Game extends Component {
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
     // offset should be so that edge walls correspond to scroll bounce
-    this.cellsPerScreen = 20;
+    this.cellsPerScreen = 6;
     this.scrollOffset = Math.floor(this.cellsPerScreen / 2);
     let { width, height } = Dimensions.get("window");
-    this.viewPortWidth = width * 0.98;
-    this.viewPortHeight = height * 0.8;
+    this.viewPortWidth = width;
+    this.viewPortHeight = height;
     this.zoomedInValue = Math.ceil(this.viewPortWidth / this.cellsPerScreen);
     this.zoomedOutValue = Math.ceil(this.viewPortWidth / this.cellsInRow);
+    this.fullGameDimension = this.zoomedInValue * this.cellsInRow;
     this.zoom = 'close';
 
     this.state = {
@@ -39,16 +41,17 @@ class Game extends Component {
       isHuman: false,
       echoDirection: 'radius',
       playerSpace: { name: 0 },
+      boardFinished: false,
     };
   }
 
   componentWillMount() {
     // console.log("component Will Mount");
-    this.getGridLayout();
   }
 
   componentDidMount() {
     // console.log("component did mount");
+    this.getGridLayout();
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
@@ -76,7 +79,7 @@ class Game extends Component {
     }
 
     this.fixClosedLoops();
-    this.setState({ redraw: !this.state.redraw });
+    // this.setState({ redraw: !this.state.redraw });
   }
 
   createWalls = () => {
@@ -538,6 +541,7 @@ class Game extends Component {
       cell.hasCache = true;
       cell.isRevealed = true;
     }
+    this.setState({ boardFinished: true });
   }
 
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
@@ -825,24 +829,11 @@ class Game extends Component {
 
   render() {
     return (
-      <Container>
-        <AnimatedGrid
-          items={this.elements}
-          onPress={this.moveHuman}
-          viewPortWidth={this.viewPortWidth}
-          viewPortHeight={this.viewPortHeight}
-          numColumns={this.cellsInRow}
-          isHuman={this.state.isHuman}
-          playerSpace={this.state.playerSpace}
-          zoom={this.zoom}
-          cellsInRow={this.cellsInRow}
-          cellsTotal={this.cellsTotal}
-          scrollOffset={this.scrollOffset}
-          zoomedInValue={this.zoomedInValue}
-          zoomedOutValue={this.zoomedOutValue}
-        />
-        {this.renderFooter()}
-      </Container>
+      <Engine
+        gameBoard={this.elements}
+        tilesInRow={this.cellsInRow}
+        boardFinished={this.state.boardFinished}
+      />
     );
   }
 }
