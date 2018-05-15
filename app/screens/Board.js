@@ -89,7 +89,7 @@ export default class Board extends Component {
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
       onPanResponderGrant: (evt, gestureState) => {
-        console.log("on pan responder grant");
+        // console.log("on pan responder grant");
       },
       onPanResponderMove: (evt, gestureState) => {
         let {touches} = evt.nativeEvent;
@@ -108,7 +108,7 @@ export default class Board extends Component {
         }
       },
       onPanResponderRelease: () => {
-        console.log("on pan responder release");
+        // console.log("on pan responder release");
         this.setState({
           isZooming: false,
           isMoving: false,
@@ -126,10 +126,10 @@ export default class Board extends Component {
   }
 
   processPinch = (x1, y1, x2, y2) => {
-    console.log("process pinch");
+    // console.log("process pinch");
     let distance = calcDistance(x1, y1, x2, y2);
     let center = calcCenter(x1, y1, x2, y2);
-    console.log(`distance: ${distance}, center: ${center}`);
+    // console.log(`distance: ${distance}, center: ${center}`);
 
     if (!this.state.isZooming) {
       let offsetByZoom = calcOffsetByZoom(
@@ -167,7 +167,7 @@ export default class Board extends Component {
       let left =
         this.state.initialLeftWithoutZoom * touchZoom + offsetByZoom.left;
       let top = this.state.initialTopWithoutZoom * touchZoom + offsetByZoom.top;
-      console.log("zoom", zoom);
+      // console.log("zoom", zoom);
       this.setState({
         zoom: zoom,
         left: 0,
@@ -220,7 +220,7 @@ export default class Board extends Component {
 
   update = () => {
     if (this.state.isMoving) {
-      console.log(`update: ${this.counter}`);
+      // console.log(`update: ${this.counter}`);
       // this.props.zoom();
       this.counter += 1;
     }
@@ -230,7 +230,7 @@ export default class Board extends Component {
     // Math.floor((this.tileWidth / this.state.zoom)/16)
     // Math.floor(100*this.state.zoom);
     let scale = this.state.tileSize;
-    // console.log(`tileSize: ${scale}`);
+    console.log(`tileSize: ${scale}`);
     return (
       <View
         style={{

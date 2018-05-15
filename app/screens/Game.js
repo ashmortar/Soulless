@@ -47,10 +47,20 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    this.getGridLayout();
+
+    this.createMap();
+
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
+  }
+
+  createMap = () => {
+    this.getGridLayout();
+    while (!this.detectClosedLoops()) {
+      this.resetWalls();
+    }
+    this.adjustGrid();
   }
 
   getGridLayout = () => {
@@ -62,10 +72,10 @@ class Game extends Component {
         this.fillGaps(i);
       }
     }
-
     this.addValuesToCells();
-    this.detectClosedLoops();
+  }
 
+  adjustGrid = () => {
     for (let i=0; i<this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
         this.fillGaps(i);
@@ -73,6 +83,11 @@ class Game extends Component {
     }
 
     this.addValuesToCells();
+  }
+
+  resetWalls = () => {
+    this.elements = [];
+    this.getGridLayout();
   }
 
   createWalls = () => {
@@ -298,9 +313,11 @@ class Game extends Component {
     console.log(cellAmounts);
     console.log(cellIndexesInLoops);
 
+    let output = 1;
     if (amountOfLoops > 1) {
-      this.fillLoops(amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops);
+      output = this.fillLoops(amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops);
     }
+    return output;
   }
 
   fillLoops = (amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops) => {
@@ -333,7 +350,7 @@ class Game extends Component {
 
     for (let loop = 0; loop < amountOfLoops; loop++) {
       if (cellAmounts2[loop] > 30) {
-
+        return 0;
       }
       else {
         cellIndexesInLoops2[loop].unshift(loopIndexes2[loop]);
@@ -342,6 +359,7 @@ class Game extends Component {
         });
       }
     }
+    return 1;
   }
 
   getCellsIndexes = (index) => {
