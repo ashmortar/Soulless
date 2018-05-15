@@ -35,6 +35,7 @@ class Game extends Component {
     this.zoomedOutValue = Math.ceil(this.viewPortWidth / this.cellsInRow);
     this.fullGameDimension = this.zoomedInValue * this.cellsInRow;
     this.zoom = 'close';
+    this.allowedLengthOfWhiteLine = 14;//density
 
     this.state = {
       redraw: false,
@@ -45,9 +46,6 @@ class Game extends Component {
     };
   }
 
-  componentWillMount() {
-    // console.log("component Will Mount");
-  }
 
   componentDidMount() {
     // console.log("component did mount");
@@ -68,9 +66,21 @@ class Game extends Component {
       }
     }
 
+    for (let i=0; i<this.cellsTotal; i++) {
+      if (this.elements[i].value === 0) {
+        this.fillGaps(i);
+      }
+    }
+
+
+    // this.fillAngles();
+
     //adding values to white cells
     this.addValuesToCells();
-    // console.log("final elements: ", this.elements);
+
+
+
+    this.detectClosedLoops();
 
     for (let i=0; i<this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
@@ -78,9 +88,10 @@ class Game extends Component {
       }
     }
 
-    this.fixClosedLoops();
-    // this.setState({ redraw: !this.state.redraw });
+    this.addValuesToCells();
+
   }
+
 
   createWalls = () => {
     for (let i = 0; i < this.cellsTotal; i++) {
@@ -88,7 +99,7 @@ class Game extends Component {
     }
 
     //creating straight lines of walls
-    for (let i = 0; i < 70; i++) {//bug: block goes beyond boundaries
+    for (let i = 0; i < 30; i++) {//bug: block goes beyond boundaries
       let randWallType = Math.floor(Math.random() * 2);
       let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
       let randLength = Math.floor(Math.random() * 4) + 2;
@@ -107,12 +118,16 @@ class Game extends Component {
       }
     }
 
-    // columns
-    let randColAmount = Math.floor(Math.random() * 3);
-    for (let i=0; i < randColAmount; i++) {
-      let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
-      this.createWall_squareColumn(randStartingPoint);
-    }
+    // // columns
+    // let randColAmount = Math.floor(Math.random() * 3);
+    // for (let i=0; i < randColAmount; i++) {
+    //   let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
+    //   this.createWall_squareColumn(randStartingPoint);
+    // }
+
+    this.fillWhiteGaps();
+    this.fillWhiteVertLines();
+    this.fillWhiteHorLines();
 
     this.createBorderWalls();
   }
@@ -160,13 +175,282 @@ class Game extends Component {
           while (this.elements[k].value != 0) {
             k -= this.cellsInRow;
           }
-          this.elements[k + this.cellsInRow].value = -1;
-          this.elements[k + 2 * this.cellsInRow].value = -1;
+          if (this.elements[k + this.cellsInRow].value != 0) {
+            this.elements[k + this.cellsInRow].value = -1;
+          }
+          if (this.elements[k + 2 * this.cellsInRow].value != 0) {
+            this.elements[k + 2 * this.cellsInRow].value = -1;
+          }
 
         }
         break;
       }
     }
+  }
+
+
+
+//making map evenly dense-------------
+  fillWhiteGaps = () => {
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 10*this.cellsInRow + 9; i++) {
+      if (this.elements[i].value > 0) {
+
+
+        //square spaces with columns
+        let flag = true;
+        for (let j=0; j<8; j++) {
+          for (let k=0; k<8; k++) {
+            if (this.elements[i + j*this.cellsInRow + k].value <= 0) {
+              flag = false;
+              // break;
+            }
+          }
+        }
+        if (flag) {
+          //white space 9x9 detected
+          // console.log('white space at:');
+          // console.log(i);
+          this.createWall_squareColumn(i + 4 + 5 * this.cellsInRow);
+          // break;
+        }
+
+      }
+    }
+  }
+
+  fillWhiteHorLines = () => {
+    // console.log('fillWhiteHorLines called');
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 2*this.cellsInRow - this.allowedLengthOfWhiteLine; i++) {
+      // if ((this.elements[i].value > 0) && (i + 10 % this.cellsInRow != 0)) {
+      if (this.elements[i].value > 0) {
+
+        //horizontal white lines
+        let flag = true;
+        for (let k = 0; k < this.allowedLengthOfWhiteLine + 1; k++) {
+          if (this.elements[i + k].value <= 0) {
+            flag = false;
+            // break;
+          }
+        }
+
+        if (flag) {
+          //white hor line detected
+          // console.log('white line at:');
+          // console.log(i);
+          this.createWall_straightVertical(i + this.allowedLengthOfWhiteLine + 2 * this.cellsInRow, 2);
+          // this.createWall_squareColumn(i + 4 + 5 * this.cellsInRow);
+          // break;
+        }
+      }
+    }
+  }
+
+  fillWhiteVertLines = () => {
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - this.allowedLengthOfWhiteLine*this.cellsInRow; i++) {
+
+
+      if (this.elements[i].value > 0) {
+
+        //horizontal white lines
+        let flag = true;
+        for (let j=0; j<this.allowedLengthOfWhiteLine + 1; j++) {
+          if (this.elements[i + j*this.cellsInRow].value <= 0) {
+            flag = false;
+            // break;
+          }
+        }
+        if (flag) {
+          //white space 9x9 detected
+          // console.log('white space at:');
+          // console.log(i);
+          this.createWall_straightHorizontal(i + this.allowedLengthOfWhiteLine * this.cellsInRow, 1);
+          // break;
+        }
+      }
+    }
+  }
+//-------------------------------------
+
+
+  detectClosedLoops = () => {
+    let amountOfLoops = 0;
+    let loopIndexes = [];
+    let cellAmounts = [];
+    let cellIndexesInLoops = [];
+    //copy gamefield without borders to a separate array
+    let gamefield = [];
+    let c = 0;
+    for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 3 * this.cellsInRow - 1; i++) {
+      if ((i % 40 != 0) && (i % 40 != 39)) {
+        let copy = Object.assign({}, this.elements[i]);
+        copy.name = c;
+        gamefield.push(copy);
+        c++;
+      }
+    }
+
+    let row = this.cellsInRow - 2;
+    let col = this.cellsInRow - 6;
+    let thereAreNewItemsInQueue;
+    let queue;
+    let current_cell;
+    let current_zone = 10;
+    let cellsInThisLoop = [];
+    let cellAmountInThisLoop;
+
+    current_cell = this.findFirstTopLeftCorner(gamefield);
+
+    while (current_cell) {
+      loopIndexes.push(this.convertIndex(current_cell.name));
+      cellAmountInThisLoop = 1;
+      cellsInThisLoop = [];
+      amountOfLoops++;
+      current_cell.value = current_zone;
+      //change values of all empty cells around it to current_zone------------------------------------
+      queue = [];
+      queue.push(current_cell);
+
+      thereAreNewItemsInQueue = true;
+
+      while (thereAreNewItemsInQueue) {//adding new items in queue; changing their values to current_zone
+        thereAreNewItemsInQueue = false;
+
+        queue.forEach((cellInAQueue) => {
+          let availableCells = [];
+          let index = cellInAQueue.name;
+          availableCells = this.getCellsIndexes(index);
+
+          availableCells.forEach((availableCellIndex) => {
+            if ((gamefield[availableCellIndex].value > 0) && (gamefield[availableCellIndex].value < 10)) {
+              gamefield[availableCellIndex].value = current_zone;
+              cellAmountInThisLoop++;
+              cellsInThisLoop.push(this.convertIndex(availableCellIndex));
+              queue.push(gamefield[availableCellIndex]);
+              thereAreNewItemsInQueue = true;
+            }
+          });
+
+        });
+
+      }
+
+      cellAmounts.push(cellAmountInThisLoop);
+      cellIndexesInLoops.push(cellsInThisLoop);
+
+      current_zone++;//---------------------------------------------------------------------------------
+      current_cell = this.findFirstTopLeftCorner(gamefield);
+    }
+
+
+
+    console.log(amountOfLoops);
+    console.log(loopIndexes);
+    console.log(cellAmounts);
+    console.log(cellIndexesInLoops);
+
+    if (amountOfLoops > 1) {
+      this.fillLoops(amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops);
+    }
+    // return [amountOfLoops, loopIndexes, cellAmounts];
+
+  }
+
+  fillLoops = (amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops) => {
+    let max = 0;
+    let k;
+    for (let i = 0; i < amountOfLoops; i++) {
+      if (cellAmounts[i] > max) {
+        max = cellAmounts[i];
+        k = i;
+      }
+    }
+
+    let loopIndexes2 = [];
+    let cellAmounts2 = [];
+    let cellIndexesInLoops2 = [];
+    for (let i = 0; i < amountOfLoops; i++) {
+      if (i < k) {
+        loopIndexes2[i] = loopIndexes[i];
+        cellAmounts2[i] = cellAmounts[i];
+        cellIndexesInLoops2.push(cellIndexesInLoops[i]);
+      }
+      else if (i > k) {
+        loopIndexes2[i - 1] = loopIndexes[i];
+        cellAmounts2[i - 1] = cellAmounts[i];
+        cellIndexesInLoops2.push(cellIndexesInLoops[i]);
+      }
+    }
+    amountOfLoops--;
+
+
+    for (let loop = 0; loop < amountOfLoops; loop++) {
+      if (cellAmounts2[loop] > 30) {
+
+      }
+      else {
+        cellIndexesInLoops2[loop].unshift(loopIndexes2[loop]);
+        cellIndexesInLoops2[loop].forEach((cellToFill) => {
+          this.elements[cellToFill].value = 0;
+        });
+      }
+    }
+  }
+
+
+  getCellsIndexes = (index) => {
+    let row = this.cellsInRow - 2;
+    let total = 1292;
+
+    let result = [];
+    if (index % row != 0) {
+      result.push(index - 1);
+    }
+    if (index % row != row - 1) {
+      result.push(index + 1);
+    }
+    if (index - row >= 0) {
+      result.push(index - row);
+    }
+    if (index + row < total) {
+      result.push(index + row);
+    }
+    return result;
+  }
+
+
+  convertIndex = (i) => {
+    return 3 * this.cellsInRow + i + 2 * Math.floor(i/(this.cellsInRow - 2)) + 1;
+  }
+
+
+  findFirstTopLeftCorner = (gamefield) => {
+    console.log('findFirstTopLeftCorner called');
+    let row = this.cellsInRow - 2;
+
+    for (let i = 0; i < gamefield.length; i++) {
+      if ((gamefield[i].value > 0) && (gamefield[i].value < 10)) {
+        // console.log('detected loop');
+        if (i === 0) {
+          return gamefield[i];
+        }
+        else if (i % row === 0) {
+          if (gamefield[i - row].value <= 0) {
+            return gamefield[i];
+          }
+        }
+        else if (i - row < 0) {
+          if (gamefield[i - 1].value <= 0) {
+            return gamefield[i];
+          }
+        }
+        else {
+          if ((gamefield[i - 1].value <= 0) && (gamefield[i - row].value <= 0)) {
+            return gamefield[i];
+          }
+        }
+      }
+    }
+    return null;
   }
 
 
@@ -264,11 +548,20 @@ class Game extends Component {
     if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
       for (let j=0; j<length; j++) {
         k = i + 2 * j;
-        this.elements[k].value = -1;//starting cell
-        this.elements[k - this.cellsInRow].value = -1;//top first
+        if (this.elements[k].value != 0) {
+          this.elements[k].value = -1;//starting cell
+        }
+        if (this.elements[k - this.cellsInRow].value != 0) {
+          this.elements[k - this.cellsInRow].value = -1;//top first
+        }
+
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
-        this.elements[k + 1].value = -1;//right cell
-        this.elements[k - this.cellsInRow + 1].value = -1;//right top first
+        if (this.elements[k + 1].value != 0) {
+          this.elements[k + 1].value = -1;//right cell
+        }
+        if (this.elements[k - this.cellsInRow + 1].value != 0) {
+          this.elements[k - this.cellsInRow + 1].value = -1;//right top first
+        }
         this.elements[k - 2 * this.cellsInRow + 1].value = 0;//right top second
       }
     }
@@ -284,8 +577,12 @@ class Game extends Component {
     if ((i - 2 * this.cellsInRow >= -1)) {
       for (let j=0; j<length; j++) {
         k = i + 40 * j;
-        this.elements[k].value = -1;//starting cell
-        this.elements[k - this.cellsInRow].value = -1;//top first
+        if (this.elements[k].value != 0){
+          this.elements[k].value = -1;//starting cell
+        }
+        if (this.elements[k - this.cellsInRow].value != 0){
+          this.elements[k - this.cellsInRow].value = -1;//top first
+        }
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
       }
     }
@@ -296,16 +593,18 @@ class Game extends Component {
 
       for (let j=0; j<2; j++) {
         k = i + j;
-        this.elements[k].value = -1;//starting cell
-        this.elements[k - this.cellsInRow].value = -1;//top first
+        if (this.elements[k].value != 0){
+          this.elements[k].value = -1;//starting cell
+        }
+        if (this.elements[k - this.cellsInRow].value != 0){
+          this.elements[k - this.cellsInRow].value = -1;//top first
+        }
         this.elements[k - 2 * this.cellsInRow].value = 0;//top second
         this.elements[k - 3 * this.cellsInRow].value = 0;//top third
       }
     }
   }
 
-  createWall_corner = () => {
-  }
 
 
   findShortestPath(start, end) {

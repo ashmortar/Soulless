@@ -32,7 +32,8 @@ const Grid = ({
                 getCellStyle(item)
               }
             >
-              <Text style={{ fontSize: itemDimension * 0.3, textAlign: 'center' }}>{item.name}</Text>
+              <Text style={{ fontSize: itemDimension * 0.4, textAlign: 'center' }}>{item.name}</Text>
+
             </View>
           </TouchableHighlight>
         )}
