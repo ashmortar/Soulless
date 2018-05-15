@@ -75502,6 +75502,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
   var _class,
@@ -75567,6 +75569,16 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this));
 
+      _this.createMap = function () {
+        _this.getGridLayout();
+
+        while (!_this.detectClosedLoops()) {
+          _this.resetWalls();
+        }
+
+        _this.adjustGrid();
+      };
+
       _this.getGridLayout = function () {
         _this.createWalls();
 
@@ -75579,14 +75591,22 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
 
         _this.addValuesToCells();
+      };
 
-        for (var _i = 0; _i < _this.cellsTotal; _i++) {
-          if (_this.elements[_i].value === 0) {
-            _this.fillGaps(_i);
+      _this.adjustGrid = function () {
+        for (var i = 0; i < _this.cellsTotal; i++) {
+          if (_this.elements[i].value === 0) {
+            _this.fillGaps(i);
           }
         }
 
-        _this.fixClosedLoops();
+        _this.addValuesToCells();
+      };
+
+      _this.resetWalls = function () {
+        _this.elements = [];
+
+        _this.getGridLayout();
       };
 
       _this.createWalls = function () {
@@ -75594,7 +75614,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           _this.elements.push(new _Cell2.default(i));
         }
 
-        for (var _i2 = 0; _i2 < 70; _i2++) {
+        for (var _i = 0; _i < 30; _i++) {
           var randWallType = Math.floor(Math.random() * 2);
           var randStartingPoint = Math.floor(Math.random() * _this.cellsTotal);
           var randLength = Math.floor(Math.random() * 4) + 2;
@@ -75615,13 +75635,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }
         }
 
-        var randColAmount = Math.floor(Math.random() * 3);
+        _this.fillWhiteGaps();
 
-        for (var _i3 = 0; _i3 < randColAmount; _i3++) {
-          var _randStartingPoint = Math.floor(Math.random() * _this.cellsTotal);
+        _this.fillWhiteVertLines();
 
-          _this.createWall_squareColumn(_randStartingPoint);
-        }
+        _this.fillWhiteHorLines();
 
         _this.createBorderWalls();
       };
@@ -75669,8 +75687,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 _k -= _this.cellsInRow;
               }
 
-              _this.elements[_k + _this.cellsInRow].value = -1;
-              _this.elements[_k + 2 * _this.cellsInRow].value = -1;
+              if (_this.elements[_k + _this.cellsInRow].value != 0) {
+                _this.elements[_k + _this.cellsInRow].value = -1;
+              }
+
+              if (_this.elements[_k + 2 * _this.cellsInRow].value != 0) {
+                _this.elements[_k + 2 * _this.cellsInRow].value = -1;
+              }
             }
 
             break;
@@ -75678,117 +75701,228 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
-      _this.fixClosedLoops = function () {
-        var prevDirection = void 0;
-
-        for (var j = _this.cellsInRow + 1; j < _this.cellsTotal - _this.cellsInRow - 1; j++) {
-          var i = j;
-          var cellsInLoop = [];
-          var firstCellIndex = i;
-
+      _this.fillWhiteGaps = function () {
+        for (var i = 3 * _this.cellsInRow + 1; i < _this.cellsTotal - 10 * _this.cellsInRow + 9; i++) {
           if (_this.elements[i].value > 0) {
-            while (true) {
-              cellsInLoop.push(_this.elements[i]);
+            var flag = true;
 
-              if (cellsInLoop.length > 1 && i === firstCellIndex) {
-                _this.elements[i].isHighlighted = true;
-                console.log('LOOP. at:');
-                console.log(i);
-                console.log('size:');
-                console.log(cellsInLoop.length);
-                break;
+            for (var j = 0; j < 8; j++) {
+              for (var _k2 = 0; _k2 < 8; _k2++) {
+                if (_this.elements[i + j * _this.cellsInRow + _k2].value <= 0) {
+                  flag = false;
+                }
               }
+            }
 
-              if (cellsInLoop.length > 80) {
-                break;
+            if (flag) {
+              _this.createWall_squareColumn(i + 4 + 5 * _this.cellsInRow);
+            }
+          }
+        }
+      };
+
+      _this.fillWhiteHorLines = function () {
+        for (var i = 3 * _this.cellsInRow + 1; i < _this.cellsTotal - 2 * _this.cellsInRow - _this.allowedLengthOfWhiteLine; i++) {
+          if (_this.elements[i].value > 0) {
+            var flag = true;
+
+            for (var _k3 = 0; _k3 < _this.allowedLengthOfWhiteLine + 1; _k3++) {
+              if (_this.elements[i + _k3].value <= 0) {
+                flag = false;
               }
+            }
 
-              if (i - 1 < 0 || i - _this.cellsInRow < 0 || i + 1 > _this.cellsTotal || i + _this.cellsInRow > _this.cellsTotal) {
-                continue;
+            if (flag) {
+              _this.createWall_straightVertical(i + _this.allowedLengthOfWhiteLine + 2 * _this.cellsInRow, 2);
+            }
+          }
+        }
+      };
+
+      _this.fillWhiteVertLines = function () {
+        for (var i = 3 * _this.cellsInRow + 1; i < _this.cellsTotal - _this.allowedLengthOfWhiteLine * _this.cellsInRow; i++) {
+          if (_this.elements[i].value > 0) {
+            var flag = true;
+
+            for (var j = 0; j < _this.allowedLengthOfWhiteLine + 1; j++) {
+              if (_this.elements[i + j * _this.cellsInRow].value <= 0) {
+                flag = false;
               }
+            }
 
-              if (_this.elements[i - 1].value <= 0 && _this.elements[i - _this.cellsInRow].value <= 0 && _this.elements[i + 1].value > 0) {
-                prevDirection = 0;
-                i++;
-              } else if (_this.elements[i - 1].value <= 0 && _this.elements[i + _this.cellsInRow].value <= 0 && _this.elements[i + 1].value > 0) {
-                if (cellsInLoop.length === 1) {
-                  break;
+            if (flag) {
+              _this.createWall_straightHorizontal(i + _this.allowedLengthOfWhiteLine * _this.cellsInRow, 1);
+            }
+          }
+        }
+      };
+
+      _this.detectClosedLoops = function () {
+        var amountOfLoops = 0;
+        var loopIndexes = [];
+        var cellAmounts = [];
+        var cellIndexesInLoops = [];
+        var gamefield = [];
+        var c = 0;
+
+        for (var i = 3 * _this.cellsInRow + 1; i < _this.cellsTotal - 3 * _this.cellsInRow - 1; i++) {
+          if (i % 40 != 0 && i % 40 != 39) {
+            var copy = _extends({}, _this.elements[i]);
+
+            copy.name = c;
+            gamefield.push(copy);
+            c++;
+          }
+        }
+
+        var row = _this.cellsInRow - 2;
+        var col = _this.cellsInRow - 6;
+        var thereAreNewItemsInQueue = void 0;
+        var queue = void 0;
+        var current_cell = void 0;
+        var current_zone = 10;
+        var cellsInThisLoop = [];
+        var cellAmountInThisLoop = void 0;
+        current_cell = _this.findFirstTopLeftCorner(gamefield);
+
+        while (current_cell) {
+          loopIndexes.push(_this.convertIndex(current_cell.name));
+          cellAmountInThisLoop = 1;
+          cellsInThisLoop = [];
+          amountOfLoops++;
+          current_cell.value = current_zone;
+          queue = [];
+          queue.push(current_cell);
+          thereAreNewItemsInQueue = true;
+
+          while (thereAreNewItemsInQueue) {
+            thereAreNewItemsInQueue = false;
+            queue.forEach(function (cellInAQueue) {
+              var availableCells = [];
+              var index = cellInAQueue.name;
+              availableCells = _this.getCellsIndexes(index);
+              availableCells.forEach(function (availableCellIndex) {
+                if (gamefield[availableCellIndex].value > 0 && gamefield[availableCellIndex].value < 10) {
+                  gamefield[availableCellIndex].value = current_zone;
+                  cellAmountInThisLoop++;
+                  cellsInThisLoop.push(_this.convertIndex(availableCellIndex));
+                  queue.push(gamefield[availableCellIndex]);
+                  thereAreNewItemsInQueue = true;
                 }
+              });
+            });
+          }
 
-                prevDirection = 1;
-                i -= _this.cellsInRow;
-              } else if (_this.elements[i + 1].value <= 0 && _this.elements[i - _this.cellsInRow].value <= 0 && _this.elements[i - 1].value > 0) {
-                if (cellsInLoop.length === 1) {
-                  break;
-                }
+          cellAmounts.push(cellAmountInThisLoop);
+          cellIndexesInLoops.push(cellsInThisLoop);
+          current_zone++;
+          current_cell = _this.findFirstTopLeftCorner(gamefield);
+        }
 
-                prevDirection = 2;
-                i += _this.cellsInRow;
-              } else if (_this.elements[i + 1].value <= 0 && _this.elements[i + _this.cellsInRow].value <= 0 && _this.elements[i - 1].value > 0) {
-                if (cellsInLoop.length === 1) {
-                  break;
-                }
+        var output = 1;
 
-                prevDirection = 3;
-                i--;
-              } else if (_this.elements[i + 1].value > 0 && _this.elements[i + _this.cellsInRow].value > 0 && _this.elements[i - 1].value > 0 && _this.elements[i - _this.cellsInRow].value > 0) {
-                if (cellsInLoop.length === 1) {
-                  break;
-                }
+        if (amountOfLoops > 1) {
+          output = _this.fillLoops(amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops);
+        }
 
-                switch (prevDirection) {
-                  case 0:
-                    i -= _this.cellsInRow;
-                    prevDirection = 1;
-                    break;
+        return output;
+      };
 
-                  case 1:
-                    i--;
-                    prevDirection = 3;
-                    break;
+      _this.fillLoops = function (amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops) {
+        var max = 0;
+        var k = void 0;
 
-                  case 2:
-                    i++;
-                    prevDirection = 0;
-                    break;
+        for (var i = 0; i < amountOfLoops; i++) {
+          if (cellAmounts[i] > max) {
+            max = cellAmounts[i];
+            k = i;
+          }
+        }
 
-                  case 3:
-                    i += _this.cellsInRow;
-                    prevDirection = 2;
-                    break;
+        var loopIndexes2 = [];
+        var cellAmounts2 = [];
+        var cellIndexesInLoops2 = [];
 
-                  default:
-                    console.log('');
-                }
-              } else {
-                if (cellsInLoop.length === 1) {
-                  break;
-                }
+        for (var _i2 = 0; _i2 < amountOfLoops; _i2++) {
+          if (_i2 < k) {
+            loopIndexes2[_i2] = loopIndexes[_i2];
+            cellAmounts2[_i2] = cellAmounts[_i2];
+            cellIndexesInLoops2.push(cellIndexesInLoops[_i2]);
+          } else if (_i2 > k) {
+            loopIndexes2[_i2 - 1] = loopIndexes[_i2];
+            cellAmounts2[_i2 - 1] = cellAmounts[_i2];
+            cellIndexesInLoops2.push(cellIndexesInLoops[_i2]);
+          }
+        }
 
-                switch (prevDirection) {
-                  case 0:
-                    i++;
-                    break;
+        amountOfLoops--;
 
-                  case 1:
-                    i -= _this.cellsInRow;
-                    break;
+        for (var loop = 0; loop < amountOfLoops; loop++) {
+          if (cellAmounts2[loop] > 30) {
+            return 0;
+          } else {
+            cellIndexesInLoops2[loop].unshift(loopIndexes2[loop]);
+            cellIndexesInLoops2[loop].forEach(function (cellToFill) {
+              _this.elements[cellToFill].value = 0;
+            });
+          }
+        }
 
-                  case 2:
-                    i += _this.cellsInRow;
-                    break;
+        return 1;
+      };
 
-                  case 3:
-                    i--;
-                    break;
+      _this.getCellsIndexes = function (index) {
+        var row = _this.cellsInRow - 2;
+        var total = 1292;
+        var result = [];
 
-                  default:
-                    console.log('');
-                }
+        if (index % row != 0) {
+          result.push(index - 1);
+        }
+
+        if (index % row != row - 1) {
+          result.push(index + 1);
+        }
+
+        if (index - row >= 0) {
+          result.push(index - row);
+        }
+
+        if (index + row < total) {
+          result.push(index + row);
+        }
+
+        return result;
+      };
+
+      _this.convertIndex = function (i) {
+        return 3 * _this.cellsInRow + i + 2 * Math.floor(i / (_this.cellsInRow - 2)) + 1;
+      };
+
+      _this.findFirstTopLeftCorner = function (gamefield) {
+        var row = _this.cellsInRow - 2;
+
+        for (var i = 0; i < gamefield.length; i++) {
+          if (gamefield[i].value > 0 && gamefield[i].value < 10) {
+            if (i === 0) {
+              return gamefield[i];
+            } else if (i % row === 0) {
+              if (gamefield[i - row].value <= 0) {
+                return gamefield[i];
+              }
+            } else if (i - row < 0) {
+              if (gamefield[i - 1].value <= 0) {
+                return gamefield[i];
+              }
+            } else {
+              if (gamefield[i - 1].value <= 0 && gamefield[i - row].value <= 0) {
+                return gamefield[i];
               }
             }
           }
         }
+
+        return null;
       };
 
       _this.fillAngles = function () {
@@ -75897,11 +76031,25 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (i - 2 * _this.cellsInRow >= -1 && (i + 1) % _this.cellsInRow != 0) {
           for (var j = 0; j < length; j++) {
             k = i + 2 * j;
-            _this.elements[k].value = -1;
-            _this.elements[k - _this.cellsInRow].value = -1;
+
+            if (_this.elements[k].value != 0) {
+              _this.elements[k].value = -1;
+            }
+
+            if (_this.elements[k - _this.cellsInRow].value != 0) {
+              _this.elements[k - _this.cellsInRow].value = -1;
+            }
+
             _this.elements[k - 2 * _this.cellsInRow].value = 0;
-            _this.elements[k + 1].value = -1;
-            _this.elements[k - _this.cellsInRow + 1].value = -1;
+
+            if (_this.elements[k + 1].value != 0) {
+              _this.elements[k + 1].value = -1;
+            }
+
+            if (_this.elements[k - _this.cellsInRow + 1].value != 0) {
+              _this.elements[k - _this.cellsInRow + 1].value = -1;
+            }
+
             _this.elements[k - 2 * _this.cellsInRow + 1].value = 0;
           }
         }
@@ -75915,8 +76063,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (i - 2 * _this.cellsInRow >= -1) {
           for (var j = 0; j < length; j++) {
             k = i + 40 * j;
-            _this.elements[k].value = -1;
-            _this.elements[k - _this.cellsInRow].value = -1;
+
+            if (_this.elements[k].value != 0) {
+              _this.elements[k].value = -1;
+            }
+
+            if (_this.elements[k - _this.cellsInRow].value != 0) {
+              _this.elements[k - _this.cellsInRow].value = -1;
+            }
+
             _this.elements[k - 2 * _this.cellsInRow].value = 0;
           }
         }
@@ -75926,15 +76081,20 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (i - 3 * _this.cellsInRow >= 0 && i + 1 % _this.cellsInRow != 0 && i + 1 < _this.cellsTotal) {
           for (var j = 0; j < 2; j++) {
             k = i + j;
-            _this.elements[k].value = -1;
-            _this.elements[k - _this.cellsInRow].value = -1;
+
+            if (_this.elements[k].value != 0) {
+              _this.elements[k].value = -1;
+            }
+
+            if (_this.elements[k - _this.cellsInRow].value != 0) {
+              _this.elements[k - _this.cellsInRow].value = -1;
+            }
+
             _this.elements[k - 2 * _this.cellsInRow].value = 0;
             _this.elements[k - 3 * _this.cellsInRow].value = 0;
           }
         }
       };
-
-      _this.createWall_corner = function () {};
 
       _this.assignHumanStart = function () {
         var cell = _this.getRandomCell();
@@ -76149,9 +76309,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         var imageKeys = [];
 
-        for (var _i4 = 0; _i4 < _this.elements.length; _i4++) {
-          if (_this.elements[_i4].imageKey === null) {
-            imageKeys.push(_this.elements[_i4].name);
+        for (var _i3 = 0; _i3 < _this.elements.length; _i3++) {
+          if (_this.elements[_i3].imageKey === null) {
+            imageKeys.push(_this.elements[_i3].name);
           }
         }
 
@@ -76425,7 +76585,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 942
+              lineNumber: 1060
             }
           },
           _react3.default.createElement(
@@ -76433,7 +76593,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 943
+                lineNumber: 1061
               }
             },
             "Game screen"
@@ -76447,7 +76607,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 945
+                lineNumber: 1063
               }
             },
             _react3.default.createElement(
@@ -76463,7 +76623,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 946
+                  lineNumber: 1064
                 }
               },
               _react3.default.createElement(
@@ -76474,7 +76634,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 955
+                    lineNumber: 1073
                   }
                 },
                 "+"
@@ -76490,7 +76650,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 960
+                lineNumber: 1078
               }
             },
             _react3.default.createElement(
@@ -76506,7 +76666,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 961
+                  lineNumber: 1079
                 }
               },
               _react3.default.createElement(
@@ -76517,7 +76677,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 969
+                    lineNumber: 1087
                   }
                 },
                 "-"
@@ -76539,7 +76699,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 979
+              lineNumber: 1097
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76547,7 +76707,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 980
+              lineNumber: 1098
             }
           }),
           _react3.default.createElement(
@@ -76565,7 +76725,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 981
+                lineNumber: 1099
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76573,7 +76733,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 986
+                lineNumber: 1104
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76581,7 +76741,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 987
+                lineNumber: 1105
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76589,7 +76749,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 988
+                lineNumber: 1106
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76597,7 +76757,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 989
+                lineNumber: 1107
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76605,7 +76765,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 990
+                lineNumber: 1108
               }
             })
           ),
@@ -76614,7 +76774,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 992
+              lineNumber: 1110
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76622,7 +76782,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 993
+              lineNumber: 1111
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76630,7 +76790,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 994
+              lineNumber: 1112
             }
           })
         );
@@ -76659,6 +76819,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.zoomedOutValue = Math.ceil(_this.viewPortWidth / _this.cellsInRow);
       _this.fullGameDimension = _this.zoomedInValue * _this.cellsInRow;
       _this.zoom = 'close';
+      _this.allowedLengthOfWhiteLine = 14;
       _this.state = {
         redraw: false,
         isHuman: false,
@@ -76672,12 +76833,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     }
 
     _createClass(Game, [{
-      key: "componentWillMount",
-      value: function componentWillMount() {}
-    }, {
       key: "componentDidMount",
       value: function componentDidMount() {
-        this.getGridLayout();
+        this.createMap();
         this.assignHumanStart();
         this.assignMonsterStart();
         this.assignCacheLocations();
@@ -76741,7 +76899,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           boardFinished: this.state.boardFinished,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1002
+            lineNumber: 1120
           }
         });
       }
@@ -76869,7 +77027,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   _reactNative.Text,
                   {
                     style: {
-                      fontSize: itemDimension * 0.3,
+                      fontSize: itemDimension * 0.4,
                       textAlign: 'center'
                     },
                     __source: {
@@ -86014,52 +86172,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
 
-      _this.processPinch = function (x1, y1, x2, y2) {
-        console.log("process pinch");
-        var distance = calcDistance(x1, y1, x2, y2);
-        var center = calcCenter(x1, y1, x2, y2);
-        console.log("distance: " + distance + ", center: " + center);
-
-        if (!_this.state.isZooming) {
-          var offsetByZoom = calcOffsetByZoom(_this.state.width, _this.state.height, _this.gameBoardWidth, _this.gameBoardWidth, _this.state.zoom);
-
-          _this.setState({
-            isZooming: true,
-            initialDistance: distance,
-            initialX: center.x,
-            initialY: center.y,
-            initialTop: _this.state.top,
-            initialLeft: _this.state.left,
-            initialZoom: _this.state.zoom,
-            initialTopWithoutZoom: _this.state.top - offsetByZoom.top,
-            initialLeftWithoutZoom: _this.state.left - offsetByZoom.left
-          });
-        } else {
-          var touchZoom = distance / _this.state.initialDistance;
-          var zoom = touchZoom * _this.state.initialZoom > _this.state.minZoom ? touchZoom * _this.state.initialZoom : _this.state.minZoom;
-
-          var _offsetByZoom = calcOffsetByZoom(_this.state.width, _this.state.height, _this.gameBoardWidth, _this.gameBoardWidth, zoom);
-
-          var left = _this.state.initialLeftWithoutZoom * touchZoom + _offsetByZoom.left;
-          var top = _this.state.initialTopWithoutZoom * touchZoom + _offsetByZoom.top;
-          console.log("zoom", zoom);
-
-          _this.setState({
-            zoom: zoom,
-            left: 0,
-            top: 0,
-            left: left > 0 ? 0 : maxOffset(left, _this.state.width, _this.gameBoardWidth * zoom),
-            top: top > 0 ? 0 : maxOffset(top, _this.state.height, _this.gameBoardWidth * zoom)
-          });
-        }
-      };
-
       _this.update = function () {};
 
       _this.counter = 0;
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = 50;
-      _this.sourceWidth = 50;
+      _this.tileWidth = Math.ceil(_this.screenDimensions.height / 40);
+      _this.sourceWidth = Math.ceil(_this.screenDimensions.height / 40);
       _this.gameBoardWidth = _this.tileWidth * 40;
       _this.scale = 0.2;
       _this.blackTilesMap = _this.props.gameBoard.map(function (a) {
@@ -86112,9 +86230,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onMoveShouldSetPanResponderCapture: function onMoveShouldSetPanResponderCapture(evt, gestureState) {
             return true;
           },
-          onPanResponderGrant: function onPanResponderGrant(evt, gestureState) {
-            console.log("on pan responder grant");
-          },
+          onPanResponderGrant: function onPanResponderGrant(evt, gestureState) {},
           onPanResponderMove: function onPanResponderMove(evt, gestureState) {
             var touches = evt.nativeEvent.touches;
 
@@ -86128,8 +86244,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             }
           },
           onPanResponderRelease: function onPanResponderRelease() {
-            console.log("on pan responder release");
-
             _this2.setState({
               isZooming: false,
               isMoving: false
@@ -86161,8 +86275,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         } else {
           var left = this.state.initialLeft + x - this.state.initialX;
           var top = this.state.initialTop + y - this.state.initialY;
+          console.log(left, this.gameBoardWidth);
           this.setState({
-            left: left > 0 ? 0 : maxOffset(left, this.state.width, this.gameBoardWidth * this.state.zoom),
+            left: left > 0 ? 0 : left < -this.gameBoardWidth + this.screenDimensions.width ? -this.gameBoardWidth + this.screenDimensions.width : left,
             top: top > 0 ? 0 : maxOffset(top, this.state.height, this.gameBoardWidth * this.state.zoom)
           });
         }
@@ -86176,13 +86291,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           _extends({
             style: {
               position: "absolute",
-              top: this.state.offsetTop + this.state.top,
               left: this.state.offsetLeft + this.state.left
             }
           }, this._panResponder.panHandlers, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 230
+              lineNumber: 167
             }
           }),
           _react3.default.createElement(_native.TileMap, {
@@ -86194,7 +86308,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             layers: [this.blackTilesMap],
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 240
+              lineNumber: 177
             }
           }),
           _react3.default.createElement(_native.TileMap, {
@@ -86206,7 +86320,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             layers: [this.wallTilesMap],
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 248
+              lineNumber: 185
             }
           }),
           _react3.default.createElement(_native.TileMap, {
@@ -86218,7 +86332,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             layers: [this.floorTilesMap],
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 256
+              lineNumber: 193
             }
           })
         );

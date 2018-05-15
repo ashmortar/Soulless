@@ -52,8 +52,8 @@ export default class Board extends Component {
     super(props);
     this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = 50;
-    this.sourceWidth = 50;
+    this.tileWidth = Math.ceil(this.screenDimensions.height / 40);
+    this.sourceWidth = Math.ceil(this.screenDimensions.height / 40);
     this.gameBoardWidth = this.tileWidth * 40;
     this.scale = 0.2;
     this.blackTilesMap = this.props.gameBoard.map(a => (a.value === 0 ? 1 : 0));
@@ -125,65 +125,6 @@ export default class Board extends Component {
     this.context.loop.unsubscribe(this.update);
   }
 
-  processPinch = (x1, y1, x2, y2) => {
-    // console.log("process pinch");
-    let distance = calcDistance(x1, y1, x2, y2);
-    let center = calcCenter(x1, y1, x2, y2);
-    // console.log(`distance: ${distance}, center: ${center}`);
-
-    if (!this.state.isZooming) {
-      let offsetByZoom = calcOffsetByZoom(
-        this.state.width,
-        this.state.height,
-        this.gameBoardWidth,
-        this.gameBoardWidth,
-        this.state.zoom
-      );
-      this.setState({
-        isZooming: true,
-        initialDistance: distance,
-        initialX: center.x,
-        initialY: center.y,
-        initialTop: this.state.top,
-        initialLeft: this.state.left,
-        initialZoom: this.state.zoom,
-        initialTopWithoutZoom: this.state.top - offsetByZoom.top,
-        initialLeftWithoutZoom: this.state.left - offsetByZoom.left
-      });
-    } else {
-      let touchZoom = distance / this.state.initialDistance;
-      let zoom =
-        touchZoom * this.state.initialZoom > this.state.minZoom
-          ? touchZoom * this.state.initialZoom
-          : this.state.minZoom;
-
-      let offsetByZoom = calcOffsetByZoom(
-        this.state.width,
-        this.state.height,
-        this.gameBoardWidth,
-        this.gameBoardWidth,
-        zoom
-      );
-      let left =
-        this.state.initialLeftWithoutZoom * touchZoom + offsetByZoom.left;
-      let top = this.state.initialTopWithoutZoom * touchZoom + offsetByZoom.top;
-      // console.log("zoom", zoom);
-      this.setState({
-        zoom: zoom,
-        left: 0,
-        top: 0,
-        left:
-          left > 0
-            ? 0
-            : maxOffset(left, this.state.width, this.gameBoardWidth * zoom),
-        top:
-          top > 0
-            ? 0
-            : maxOffset(top, this.state.height, this.gameBoardWidth * zoom)
-      });
-    }
-  };
-
   processTouch(x, y) {
     if (!this.state.isMoving) {
       this.setState({
@@ -196,16 +137,12 @@ export default class Board extends Component {
     } else {
       let left = this.state.initialLeft + x - this.state.initialX;
       let top = this.state.initialTop + y - this.state.initialY;
-
+      console.log(left, this.gameBoardWidth)
       this.setState({
         left:
           left > 0
             ? 0
-            : maxOffset(
-                left,
-                this.state.width,
-                this.gameBoardWidth * this.state.zoom
-              ),
+            : (left < (-this.gameBoardWidth + this.screenDimensions.width) ? (-this.gameBoardWidth + this.screenDimensions.width) : left),
         top:
           top > 0
             ? 0
@@ -225,12 +162,12 @@ export default class Board extends Component {
     // Math.floor((this.tileWidth / this.state.zoom)/16)
     // Math.floor(100*this.state.zoom);
     let scale = this.state.tileSize;
-    console.log(`tileSize: ${scale}`);
+    // console.log(`tileSize: ${this.gameBoardWidth}`);
     return (
       <View
         style={{
           position: "absolute",
-          top: this.state.offsetTop + this.state.top,
+          // top: this.state.offsetTop + this.state.top,
           left: this.state.offsetLeft + this.state.left,
           // width: this.gameBoardWidth,
           // height: this.gameBoardWidth,
