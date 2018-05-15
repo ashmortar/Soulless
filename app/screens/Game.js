@@ -44,7 +44,6 @@ class Game extends Component {
   componentWillMount() {
     console.log("component Will Mount");
     this.getGridLayout();
-    let amountOfLoops = this.detectClosedLoops();
     // while (amountOfLoops > 2) {
     //   this.getGridLayout();
     //   amountOfLoops = this.fixClosedLoops();
@@ -98,16 +97,25 @@ class Game extends Component {
       }
     }
 
+
+    // this.fillAngles();
+
+    //adding values to white cells
+    this.addValuesToCells();
+
+
+
+    this.detectClosedLoops();
+
     for (let i=0; i<this.cellsTotal; i++) {
       if (this.elements[i].value === 0) {
         this.fillGaps(i);
       }
     }
 
-    // this.fillAngles();
-
-    //adding values to white cells
     this.addValuesToCells();
+
+
     // console.log("final elements: ", this.elements);
     this.assignHumanStart();
     this.assignMonsterStart();
@@ -302,6 +310,7 @@ class Game extends Component {
     let amountOfLoops = 0;
     let loopIndexes = [];
     let cellAmounts = [];
+    let cellIndexesInLoops = [];
     //copy gamefield without borders to a separate array
     let gamefield = [];
     let c = 0;
@@ -320,12 +329,15 @@ class Game extends Component {
     let queue;
     let current_cell;
     let current_zone = 10;
+    let cellsInThisLoop = [];
+    let cellAmountInThisLoop;
 
     current_cell = this.findFirstTopLeftCorner(gamefield);
 
     while (current_cell) {
       loopIndexes.push(this.convertIndex(current_cell.name));
       cellAmountInThisLoop = 1;
+      cellsInThisLoop = [];
       amountOfLoops++;
       current_cell.value = current_zone;
       //change values of all empty cells around it to current_zone------------------------------------
@@ -346,6 +358,7 @@ class Game extends Component {
             if ((gamefield[availableCellIndex].value > 0) && (gamefield[availableCellIndex].value < 10)) {
               gamefield[availableCellIndex].value = current_zone;
               cellAmountInThisLoop++;
+              cellsInThisLoop.push(this.convertIndex(availableCellIndex));
               queue.push(gamefield[availableCellIndex]);
               thereAreNewItemsInQueue = true;
             }
@@ -356,6 +369,7 @@ class Game extends Component {
       }
 
       cellAmounts.push(cellAmountInThisLoop);
+      cellIndexesInLoops.push(cellsInThisLoop);
 
       current_zone++;//---------------------------------------------------------------------------------
       current_cell = this.findFirstTopLeftCorner(gamefield);
@@ -366,10 +380,54 @@ class Game extends Component {
     console.log(amountOfLoops);
     console.log(loopIndexes);
     console.log(cellAmounts);
+    console.log(cellIndexesInLoops);
+
+    if (amountOfLoops > 1) {
+      this.fillLoops(amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops);
+    }
+    // return [amountOfLoops, loopIndexes, cellAmounts];
+
+  }
+
+  fillLoops = (amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops) => {
+    let max = 0;
+    let k;
+    for (let i = 0; i < amountOfLoops; i++) {
+      if (cellAmounts[i] > max) {
+        max = cellAmounts[i];
+        k = i;
+      }
+    }
+
+    let loopIndexes2 = [];
+    let cellAmounts2 = [];
+    let cellIndexesInLoops2 = [];
+    for (let i = 0; i < amountOfLoops; i++) {
+      if (i < k) {
+        loopIndexes2[i] = loopIndexes[i];
+        cellAmounts2[i] = cellAmounts[i];
+        cellIndexesInLoops2.push(cellIndexesInLoops[i]);
+      }
+      else if (i > k) {
+        loopIndexes2[i - 1] = loopIndexes[i];
+        cellAmounts2[i - 1] = cellAmounts[i];
+        cellIndexesInLoops2.push(cellIndexesInLoops[i]);
+      }
+    }
+    amountOfLoops--;
 
 
-    return amountOfLoops;
+    for (let loop = 0; loop < amountOfLoops; loop++) {
+      if (cellAmounts2[loop] > 30) {
 
+      }
+      else {
+        cellIndexesInLoops2[loop].unshift(loopIndexes2[loop]);
+        cellIndexesInLoops2[loop].forEach((cellToFill) => {
+          this.elements[cellToFill].value = 0;
+        });
+      }
+    }
   }
 
 
