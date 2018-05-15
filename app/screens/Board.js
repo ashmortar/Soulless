@@ -77,7 +77,7 @@ export default class Board extends Component {
       initialZoom: 1,
       top: 0,
       left: 0,
-      tileSize: 20,
+      tileSize: Math.ceil(this.screenDimensions.height / 40),
 
     };
   }
@@ -219,11 +219,6 @@ export default class Board extends Component {
   }
 
   update = () => {
-    if (this.state.isMoving) {
-      console.log(`update: ${this.counter}`);
-      // this.props.zoom();
-      this.counter += 1;
-    }
   }
 
   render() {
@@ -243,7 +238,7 @@ export default class Board extends Component {
         {...this._panResponder.panHandlers}
       >
         <TileMap
-          src={require("../data/images/Black_square.jpeg")}
+          src={require("../data/images/wall-t-c.gif")}
           tileSize={scale}
           columns={40}
           rows={40}
@@ -251,7 +246,7 @@ export default class Board extends Component {
           layers={[this.blackTilesMap]}
         />
         <TileMap
-          src={require("../data/images/Magenta-square_100px.gif")}
+          src={require("../data/images/wall-f-n-2.gif")}
           tileSize={scale}
           columns={40}
           rows={40}
@@ -259,7 +254,7 @@ export default class Board extends Component {
           layers={[this.wallTilesMap]}
         />
         <TileMap
-          src={require("../data/images/Cyan-square.png")}
+          src={require("../data/images/floor-c-4.gif")}
           tileSize={scale}
           columns={40}
           rows={40}

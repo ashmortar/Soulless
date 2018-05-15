@@ -75985,10 +75985,181 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           cell.hasCache = true;
           cell.isRevealed = true;
         }
+      };
+
+      _this.assignImageKeys = function () {
+        for (var i = 0; i < _this.elements.length; i++) {
+          var topLeft = null;
+          var top = null;
+          var topRight = null;
+          var left = null;
+          var right = null;
+          var bottomLeft = null;
+          var bottom = null;
+          var bottomRight = null;
+
+          if (i - (_this.cellsInRow + 1) >= 0) {
+            topLeft = _this.elements[i - (_this.cellsInRow + 1)];
+          }
+
+          if (i - _this.cellsInRow >= 0) {
+            top = _this.elements[i - _this.cellsInRow];
+          }
+
+          if (i - (_this.cellsInRow - 1) >= 0) {
+            topRight = _this.elements[i - (_this.cellsInRow - 1)];
+          }
+
+          if (i - 1 >= 0) {
+            left = _this.elements[i - 1];
+          }
+
+          if (i + 1 <= _this.cellsTotal) {
+            right = _this.elements[i + 1];
+          }
+
+          if (i + (_this.cellsInRow - 1) <= _this.cellsTotal) {
+            bottomLeft = _this.elements[i + (_this.cellsInRow - 1)];
+          }
+
+          if (i + _this.cellsInRow <= _this.cellsTotal) {
+            bottom = _this.elements[i + _this.cellsInRow];
+          }
+
+          if (i + (_this.cellsInRow + 1)) {
+            bottomRight = _this.elements[i + (_this.cellsInRow + 1)];
+          }
+
+          var cell = _this.elements[i];
+
+          if (cell.value === 0) {
+            if (left && top && right && bottom) {
+              if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+                cell.imageKey = "wall-t-nw";
+              }
+
+              if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+                cell.imageKey = "wall-t-n";
+              }
+
+              if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
+                cell.imageKey = "wall-t-ne";
+              }
+
+              if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
+                cell.imageKey = "wall-t-w";
+              }
+
+              if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
+                cell.imageKey = 'wall-t-e';
+              }
+
+              if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+                cell.imageKey = 'wall-t-sw';
+              }
+
+              if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+                cell.imageKey = 'wall-t-s';
+              }
+
+              if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
+                cell.imageKey = 'wall-t-se';
+              } else {
+                cell.imageKey = 'wall-t-c';
+              }
+            } else if (top === null && left === null && right && bottom || top === null && right === null && right && bottom) {
+              cell.imageKey = 'wall-t-c';
+            } else if (top === null && left && right && bottom) {
+              if (bottom.value === 0) {
+                cell.imageKey = 'wall-t-c';
+              } else {
+                cell.imageKey = 'wall-t-s';
+              }
+            } else if (left === null && top && right && bottom) {
+              if (right.value === 0) {
+                cell.imageKey = 'wall-t-c';
+              } else {
+                cell.imageKey = 'wall-t-e';
+              }
+            } else if (right === null && top && left && bottom) {
+              if (left.value === 0) {
+                cell.imageKey = 'wall-t-c';
+              } else {
+                cell.imageKey = 'wall-t-w';
+              }
+            }
+          }
+
+          if (cell.value < 0) {
+            if (left && top && right && bottom) {
+              if (left.value >= 0 && top.value >= 0 && right.value < 0 && bottom.value < 0) {
+                cell.imageKey = "wall-f-nw-2";
+              }
+
+              if (left.value < 0 && top.value >= 0 && right.value < 0 && bottom.value < 0 || left.value >= 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0) {
+                cell.imageKey = "wall-f-n-1";
+              }
+
+              if (left.value < 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0) {
+                cell.imageKey = "wall-f-ne-2";
+              }
+
+              if (left.value >= 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) {
+                cell.imageKey = 'wall-f-sw-2';
+              }
+
+              if (left.value < 0 && top.value < 0 && right.value < 0 && bottom.value >= 0 || left.value >= 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
+                cell.imageKey = 'wall-f-s-1';
+              }
+
+              if (left.value < 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
+                cell.imageKey = 'wall-f-se-2';
+              } else {
+                cell.imageKey = "wall-f-n-3";
+              }
+            } else {
+              cell.imageKey = "wall-f-n-3";
+            }
+          }
+
+          if (cell.value > 0) {
+            if (left.value < 1 && top.value < 1 && right.value > 0 && bottom.value > 0) {
+              cell.imageKey = 'floor-nw';
+            }
+
+            if (left.value > 0 && top.value < 1 && right.value > 0 && bottom.value > 0) {
+              cell.imageKey = 'floor-n-1';
+            }
+
+            if (left.value > 0 && top.value < 1 && right.value < 1 && bottom.value > 0) {
+              cell.imageKey = 'floor-ne';
+            }
+
+            if (left.value < 1 && top.value > 0 && right.value > 0 && bottom.value > 0) {
+              cell.imageKey = 'floor-w-1';
+            }
+
+            if (left.value > 0 && top.value > 0 && right.value < 1 && bottom.value > 0) {
+              cell.imageKey = 'floor-e-1';
+            } else {
+              cell.imageKey = 'floor-c-1';
+            }
+          }
+        }
+
+        var imageKeys = [];
+
+        for (var _i4 = 0; _i4 < _this.elements.length; _i4++) {
+          if (_this.elements[_i4].imageKey === null) {
+            imageKeys.push(_this.elements[_i4].name);
+          }
+        }
 
         _this.setState({
           boardFinished: true
         });
+
+        console.log(_this.elements, imageKeys);
       };
 
       _this.getRandomCell = function () {
@@ -76254,7 +76425,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 772
+              lineNumber: 942
             }
           },
           _react3.default.createElement(
@@ -76262,7 +76433,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 773
+                lineNumber: 943
               }
             },
             "Game screen"
@@ -76276,7 +76447,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 775
+                lineNumber: 945
               }
             },
             _react3.default.createElement(
@@ -76292,7 +76463,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 776
+                  lineNumber: 946
                 }
               },
               _react3.default.createElement(
@@ -76303,7 +76474,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 785
+                    lineNumber: 955
                   }
                 },
                 "+"
@@ -76319,7 +76490,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 790
+                lineNumber: 960
               }
             },
             _react3.default.createElement(
@@ -76335,7 +76506,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 791
+                  lineNumber: 961
                 }
               },
               _react3.default.createElement(
@@ -76346,7 +76517,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 799
+                    lineNumber: 969
                   }
                 },
                 "-"
@@ -76368,7 +76539,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 809
+              lineNumber: 979
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76376,7 +76547,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 810
+              lineNumber: 980
             }
           }),
           _react3.default.createElement(
@@ -76394,7 +76565,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 811
+                lineNumber: 981
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76402,7 +76573,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 816
+                lineNumber: 986
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76410,7 +76581,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 817
+                lineNumber: 987
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76418,7 +76589,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 818
+                lineNumber: 988
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76426,7 +76597,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 819
+                lineNumber: 989
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76434,7 +76605,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 820
+                lineNumber: 990
               }
             })
           ),
@@ -76443,7 +76614,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 822
+              lineNumber: 992
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76451,7 +76622,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 823
+              lineNumber: 993
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76459,7 +76630,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 824
+              lineNumber: 994
             }
           })
         );
@@ -76510,6 +76681,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         this.assignHumanStart();
         this.assignMonsterStart();
         this.assignCacheLocations();
+        this.assignImageKeys();
       }
     }, {
       key: "findShortestPath",
@@ -76569,7 +76741,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           boardFinished: this.state.boardFinished,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 832
+            lineNumber: 1002
           }
         });
       }
@@ -77869,6 +78041,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
     this.name = name;
     this.value = 5;
+    this.imageKey = null;
     this.humanEdges = [];
     this.monsterEdges = [];
     this.searched = false;
@@ -85881,12 +86054,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
-      _this.update = function () {
-        if (_this.state.isMoving) {
-          console.log("update: " + _this.counter);
-          _this.counter += 1;
-        }
-      };
+      _this.update = function () {};
 
       _this.counter = 0;
       _this.screenDimensions = _reactNative.Dimensions.get("window");
@@ -85921,7 +86089,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         initialZoom: 1,
         top: 0,
         left: 0,
-        tileSize: 20
+        tileSize: Math.ceil(_this.screenDimensions.height / 40)
       };
       return _this;
     }
@@ -86014,11 +86182,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }, this._panResponder.panHandlers, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 235
+              lineNumber: 230
             }
           }),
           _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[6], "../data/images/Black_square.jpeg"),
+            src: _require(_dependencyMap[6], "../data/images/wall-t-c.gif"),
             tileSize: scale,
             columns: 40,
             rows: 40,
@@ -86026,11 +86194,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             layers: [this.blackTilesMap],
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 245
+              lineNumber: 240
             }
           }),
           _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[7], "../data/images/Magenta-square_100px.gif"),
+            src: _require(_dependencyMap[7], "../data/images/wall-f-n-2.gif"),
             tileSize: scale,
             columns: 40,
             rows: 40,
@@ -86038,11 +86206,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             layers: [this.wallTilesMap],
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 253
+              lineNumber: 248
             }
           }),
           _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[8], "../data/images/Cyan-square.png"),
+            src: _require(_dependencyMap[8], "../data/images/floor-c-4.gif"),
             tileSize: scale,
             columns: 40,
             rows: 40,
@@ -86050,7 +86218,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             layers: [this.floorTilesMap],
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 261
+              lineNumber: 256
             }
           })
         );
@@ -86066,7 +86234,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Board;
-},619,[118,179,12,129,620,610,621,622,623],"app\\screens\\Board.js");
+},619,[118,179,12,129,620,610,634,635,637],"app\\screens\\Board.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -90025,42 +90193,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     exports._interceptReads = interceptReads;
 },620,[],"node_modules\\mobx\\lib\\mobx.module.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
-		module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-				"__packager_asset": true,
-				"httpServerLocation": "/assets/app/data/images",
-				"width": 100,
-				"height": 100,
-				"scales": [1],
-				"hash": "589723310b5df772fffb20f29a035b4f",
-				"name": "Black_square",
-				"type": "jpeg"
-		});
-},621,[164],"app\\data\\images\\Black_square.jpeg");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 100,
-    "height": 100,
-    "scales": [1],
-    "hash": "fb48c5c42f08d947fe9c6f682b343232",
-    "name": "Magenta-square_100px",
-    "type": "gif"
-  });
-},622,[164],"app\\data\\images\\Magenta-square_100px.gif");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 100,
-    "height": 100,
-    "scales": [1],
-    "hash": "5027c913627123dbc852accb0f629338",
-    "name": "Cyan-square",
-    "type": "png"
-  });
-},623,[164],"app\\data\\images\\Cyan-square.png");
-__d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
@@ -90547,6 +90679,42 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.default = Waiting;
 },631,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "48835070ecf808de143eca601fb9de32",
+		"name": "wall-t-c",
+		"type": "gif"
+	});
+},634,[164],"app\\data\\images\\wall-t-c.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "69fead16080067e1a427cdde12c39d72",
+		"name": "wall-f-n-2",
+		"type": "gif"
+	});
+},635,[164],"app\\data\\images\\wall-f-n-2.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "1993aaf7a9fdeb3bbe7c7596a749ed60",
+		"name": "floor-c-4",
+		"type": "gif"
+	});
+},637,[164],"app\\data\\images\\floor-c-4.gif");
 require(44);
 require(633);
 //# sourceMappingURL=index.map

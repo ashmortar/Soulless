@@ -55,6 +55,7 @@ class Game extends Component {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
+    this.assignImageKeys();
   }
 
   getGridLayout = () => {
@@ -541,7 +542,176 @@ class Game extends Component {
       cell.hasCache = true;
       cell.isRevealed = true;
     }
+  }
+
+  assignImageKeys = () => {
+    for (let i = 0; i < this.elements.length; i++) {
+      let topLeft = null;
+      let top = null;
+      let topRight = null;
+      let left = null;
+      let right = null;
+      let bottomLeft = null;
+      let bottom = null;
+      let bottomRight = null;
+      if (i - (this.cellsInRow + 1) >= 0) {
+        topLeft = this.elements[i - (this.cellsInRow + 1)];
+      }
+      if (i - this.cellsInRow >= 0) {
+        top = this.elements[i - this.cellsInRow];
+      }
+      if (i - (this.cellsInRow - 1) >= 0) {
+        topRight = this.elements[i - (this.cellsInRow - 1)];
+      }
+      if (i - 1 >= 0) {
+        left = this.elements[i - 1];
+      }
+      if (i + 1 <= this.cellsTotal) {
+        right = this.elements[i + 1];
+      }
+      if (i + (this.cellsInRow - 1) <= this.cellsTotal) {
+        bottomLeft = this.elements[i + (this.cellsInRow - 1)];
+      }
+      if (i + this.cellsInRow <= this.cellsTotal) {
+        bottom = this.elements[i + this.cellsInRow];
+      }
+      if (i + (this.cellsInRow + 1)) {
+        bottomRight = this.elements[i + (this.cellsInRow + 1)];
+      }
+      let cell = this.elements[i];
+      // wall top tiles
+      if (cell.value === 0) {
+        // non edge cases
+        if (left && top && right && bottom) {
+          // wall top northwest
+          if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+            cell.imageKey = "wall-t-nw";
+          }
+          // wall top north
+          if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+            cell.imageKey = "wall-t-n";
+          }
+          // wall top northeast
+          if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
+            cell.imageKey = "wall-t-ne";
+          }
+          // wall top west
+          if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
+            cell.imageKey = "wall-t-w";
+          }
+          // wall top east
+          if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
+            cell.imageKey = 'wall-t-e';
+          }
+          // wall top southwest
+          if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+            cell.imageKey = 'wall-t-sw';
+          }
+          // wall top south
+          if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+            cell.imageKey = 'wall-t-s';
+          }
+          // wall top southeast
+          if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
+            cell.imageKey = 'wall-t-se';
+          } else {
+            cell.imageKey = 'wall-t-c';
+          }
+          // top corners
+        } else if ((top === null && left === null && right && bottom) || (top === null && right === null && right && bottom)) {
+          cell.imageKey = 'wall-t-c';
+          // top row
+        } else if (top === null && left && right && bottom) {
+          if (bottom.value === 0) {
+            cell.imageKey = 'wall-t-c';
+          } else {
+            cell.imageKey = 'wall-t-s';
+          }
+          // left side
+        } else if (left === null && top && right && bottom) {
+          if (right.value === 0) {
+            cell.imageKey = 'wall-t-c';
+          } else {
+            cell.imageKey = 'wall-t-e';
+          }
+          // right side
+        } else if (right === null && top && left && bottom) {
+          if (left.value === 0) {
+            cell.imageKey = 'wall-t-c';
+          } else {
+            cell.imageKey = 'wall-t-w';
+          }
+        }
+      }
+      // wall front tiles
+      if (cell.value < 0) {
+      // non edge cases
+        if (left && top && right && bottom) {
+          // wall front northwest
+          if (left.value >= 0 && top.value >= 0 && right.value < 0 && bottom.value < 0) {
+            cell.imageKey = "wall-f-nw-2";
+          }
+          // wall front north
+          if ((left.value < 0 && top.value >= 0 && right.value < 0 && bottom.value < 0) || (left.value >= 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0)) {
+            cell.imageKey = "wall-f-n-1";
+          }
+          // wall front northeast
+          if (left.value < 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0) {
+            cell.imageKey = "wall-f-ne-2";
+          }
+          // wall front southwest
+          if (left.value >= 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) {
+            cell.imageKey = 'wall-f-sw-2';
+          }
+          // wall front south
+          if ((left.value < 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) || (left.value >= 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0)) {
+            cell.imageKey = 'wall-f-s-1';
+          }
+          // wall front southeast
+          if (left.value < 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
+            cell.imageKey = 'wall-f-se-2';
+          }
+          else {
+            cell.imageKey = "wall-f-n-3";
+          }
+        } else {
+          cell.imageKey = "wall-f-n-3";
+        }
+      }
+      // floor tiles
+      if (cell.value > 0) {
+        // floor tile northwest
+        if (left.value < 1 && top.value < 1 && right.value > 0 && bottom.value > 0) {
+          cell.imageKey = 'floor-nw';
+        }
+        // floor tile north
+        if (left.value > 0 && top.value < 1 && right.value > 0 && bottom.value > 0) {
+          cell.imageKey = 'floor-n-1';
+        }
+        // floor tile northeast
+        if (left.value > 0 && top.value < 1 && right.value < 1 && bottom.value > 0) {
+          cell.imageKey = 'floor-ne';
+        }
+        // floor tile west
+        if (left.value < 1 && top.value > 0 && right.value > 0 && bottom.value > 0) {
+          cell.imageKey = 'floor-w-1';
+        }
+        // floor tile east
+        if (left.value > 0 && top.value > 0 && right.value < 1 && bottom.value > 0) {
+          cell.imageKey = 'floor-e-1';
+        } else {
+          cell.imageKey = 'floor-c-1';
+        }
+      }
+    }
+    let imageKeys = [];
+    for (let i = 0; i < this.elements.length; i++) {
+      if (this.elements[i].imageKey === null) {
+        imageKeys.push(this.elements[i].name);
+      }
+    }
     this.setState({ boardFinished: true });
+    console.log(this.elements, imageKeys);
   }
 
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
