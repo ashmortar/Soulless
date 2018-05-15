@@ -46,9 +46,7 @@ class Game extends Component {
     };
   }
 
-
   componentDidMount() {
-    // console.log("component did mount");
     this.getGridLayout();
     this.assignHumanStart();
     this.assignMonsterStart();
@@ -57,7 +55,6 @@ class Game extends Component {
 
   getGridLayout = () => {
     this.createWalls();
-
     this.fillAngles();
 
     for (let i=0; i<this.cellsTotal; i++) {
@@ -66,20 +63,7 @@ class Game extends Component {
       }
     }
 
-    for (let i=0; i<this.cellsTotal; i++) {
-      if (this.elements[i].value === 0) {
-        this.fillGaps(i);
-      }
-    }
-
-
-    // this.fillAngles();
-
-    //adding values to white cells
     this.addValuesToCells();
-
-
-
     this.detectClosedLoops();
 
     for (let i=0; i<this.cellsTotal; i++) {
@@ -89,9 +73,7 @@ class Game extends Component {
     }
 
     this.addValuesToCells();
-
   }
-
 
   createWalls = () => {
     for (let i = 0; i < this.cellsTotal; i++) {
@@ -106,24 +88,15 @@ class Game extends Component {
 
       switch (randWallType) {
         case 0:
-          // this.createWall_straightHorizontal(randStartingPoint, Math.floor(randLength));
           this.createWall_straightVertical(randStartingPoint, randLength);
           break;
         case 1:
-          // this.createWall_straightVertical(randStartingPoint, randLength);
           this.createWall_straightHorizontal(randStartingPoint, Math.floor(randLength - 1));
           break;
         default:
           console.log('');
       }
     }
-
-    // // columns
-    // let randColAmount = Math.floor(Math.random() * 3);
-    // for (let i=0; i < randColAmount; i++) {
-    //   let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
-    //   this.createWall_squareColumn(randStartingPoint);
-    // }
 
     this.fillWhiteGaps();
     this.fillWhiteVertLines();
@@ -146,7 +119,6 @@ class Game extends Component {
     i += this.cellsInRow;
     while (true) {
       if (this.elements[i].value === 0) {
-        // console.log("black");
         for (let c = 0; c < counter; c++) {
           i -= this.cellsInRow;
           this.elements[i].value = 0;
@@ -154,7 +126,6 @@ class Game extends Component {
         break;
       }
       else if ((this.elements[i].value === -1) && (i + this.cellsInRow < this.cellsTotal)) {
-        // console.log("grey");
         i += this.cellsInRow;
         counter++;
         counterForExtraGreyCells++;
@@ -188,9 +159,6 @@ class Game extends Component {
     }
   }
 
-
-
-//making map evenly dense-------------
   fillWhiteGaps = () => {
     for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 10*this.cellsInRow + 9; i++) {
       if (this.elements[i].value > 0) {
@@ -208,8 +176,6 @@ class Game extends Component {
         }
         if (flag) {
           //white space 9x9 detected
-          // console.log('white space at:');
-          // console.log(i);
           this.createWall_squareColumn(i + 4 + 5 * this.cellsInRow);
           // break;
         }
@@ -219,9 +185,7 @@ class Game extends Component {
   }
 
   fillWhiteHorLines = () => {
-    // console.log('fillWhiteHorLines called');
     for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 2*this.cellsInRow - this.allowedLengthOfWhiteLine; i++) {
-      // if ((this.elements[i].value > 0) && (i + 10 % this.cellsInRow != 0)) {
       if (this.elements[i].value > 0) {
 
         //horizontal white lines
@@ -235,11 +199,7 @@ class Game extends Component {
 
         if (flag) {
           //white hor line detected
-          // console.log('white line at:');
-          // console.log(i);
           this.createWall_straightVertical(i + this.allowedLengthOfWhiteLine + 2 * this.cellsInRow, 2);
-          // this.createWall_squareColumn(i + 4 + 5 * this.cellsInRow);
-          // break;
         }
       }
     }
@@ -247,8 +207,6 @@ class Game extends Component {
 
   fillWhiteVertLines = () => {
     for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - this.allowedLengthOfWhiteLine*this.cellsInRow; i++) {
-
-
       if (this.elements[i].value > 0) {
 
         //horizontal white lines
@@ -256,21 +214,15 @@ class Game extends Component {
         for (let j=0; j<this.allowedLengthOfWhiteLine + 1; j++) {
           if (this.elements[i + j*this.cellsInRow].value <= 0) {
             flag = false;
-            // break;
           }
         }
         if (flag) {
           //white space 9x9 detected
-          // console.log('white space at:');
-          // console.log(i);
           this.createWall_straightHorizontal(i + this.allowedLengthOfWhiteLine * this.cellsInRow, 1);
-          // break;
         }
       }
     }
   }
-//-------------------------------------
-
 
   detectClosedLoops = () => {
     let amountOfLoops = 0;
@@ -341,8 +293,6 @@ class Game extends Component {
       current_cell = this.findFirstTopLeftCorner(gamefield);
     }
 
-
-
     console.log(amountOfLoops);
     console.log(loopIndexes);
     console.log(cellAmounts);
@@ -351,8 +301,6 @@ class Game extends Component {
     if (amountOfLoops > 1) {
       this.fillLoops(amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops);
     }
-    // return [amountOfLoops, loopIndexes, cellAmounts];
-
   }
 
   fillLoops = (amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops) => {
@@ -396,7 +344,6 @@ class Game extends Component {
     }
   }
 
-
   getCellsIndexes = (index) => {
     let row = this.cellsInRow - 2;
     let total = 1292;
@@ -417,19 +364,15 @@ class Game extends Component {
     return result;
   }
 
-
   convertIndex = (i) => {
     return 3 * this.cellsInRow + i + 2 * Math.floor(i/(this.cellsInRow - 2)) + 1;
   }
 
-
   findFirstTopLeftCorner = (gamefield) => {
-    console.log('findFirstTopLeftCorner called');
     let row = this.cellsInRow - 2;
 
     for (let i = 0; i < gamefield.length; i++) {
       if ((gamefield[i].value > 0) && (gamefield[i].value < 10)) {
-        // console.log('detected loop');
         if (i === 0) {
           return gamefield[i];
         }
@@ -452,7 +395,6 @@ class Game extends Component {
     }
     return null;
   }
-
 
   fillAngles = () => {
     for (var i = 0; i < this.cellsTotal; i++) {
@@ -495,7 +437,6 @@ class Game extends Component {
       }
     }
   }
-
 
   addValuesToCells = () => {
     // adding values to white cells
@@ -543,7 +484,6 @@ class Game extends Component {
     }
   }
 
-
   createWall_straightHorizontal = (i, length) => {
     if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
       for (let j=0; j<length; j++) {
@@ -566,7 +506,6 @@ class Game extends Component {
       }
     }
   }
-
 
   createWall_straightVertical = (i, length) => {
 
@@ -605,8 +544,6 @@ class Game extends Component {
     }
   }
 
-
-
   findShortestPath(start, end) {
     // array of cells to be checked
     let queue = [];
@@ -643,7 +580,6 @@ class Game extends Component {
             }
           }
           // log the path
-          // console.log(path);
           // quit the function
           break;
 
@@ -665,11 +601,9 @@ class Game extends Component {
       }
     }
     if (path.length === 0) {
-      // console.log('path is unreachable');
     }
     // this.setState({ redraw: !this.state.redraw });
     setTimeout(this.resetGrid, 50);
-    // console.log(path.length - 1);
     return path.length - 1;
   }
 
@@ -684,7 +618,6 @@ class Game extends Component {
     if(this.state.isHuman) {
       this.setState({ playerSpace: cell });
     }
-    // console.log('human space: ', cell);
   }
 
   assignMonsterStart = () => {
@@ -699,7 +632,6 @@ class Game extends Component {
     if (!this.state.isHuman) {
       this.setState({ playerSpace: cell });
     }
-    // console.log('monster space: ', cell);
   }
 
   assignCacheLocations = () => {
@@ -913,11 +845,9 @@ class Game extends Component {
   handlePressGridItem = (item) => {
     if (this.counter === 0) {
       this.start = item;
-      // console.log('start position: ', item);
       this.counter = 1;
     } else if (this.counter === 1) {
       this.end = item;
-      // console.log('end position: ', item);
       this.findShortestPath(this.start, this.end);
       this.counter = 0;
     }
