@@ -219,14 +219,6 @@ export default class Board extends Component {
   }
 
   update = () => {
-<<<<<<< HEAD
-=======
-    if (this.state.isMoving) {
-      // console.log(`update: ${this.counter}`);
-      // this.props.zoom();
-      this.counter += 1;
-    }
->>>>>>> 44d65ebdd651da4dd8cdfdcba08cc360ca07e689
   }
 
   render() {
