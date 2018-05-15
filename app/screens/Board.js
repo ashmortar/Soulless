@@ -4,12 +4,10 @@ import PropTypes from "prop-types";
 import { autorun } from "mobx";
 import { TileMap } from "react-game-kit/native";
 
-import GameStore from "../data/GameStore";
-
 function calcDistance(x1, y1, x2, y2) {
   let dx = Math.abs(x1 - x2);
   let dy = Math.abs(y1 - y2);
-  return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+  return Math.sqrt((dx ** 2) + (dy ** 2));
 }
 
 function calcCenter(x1, y1, x2, y2) {
@@ -42,7 +40,9 @@ function calcOffsetByZoom(width, height, imageWidth, imageHeight, zoom) {
 
 export default class Board extends Component {
   static contextTypes = {
-    scale: PropTypes.number
+    scale: PropTypes.number,
+    loop: PropTypes.object,
+
   };
   static propTypes = {
     gameBoard: PropTypes.array
@@ -50,6 +50,7 @@ export default class Board extends Component {
 
   constructor(props) {
     super(props);
+    this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
     this.tileWidth = 50;
     this.sourceWidth = 50;
@@ -59,8 +60,7 @@ export default class Board extends Component {
     this.floorTilesMap = this.props.gameBoard.map(a => (a.value > 0 ? 1 : 0));
     this.wallTilesMap = this.props.gameBoard.map(a => (a.value < 0 ? 1 : 0));
     this.state = {
-      pan: new Animated.ValueXY(),
-      zoom: null,
+      zoom: 1,
       minZoom: null,
       layoutKnown: false,
       isZooming: false,
@@ -76,7 +76,9 @@ export default class Board extends Component {
       initialLeftWithoutZoom: 0,
       initialZoom: 1,
       top: 0,
-      left: 0
+      left: 0,
+      tileSize: 20,
+
     };
   }
 
@@ -90,12 +92,12 @@ export default class Board extends Component {
         console.log("on pan responder grant");
       },
       onPanResponderMove: (evt, gestureState) => {
-        let touches = evt.nativeEvent.touches;
+        let {touches} = evt.nativeEvent;
         if (touches.length == 2) {
           let touch1 = touches[0];
           let touch2 = touches[1];
 
-          this.props.processPinch(
+          this.processPinch(
             touches[0].pageX,
             touches[0].pageY,
             touches[1].pageX,
@@ -109,12 +111,78 @@ export default class Board extends Component {
         console.log("on pan responder release");
         this.setState({
           isZooming: false,
-          isMoving: false
+          isMoving: false,
         });
-        this.props.releaseTouch();
-      }
+      },
     });
   }
+
+  componentDidMount() {
+    this.context.loop.subscribe(this.update);
+  }
+
+  componentWillUnmount() {
+    this.context.loop.unsubscribe(this.update);
+  }
+
+  processPinch = (x1, y1, x2, y2) => {
+    console.log("process pinch");
+    let distance = calcDistance(x1, y1, x2, y2);
+    let center = calcCenter(x1, y1, x2, y2);
+    console.log(`distance: ${distance}, center: ${center}`);
+
+    if (!this.state.isZooming) {
+      let offsetByZoom = calcOffsetByZoom(
+        this.state.width,
+        this.state.height,
+        this.gameBoardWidth,
+        this.gameBoardWidth,
+        this.state.zoom
+      );
+      this.setState({
+        isZooming: true,
+        initialDistance: distance,
+        initialX: center.x,
+        initialY: center.y,
+        initialTop: this.state.top,
+        initialLeft: this.state.left,
+        initialZoom: this.state.zoom,
+        initialTopWithoutZoom: this.state.top - offsetByZoom.top,
+        initialLeftWithoutZoom: this.state.left - offsetByZoom.left
+      });
+    } else {
+      let touchZoom = distance / this.state.initialDistance;
+      let zoom =
+        touchZoom * this.state.initialZoom > this.state.minZoom
+          ? touchZoom * this.state.initialZoom
+          : this.state.minZoom;
+
+      let offsetByZoom = calcOffsetByZoom(
+        this.state.width,
+        this.state.height,
+        this.gameBoardWidth,
+        this.gameBoardWidth,
+        zoom
+      );
+      let left =
+        this.state.initialLeftWithoutZoom * touchZoom + offsetByZoom.left;
+      let top = this.state.initialTopWithoutZoom * touchZoom + offsetByZoom.top;
+      console.log("zoom", zoom);
+      this.setState({
+        zoom: zoom,
+        left: 0,
+        top: 0,
+        left:
+          left > 0
+            ? 0
+            : maxOffset(left, this.state.width, this.gameBoardWidth * zoom),
+        top:
+          top > 0
+            ? 0
+            : maxOffset(top, this.state.height, this.gameBoardWidth * zoom)
+      });
+    }
+  };
 
   processTouch(x, y) {
     if (!this.state.isMoving) {
@@ -150,51 +218,53 @@ export default class Board extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.cameraWatcher();
-    this.state.pan.x.removeAllListeners();
-    this.state.pan.y.removeAllListeners();
+  update = () => {
+    if (this.state.isMoving) {
+      console.log(`update: ${this.counter}`);
+      // this.props.zoom();
+      this.counter += 1;
+    }
   }
 
   render() {
-    console.log("opacitiy?");
+    // Math.floor((this.tileWidth / this.state.zoom)/16)
+    // Math.floor(100*this.state.zoom);
+    let scale = this.state.tileSize;
+    // console.log(`tileSize: ${scale}`);
     return (
       <View
         style={{
           position: "absolute",
           top: this.state.offsetTop + this.state.top,
           left: this.state.offsetLeft + this.state.left,
-          width: this.gameBoardWidth * this.state.zoom,
-          height: this.gameBoardWidth * this.state.zoom
+          // width: this.gameBoardWidth,
+          // height: this.gameBoardWidth,
         }}
         {...this._panResponder.panHandlers}
       >
         <TileMap
           src={require("../data/images/Black_square.jpeg")}
-          tileSize={this.tileWidth}
+          tileSize={scale}
           columns={40}
           rows={40}
-          sourceWidth={this.sourceWidth}
+          sourceWidth={scale}
           layers={[this.blackTilesMap]}
-          scale={this.context.scale}
         />
         <TileMap
           src={require("../data/images/Magenta-square_100px.gif")}
-          tileSize={this.tileWidth}
+          tileSize={scale}
           columns={40}
           rows={40}
-          sourceWidth={this.sourceWidth}
+          sourceWidth={scale}
           layers={[this.wallTilesMap]}
-          scale={this.context.scale}
         />
         <TileMap
           src={require("../data/images/Cyan-square.png")}
-          tileSize={this.tileWidth}
+          tileSize={scale}
           columns={40}
           rows={40}
-          sourceWidth={this.sourceWidth}
+          sourceWidth={scale}
           layers={[this.floorTilesMap]}
-          scale={this.context.scale}
         />
       </View>
     );
