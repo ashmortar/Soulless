@@ -308,10 +308,10 @@ class Game extends Component {
       current_cell = this.findFirstTopLeftCorner(gamefield);
     }
 
-    console.log(amountOfLoops);
-    console.log(loopIndexes);
-    console.log(cellAmounts);
-    console.log(cellIndexesInLoops);
+    // console.log(amountOfLoops);
+    // console.log(loopIndexes);
+    // console.log(cellAmounts);
+    // console.log(cellIndexesInLoops);
 
     let output = 1;
     if (amountOfLoops > 1) {
