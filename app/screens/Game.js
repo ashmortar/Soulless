@@ -664,162 +664,174 @@ class Game extends Component {
     }
   }
 
+  getNeighboringCells = (i) => {
+    let top = null;
+    let left = null;
+    let right = null;
+    let bottom = null;
+    let bottomLeft = null;
+    let bottomRight = null;
+    let topLeft = null;
+    let topRight = null;
+
+    if((i - (this.cellsInRow + 1) >= 0) && (i % this.cellsInRow !== 0)) {
+      topLeft = this.elements[i - (this.cellsInRow + 1)];
+    }
+    if (i - this.cellsInRow >= 0) {
+      top = this.elements[i - this.cellsInRow];
+    }
+    if((i - (this.cellsInRow - 1) >= 0) && (i % this.cellsInRow !== (this.cellsInRow - 1))) {
+      topRight = this.elements[i - (this.cellsInRow - 1)];
+    }
+    if ((i - 1 >= 0) && (i % this.cellsInRow !== 0)) {
+      left = this.elements[i - 1];
+    }
+    if ((i + 1 <= this.cellsTotal) && (i % this.cellsInRow !== (this.cellsInRow - 1))) {
+      right = this.elements[i + 1];
+    }
+    if ((i + (this.cellsInRow - 1) <= this.cellsTotal) && ((i % this.cellsInRow !== 0))) {
+      bottomLeft = this.elements[i + (this.cellsInRow - 1)];
+    }
+    if (i + this.cellsInRow <= this.cellsTotal) {
+      bottom = this.elements[i + this.cellsInRow];
+    }
+    if ((i + (this.cellsInRow + 1) <= this.cellsTotal) && (i % this.cellInRow !== (this.cellsInRow - 1))) {
+      bottomRight = this.elements[i + (this.cellsInRow + 1)];
+    }
+    return ({ top, left, right, bottom, bottomLeft, bottomRight, topLeft, topRight})
+  }
+
   assignImageKeys = () => {
     for (let i = 0; i < this.elements.length; i++) {
-      let top = null;
-      let left = null;
-      let right = null;
-      let bottom = null;
-
-      if (i - this.cellsInRow >= 0) {
-        top = this.elements[i - this.cellsInRow];
-      }
-      if ((i - 1 >= 0) && (i % this.cellsInRow !== 0)) {
-        left = this.elements[i - 1];
-      }
-      if ((i + 1 <= this.cellsTotal) && (i % this.cellsInRow !== (this.cellsInRow - 1))) {
-        right = this.elements[i + 1];
-      }
-
-      if (i + this.cellsInRow <= this.cellsTotal) {
-        bottom = this.elements[i + this.cellsInRow];
-      }
+      const { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(i);
       let cell = this.elements[i];
-      
-      if (cell.value === 0) {
-        cell.imageKey = 9;
-      }
-      if (cell.value < 0) {
-        cell.imageKey = 15;
-      }
-      if (cell.value > 0) {
-        cell.imageKey = 22;
-      }
-
 
       // wall top tiles
-      // if (cell.value === 0) {
-      //   cell.imageKey = 9;
-        // // non edge cases
-        // if (left && top && right && bottom) {
-        //   // wall top northwp northwest
-        //   if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
-        //     cell.imageKey = 1;
-        //   }
-        //   // wall top north
-        //   if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
-        //     cell.imageKey = 2;
-        //   }
-        //   // wall top northeast
-        //   if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
-        //     cell.imageKey = 3;
-        //   }
-        //   // wall top west
-        //   if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
-        //     cell.imageKey = 4;
-        //   }
-        //   // wall top east
-        //   if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
-        //     cell.imageKey = 5;
-        //   }
-        //   // wall top southwest
-        //   if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
-        //     cell.imageKey = 6;
-        //   }
-        //   // wall top south
-        //   if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
-        //     cell.imageKey = 7;
-        //   }
-        //   // wall top southeast
-        //   if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
-        //     cell.imageKey = 8;
-        //   }
-        //   if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
-        //     cell.imageKey = 9;
-        //   }
-        //   // top corners
-        // } else if ((top === null && left === null) || (top === null && right === null)) {
-        //   cell.imageKey = 9;
-        //   // top row
-        // }
-        // else if (top === null && left && right && bottom) {
-        //   if (bottom.value === 0) {
-        //     cell.imageKey = 8;
-        //   } else {
-        //     cell.imageKey = 6;
-        //   }
-        //   // left side
-        // } else if (left === null && top && right && bottom) {
-        //   if (right.value === 0) {
-        //     cell.imageKey = 8;
-        //   } else {
-        //     cell.imageKey = 4;
-        //   }
-        //   // right side
-        // } else if (right === null && top && left && bottom) {
-        //   if (left.value === 0) {
-        //     cell.imageKey = 8;
-        //   } else {
-        //     cell.imageKey = 3;
-        //   }
-        //  }
-      // }
+      if (cell.value === 0) {
+        cell.imageKey = 9;
+        // non edge cases
+        if (left && top && right && bottom) {
+          // wall top northwest
+          if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+            cell.imageKey = 1;
+          }
+          // wall top north
+          if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+            cell.imageKey = 2;
+          }
+          // wall top northeast
+          if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
+            cell.imageKey = 3;
+          }
+          // wall top west
+          if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
+            cell.imageKey = 4;
+          }
+          // wall top east
+          if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
+            cell.imageKey = 5;
+          }
+          // wall top southwest
+          if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+            cell.imageKey = 6;
+          }
+          // wall top south
+          if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+            cell.imageKey = 7;
+          }
+          // wall top southeast
+          if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
+            cell.imageKey = 8;
+          }
+        }
+        // top row
+        else if (top === null && left && right && bottom) {
+          if (bottom.value === 0) {
+            cell.imageKey = 9;
+          } 
+          else {
+            cell.imageKey = 7;
+          }
+        } 
+        // left side
+        else if (left === null && top && right && bottom) {
+          if (right.value === 0) {
+            cell.imageKey = 9;
+          } else {
+            cell.imageKey = 5;
+          }
+        } 
+        // right side
+        else if (right === null && top && left && bottom) {
+          if (left.value === 0) {
+            cell.imageKey = 9;
+          } else {
+            cell.imageKey = 4;
+          }
+         }
+      }
       // wall front tiles
-      // if (cell.value < 0) {
-      // // non edge cases
-      //   if (left && top && right && bottom) {
-      //     // wall front northwest
-      //     if (left.value >= 0 && top.value >= 0 && right.value < 0 && bottom.value < 0) {
-      //       cell.imageKey = 9;
-      //     }
-      //     // wall front north
-      //     if ((left.value < 0 && top.value >= 0 && right.value < 0 && bottom.value < 0) || (left.value >= 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0)) {
-      //       cell.imageKey = 10;
-      //     }
-      //     // wall front northeast
-      //     if (left.value < 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0) {
-      //       cell.imageKey = 11;
-      //     }
-      //     // wall front southwest
-      //     if (left.value >= 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) {
-      //       cell.imageKey = 12;
-      //     }
-      //     // wall front south
-      //     if ((left.value < 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) || (left.value >= 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0)) {
-      //       cell.imageKey = 13;
-      //     }
-      //     // wall front southeast
-      //     if (left.value < 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
-      //       cell.imageKey = 14;
-      //     }
-      //   }
-      // }
-      // // floor tiles
-      // if (cell.value > 0) {
-      //   // floor tile northwest
-      //   if (left.value < 1 && top.value < 1 && right.value > 0 && bottom.value > 0) {
-      //     cell.imageKey = 16;
-      //   }
-      //   // floor tile north
-      //   if (left.value > 0 && top.value < 1 && right.value > 0 && bottom.value > 0) {
-      //     cell.imageKey = 17;
-      //   }
-      //   // floor tile northeast
-      //   if (left.value > 0 && top.value < 1 && right.value < 1 && bottom.value > 0) {
-      //     cell.imageKey = 18;
-      //   }
-      //   // floor tile west
-      //   if (left.value < 1 && top.value > 0 && right.value > 0 && bottom.value > 0) {
-      //     cell.imageKey = 19;
-      //   }
-      //   // floor tile east
-      //   if (left.value > 0 && top.value > 0 && right.value < 1 && bottom.value > 0) {
-      //     cell.imageKey = 20;
-      //   } else {
-      //     cell.imageKey = 21;
-      //   }
-    //   }
-    // }
+      if (cell.value < 0) {
+        cell.imageKey = 14;
+      // non edge cases
+        if (left && top && right && bottom) {
+          // wall front northwest
+          if (left.value >= 0 && top.value >= 0 && right.value < 0 && bottom.value < 0) {
+            cell.imageKey = 10;
+          }
+          // wall front north
+          if ((left.value < 0 && top.value >= 0 && right.value < 0 && bottom.value < 0) || (left.value >= 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0)) {
+            cell.imageKey = 11;
+            if (bottomLeft) {
+              if (bottomLeft.value !== cell.value) {
+                cell.imageKey = 10;
+              }
+            }
+          }
+          // wall front northeast
+          if (left.value < 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0) {
+            cell.imageKey = 12;
+          }
+          // wall front southwest
+          if (left.value >= 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) {
+            cell.imageKey = 13;
+          }
+          // wall front south
+          if ((left.value < 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) || (left.value >= 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0)) {
+            cell.imageKey = 14;
+          }
+          // wall front southeast
+          if (left.value < 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
+            cell.imageKey = 15;
+          }
+        }
+      }
+      // floor tiles
+      if (cell.value > 0) {
+        cell.imageKey = 22;
+        // floor tile northwest
+        // if (left.value < 1 && top.value < 1 && right.value > 0 && bottom.value > 0) {
+        //   cell.imageKey = 16;
+        // }
+        // // floor tile north
+        // if (left.value > 0 && top.value < 1 && right.value > 0 && bottom.value > 0) {
+        //   cell.imageKey = 17;
+        // }
+        // // floor tile northeast
+        // if (left.value > 0 && top.value < 1 && right.value < 1 && bottom.value > 0) {
+        //   cell.imageKey = 18;
+        // }
+        // // floor tile west
+        // if (left.value < 1 && top.value > 0 && right.value > 0 && bottom.value > 0) {
+        //   cell.imageKey = 19;
+        // }
+        // // floor tile east
+        // if (left.value > 0 && top.value > 0 && right.value < 1 && bottom.value > 0) {
+        //   cell.imageKey = 20;
+        // } else {
+        //   cell.imageKey = 21;
+        // }
+      }
     }
     let imageKeys = [];
     for (let i = 0; i < this.elements.length; i++) {
