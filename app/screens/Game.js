@@ -239,6 +239,10 @@ class Game extends Component {
     }
   }
 
+  detectBigBlackAreas = () => {
+
+  }
+
   detectClosedLoops = () => {
     let amountOfLoops = 0;
     let loopIndexes = [];
@@ -285,7 +289,7 @@ class Game extends Component {
         queue.forEach((cellInAQueue) => {
           let availableCells = [];
           let index = cellInAQueue.name;
-          availableCells = this.getCellsIndexes(index);
+          availableCells = this.getIndexesOfAvailableCellsAround(index, this.cellsInRow - 2, gamefield.length);
 
           availableCells.forEach((availableCellIndex) => {
             if ((gamefield[availableCellIndex].value > 0) && (gamefield[availableCellIndex].value < 10)) {
@@ -308,10 +312,10 @@ class Game extends Component {
       current_cell = this.findFirstTopLeftCorner(gamefield);
     }
 
-    // console.log(amountOfLoops);
-    // console.log(loopIndexes);
-    // console.log(cellAmounts);
-    // console.log(cellIndexesInLoops);
+    console.log(amountOfLoops);
+    console.log(loopIndexes);
+    console.log(cellAmounts);
+    console.log(cellIndexesInLoops);
 
     let output = 1;
     if (amountOfLoops > 1) {
@@ -362,10 +366,7 @@ class Game extends Component {
     return 1;
   }
 
-  getCellsIndexes = (index) => {
-    let row = this.cellsInRow - 2;
-    let total = 1292;
-
+  getIndexesOfAvailableCellsAround = (index, row, total) => {
     let result = [];
     if (index % row != 0) {
       result.push(index - 1);
@@ -465,26 +466,18 @@ class Game extends Component {
       // bottom: i+20
       if (this.elements[i].value > 0) {
         let adjacent = 0;
-        if ((i % this.cellsInRow != (this.cellsInRow - 1)) && (this.elements[i + 1].value > 0)) {
-          adjacent++;
-          this.elements[i].humanEdges.push(this.elements[i + 1]);
-          this.elements[i].monsterEdges.push(this.elements[i + 1]);
+        let cellsAround = this.getIndexesOfAvailableCellsAround(i, this.cellsInRow, this.cellsTotal);
+
+        for (let j = 0; j < cellsAround.length; j++) {
+          if (this.elements[cellsAround[j]].value > 0) {
+            adjacent++;
+            this.elements[i].humanEdges.push(this.elements[cellsAround[j]]);
+            this.elements[i].monsterEdges.push(this.elements[cellsAround[j]]);
+          }
         }
-        if ((i % this.cellsInRow > 0) && (this.elements[i - 1].value > 0)) {
-          adjacent++;
-          this.elements[i].humanEdges.push(this.elements[i - 1]);
-          this.elements[i].monsterEdges.push(this.elements[i - 1]);
-        }
-        if ((i - this.cellsInRow >= 0) && (this.elements[i - this.cellsInRow].value > 0)) {
-          adjacent++;
-          this.elements[i].humanEdges.push(this.elements[i - this.cellsInRow]);
-          this.elements[i].monsterEdges.push(this.elements[i - this.cellsInRow]);
-        }
-        if ((i + this.cellsInRow < this.cellsTotal) && (this.elements[i + this.cellsInRow].value > 0)) {
-          adjacent++;
-          this.elements[i].humanEdges.push(this.elements[i + this.cellsInRow]);
-          this.elements[i].monsterEdges.push(this.elements[i + this.cellsInRow]);
-        }
+        this.elements[i].value = adjacent;
+
+
         if (i % this.cellsInRow != (this.cellsInRow - 1) && (i - (this.cellsInRow - 1) > 0) && this.elements[i - (this.cellsInRow - 1)].value > 0) {
           this.elements[i].monsterEdges.push(this.elements[i - (this.cellsInRow - 1)]);
         }
@@ -497,13 +490,20 @@ class Game extends Component {
         if (i % 20 != 0 && (i + (this.cellsInRow - 1) < this.cellsTotal) && (this.elements[i + (this.cellsInRow - 1)].value > 0)) {
           this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow - 1)]);
         }
-        this.elements[i].value = adjacent;
+
       }
     }
   }
 
   createWall_straightHorizontal = (i, length) => {
-    if ((i - 2 * this.cellsInRow >= -1) && ((i + 1) % this.cellsInRow != 0)) {
+
+    let a = i - 2 * this.cellsInRow;
+    let b = i + length * 2 - 1;
+    let c = i - 2 * this.cellsInRow + length * 2 - 1;
+    let total = this.cellsTotal;
+
+    if ((i >= 0) && (i < total) && (a >= 0) && (a < total) && (b >= 0) && (b < total) && (c >= 0) && (c < total)) {
+    // if ((i - 2 * this.cellsInRow >= 0) && ((i + 1) % this.cellsInRow != 0)) {
       for (let j=0; j<length; j++) {
         k = i + 2 * j;
         if (this.elements[k].value != 0) {
@@ -531,7 +531,7 @@ class Game extends Component {
       length = Math.floor((this.cellsTotal - i) / this.cellsInRow);
     }
 
-    if ((i - 2 * this.cellsInRow >= -1)) {
+    if ((i - 2 * this.cellsInRow >= 0)) {
       for (let j=0; j<length; j++) {
         k = i + 40 * j;
         if (this.elements[k].value != 0){
