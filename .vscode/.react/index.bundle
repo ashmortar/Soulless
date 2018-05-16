@@ -1432,7 +1432,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   _reactNative.AppRegistry.registerComponent('ProjectEyeCue', function () {
     return _App2.default;
   });
-},11,[12,491],"index.js");
+},652,[12,491],"index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -62910,7 +62910,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     }
   });
-},509,[510,585,598,642,649],"app\\config\\routes.js");
+},509,[510,585,598,643,650],"app\\config\\routes.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -75757,6 +75757,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
+      _this.detectBigBlackAreas = function () {};
+
       _this.detectClosedLoops = function () {
         var amountOfLoops = 0;
         var loopIndexes = [];
@@ -75800,7 +75802,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             queue.forEach(function (cellInAQueue) {
               var availableCells = [];
               var index = cellInAQueue.name;
-              availableCells = _this.getCellsIndexes(index);
+              availableCells = _this.getIndexesOfAvailableCellsAround(index, _this.cellsInRow - 2, gamefield.length);
               availableCells.forEach(function (availableCellIndex) {
                 if (gamefield[availableCellIndex].value > 0 && gamefield[availableCellIndex].value < 10) {
                   gamefield[availableCellIndex].value = current_zone;
@@ -75819,6 +75821,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           current_cell = _this.findFirstTopLeftCorner(gamefield);
         }
 
+        console.log(amountOfLoops);
+        console.log(loopIndexes);
+        console.log(cellAmounts);
+        console.log(cellIndexesInLoops);
         var output = 1;
 
         if (amountOfLoops > 1) {
@@ -75871,9 +75877,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         return 1;
       };
 
-      _this.getCellsIndexes = function (index) {
-        var row = _this.cellsInRow - 2;
-        var total = 1292;
+      _this.getIndexesOfAvailableCellsAround = function (index, row, total) {
         var result = [];
 
         if (index % row != 0) {
@@ -75974,37 +75978,19 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           if (_this.elements[i].value > 0) {
             var adjacent = 0;
 
-            if (i % _this.cellsInRow != _this.cellsInRow - 1 && _this.elements[i + 1].value > 0) {
-              adjacent++;
+            var cellsAround = _this.getIndexesOfAvailableCellsAround(i, _this.cellsInRow, _this.cellsTotal);
 
-              _this.elements[i].humanEdges.push(_this.elements[i + 1]);
+            for (var j = 0; j < cellsAround.length; j++) {
+              if (_this.elements[cellsAround[j]].value > 0) {
+                adjacent++;
 
-              _this.elements[i].monsterEdges.push(_this.elements[i + 1]);
+                _this.elements[i].humanEdges.push(_this.elements[cellsAround[j]]);
+
+                _this.elements[i].monsterEdges.push(_this.elements[cellsAround[j]]);
+              }
             }
 
-            if (i % _this.cellsInRow > 0 && _this.elements[i - 1].value > 0) {
-              adjacent++;
-
-              _this.elements[i].humanEdges.push(_this.elements[i - 1]);
-
-              _this.elements[i].monsterEdges.push(_this.elements[i - 1]);
-            }
-
-            if (i - _this.cellsInRow >= 0 && _this.elements[i - _this.cellsInRow].value > 0) {
-              adjacent++;
-
-              _this.elements[i].humanEdges.push(_this.elements[i - _this.cellsInRow]);
-
-              _this.elements[i].monsterEdges.push(_this.elements[i - _this.cellsInRow]);
-            }
-
-            if (i + _this.cellsInRow < _this.cellsTotal && _this.elements[i + _this.cellsInRow].value > 0) {
-              adjacent++;
-
-              _this.elements[i].humanEdges.push(_this.elements[i + _this.cellsInRow]);
-
-              _this.elements[i].monsterEdges.push(_this.elements[i + _this.cellsInRow]);
-            }
+            _this.elements[i].value = adjacent;
 
             if (i % _this.cellsInRow != _this.cellsInRow - 1 && i - (_this.cellsInRow - 1) > 0 && _this.elements[i - (_this.cellsInRow - 1)].value > 0) {
               _this.elements[i].monsterEdges.push(_this.elements[i - (_this.cellsInRow - 1)]);
@@ -76021,14 +76007,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             if (i % 20 != 0 && i + (_this.cellsInRow - 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow - 1)].value > 0) {
               _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow - 1)]);
             }
-
-            _this.elements[i].value = adjacent;
           }
         }
       };
 
       _this.createWall_straightHorizontal = function (i, length) {
-        if (i - 2 * _this.cellsInRow >= -1 && (i + 1) % _this.cellsInRow != 0) {
+        var a = i - 2 * _this.cellsInRow;
+        var b = i + length * 2 - 1;
+        var c = i - 2 * _this.cellsInRow + length * 2 - 1;
+        var total = _this.cellsTotal;
+
+        if (i >= 0 && i < total && a >= 0 && a < total && b >= 0 && b < total && c >= 0 && c < total) {
           for (var j = 0; j < length; j++) {
             k = i + 2 * j;
 
@@ -76060,7 +76049,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           length = Math.floor((_this.cellsTotal - i) / _this.cellsInRow);
         }
 
-        if (i - 2 * _this.cellsInRow >= -1) {
+        if (i - 2 * _this.cellsInRow >= 0) {
           for (var j = 0; j < length; j++) {
             k = i + 40 * j;
 
@@ -78183,8 +78172,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           _react3.default.createElement(
             _native.Stage,
             {
-              height: this.gameBoardWidth,
-              width: this.gameBoardWidth,
+              height: this.screenDimensions.height,
+              width: this.screenDimensions.width,
               style: {
                 backgroundColor: "#515151"
               },
@@ -85942,6 +85931,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
   var _class,
@@ -86006,7 +85997,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[5], "../data/images/wall-t-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 110
+                lineNumber: 103
               }
             });
 
@@ -86017,7 +86008,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[6], "../data/images/wall-t-n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 113
+                lineNumber: 106
               }
             });
 
@@ -86028,7 +86019,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[7], "../data/images/wall-t-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 116
+                lineNumber: 109
               }
             });
 
@@ -86039,7 +86030,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[8], "../data/images/wall-t-w.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 119
+                lineNumber: 112
               }
             });
 
@@ -86050,7 +86041,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[9], "../data/images/wall-t-e.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 122
+                lineNumber: 115
               }
             });
 
@@ -86061,7 +86052,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[10], "../data/images/wall-t-sw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 125
+                lineNumber: 118
               }
             });
 
@@ -86072,7 +86063,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[11], "../data/images/wall-t-s.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 128
+                lineNumber: 121
               }
             });
 
@@ -86083,7 +86074,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[12], "../data/images/wall-t-se.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 131
+                lineNumber: 124
               }
             });
 
@@ -86094,7 +86085,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 134
+                lineNumber: 127
               }
             });
 
@@ -86105,7 +86096,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[14], "../data/images/wall-f-nw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 137
+                lineNumber: 130
               }
             });
 
@@ -86116,7 +86107,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[15], "../data/images/wall-f-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 140
+                lineNumber: 133
               }
             });
 
@@ -86127,7 +86118,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[16], "../data/images/wall-f-ne-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 143
+                lineNumber: 136
               }
             });
 
@@ -86138,7 +86129,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[17], "../data/images/wall-f-sw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 146
+                lineNumber: 139
               }
             });
 
@@ -86149,7 +86140,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[18], "../data/images/wall-f-s-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 149
+                lineNumber: 142
               }
             });
 
@@ -86160,7 +86151,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[19], "../data/images/wall-f-se-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 152
+                lineNumber: 145
               }
             });
 
@@ -86171,7 +86162,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[20], "../data/images/wall-f-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 155
+                lineNumber: 148
               }
             });
 
@@ -86182,7 +86173,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[21], "../data/images/floor-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 158
+                lineNumber: 151
               }
             });
 
@@ -86193,7 +86184,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[22], "../data/images/floor-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 161
+                lineNumber: 154
               }
             });
 
@@ -86204,7 +86195,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[23], "../data/images/floor-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 164
+                lineNumber: 157
               }
             });
 
@@ -86215,7 +86206,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[24], "../data/images/floor-w-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 167
+                lineNumber: 160
               }
             });
 
@@ -86226,7 +86217,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[25], "../data/images/floor-e-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 170
+                lineNumber: 163
               }
             });
 
@@ -86237,7 +86228,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[26], "../data/images/floor-c-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 173
+                lineNumber: 166
               }
             });
 
@@ -86248,32 +86239,113 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = 100;
+      _this.tileWidth = Math.floor(_this.screenDimensions.height / 40);
       _this.sourceWidth = _this.tileWidth;
       _this.gameBoardWidth = _this.tileWidth * 40;
       _this.tileMapArray = _this.props.gameBoard.map(function (a) {
         return a.imageKey;
       });
+      _this.state = {
+        isZooming: false,
+        isMoving: false,
+        initialX: null,
+        offsetLeft: 0,
+        initialTop: 0,
+        initialLeft: 0,
+        top: 0,
+        left: 0,
+        tileSize: 100
+      };
       return _this;
     }
 
     _createClass(Board, [{
+      key: "componentWillMount",
+      value: function componentWillMount() {
+        var _this2 = this;
+
+        this._panResponder = _reactNative.PanResponder.create({
+          onStartShouldSetPanResponder: function onStartShouldSetPanResponder(evt, gestureState) {
+            return true;
+          },
+          onStartShouldSetPanResponderCapture: function onStartShouldSetPanResponderCapture(evt, gestureState) {
+            return true;
+          },
+          onMoveShouldSetPanResponder: function onMoveShouldSetPanResponder(evt, gestureState) {
+            return true;
+          },
+          onMoveShouldSetPanResponderCapture: function onMoveShouldSetPanResponderCapture(evt, gestureState) {
+            return true;
+          },
+          onPanResponderGrant: function onPanResponderGrant(evt, gestureState) {},
+          onPanResponderMove: function onPanResponderMove(evt, gestureState) {
+            var touches = evt.nativeEvent.touches;
+
+            if (touches.length == 1 && !_this2.state.isZooming) {
+              _this2.processTouch(touches[0].pageX, touches[0].pageY);
+            }
+          },
+          onPanResponderRelease: function onPanResponderRelease() {
+            console.log("on pan responder release");
+
+            _this2.setState({
+              isZooming: false,
+              isMoving: false
+            });
+          }
+        });
+      }
+    }, {
+      key: "processTouch",
+      value: function processTouch(x, y) {
+        if (!this.state.isMoving) {
+          this.setState({
+            isMoving: true,
+            initialX: x,
+            initialY: y,
+            initialTop: this.state.top,
+            initialLeft: this.state.left
+          });
+        } else {
+          var left = this.state.initialLeft + x - this.state.initialX;
+          var top = this.state.initialTop + y - this.state.initialY;
+          console.log(left, this.gameBoardWidth);
+          this.setState({
+            left: left > 0 ? 0 : left < -this.gameBoardWidth + this.screenDimensions.width ? -this.gameBoardWidth + this.screenDimensions.width : left
+          });
+        }
+      }
+    }, {
       key: "render",
       value: function render() {
         console.log('tileMap', this.tileMapArray);
-        return _react3.default.createElement(_native.TileMap, {
-          src: _require(_dependencyMap[27], "../data/images/Black_square.jpeg"),
-          tileSize: this.tileWidth,
-          columns: 40,
-          rows: 40,
-          sourceWidth: this.tileWidth,
-          layers: [this.tileMapArray],
-          renderTile: this.renderTile,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 186
-          }
-        });
+        return _react3.default.createElement(
+          _reactNative.View,
+          _extends({
+            style: {
+              position: 'absolute',
+              left: this.state.left
+            }
+          }, this._panResponder.panHandlers, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 179
+            }
+          }),
+          _react3.default.createElement(_native.TileMap, {
+            src: _require(_dependencyMap[27], "../data/images/Black_square.jpeg"),
+            tileSize: this.tileWidth,
+            columns: 40,
+            rows: 40,
+            sourceWidth: this.tileWidth,
+            layers: [this.tileMapArray],
+            renderTile: this.renderTile,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 180
+            }
+          })
+        );
       }
     }]);
 
@@ -86286,7 +86358,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Board;
-},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,652],"app\\screens\\Board.js");
+},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642],"app\\screens\\Board.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -86552,6 +86624,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 	});
 },641,[164],"app\\data\\images\\floor-c-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
+		module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+				"__packager_asset": true,
+				"httpServerLocation": "/assets/app/data/images",
+				"width": 100,
+				"height": 100,
+				"scales": [1],
+				"hash": "589723310b5df772fffb20f29a035b4f",
+				"name": "Black_square",
+				"type": "jpeg"
+		});
+},642,[164],"app\\data\\images\\Black_square.jpeg");
+__d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
@@ -86676,7 +86760,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Connect;
-},642,[118,179,129,586,589,592,643,648],"app\\screens\\Connect.js");
+},643,[118,179,129,586,589,592,644,649],"app\\screens\\Connect.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86695,7 +86779,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.GameList = _GameList2.default;
   exports.styles = _styles2.default;
-},643,[644,645],"app\\components\\GameList\\index.js");
+},644,[645,646],"app\\components\\GameList\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86765,7 +86849,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = GameList;
-},644,[118,12,129,645,646,647],"app\\components\\GameList\\GameList.js");
+},645,[118,12,129,646,647,648],"app\\components\\GameList\\GameList.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86803,7 +86887,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       alignItems: 'center'
     }
   });
-},645,[493,12],"app\\components\\GameList\\styles.js");
+},646,[493,12],"app\\components\\GameList\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86868,7 +86952,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = ListItem;
-},646,[129,118,12,645],"app\\components\\GameList\\ListItem.js");
+},647,[129,118,12,646],"app\\components\\GameList\\ListItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86898,7 +86982,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = Separator;
-},647,[118,12,645],"app\\components\\GameList\\Separator.js");
+},648,[118,12,646],"app\\components\\GameList\\Separator.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86916,7 +87000,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     key: '3',
     name: 'game the third'
   }];
-},648,[],"app\\data\\testGames.js");
+},649,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87037,19 +87121,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Waiting;
-},649,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-		module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-				"__packager_asset": true,
-				"httpServerLocation": "/assets/app/data/images",
-				"width": 100,
-				"height": 100,
-				"scales": [1],
-				"hash": "589723310b5df772fffb20f29a035b4f",
-				"name": "Black_square",
-				"type": "jpeg"
-		});
-},652,[164],"app\\data\\images\\Black_square.jpeg");
+},650,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
 require(44);
-require(11);
+require(652);
 //# sourceMappingURL=index.map

@@ -26,8 +26,8 @@ export default class Engine extends Component {
     return (
       <Loop style={{ backgroundColor: "#212121" }}>
         <Stage
-          height={this.gameBoardWidth}
-          width={this.gameBoardWidth}
+          height={this.screenDimensions.height}
+          width={this.screenDimensions.width}
           style={{ backgroundColor: "#515151" }}
         >
           {this.props.boardFinished ? (
