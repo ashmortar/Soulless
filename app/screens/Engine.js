@@ -16,8 +16,8 @@ export default class Engine extends Component {
     super(props);
     console.log("Engine");
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = 80;
-    this.sourceWidth = 80;
+    this.tileWidth = 100;
+    this.sourceWidth = 100;
     this.gameBoardWidth = this.tileWidth * 40;
   }
 

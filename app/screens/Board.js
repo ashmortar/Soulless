@@ -14,56 +14,56 @@ export default class Board extends Component {
 
   constructor(props) {
     super(props);
-    this.counter = 0;
+    // this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
     this.tileWidth = 100;
     this.sourceWidth = this.tileWidth;
     this.gameBoardWidth = this.tileWidth * 40;
     this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
-    this.state = {
-      isZooming: false,
-      isMoving: false,
-      initialX: null,
-      offsetLeft: 0,
-      initialTop: 0,
-      initialLeft: 0,
-      top: 0,
-      left: 0,
-      tileSize: 100,
-    };
+    // this.state = {
+    //   isZooming: false,
+    //   isMoving: false,
+    //   initialX: null,
+    //   offsetLeft: 0,
+    //   initialTop: 0,
+    //   initialLeft: 0,
+    //   top: 0,
+    //   left: 0,
+    //   tileSize: 100,
+    // };
   }
 
-  componentWillMount() {
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => {
-        // console.log("on pan responder grant");
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        // let { touches } = evt.nativeEvent;
-        // if (touches.length == 2) {
-        //   // this.processPinch(
-        //   //   touches[0].pageX,
-        //   //   touches[0].pageY,
-        //   //   touches[1].pageX,
-        //   //   touches[1].pageY
-        //   // );
-        // } else if (touches.length == 1 && !this.state.isZooming) {
-        //   this.processTouch(touches[0].pageX, touches[0].pageY);
-        // }
-      },
-      onPanResponderRelease: () => {
-      //   console.log("on pan responder release");
-      //   this.setState({
-      //     isZooming: false,
-      //     isMoving: false
-      //   });
-      }
-    });
-  }
+  // componentWillMount() {
+  //   this._panResponder = PanResponder.create({
+  //     onStartShouldSetPanResponder: (evt, gestureState) => true,
+  //     onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+  //     onMoveShouldSetPanResponder: (evt, gestureState) => true,
+  //     onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+  //     onPanResponderGrant: (evt, gestureState) => {
+  //       // console.log("on pan responder grant");
+  //     },
+  //     onPanResponderMove: (evt, gestureState) => {
+  //       // let { touches } = evt.nativeEvent;
+  //       // if (touches.length == 2) {
+  //       //   // this.processPinch(
+  //       //   //   touches[0].pageX,
+  //       //   //   touches[0].pageY,
+  //       //   //   touches[1].pageX,
+  //       //   //   touches[1].pageY
+  //       //   // );
+  //       // } else if (touches.length == 1 && !this.state.isZooming) {
+  //       //   this.processTouch(touches[0].pageX, touches[0].pageY);
+  //       // }
+  //     },
+  //     onPanResponderRelease: () => {
+  //     //   console.log("on pan responder release");
+  //     //   this.setState({
+  //     //     isZooming: false,
+  //     //     isMoving: false
+  //     //   });
+  //     }
+  //   });
+  // }
 
   // componentDidMount() {
   //   this.context.loop.subscribe(this.update);
@@ -73,29 +73,29 @@ export default class Board extends Component {
   //   this.context.loop.unsubscribe(this.update);
   // }
 
-  processTouch(x, y) {
-    if (!this.state.isMoving) {
-      this.setState({
-        isMoving: true,
-        initialX: x,
-        initialY: y,
-        initialTop: this.state.top,
-        initialLeft: this.state.left,
-      });
-    } else {
-      let left = this.state.initialLeft + x - this.state.initialX;
-      let top = this.state.initialTop + y - this.state.initialY;
-      console.log(left, this.gameBoardWidth);
-      this.setState({
-        left:
-          left > 0
-            ? 0
-            : left < -this.gameBoardWidth + this.screenDimensions.width
-              ? -this.gameBoardWidth + this.screenDimensions.width
-              : left
-      });
-    }
-  }
+  // processTouch(x, y) {
+  //   if (!this.state.isMoving) {
+  //     this.setState({
+  //       isMoving: true,
+  //       initialX: x,
+  //       initialY: y,
+  //       initialTop: this.state.top,
+  //       initialLeft: this.state.left,
+  //     });
+  //   } else {
+  //     let left = this.state.initialLeft + x - this.state.initialX;
+  //     let top = this.state.initialTop + y - this.state.initialY;
+  //     console.log(left, this.gameBoardWidth);
+  //     this.setState({
+  //       left:
+  //         left > 0
+  //           ? 0
+  //           : left < -this.gameBoardWidth + this.screenDimensions.width
+  //             ? -this.gameBoardWidth + this.screenDimensions.width
+  //             : left
+  //     });
+  //   }
+  // }
 
   // update = () => {};
 
@@ -176,29 +176,18 @@ export default class Board extends Component {
   render() {
     // Math.floor((this.tileWidth / this.state.zoom)/16)
     // Math.floor(100*this.state.zoom);
-    let scale = this.state.tileSize;
+    // let scale = this.state.tileSize;
     console.log('tileMap', this.tileMapArray);
     return (
-      <View
-        style={{
-          position: "absolute",
-          // top: this.state.offsetTop + this.state.top,
-          left: this.state.offsetLeft + this.state.left
-          // width: this.gameBoardWidth,
-          // height: this.gameBoardWidth,
-        }}
-        {...this._panResponder.panHandlers}
-      >
-        <TileMap
-          src={require("../data/images/wall-t-c.gif")}
-          tileSize={100}
-          columns={40}
-          rows={40}
-          sourceWidth={100}
-          layers={[this.tileMapArray]}
-          renderTile={this.renderTile}
-        />
-      </View>
+      <TileMap
+        src={require("../data/images/Black_square.jpeg")}
+        tileSize={this.tileWidth}
+        columns={40}
+        rows={40}
+        sourceWidth={this.tileWidth}
+        layers={[this.tileMapArray]}
+        // renderTile={this.renderTile}
+      />
     );
   }
 }

@@ -76172,8 +76172,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
           var cell = _this.elements[i];
 
-          if (cell.value === 0) {
-            cell.imageKey = 9;
+          if (cell.value < 1) {
+            cell.imageKey = 1;
           }
         }
 
@@ -76455,7 +76455,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1044
+              lineNumber: 1055
             }
           },
           _react3.default.createElement(
@@ -76463,7 +76463,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1045
+                lineNumber: 1056
               }
             },
             "Game screen"
@@ -76477,7 +76477,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1047
+                lineNumber: 1058
               }
             },
             _react3.default.createElement(
@@ -76493,7 +76493,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1048
+                  lineNumber: 1059
                 }
               },
               _react3.default.createElement(
@@ -76504,7 +76504,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1057
+                    lineNumber: 1068
                   }
                 },
                 "+"
@@ -76520,7 +76520,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1062
+                lineNumber: 1073
               }
             },
             _react3.default.createElement(
@@ -76536,7 +76536,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1063
+                  lineNumber: 1074
                 }
               },
               _react3.default.createElement(
@@ -76547,7 +76547,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1071
+                    lineNumber: 1082
                   }
                 },
                 "-"
@@ -76569,7 +76569,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1081
+              lineNumber: 1092
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76577,7 +76577,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1082
+              lineNumber: 1093
             }
           }),
           _react3.default.createElement(
@@ -76595,7 +76595,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1083
+                lineNumber: 1094
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76603,7 +76603,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1088
+                lineNumber: 1099
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76611,7 +76611,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1089
+                lineNumber: 1100
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76619,7 +76619,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1090
+                lineNumber: 1101
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76627,7 +76627,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1091
+                lineNumber: 1102
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76635,7 +76635,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1092
+                lineNumber: 1103
               }
             })
           ),
@@ -76644,7 +76644,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1094
+              lineNumber: 1105
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76652,7 +76652,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1095
+              lineNumber: 1106
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76660,7 +76660,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1096
+              lineNumber: 1107
             }
           })
         );
@@ -76769,7 +76769,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           boardFinished: this.state.boardFinished,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1104
+            lineNumber: 1115
           }
         });
       }
@@ -78151,8 +78151,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       console.log("Engine");
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = 80;
-      _this.sourceWidth = 80;
+      _this.tileWidth = 100;
+      _this.sourceWidth = 100;
       _this.gameBoardWidth = _this.tileWidth * 40;
       return _this;
     }
@@ -85934,8 +85934,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
   var _class,
@@ -86235,7 +86233,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
-      _this.counter = 0;
       _this.screenDimensions = _reactNative.Dimensions.get("window");
       _this.tileWidth = 100;
       _this.sourceWidth = _this.tileWidth;
@@ -86243,93 +86240,25 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.tileMapArray = _this.props.gameBoard.map(function (a) {
         return a.imageKey;
       });
-      _this.state = {
-        isZooming: false,
-        isMoving: false,
-        initialX: null,
-        offsetLeft: 0,
-        initialTop: 0,
-        initialLeft: 0,
-        top: 0,
-        left: 0,
-        tileSize: 100
-      };
       return _this;
     }
 
     _createClass(Board, [{
-      key: "componentWillMount",
-      value: function componentWillMount() {
-        this._panResponder = _reactNative.PanResponder.create({
-          onStartShouldSetPanResponder: function onStartShouldSetPanResponder(evt, gestureState) {
-            return true;
-          },
-          onStartShouldSetPanResponderCapture: function onStartShouldSetPanResponderCapture(evt, gestureState) {
-            return true;
-          },
-          onMoveShouldSetPanResponder: function onMoveShouldSetPanResponder(evt, gestureState) {
-            return true;
-          },
-          onMoveShouldSetPanResponderCapture: function onMoveShouldSetPanResponderCapture(evt, gestureState) {
-            return true;
-          },
-          onPanResponderGrant: function onPanResponderGrant(evt, gestureState) {},
-          onPanResponderMove: function onPanResponderMove(evt, gestureState) {},
-          onPanResponderRelease: function onPanResponderRelease() {}
-        });
-      }
-    }, {
-      key: "processTouch",
-      value: function processTouch(x, y) {
-        if (!this.state.isMoving) {
-          this.setState({
-            isMoving: true,
-            initialX: x,
-            initialY: y,
-            initialTop: this.state.top,
-            initialLeft: this.state.left
-          });
-        } else {
-          var left = this.state.initialLeft + x - this.state.initialX;
-          var top = this.state.initialTop + y - this.state.initialY;
-          console.log(left, this.gameBoardWidth);
-          this.setState({
-            left: left > 0 ? 0 : left < -this.gameBoardWidth + this.screenDimensions.width ? -this.gameBoardWidth + this.screenDimensions.width : left
-          });
-        }
-      }
-    }, {
       key: "render",
       value: function render() {
-        var scale = this.state.tileSize;
         console.log('tileMap', this.tileMapArray);
-        return _react3.default.createElement(
-          _reactNative.View,
-          _extends({
-            style: {
-              position: "absolute",
-              left: this.state.offsetLeft + this.state.left
-            }
-          }, this._panResponder.panHandlers, {
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 182
-            }
-          }),
-          _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
-            tileSize: 100,
-            columns: 40,
-            rows: 40,
-            sourceWidth: 100,
-            layers: [this.tileMapArray],
-            renderTile: this.renderTile,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 192
-            }
-          })
-        );
+        return _react3.default.createElement(_native.TileMap, {
+          src: _require(_dependencyMap[27], "../data/images/Black_square.jpeg"),
+          tileSize: this.tileWidth,
+          columns: 40,
+          rows: 40,
+          sourceWidth: this.tileWidth,
+          layers: [this.tileMapArray],
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 182
+          }
+        });
       }
     }]);
 
@@ -86342,7 +86271,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Board;
-},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641],"app\\screens\\Board.js");
+},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,652],"app\\screens\\Board.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87094,6 +87023,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.default = Waiting;
 },649,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+		module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+				"__packager_asset": true,
+				"httpServerLocation": "/assets/app/data/images",
+				"width": 100,
+				"height": 100,
+				"scales": [1],
+				"hash": "589723310b5df772fffb20f29a035b4f",
+				"name": "Black_square",
+				"type": "jpeg"
+		});
+},652,[164],"app\\data\\images\\Black_square.jpeg");
 require(44);
 require(11);
 //# sourceMappingURL=index.map

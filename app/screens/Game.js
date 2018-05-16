@@ -685,9 +685,18 @@ class Game extends Component {
         bottom = this.elements[i + this.cellsInRow];
       }
       let cell = this.elements[i];
+      
+      if (cell.value < 1) {
+        cell.imageKey = 1;
+      }
+      // if (cell.value < 0) {
+      //   cell.imageKey = 2;
+      // }
+
+
       // wall top tiles
-      if (cell.value === 0) {
-        cell.imageKey = 9;
+      // if (cell.value === 0) {
+      //   cell.imageKey = 9;
         // // non edge cases
         // if (left && top && right && bottom) {
         //   // wall top northwest
@@ -750,8 +759,8 @@ class Game extends Component {
         //   } else {
         //     cell.imageKey = 3;
         //   }
-         }
-      }
+        //  }
+      // }
       // wall front tiles
       // if (cell.value < 0) {
       // // non edge cases
@@ -808,6 +817,7 @@ class Game extends Component {
       //   }
     //   }
     // }
+    }
     let imageKeys = [];
     for (let i = 0; i < this.elements.length; i++) {
       if (this.elements[i].imageKey !== 0) {
@@ -817,6 +827,7 @@ class Game extends Component {
     this.setState({ boardFinished: true });
     console.log('elements', this.elements, 'image keys', imageKeys);
   }
+  
 
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
 
