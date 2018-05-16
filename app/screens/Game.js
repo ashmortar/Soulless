@@ -687,48 +687,50 @@ class Game extends Component {
       let cell = this.elements[i];
       // wall top tiles
       if (cell.value === 0) {
-        // non edge cases
-        if (left && top && right && bottom) {
-          // wall top northwest
-          if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
-            cell.imageKey = 1;
-          }
-          // wall top north
-          if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
-            cell.imageKey = 2;
-          }
-          // wall top northeast
-          if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
-            cell.imageKey = 3;
-          }
-          // wall top west
-          if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
-            cell.imageKey = 4;
-          }
-          // wall top east
-          if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
-            cell.imageKey = 5;
-          }
-          // wall top southwest
-          if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
-            cell.imageKey = 6;
-          }
-          // wall top south
-          if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
-            cell.imageKey = 7;
-          }
-          // wall top southeast
-          if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
-            cell.imageKey = 8;
-          }
-          if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
-            cell.imageKey = 9;
-          }
+        cell.imageKey = 9;
+        // // non edge cases
+        // if (left && top && right && bottom) {
+        //   // wall top northwest
+        //   if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+        //     cell.imageKey = 1;
+        //   }
+        //   // wall top north
+        //   if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+        //     cell.imageKey = 2;
+        //   }
+        //   // wall top northeast
+        //   if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
+        //     cell.imageKey = 3;
+        //   }
+        //   // wall top west
+        //   if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
+        //     cell.imageKey = 4;
+        //   }
+        //   // wall top east
+        //   if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
+        //     cell.imageKey = 5;
+        //   }
+        //   // wall top southwest
+        //   if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+        //     cell.imageKey = 6;
+        //   }
+        //   // wall top south
+        //   if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+        //     cell.imageKey = 7;
+        //   }
+        //   // wall top southeast
+        //   if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
+        //     cell.imageKey = 8;
+        //   }
+        //   if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
+        //     cell.imageKey = 9;
+        //   }
         //   // top corners
-        // } else if ((top === null && left === null && right && bottom) || (top === null && right === null && right && bottom)) {
-        //   cell.imageKey = 8;
+        // } else if ((top === null && left === null) || (top === null && right === null)) {
+        //   cell.imageKey = 9;
         //   // top row
-        // } else if (top === null && left && right && bottom) {
+        // }
+        // else if (top === null && left && right && bottom) {
         //   if (bottom.value === 0) {
         //     cell.imageKey = 8;
         //   } else {
@@ -804,8 +806,8 @@ class Game extends Component {
       //   } else {
       //     cell.imageKey = 21;
       //   }
-      // }
-    }
+    //   }
+    // }
     let imageKeys = [];
     for (let i = 0; i < this.elements.length; i++) {
       if (this.elements[i].imageKey !== 0) {

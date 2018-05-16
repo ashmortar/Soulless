@@ -20,8 +20,8 @@ export default class Engine extends Component {
     this.sourceWidth = 80;
     this.gameBoardWidth = this.tileWidth * 40;
     this.state = {
-      stageHeight: this.screenDimensions.height,
-      stageWidth: this.screenDimensions.width,
+      stageHeight: this.gameBoardWidth,
+      stageWidth: this.gameBoardWidth,
     };
   }
 
@@ -31,16 +31,13 @@ export default class Engine extends Component {
     return (
       <Loop style={{ backgroundColor: "#212121" }}>
         <Stage
-          height={this.screenDimensions.height}
-          width={this.screenDimensions.width}
-          style={{ backgroundColor: "#515151" }}
+          height={this.gameBoardWidth}
+          width={this.gameBoardWidth}
+          style={{ backgroundColor: "#515151"}}
         >
           {this.props.boardFinished ? (
             <Board
               gameBoard={this.props.gameBoard}
-              processPinch={this.processPinch}
-              releaseTouch={this.releaseTouch}
-              zoom={this.zoom}
             />
           ) : null}
         </Stage>

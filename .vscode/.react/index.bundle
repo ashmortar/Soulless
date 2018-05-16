@@ -62910,7 +62910,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     }
   });
-},509,[510,585,598,629,636],"app\\config\\routes.js");
+},509,[510,585,598,642,649],"app\\config\\routes.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -76173,43 +76173,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           var cell = _this.elements[i];
 
           if (cell.value === 0) {
-            if (left && top && right && bottom) {
-              if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
-                cell.imageKey = 1;
-              }
-
-              if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
-                cell.imageKey = 2;
-              }
-
-              if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
-                cell.imageKey = 3;
-              }
-
-              if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
-                cell.imageKey = 4;
-              }
-
-              if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
-                cell.imageKey = 5;
-              }
-
-              if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
-                cell.imageKey = 6;
-              }
-
-              if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
-                cell.imageKey = 7;
-              }
-
-              if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
-                cell.imageKey = 8;
-              }
-
-              if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
-                cell.imageKey = 9;
-              }
-            }
+            cell.imageKey = 9;
           }
         }
 
@@ -76491,7 +76455,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1042
+              lineNumber: 1044
             }
           },
           _react3.default.createElement(
@@ -76499,7 +76463,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1043
+                lineNumber: 1045
               }
             },
             "Game screen"
@@ -76513,7 +76477,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1045
+                lineNumber: 1047
               }
             },
             _react3.default.createElement(
@@ -76529,7 +76493,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1046
+                  lineNumber: 1048
                 }
               },
               _react3.default.createElement(
@@ -76540,7 +76504,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1055
+                    lineNumber: 1057
                   }
                 },
                 "+"
@@ -76556,7 +76520,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1060
+                lineNumber: 1062
               }
             },
             _react3.default.createElement(
@@ -76572,7 +76536,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1061
+                  lineNumber: 1063
                 }
               },
               _react3.default.createElement(
@@ -76583,7 +76547,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1069
+                    lineNumber: 1071
                   }
                 },
                 "-"
@@ -76605,7 +76569,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1079
+              lineNumber: 1081
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76613,7 +76577,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1080
+              lineNumber: 1082
             }
           }),
           _react3.default.createElement(
@@ -76631,7 +76595,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1081
+                lineNumber: 1083
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76639,7 +76603,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1086
+                lineNumber: 1088
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76647,7 +76611,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1087
+                lineNumber: 1089
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76655,7 +76619,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1088
+                lineNumber: 1090
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76663,7 +76627,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1089
+                lineNumber: 1091
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76671,7 +76635,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1090
+                lineNumber: 1092
               }
             })
           ),
@@ -76680,7 +76644,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1092
+              lineNumber: 1094
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76688,7 +76652,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1093
+              lineNumber: 1095
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76696,7 +76660,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1094
+              lineNumber: 1096
             }
           })
         );
@@ -76805,7 +76769,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           boardFinished: this.state.boardFinished,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1102
+            lineNumber: 1104
           }
         });
       }
@@ -78191,8 +78155,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.sourceWidth = 80;
       _this.gameBoardWidth = _this.tileWidth * 40;
       _this.state = {
-        stageHeight: _this.screenDimensions.height,
-        stageWidth: _this.screenDimensions.width
+        stageHeight: _this.gameBoardWidth,
+        stageWidth: _this.gameBoardWidth
       };
       return _this;
     }
@@ -78218,8 +78182,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           _react3.default.createElement(
             _native.Stage,
             {
-              height: this.screenDimensions.height,
-              width: this.screenDimensions.width,
+              height: this.gameBoardWidth,
+              width: this.gameBoardWidth,
               style: {
                 backgroundColor: "#515151"
               },
@@ -78230,9 +78194,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             this.props.boardFinished ? _react3.default.createElement(_Board2.default, {
               gameBoard: this.props.gameBoard,
-              processPinch: this.processPinch,
-              releaseTouch: this.releaseTouch,
-              zoom: this.zoom,
               __source: {
                 fileName: _jsxFileName,
                 lineNumber: 39
@@ -86122,27 +86083,170 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             });
 
           case 9:
-            console.log('differences?');
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
               style: styles,
               source: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 131
+                lineNumber: 130
+              }
+            });
+
+          case 10:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[14], "../data/images/wall-f-nw-2.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 133
+              }
+            });
+
+          case 11:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[15], "../data/images/wall-f-n-1.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 136
+              }
+            });
+
+          case 12:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[16], "../data/images/wall-f-ne-2.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 139
+              }
+            });
+
+          case 13:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[17], "../data/images/wall-f-sw-2.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 142
+              }
+            });
+
+          case 14:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[18], "../data/images/wall-f-s-1.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 145
+              }
+            });
+
+          case 15:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[19], "../data/images/wall-f-se-2.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 148
+              }
+            });
+
+          case 16:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[20], "../data/images/wall-f-n-3.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 151
+              }
+            });
+
+          case 17:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[21], "../data/images/floor-nw.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 154
+              }
+            });
+
+          case 18:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[22], "../data/images/floor-n-1.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 157
+              }
+            });
+
+          case 19:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[23], "../data/images/floor-ne.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 160
+              }
+            });
+
+          case 20:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[24], "../data/images/floor-w-1.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 163
+              }
+            });
+
+          case 21:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[25], "../data/images/floor-e-1.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 166
+              }
+            });
+
+          case 22:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: styles,
+              source: _require(_dependencyMap[26], "../data/images/floor-c-1.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 169
               }
             });
 
           default:
+            console.log('the imageKey for this tile was not assigned correctly', tile);
             break;
         }
       };
 
       _this.counter = 0;
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = 80;
+      _this.tileWidth = 100;
       _this.sourceWidth = _this.tileWidth;
-      _this.gameBoardWidth = Math.floor(_this.screenDimensions.height / 40);
+      _this.gameBoardWidth = _this.tileWidth * 40;
       _this.tileMapArray = _this.props.gameBoard.map(function (a) {
         return a.imageKey;
       });
@@ -86155,7 +86259,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         initialLeft: 0,
         top: 0,
         left: 0,
-        tileSize: Math.ceil(_this.screenDimensions.height / 40)
+        tileSize: 100
       };
       return _this;
     }
@@ -86163,8 +86267,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     _createClass(Board, [{
       key: "componentWillMount",
       value: function componentWillMount() {
-        var _this2 = this;
-
         this._panResponder = _reactNative.PanResponder.create({
           onStartShouldSetPanResponder: function onStartShouldSetPanResponder(evt, gestureState) {
             return true;
@@ -86179,21 +86281,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             return true;
           },
           onPanResponderGrant: function onPanResponderGrant(evt, gestureState) {},
-          onPanResponderMove: function onPanResponderMove(evt, gestureState) {
-            var touches = evt.nativeEvent.touches;
-
-            if (touches.length == 2) {} else if (touches.length == 1 && !_this2.state.isZooming) {
-              _this2.processTouch(touches[0].pageX, touches[0].pageY);
-            }
-          },
-          onPanResponderRelease: function onPanResponderRelease() {
-            console.log("on pan responder release");
-
-            _this2.setState({
-              isZooming: false,
-              isMoving: false
-            });
-          }
+          onPanResponderMove: function onPanResponderMove(evt, gestureState) {},
+          onPanResponderRelease: function onPanResponderRelease() {}
         });
       }
     }, {
@@ -86231,20 +86320,20 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }, this._panResponder.panHandlers, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 183
+              lineNumber: 182
             }
           }),
           _react3.default.createElement(_native.TileMap, {
             src: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
-            tileSize: 20,
+            tileSize: 100,
             columns: 40,
             rows: 40,
-            sourceWidth: 20,
+            sourceWidth: 100,
             layers: [this.tileMapArray],
             renderTile: this.renderTile,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 193
+              lineNumber: 192
             }
           })
         );
@@ -86260,7 +86349,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Board;
-},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628],"app\\screens\\Board.js");
+},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641],"app\\screens\\Board.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -86369,6 +86458,162 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"type": "gif"
 	});
 },628,[164],"app\\data\\images\\wall-t-c.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "b40595eecfaa3983d69fa6c06f09da96",
+		"name": "wall-f-nw-2",
+		"type": "gif"
+	});
+},629,[164],"app\\data\\images\\wall-f-nw-2.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "38b17e15c90e4dc27275f8ccc8013098",
+		"name": "wall-f-n-1",
+		"type": "gif"
+	});
+},630,[164],"app\\data\\images\\wall-f-n-1.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "4e50fc5be652b7b8b7e8a019b53db48b",
+		"name": "wall-f-ne-2",
+		"type": "gif"
+	});
+},631,[164],"app\\data\\images\\wall-f-ne-2.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "9e7d7fac06d79532b14e7567ba1580dd",
+		"name": "wall-f-sw-2",
+		"type": "gif"
+	});
+},632,[164],"app\\data\\images\\wall-f-sw-2.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "47fe18023cff1a682a598ee94312c566",
+		"name": "wall-f-s-1",
+		"type": "gif"
+	});
+},633,[164],"app\\data\\images\\wall-f-s-1.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "938629e1564201d67727938290f49a32",
+		"name": "wall-f-se-2",
+		"type": "gif"
+	});
+},634,[164],"app\\data\\images\\wall-f-se-2.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "323c59309b536c7ded02294fd0d2473c",
+		"name": "wall-f-n-3",
+		"type": "gif"
+	});
+},635,[164],"app\\data\\images\\wall-f-n-3.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "6d17b98d96db0d2bc9f33dc449602570",
+		"name": "floor-nw",
+		"type": "gif"
+	});
+},636,[164],"app\\data\\images\\floor-nw.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "587dd589ec6de63802f69f792d411693",
+		"name": "floor-n-1",
+		"type": "gif"
+	});
+},637,[164],"app\\data\\images\\floor-n-1.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "3f4593b83b8905b8f8216a98e2b2ea5c",
+		"name": "floor-ne",
+		"type": "gif"
+	});
+},638,[164],"app\\data\\images\\floor-ne.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "57ea684664c887604ab3b42fbf3bd29b",
+		"name": "floor-w-1",
+		"type": "gif"
+	});
+},639,[164],"app\\data\\images\\floor-w-1.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "43d62bed89795ceae4a2b85992d0318d",
+		"name": "floor-e-1",
+		"type": "gif"
+	});
+},640,[164],"app\\data\\images\\floor-e-1.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "e813b6ce0f760461a2a189d6c592ed90",
+		"name": "floor-c-1",
+		"type": "gif"
+	});
+},641,[164],"app\\data\\images\\floor-c-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86494,7 +86739,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Connect;
-},629,[118,179,129,586,589,592,630,635],"app\\screens\\Connect.js");
+},642,[118,179,129,586,589,592,643,648],"app\\screens\\Connect.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86513,7 +86758,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.GameList = _GameList2.default;
   exports.styles = _styles2.default;
-},630,[631,632],"app\\components\\GameList\\index.js");
+},643,[644,645],"app\\components\\GameList\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86583,7 +86828,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = GameList;
-},631,[118,12,129,632,633,634],"app\\components\\GameList\\GameList.js");
+},644,[118,12,129,645,646,647],"app\\components\\GameList\\GameList.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86621,7 +86866,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       alignItems: 'center'
     }
   });
-},632,[493,12],"app\\components\\GameList\\styles.js");
+},645,[493,12],"app\\components\\GameList\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86686,7 +86931,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = ListItem;
-},633,[129,118,12,632],"app\\components\\GameList\\ListItem.js");
+},646,[129,118,12,645],"app\\components\\GameList\\ListItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86716,7 +86961,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = Separator;
-},634,[118,12,632],"app\\components\\GameList\\Separator.js");
+},647,[118,12,645],"app\\components\\GameList\\Separator.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86734,7 +86979,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     key: '3',
     name: 'game the third'
   }];
-},635,[],"app\\data\\testGames.js");
+},648,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86855,7 +87100,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Waiting;
-},636,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+},649,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
 require(44);
 require(11);
 //# sourceMappingURL=index.map
