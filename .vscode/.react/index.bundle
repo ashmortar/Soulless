@@ -76172,8 +76172,16 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
           var cell = _this.elements[i];
 
-          if (cell.value < 1) {
-            cell.imageKey = 1;
+          if (cell.value === 0) {
+            cell.imageKey = 9;
+          }
+
+          if (cell.value < 0) {
+            cell.imageKey = 15;
+          }
+
+          if (cell.value > 0) {
+            cell.imageKey = 22;
           }
         }
 
@@ -76455,7 +76463,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1055
+              lineNumber: 1058
             }
           },
           _react3.default.createElement(
@@ -76463,7 +76471,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1056
+                lineNumber: 1059
               }
             },
             "Game screen"
@@ -76477,7 +76485,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1058
+                lineNumber: 1061
               }
             },
             _react3.default.createElement(
@@ -76493,7 +76501,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1059
+                  lineNumber: 1062
                 }
               },
               _react3.default.createElement(
@@ -76504,7 +76512,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1068
+                    lineNumber: 1071
                   }
                 },
                 "+"
@@ -76520,7 +76528,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1073
+                lineNumber: 1076
               }
             },
             _react3.default.createElement(
@@ -76536,7 +76544,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1074
+                  lineNumber: 1077
                 }
               },
               _react3.default.createElement(
@@ -76547,7 +76555,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1082
+                    lineNumber: 1085
                   }
                 },
                 "-"
@@ -76569,7 +76577,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1092
+              lineNumber: 1095
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76577,7 +76585,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1093
+              lineNumber: 1096
             }
           }),
           _react3.default.createElement(
@@ -76595,7 +76603,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1094
+                lineNumber: 1097
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76603,7 +76611,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1099
+                lineNumber: 1102
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76611,7 +76619,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1100
+                lineNumber: 1103
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76619,7 +76627,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1101
+                lineNumber: 1104
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76627,7 +76635,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1102
+                lineNumber: 1105
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76635,7 +76643,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1103
+                lineNumber: 1106
               }
             })
           ),
@@ -76644,7 +76652,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1105
+              lineNumber: 1108
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76652,7 +76660,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1106
+              lineNumber: 1109
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76660,7 +76668,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1107
+              lineNumber: 1110
             }
           })
         );
@@ -76769,7 +76777,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           boardFinished: this.state.boardFinished,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1115
+            lineNumber: 1118
           }
         });
       }
@@ -85983,247 +85991,253 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
 
+      _this.fixImageStyle = function (index) {
+        return {
+          left: (index - 1) * _this.tileWidth
+        };
+      };
+
       _this.renderTile = function (tile, src, styles) {
         switch (tile.index) {
           case 1:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[5], "../data/images/wall-t-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 106
+                lineNumber: 110
               }
             });
 
           case 2:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[6], "../data/images/wall-t-n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 109
+                lineNumber: 113
               }
             });
 
           case 3:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[7], "../data/images/wall-t-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 112
+                lineNumber: 116
               }
             });
 
           case 4:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[8], "../data/images/wall-t-w.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 115
+                lineNumber: 119
               }
             });
 
           case 5:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[9], "../data/images/wall-t-e.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 118
+                lineNumber: 122
               }
             });
 
           case 6:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[10], "../data/images/wall-t-sw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 121
+                lineNumber: 125
               }
             });
 
           case 7:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[11], "../data/images/wall-t-s.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 124
+                lineNumber: 128
               }
             });
 
           case 8:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[12], "../data/images/wall-t-se.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 127
+                lineNumber: 131
               }
             });
 
           case 9:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 130
+                lineNumber: 134
               }
             });
 
           case 10:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[14], "../data/images/wall-f-nw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 133
+                lineNumber: 137
               }
             });
 
           case 11:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[15], "../data/images/wall-f-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 136
+                lineNumber: 140
               }
             });
 
           case 12:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[16], "../data/images/wall-f-ne-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 139
+                lineNumber: 143
               }
             });
 
           case 13:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[17], "../data/images/wall-f-sw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 142
+                lineNumber: 146
               }
             });
 
           case 14:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[18], "../data/images/wall-f-s-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 145
+                lineNumber: 149
               }
             });
 
           case 15:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[19], "../data/images/wall-f-se-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 148
+                lineNumber: 152
               }
             });
 
           case 16:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[20], "../data/images/wall-f-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 151
+                lineNumber: 155
               }
             });
 
           case 17:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[21], "../data/images/floor-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 154
+                lineNumber: 158
               }
             });
 
           case 18:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[22], "../data/images/floor-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 157
+                lineNumber: 161
               }
             });
 
           case 19:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[23], "../data/images/floor-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 160
+                lineNumber: 164
               }
             });
 
           case 20:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[24], "../data/images/floor-w-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 163
+                lineNumber: 167
               }
             });
 
           case 21:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[25], "../data/images/floor-e-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 166
+                lineNumber: 170
               }
             });
 
           case 22:
             return _react3.default.createElement(_reactNative.Image, {
               resizeMode: "stretch",
-              style: styles,
+              style: [styles, _this.fixImageStyle()],
               source: _require(_dependencyMap[26], "../data/images/floor-c-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 169
+                lineNumber: 173
               }
             });
 
@@ -86254,9 +86268,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           rows: 40,
           sourceWidth: this.tileWidth,
           layers: [this.tileMapArray],
+          renderTile: this.renderTile,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 182
+            lineNumber: 186
           }
         });
       }

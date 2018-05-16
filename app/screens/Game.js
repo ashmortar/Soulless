@@ -686,12 +686,15 @@ class Game extends Component {
       }
       let cell = this.elements[i];
       
-      if (cell.value < 1) {
-        cell.imageKey = 1;
+      if (cell.value === 0) {
+        cell.imageKey = 9;
       }
-      // if (cell.value < 0) {
-      //   cell.imageKey = 2;
-      // }
+      if (cell.value < 0) {
+        cell.imageKey = 15;
+      }
+      if (cell.value > 0) {
+        cell.imageKey = 22;
+      }
 
 
       // wall top tiles
@@ -699,7 +702,7 @@ class Game extends Component {
       //   cell.imageKey = 9;
         // // non edge cases
         // if (left && top && right && bottom) {
-        //   // wall top northwest
+        //   // wall top northwp northwest
         //   if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
         //     cell.imageKey = 1;
         //   }
