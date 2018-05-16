@@ -772,7 +772,7 @@ class Game extends Component {
       }
       // wall front tiles
       if (cell.value < 0) {
-        cell.imageKey = 14;
+        // cell.imageKey = 14;
       // non edge cases
         if (left && top && right && bottom) {
           // wall front northwest
@@ -785,6 +785,11 @@ class Game extends Component {
             if (bottomLeft) {
               if (bottomLeft.value !== cell.value) {
                 cell.imageKey = 10;
+              }
+            }
+            if (bottomRight) {
+              if (bottomRight.value !== cell.value) {
+                cell.imageKey = 12;
               }
             }
           }

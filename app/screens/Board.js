@@ -16,7 +16,7 @@ export default class Board extends Component {
     super(props);
     // this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = 100;
+    this.tileWidth = (this.screenDimensions.height / 40);
     this.sourceWidth = this.tileWidth;
     this.gameBoardWidth = this.tileWidth * 40;
     this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
@@ -49,10 +49,10 @@ export default class Board extends Component {
         }
       },
       onPanResponderRelease: () => {
-        console.log("on pan responder release");
+        // console.log("on pan responder release");
         this.setState({
           isZooming: false,
-          isMoving: false
+          isMoving: false,
         });
       }
     });
@@ -78,15 +78,21 @@ export default class Board extends Component {
     } else {
       let left = this.state.initialLeft + x - this.state.initialX;
       let top = this.state.initialTop + y - this.state.initialY;
-      console.log(left, this.gameBoardWidth);
+      // console.log(left, this.gameBoardWidth);
       this.setState({
-        left:
-          left > 0
+          left:
+            left > 0
             ? 0
-            : left < -this.gameBoardWidth + this.screenDimensions.width
-              ? -this.gameBoardWidth + this.screenDimensions.width
-              : left
-      });
+            : left < (-this.gameBoardWidth + this.screenDimensions.width)
+              ? (-this.gameBoardWidth + this.screenDimensions.width)
+              : left,
+          top:
+            top > 0
+            ? 0
+            : top < (-this.gameBoardWidth + this.screenDimensions.height)
+            ? (-this.gameBoardWidth + this.screenDimensions.height)
+            : top,
+        });
     }
   }
 
@@ -174,7 +180,7 @@ export default class Board extends Component {
     // Math.floor((this.tileWidth / this.state.zoom)/16)
     // Math.floor(100*this.state.zoom);
     // let scale = this.state.tileSize;
-    console.log('tileMap', this.tileMapArray);
+    // console.log('tileMap', this.tileMapArray);
     return (
       <View style={{ position: 'absolute', left: this.state.left }} {...this._panResponder.panHandlers} >
         <TileMap
