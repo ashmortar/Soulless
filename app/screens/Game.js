@@ -240,10 +240,6 @@ class Game extends Component {
     }
   }
 
-  detectBigBlackAreas = () => {
-
-  }
-
   detectClosedLoops = () => {
     let amountOfLoops = 0;
     let loopIndexes = [];
@@ -685,7 +681,7 @@ class Game extends Component {
         bottom = this.elements[i + this.cellsInRow];
       }
       let cell = this.elements[i];
-      
+
       if (cell.value === 0) {
         cell.imageKey = 9;
       }
@@ -830,7 +826,7 @@ class Game extends Component {
     this.setState({ boardFinished: true });
     console.log('elements', this.elements, 'image keys', imageKeys);
   }
-  
+
 
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
 
