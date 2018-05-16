@@ -78154,19 +78154,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.tileWidth = 80;
       _this.sourceWidth = 80;
       _this.gameBoardWidth = _this.tileWidth * 40;
-      _this.state = {
-        stageHeight: _this.gameBoardWidth,
-        stageWidth: _this.gameBoardWidth
-      };
       return _this;
     }
 
     _createClass(Engine, [{
       key: "render",
       value: function render() {
-        var _state = this.state,
-            stageHeight = _state.stageHeight,
-            stageWidth = _state.stageWidth;
         console.log("engine render began");
         return _react3.default.createElement(
           _native.Loop,
@@ -78176,7 +78169,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 32
+              lineNumber: 27
             }
           },
           _react3.default.createElement(
@@ -78189,14 +78182,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 33
+                lineNumber: 28
               }
             },
             this.props.boardFinished ? _react3.default.createElement(_Board2.default, {
               gameBoard: this.props.gameBoard,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 39
+                lineNumber: 34
               }
             }) : null
           )

@@ -19,21 +19,16 @@ export default class Engine extends Component {
     this.tileWidth = 80;
     this.sourceWidth = 80;
     this.gameBoardWidth = this.tileWidth * 40;
-    this.state = {
-      stageHeight: this.gameBoardWidth,
-      stageWidth: this.gameBoardWidth,
-    };
   }
 
   render() {
-    const { stageHeight, stageWidth } = this.state;
     console.log("engine render began");
     return (
       <Loop style={{ backgroundColor: "#212121" }}>
         <Stage
           height={this.gameBoardWidth}
           width={this.gameBoardWidth}
-          style={{ backgroundColor: "#515151"}}
+          style={{ backgroundColor: "#515151" }}
         >
           {this.props.boardFinished ? (
             <Board
