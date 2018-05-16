@@ -1,84 +1,35 @@
 import React, { Component } from "react";
-import { View, Dimensions, PanResponder, Animated } from "react-native";
+import { View, Dimensions, PanResponder, Image } from "react-native";
 import PropTypes from "prop-types";
-import { autorun } from "mobx";
 import { TileMap } from "react-game-kit/native";
-
-function calcDistance(x1, y1, x2, y2) {
-  let dx = Math.abs(x1 - x2);
-  let dy = Math.abs(y1 - y2);
-  return Math.sqrt((dx ** 2) + (dy ** 2));
-}
-
-function calcCenter(x1, y1, x2, y2) {
-  function middle(p1, p2) {
-    return p1 > p2 ? p1 - (p1 - p2) / 2 : p2 - (p2 - p1) / 2;
-  }
-
-  return {
-    x: middle(x1, x2),
-    y: middle(y1, y2)
-  };
-}
-
-function maxOffset(offset, windowDimension, imageDimension) {
-  let max = windowDimension - imageDimension;
-  if (max >= 0) {
-    return 0;
-  }
-  return offset < max ? max : offset;
-}
-
-function calcOffsetByZoom(width, height, imageWidth, imageHeight, zoom) {
-  let xDiff = imageWidth * zoom - width;
-  let yDiff = imageHeight * zoom - height;
-  return {
-    left: -xDiff / 2,
-    top: -yDiff / 2
-  };
-}
 
 export default class Board extends Component {
   static contextTypes = {
     scale: PropTypes.number,
     loop: PropTypes.object,
-
   };
   static propTypes = {
-    gameBoard: PropTypes.array
+    gameBoard: PropTypes.array,
   };
 
   constructor(props) {
     super(props);
     this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = Math.ceil(this.screenDimensions.height / 40);
-    this.sourceWidth = Math.ceil(this.screenDimensions.height / 40);
-    this.gameBoardWidth = this.tileWidth * 40;
-    this.scale = 0.2;
-    this.blackTilesMap = this.props.gameBoard.map(a => (a.value === 0 ? 1 : 0));
-    this.floorTilesMap = this.props.gameBoard.map(a => (a.value > 0 ? 1 : 0));
-    this.wallTilesMap = this.props.gameBoard.map(a => (a.value < 0 ? 1 : 0));
+    this.tileWidth = 80;
+    this.sourceWidth = this.tileWidth;
+    this.gameBoardWidth = (Math.floor(this.screenDimensions.height / 40));
+    this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.state = {
-      zoom: 1,
-      minZoom: null,
-      layoutKnown: false,
       isZooming: false,
       isMoving: false,
-      initialDistance: null,
       initialX: null,
-      initalY: null,
-      offsetTop: 0,
       offsetLeft: 0,
       initialTop: 0,
       initialLeft: 0,
-      initialTopWithoutZoom: 0,
-      initialLeftWithoutZoom: 0,
-      initialZoom: 1,
       top: 0,
       left: 0,
-      tileSize: Math.ceil(this.screenDimensions.height / 40),
-
+      tileSize: Math.ceil(this.screenDimensions.height / 40)
     };
   }
 
@@ -92,38 +43,35 @@ export default class Board extends Component {
         // console.log("on pan responder grant");
       },
       onPanResponderMove: (evt, gestureState) => {
-        let {touches} = evt.nativeEvent;
+        let { touches } = evt.nativeEvent;
         if (touches.length == 2) {
-          let touch1 = touches[0];
-          let touch2 = touches[1];
-
-          this.processPinch(
-            touches[0].pageX,
-            touches[0].pageY,
-            touches[1].pageX,
-            touches[1].pageY
-          );
+          // this.processPinch(
+          //   touches[0].pageX,
+          //   touches[0].pageY,
+          //   touches[1].pageX,
+          //   touches[1].pageY
+          // );
         } else if (touches.length == 1 && !this.state.isZooming) {
           this.processTouch(touches[0].pageX, touches[0].pageY);
         }
       },
       onPanResponderRelease: () => {
-        // console.log("on pan responder release");
+        console.log("on pan responder release");
         this.setState({
           isZooming: false,
-          isMoving: false,
+          isMoving: false
         });
-      },
+      }
     });
   }
 
-  componentDidMount() {
-    this.context.loop.subscribe(this.update);
-  }
+  // componentDidMount() {
+  //   this.context.loop.subscribe(this.update);
+  // }
 
-  componentWillUnmount() {
-    this.context.loop.unsubscribe(this.update);
-  }
+  // componentWillUnmount() {
+  //   this.context.loop.unsubscribe(this.update);
+  // }
 
   processTouch(x, y) {
     if (!this.state.isMoving) {
@@ -132,43 +80,111 @@ export default class Board extends Component {
         initialX: x,
         initialY: y,
         initialTop: this.state.top,
-        initialLeft: this.state.left
+        initialLeft: this.state.left,
       });
     } else {
       let left = this.state.initialLeft + x - this.state.initialX;
       let top = this.state.initialTop + y - this.state.initialY;
-      console.log(left, this.gameBoardWidth)
+      console.log(left, this.gameBoardWidth);
       this.setState({
         left:
           left > 0
             ? 0
-            : (left < (-this.gameBoardWidth + this.screenDimensions.width) ? (-this.gameBoardWidth + this.screenDimensions.width) : left),
-        top:
-          top > 0
-            ? 0
-            : maxOffset(
-                top,
-                this.state.height,
-                this.gameBoardWidth * this.state.zoom
-              )
+            : left < -this.gameBoardWidth + this.screenDimensions.width
+              ? -this.gameBoardWidth + this.screenDimensions.width
+              : left
       });
     }
   }
 
-  update = () => {
-  }
+  // update = () => {};
+
+  renderTile = (tile, src, styles) => {
+    switch (tile.index) {
+      // wall top northwest
+      case 1:
+        return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-nw.gif")} />;
+      // wall top north
+      case 2:
+        return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-n.gif")} />;
+        // wall top northeast
+      case 3:
+      return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-ne.gif")} />;
+      // // wall top west
+      case 4:
+      return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-w.gif")} />;
+      // // wall top east
+      case 5:
+      return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-e.gif")} />;
+      // wall top southwest
+      case 6:
+      return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-sw.gif")} />;
+      // wall top south
+      case 7:
+      return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-s.gif")} />;
+      // wall top southeast
+      case 8:
+      return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-se.gif")} />;
+      // wall top center
+      case 9:
+      console.log('differences?')
+      return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-t-c.gif")} />;
+      // wall front northwest
+      // case 9:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-f-nw-2.gif")} />;
+      // // wall front north
+      // case 10:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-f-n-1.gif")} />;
+      // // wall front northeast
+      // case 11:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-f-ne-2.gif")} />;
+      // // wall front southwest
+      // case 12:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-f-sw-2.gif")} />;
+      // // wall front south
+      // case 13:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-f-s-1.gif")} />;
+      // // wall front southeast
+      // case 14:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-f-se-2.gif")} />;
+      // // wall front last two rows
+      // case 15:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/wall-f-n-3.gif")} />;
+      // // floor tile northwest
+      // case 16:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/floor-nw.gif")} />;
+      // // floor tile north
+      // case 17:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/floor-n-1.gif")} />;
+      // // floor tile northeast
+      // case 18:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/floor-ne.gif")} />;
+      // // floor tile west
+      // case 19:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/floor-w-1.gif")} />;
+      // // floor tile east
+      // case 20:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/floor-e-1.gif")} />;
+      // // floor tile center
+      // case 21:
+      // return <Image resizeMode="stretch" style={styles} source={require("../data/images/floor-c-1.gif")} />;
+      default:
+      // console.log('the imageKey for this tile was not assigned correctly', tile);
+        break;
+    }
+  };
 
   render() {
     // Math.floor((this.tileWidth / this.state.zoom)/16)
     // Math.floor(100*this.state.zoom);
     let scale = this.state.tileSize;
-    // console.log(`tileSize: ${this.gameBoardWidth}`);
+    console.log('tileMap', this.tileMapArray);
     return (
       <View
         style={{
           position: "absolute",
           // top: this.state.offsetTop + this.state.top,
-          left: this.state.offsetLeft + this.state.left,
+          left: this.state.offsetLeft + this.state.left
           // width: this.gameBoardWidth,
           // height: this.gameBoardWidth,
         }}
@@ -176,27 +192,12 @@ export default class Board extends Component {
       >
         <TileMap
           src={require("../data/images/wall-t-c.gif")}
-          tileSize={scale}
+          tileSize={20}
           columns={40}
           rows={40}
-          sourceWidth={scale}
-          layers={[this.blackTilesMap]}
-        />
-        <TileMap
-          src={require("../data/images/wall-f-n-2.gif")}
-          tileSize={scale}
-          columns={40}
-          rows={40}
-          sourceWidth={scale}
-          layers={[this.wallTilesMap]}
-        />
-        <TileMap
-          src={require("../data/images/floor-c-4.gif")}
-          tileSize={scale}
-          columns={40}
-          rows={40}
-          sourceWidth={scale}
-          layers={[this.floorTilesMap]}
+          sourceWidth={20}
+          layers={[this.tileMapArray]}
+          renderTile={this.renderTile}
         />
       </View>
     );

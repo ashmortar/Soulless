@@ -16,21 +16,13 @@ export default class Engine extends Component {
     super(props);
     console.log("Engine");
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = 100;
-    this.sourceWidth = 100;
-    this.gameBoardWidth = this.tileWidth * props.tilesInRow;
+    this.tileWidth = 80;
+    this.sourceWidth = 80;
+    this.gameBoardWidth = this.tileWidth * 40;
     this.state = {
       stageHeight: this.screenDimensions.height,
       stageWidth: this.screenDimensions.width,
     };
-  }
-
-  zoom = () => {
-    console.log('zoom acting')
-    this.setState({
-      stageHeight: this.state.stageHeight - 1,
-      stageWidth: this.state.stageWidth - 1,
-    })
   }
 
   render() {
@@ -39,8 +31,8 @@ export default class Engine extends Component {
     return (
       <Loop style={{ backgroundColor: "#212121" }}>
         <Stage
-          width={stageWidth}
-          height={stageHeight}
+          height={this.screenDimensions.height}
+          width={this.screenDimensions.width}
           style={{ backgroundColor: "#515151" }}
         >
           {this.props.boardFinished ? (

@@ -2,7 +2,7 @@ export default class Cell {
   constructor(name) {
     this.name = name;
     this.value = 5;
-    this.imageKey = null;
+    this.imageKey = 0;
     this.humanEdges = [];
     this.monsterEdges = [];
     this.searched = false;
