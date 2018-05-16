@@ -20,6 +20,7 @@ export default class Board extends Component {
     this.sourceWidth = this.tileWidth;
     this.gameBoardWidth = this.tileWidth * 40;
     this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
+    this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
     this.state = {
       isZooming: false,
       isMoving: false,
@@ -31,6 +32,15 @@ export default class Board extends Component {
       left: 0,
       tileSize: 100,
     };
+  }
+
+  getCacheMapArray = (cell) => {
+    if (cell.hasCache) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
 
   componentWillMount() {
@@ -185,6 +195,14 @@ export default class Board extends Component {
           sourceWidth={this.tileWidth}
           layers={[this.tileMapArray]}
           renderTile={this.renderTile}
+        />
+        <TileMap
+          src={require("../data/images/cache.png")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.tileCashMapArray]}
         />
       </View>
     );
