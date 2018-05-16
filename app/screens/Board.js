@@ -21,6 +21,9 @@ export default class Board extends Component {
     this.gameBoardWidth = this.tileWidth * 40;
     this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
+    this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
+    this.tileHumanMapArray = this.props.gameBoard.map(x => x.hasHuman ? 1 : 0);
+    this.tileMonsterMapArray = this.props.gameBoard.map(x => x.hasMonster ? 1 : 0);
     this.state = {
       isZooming: false,
       isMoving: false,
@@ -203,6 +206,30 @@ export default class Board extends Component {
           rows={40}
           sourceWidth={this.tileWidth}
           layers={[this.tileCashMapArray]}
+        />
+        <TileMap
+          src={require("../data/images/Magenta-square_100px.gif")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.tileHighlightedMapArray]}
+        />
+        <TileMap
+          src={require("../data/images/human.png")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.tileHumanMapArray]}
+        />
+        <TileMap
+          src={require("../data/images/monster.png")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.tileMonsterMapArray]}
         />
       </View>
     );

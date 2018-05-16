@@ -54,6 +54,11 @@ class Game extends Component {
     this.assignMonsterStart();
     this.assignCacheLocations();
     this.assignImageKeys();
+
+    //
+    // console.log('==================================================');
+    // console.log(this.findShortestPath(this.elements[this.humanSpace.name], this.elements[this.monsterSpace.name]));
+    // console.log(this.findShortestPath(this.elements[121], this.elements[123]));
   }
 
   createMap = () => {
@@ -286,7 +291,7 @@ class Game extends Component {
         queue.forEach((cellInAQueue) => {
           let availableCells = [];
           let index = cellInAQueue.name;
-          availableCells = this.getIndexesOfAvailableCellsAround(index, this.cellsInRow - 2, gamefield.length);
+          availableCells = this.getIndexesOfAvailableCellsAround(index, this.cellsInRow - 2, gamefield.length, false);
 
           availableCells.forEach((availableCellIndex) => {
             if ((gamefield[availableCellIndex].value > 0) && (gamefield[availableCellIndex].value < 10)) {
@@ -363,19 +368,43 @@ class Game extends Component {
     return 1;
   }
 
-  getIndexesOfAvailableCellsAround = (index, row, total) => {
+  getIndexesOfAvailableCellsAround = (index, row, total, monsterFlag) => {
     let result = [];
+
+    let left = false;
+    let right = false;
+    let up = false;
+    let down = false;
+
     if (index % row != 0) {
       result.push(index - 1);
+      left = true;
     }
     if (index % row != row - 1) {
       result.push(index + 1);
+      right = true;
     }
     if (index - row >= 0) {
       result.push(index - row);
+      up = true;
     }
     if (index + row < total) {
       result.push(index + row);
+      down = true;
+    }
+    if (monsterFlag) {
+      if (left && up) {
+        result.push(index - 1 - row);
+      }
+      if (left && down) {
+        result.push(index - 1 + row);
+      }
+      if (right && up) {
+        result.push(index + 1 - row);
+      }
+      if (right && down) {
+        result.push(index + 1 + row);
+      }
     }
     return result;
   }
@@ -951,6 +980,38 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw });
   }
 
+  listen = () => {
+    // findShortestPath()
+  }
+
+  showMonsterMoves = () => {
+    let index = this.monsterSpace.name;
+    let indexesOfAvailableCellsAround = this.getIndexesOfAvailableCellsAround(index, this.cellsInRow, this.cellsTotal, true);
+    let cells = [];
+    indexesOfAvailableCellsAround.forEach((i) => {
+      if (this.elements[i].value > 0) {
+        cells.push(this.elements[i]);
+        this.elements[i].isHighlighted = true;
+      }
+    });
+  }
+
+  moveMonster = (item) => {
+    if (item.isHighlighted) {
+      this.elements[this.monsterSpace.name].hasMonster = false;
+      item.hasMonster = true;
+      this.monsterSpace = item;
+      this.setState({ playerSpace: item });
+      this.resetGrid();
+    } else {
+      Alert.alert(
+        'Uh-Oh',
+        'Please select a highlighted space',
+      );
+    }
+    this.setState({ redraw: !this.state.redraw });
+  }
+
   showHumanMoves = () => {
     let i = this.humanSpace.name;
     // north
@@ -1009,7 +1070,6 @@ class Game extends Component {
       this.elements[this.humanSpace.name].hasHuman = false;
       item.hasHuman = true;
       this.humanSpace = item;
-      this.setState({ playerSpace: item });
       this.resetGrid();
     } else {
       Alert.alert(
@@ -1019,6 +1079,8 @@ class Game extends Component {
     }
     this.setState({ redraw: !this.state.redraw });
   }
+
+
 
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
