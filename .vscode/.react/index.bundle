@@ -1432,7 +1432,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   _reactNative.AppRegistry.registerComponent('ProjectEyeCue', function () {
     return _App2.default;
   });
-},652,[12,491],"index.js");
+},661,[12,491],"index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -62910,7 +62910,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     }
   });
-},509,[510,585,598,643,650],"app\\config\\routes.js");
+},509,[510,585,598,652,659],"app\\config\\routes.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -76359,7 +76359,81 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }
 
           if (cell.value > 0) {
-            cell.imageKey = 22;
+            if (left.value < 1 && top.value < 1 && right.value > 0) {
+              cell.imageKey = 17;
+            } else if (left.value > 0 && top.value < 1 && right.value > 0) {
+                var randomValue = _this.getProbability();
+
+                if (randomValue < 800) {
+                  cell.imageKey = 18;
+                } else if (randomValue < 900) {
+                  cell.imageKey = 29;
+                } else {
+                  cell.imageKey = 30;
+                }
+              } else if (left.value > 0 && top.value < 1 && right.value < 1) {
+                  cell.imageKey = 19;
+                } else if (left.value < 1 && top.value > 0 && right.value > 0) {
+                    var _randomValue = _this.getProbability();
+
+                    if (_randomValue < 900) {
+                      cell.imageKey = 20;
+                    } else {
+                      cell.imageKey = 31;
+                    }
+                  } else if (left.value > 0 && top.value > 0 && right.value < 1) {
+                      var _randomValue2 = _this.getProbability();
+
+                      if (_randomValue2 < 900) {
+                        cell.imageKey = 21;
+                      } else {
+                        cell.imageKey = 32;
+                      }
+                    } else {
+                        var probability = _this.getProbability();
+
+                        if (probability < 80) {
+                          cell.imageKey = 22;
+                        } else if (probability < 160) {
+                          cell.imageKey = 17;
+                        } else if (probability < 240) {
+                          cell.imageKey = 38;
+                        } else if (probability < 320) {
+                          cell.imageKey = 33;
+                        } else if (probability < 400) {
+                          cell.imageKey = 34;
+                        } else if (probability < 480) {
+                          cell.imageKey = 35;
+                        } else if (probability < 643) {
+                          cell.imageKey = 31;
+                        } else if (probability < 679) {
+                          cell.imageKey = 21;
+                        } else if (probability < 715) {
+                          cell.imageKey = 18;
+                        } else if (probability < 751) {
+                          cell.imageKey = 20;
+                        } else if (probability < 787) {
+                          cell.imageKey = 30;
+                        } else if (probability < 823) {
+                          cell.imageKey = 29;
+                        } else if (probability < 859) {
+                          cell.imageKey = 32;
+                        } else if (probability < 895) {
+                          cell.imageKey = 17;
+                        } else if (probability < 988) {
+                          cell.imageKey = 19;
+                        } else if (probability < 991) {
+                          cell.imageKey = 40;
+                        } else if (probability < 994) {
+                          cell.imageKey = 39;
+                        } else if (probability < 996) {
+                          cell.imageKey = 36;
+                        } else if (probability < 999) {
+                          cell.imageKey = 41;
+                        } else {
+                          cell.imageKey = 42;
+                        }
+                      }
           }
         }
 
@@ -76641,7 +76715,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1131
+              lineNumber: 1228
             }
           },
           _react3.default.createElement(
@@ -76649,7 +76723,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1132
+                lineNumber: 1229
               }
             },
             "Game screen"
@@ -76663,7 +76737,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1134
+                lineNumber: 1231
               }
             },
             _react3.default.createElement(
@@ -76679,7 +76753,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1135
+                  lineNumber: 1232
                 }
               },
               _react3.default.createElement(
@@ -76690,7 +76764,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1144
+                    lineNumber: 1241
                   }
                 },
                 "+"
@@ -76706,7 +76780,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1149
+                lineNumber: 1246
               }
             },
             _react3.default.createElement(
@@ -76722,7 +76796,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1150
+                  lineNumber: 1247
                 }
               },
               _react3.default.createElement(
@@ -76733,7 +76807,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1158
+                    lineNumber: 1255
                   }
                 },
                 "-"
@@ -76755,7 +76829,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1168
+              lineNumber: 1265
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76763,7 +76837,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1169
+              lineNumber: 1266
             }
           }),
           _react3.default.createElement(
@@ -76781,7 +76855,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1170
+                lineNumber: 1267
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76789,7 +76863,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1175
+                lineNumber: 1272
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76797,7 +76871,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1176
+                lineNumber: 1273
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76805,7 +76879,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1177
+                lineNumber: 1274
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76813,7 +76887,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1178
+                lineNumber: 1275
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76821,7 +76895,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1179
+                lineNumber: 1276
               }
             })
           ),
@@ -76830,7 +76904,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1181
+              lineNumber: 1278
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76838,7 +76912,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1182
+              lineNumber: 1279
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76846,7 +76920,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1183
+              lineNumber: 1280
             }
           })
         );
@@ -76947,6 +77021,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         return path.length - 1;
       }
     }, {
+      key: "getProbability",
+      value: function getProbability() {
+        return Math.floor(Math.random() * 1000);
+      }
+    }, {
       key: "render",
       value: function render() {
         return _react3.default.createElement(_Engine2.default, {
@@ -76955,7 +77034,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           boardFinished: this.state.boardFinished,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1191
+            lineNumber: 1288
           }
         });
       }
@@ -78361,8 +78440,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           _react3.default.createElement(
             _native.Stage,
             {
-              height: this.gameBoardWidth,
-              width: this.gameBoardWidth,
+              height: this.screenDimensions.height,
+              width: this.screenDimensions.width,
               style: {
                 backgroundColor: "#515151"
               },
@@ -86487,6 +86566,160 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               }
             });
 
+          case 29:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[33], "../data/images/floor-n-2.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 193
+              }
+            });
+
+          case 30:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[34], "../data/images/floor-n-3.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 196
+              }
+            });
+
+          case 31:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[35], "../data/images/floor-w-2.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 199
+              }
+            });
+
+          case 32:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[36], "../data/images/floor-e-2.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 202
+              }
+            });
+
+          case 33:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[37], "../data/images/floor-c-5.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 205
+              }
+            });
+
+          case 34:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[38], "../data/images/floor-c-6.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 208
+              }
+            });
+
+          case 35:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[39], "../data/images/floor-c-7.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 211
+              }
+            });
+
+          case 36:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[40], "../data/images/floor-c-2.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 214
+              }
+            });
+
+          case 37:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[41], "../data/images/floor-c-3.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 217
+              }
+            });
+
+          case 38:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[42], "../data/images/floor-c-4.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 220
+              }
+            });
+
+          case 39:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[43], "../data/images/floor-c-8.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 223
+              }
+            });
+
+          case 40:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[44], "../data/images/floor-c-9.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 226
+              }
+            });
+
+          case 41:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[45], "../data/images/floor-e2n.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 229
+              }
+            });
+
+          case 42:
+            return _react3.default.createElement(_reactNative.Image, {
+              resizeMode: "stretch",
+              style: [styles, _this.fixImageStyle()],
+              source: _require(_dependencyMap[46], "../data/images/floor-w2n.gif"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 232
+              }
+            });
+
           default:
             console.log('the imageKey for this tile was not assigned correctly', tile);
             break;
@@ -86494,7 +86727,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = 100;
+      _this.tileWidth = Math.ceil(_this.screenDimensions.height / 40);
       _this.sourceWidth = _this.tileWidth;
       _this.gameBoardWidth = _this.tileWidth * 40;
       _this.tileMapArray = _this.props.gameBoard.map(function (a) {
@@ -86582,11 +86815,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }, this._panResponder.panHandlers, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 203
+              lineNumber: 245
             }
           }),
           _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[33], "../data/images/Black_square.jpeg"),
+            src: _require(_dependencyMap[47], "../data/images/Black_square.jpeg"),
             tileSize: this.tileWidth,
             columns: 40,
             rows: 40,
@@ -86595,7 +86828,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             renderTile: this.renderTile,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 204
+              lineNumber: 246
             }
           })
         );
@@ -86611,7 +86844,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Board;
-},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,653,654,656,655,657,658,642],"app\\screens\\Board.js");
+},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,662,663,664,665,666,667,668,669,670,671,672,651],"app\\screens\\Board.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -86877,6 +87110,114 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 	});
 },641,[164],"app\\data\\images\\floor-c-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/app/data/images",
+    "width": 80,
+    "height": 80,
+    "scales": [1],
+    "hash": "8d7eb52fcd328011cefc90aa761e94c0",
+    "name": "wall-t-n-s",
+    "type": "png"
+  });
+},642,[164],"app\\data\\images\\wall-t-n-s.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/app/data/images",
+    "width": 80,
+    "height": 80,
+    "scales": [1],
+    "hash": "d5b40a7af915c6601184a89c8d714991",
+    "name": "wall-t-e-w",
+    "type": "png"
+  });
+},643,[164],"app\\data\\images\\wall-t-e-w.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/app/data/images",
+    "width": 80,
+    "height": 80,
+    "scales": [1],
+    "hash": "2c4435945e4f8600b9f2b0e107335487",
+    "name": "wall-t-n-s-e",
+    "type": "png"
+  });
+},644,[164],"app\\data\\images\\wall-t-n-s-e.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/app/data/images",
+    "width": 80,
+    "height": 80,
+    "scales": [1],
+    "hash": "b06a4cd72985451bac81fd95f1e388ec",
+    "name": "wall-t-n-s-w",
+    "type": "png"
+  });
+},645,[164],"app\\data\\images\\wall-t-n-s-w.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/app/data/images",
+    "width": 80,
+    "height": 80,
+    "scales": [1],
+    "hash": "a20b663ce6bef4ed9ba6a07025864961",
+    "name": "wall-t-n-e-w",
+    "type": "png"
+  });
+},646,[164],"app\\data\\images\\wall-t-n-e-w.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/app/data/images",
+    "width": 80,
+    "height": 80,
+    "scales": [1],
+    "hash": "26695e027445465f79c17768e882f009",
+    "name": "wall-t-e-s-w",
+    "type": "png"
+  });
+},647,[164],"app\\data\\images\\wall-t-e-s-w.png");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "2637bdc8a25458e85503596ee3431575",
+		"name": "floor-n-2",
+		"type": "gif"
+	});
+},648,[164],"app\\data\\images\\floor-n-2.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "cb4968f7fa90bbe04264cf863e1e731b",
+		"name": "floor-n-3",
+		"type": "gif"
+	});
+},649,[164],"app\\data\\images\\floor-n-3.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "f77081656cc6bacbd6c392712542d9f9",
+		"name": "floor-w-2",
+		"type": "gif"
+	});
+},650,[164],"app\\data\\images\\floor-w-2.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
 		module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 				"__packager_asset": true,
 				"httpServerLocation": "/assets/app/data/images",
@@ -86887,7 +87228,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 				"name": "Black_square",
 				"type": "jpeg"
 		});
-},642,[164],"app\\data\\images\\Black_square.jpeg");
+},651,[164],"app\\data\\images\\Black_square.jpeg");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87013,7 +87354,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Connect;
-},643,[118,179,129,586,589,592,644,649],"app\\screens\\Connect.js");
+},652,[118,179,129,586,589,592,653,658],"app\\screens\\Connect.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87032,7 +87373,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.GameList = _GameList2.default;
   exports.styles = _styles2.default;
-},644,[645,646],"app\\components\\GameList\\index.js");
+},653,[654,655],"app\\components\\GameList\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87102,7 +87443,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = GameList;
-},645,[118,12,129,646,647,648],"app\\components\\GameList\\GameList.js");
+},654,[118,12,129,655,656,657],"app\\components\\GameList\\GameList.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87140,7 +87481,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       alignItems: 'center'
     }
   });
-},646,[493,12],"app\\components\\GameList\\styles.js");
+},655,[493,12],"app\\components\\GameList\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87205,7 +87546,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = ListItem;
-},647,[129,118,12,646],"app\\components\\GameList\\ListItem.js");
+},656,[129,118,12,655],"app\\components\\GameList\\ListItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87235,7 +87576,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = Separator;
-},648,[118,12,646],"app\\components\\GameList\\Separator.js");
+},657,[118,12,655],"app\\components\\GameList\\Separator.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87253,7 +87594,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     key: '3',
     name: 'game the third'
   }];
-},649,[],"app\\data\\testGames.js");
+},658,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87374,79 +87715,139 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Waiting;
-},650,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+},659,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 80,
-    "height": 80,
-    "scales": [1],
-    "hash": "8d7eb52fcd328011cefc90aa761e94c0",
-    "name": "wall-t-n-s",
-    "type": "png"
-  });
-},653,[164],"app\\data\\images\\wall-t-n-s.png");
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "7d0767fd9b215b48e06c7ce4197c3233",
+		"name": "floor-e-2",
+		"type": "gif"
+	});
+},662,[164],"app\\data\\images\\floor-e-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 80,
-    "height": 80,
-    "scales": [1],
-    "hash": "d5b40a7af915c6601184a89c8d714991",
-    "name": "wall-t-e-w",
-    "type": "png"
-  });
-},654,[164],"app\\data\\images\\wall-t-e-w.png");
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "4ad71023fefac9f7546d14dafdc2b17e",
+		"name": "floor-c-5",
+		"type": "gif"
+	});
+},663,[164],"app\\data\\images\\floor-c-5.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 80,
-    "height": 80,
-    "scales": [1],
-    "hash": "2c4435945e4f8600b9f2b0e107335487",
-    "name": "wall-t-n-s-e",
-    "type": "png"
-  });
-},656,[164],"app\\data\\images\\wall-t-n-s-e.png");
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "22aa86cf7bab4e4e52ec7229f62fb078",
+		"name": "floor-c-6",
+		"type": "gif"
+	});
+},664,[164],"app\\data\\images\\floor-c-6.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 80,
-    "height": 80,
-    "scales": [1],
-    "hash": "b06a4cd72985451bac81fd95f1e388ec",
-    "name": "wall-t-n-s-w",
-    "type": "png"
-  });
-},655,[164],"app\\data\\images\\wall-t-n-s-w.png");
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "8a7d43759558588f4fbddd3f8d551398",
+		"name": "floor-c-7",
+		"type": "gif"
+	});
+},665,[164],"app\\data\\images\\floor-c-7.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 80,
-    "height": 80,
-    "scales": [1],
-    "hash": "a20b663ce6bef4ed9ba6a07025864961",
-    "name": "wall-t-n-e-w",
-    "type": "png"
-  });
-},657,[164],"app\\data\\images\\wall-t-n-e-w.png");
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "e375a6258341c62f3bb729361874dbd0",
+		"name": "floor-c-2",
+		"type": "gif"
+	});
+},666,[164],"app\\data\\images\\floor-c-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 80,
-    "height": 80,
-    "scales": [1],
-    "hash": "26695e027445465f79c17768e882f009",
-    "name": "wall-t-e-s-w",
-    "type": "png"
-  });
-},658,[164],"app\\data\\images\\wall-t-e-s-w.png");
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "af325b8ab4dc96f2708135573fd1fd36",
+		"name": "floor-c-3",
+		"type": "gif"
+	});
+},667,[164],"app\\data\\images\\floor-c-3.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "1993aaf7a9fdeb3bbe7c7596a749ed60",
+		"name": "floor-c-4",
+		"type": "gif"
+	});
+},668,[164],"app\\data\\images\\floor-c-4.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "be3f692d1ff7a5efc3c433567d50ed27",
+		"name": "floor-c-8",
+		"type": "gif"
+	});
+},669,[164],"app\\data\\images\\floor-c-8.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "a3e53f62bb09a9bb7af8aade345320f9",
+		"name": "floor-c-9",
+		"type": "gif"
+	});
+},670,[164],"app\\data\\images\\floor-c-9.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "59ca4b15d19e35b80d3c0a2e6232653b",
+		"name": "floor-e2n",
+		"type": "gif"
+	});
+},671,[164],"app\\data\\images\\floor-e2n.gif");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 80,
+		"height": 80,
+		"scales": [1],
+		"hash": "315ce061531e22c837e1962b8cdf770c",
+		"name": "floor-w2n",
+		"type": "gif"
+	});
+},672,[164],"app\\data\\images\\floor-w2n.gif");
 require(44);
-require(652);
+require(661);
 //# sourceMappingURL=index.map

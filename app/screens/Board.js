@@ -16,7 +16,7 @@ export default class Board extends Component {
     super(props);
     // this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = 100;
+    this.tileWidth = Math.ceil(this.screenDimensions.height/40);
     this.sourceWidth = this.tileWidth;
     this.gameBoardWidth = this.tileWidth * 40;
     this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
@@ -188,8 +188,50 @@ export default class Board extends Component {
       // wall top cap east/south/west
       case 28:
         return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-e-s-w.png")} />;
+      // floor tile north 2
+      case 29:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-n-2.gif")} />;
+      // floor tile north 3
+      case 30:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-n-3.gif")} />;
+      // floor tile west 2
+      case 31:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-w-2.gif")} />;
+      // floor tile east 2
+      case 32:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-e-2.gif")} />;
+      // floor tile center 5
+      case 33:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-5.gif")} />;
+      // floor tile center 6
+      case 34:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-6.gif")} />;
+      // floor tile center 7
+      case 35:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-7.gif")} />;
+      // floor tile center 2
+      case 36:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-2.gif")} />;
+      // floor tile center 3
+      case 37:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-3.gif")} />;
+      // floor tile center 4
+      case 38:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-4.gif")} />;
+      // floor tile center 8
+      case 39:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-8.gif")} />;
+      // floor tile center 9
+      case 40:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-9.gif")} />;
+      // floor tile e2n
+      case 41:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-e2n.gif")} />;
+      // floor tile w2n
+      case 42:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-w2n.gif")} />;
       default:
-      console.log('the imageKey for this tile was not assigned correctly', tile);
+        console.log('the imageKey for this tile was not assigned correctly', tile);
         break;
     }
   };

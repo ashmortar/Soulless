@@ -701,6 +701,10 @@ class Game extends Component {
     return ({ top, left, right, bottom, bottomLeft, bottomRight, topLeft, topRight})
   }
 
+  getProbability() {
+    return (Math.floor(Math.random() * 1000))
+  }
+
   assignImageKeys = () => {
     for (let i = 0; i < this.elements.length; i++) {
       const { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(i);
@@ -869,29 +873,122 @@ class Game extends Component {
       }
       // floor tiles
       if (cell.value > 0) {
-        cell.imageKey = 22;
         // floor tile northwest
-        // if (left.value < 1 && top.value < 1 && right.value > 0 && bottom.value > 0) {
-        //   cell.imageKey = 16;
-        // }
+        if (left.value < 1 && top.value < 1 && right.value > 0) {
+          cell.imageKey = 17;
+        }
         // // floor tile north
-        // if (left.value > 0 && top.value < 1 && right.value > 0 && bottom.value > 0) {
-        //   cell.imageKey = 17;
-        // }
+        else if (left.value > 0 && top.value < 1 && right.value > 0) {
+          let randomValue = this.getProbability(); 
+          if (randomValue < 800) {
+            cell.imageKey = 18;
+          } else if (randomValue < 900) {
+            cell.imageKey = 29;
+          } else {
+            cell.imageKey = 30;
+          }
+        }
         // // floor tile northeast
-        // if (left.value > 0 && top.value < 1 && right.value < 1 && bottom.value > 0) {
-        //   cell.imageKey = 18;
-        // }
+        else if (left.value > 0 && top.value < 1 && right.value < 1) {
+          cell.imageKey = 19;
+        }
         // // floor tile west
-        // if (left.value < 1 && top.value > 0 && right.value > 0 && bottom.value > 0) {
-        //   cell.imageKey = 19;
+        else if (left.value < 1 && top.value > 0 && right.value > 0) {
+          let randomValue = this.getProbability();
+          if (randomValue < 900) {
+            cell.imageKey = 20;
+          } else {
+            cell.imageKey = 31;
+          }
+        }
+        // floor tile east
+        else if (left.value > 0 && top.value > 0 && right.value < 1) {
+          let randomValue = this.getProbability();
+          if (randomValue < 900) {
+            cell.imageKey = 21;
+          } else {
+            cell.imageKey = 32;
+          }
+        }
+        // seems like it may be better to leave out the corridor function and let the random distribution handle them.
+        // corridor
+        // else if (left.value < 1 && right.value < 1 ) {
+        //   let randomValue = this.getProbability();
+        //   if (randomValue < 300) {
+        //     cell.imageKey = 37;
+        //   } else if (randomValue < 600) {
+        //     cell.imageKey = 38;
+        //   } else if (randomValue < 900) {
+        //     cell.imageKey = 40;
+        //   } else if (randomValue < 950) {
+        //     cell.imageKey = 33;
+        //   } else {
+        //     cell.imageKey = 39;
+        //   }
         // }
-        // // floor tile east
-        // if (left.value > 0 && top.value > 0 && right.value < 1 && bottom.value > 0) {
-        //   cell.imageKey = 20;
-        // } else {
-        //   cell.imageKey = 21;
-        // }
+        else {
+          let probability = this.getProbability();
+          if (probability < 80) {
+            cell.imageKey = 22;
+          }
+          else if (probability < 160) {
+            cell.imageKey = 17;
+          }
+          else if (probability < 240) {
+            cell.imageKey = 38;
+          }
+          else if (probability < 320) {
+            cell.imageKey = 33;
+          }
+          else if (probability < 400) {
+            cell.imageKey = 34;
+          }
+          else if (probability < 480) {
+            cell.imageKey = 35;
+          }
+          else if (probability < 643) {
+            cell.imageKey = 31;
+          }
+          else if (probability < 679) {
+            cell.imageKey = 21;
+          }
+          else if (probability < 715) {
+            cell.imageKey = 18;
+          }
+          else if (probability < 751) {
+            cell.imageKey = 20;
+          }
+          else if (probability < 787) {
+            cell.imageKey = 30;
+          }
+          else if (probability < 823) {
+            cell.imageKey = 29;
+          }
+          else if (probability < 859) {
+            cell.imageKey = 32;
+          }
+          else if (probability < 895) {
+            cell.imageKey = 17;
+          }
+          else if (probability < 988) {
+            cell.imageKey = 19;
+          }
+          else if (probability < 991) {
+            cell.imageKey = 40;
+          }
+          else if (probability < 994) {
+            cell.imageKey = 39;
+          }
+          else if (probability < 996) {
+            cell.imageKey = 36;
+          }
+          else if (probability < 999) {
+            cell.imageKey = 41;
+          }
+          else {
+            cell.imageKey = 42;
+          }
+        }
       }
     }
     let imageKeys = [];
