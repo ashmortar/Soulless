@@ -981,7 +981,7 @@ class Game extends Component {
   }
 
   listen = () => {
-    // findShortestPath()
+    // findShortestPath();
   }
 
   showMonsterMoves = () => {
@@ -1177,6 +1177,7 @@ class Game extends Component {
         gameBoard={this.elements}
         tilesInRow={this.cellsInRow}
         boardFinished={this.state.boardFinished}
+        isHuman={this.state.isHuman}
       />
     );
   }
