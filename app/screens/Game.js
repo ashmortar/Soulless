@@ -7,6 +7,9 @@ import { Grid, AnimatedGrid } from '../components/Grid';
 import WallTemplate from '../data/WallTemplate';
 import Cell from '../data/Cell';
 import Engine from './Engine';
+import Menu from './Menu';
+import SideMenu from 'react-native-side-menu'
+// const SideMenu = require('react-native-side-menu');
 
 class Game extends Component {
   static propTypes = {
@@ -805,11 +808,11 @@ class Game extends Component {
         else if (top === null && left && right && bottom) {
           if (bottom.value === 0) {
             cell.imageKey = 9;
-          } 
+          }
           else {
             cell.imageKey = 7;
           }
-        } 
+        }
         // left side
         else if (left === null && top && right && bottom) {
           cell.imageKey = 5;
@@ -818,8 +821,8 @@ class Game extends Component {
           }
           if (bottom.value !== 0) {
             cell.imageKey = 7;
-          } 
-        } 
+          }
+        }
         // right side
         else if (right === null && top && left && bottom) {
           cell.imageKey = 4;
@@ -908,7 +911,7 @@ class Game extends Component {
         }
         // // floor tile north
         else if (left.value > 0 && top.value < 1 && right.value > 0) {
-          let randomValue = this.getProbability(); 
+          let randomValue = this.getProbability();
           if (randomValue < 800) {
             cell.imageKey = 18;
           } else if (randomValue < 900) {
@@ -1345,16 +1348,39 @@ class Game extends Component {
     );
   };
 
+  onItemSelected = () => {
+    console.log('onMenuItemSelected');
+  }
+
+  // const menu = <Menu navigator={navigator}/>;
+  // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
+  // <SideMenu menu={menu}>
   render() {
+    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
+    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
     return (
-      <Engine
-        gameBoard={this.elements}
-        tilesInRow={this.cellsInRow}
-        boardFinished={this.state.boardFinished}
-        isHuman={this.state.isHuman}
-      />
+
+
+
+      <SideMenu
+        menu={menuRight}
+        menuPosition='right'
+      >
+      <SideMenu
+        menu={menuLeft}
+        menuPosition='left'
+      >
+        <Engine
+          gameBoard={this.elements}
+          tilesInRow={this.cellsInRow}
+          boardFinished={this.state.boardFinished}
+          isHuman={this.state.isHuman}
+        />
+      </SideMenu>
+      </SideMenu>
     );
   }
+
 }
 
 

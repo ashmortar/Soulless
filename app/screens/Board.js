@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import { View, Dimensions, PanResponder, Image } from "react-native";
+import { View, Dimensions, PanResponder, Image, Text } from "react-native";
 import PropTypes from "prop-types";
 import { TileMap } from "react-game-kit/native";
+// import Menu from './Menu';
+
+// const SideMenu = require('react-native-side-menu');
 
 export default class Board extends Component {
   static contextTypes = {
