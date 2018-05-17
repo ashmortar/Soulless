@@ -53,6 +53,7 @@ class Game extends Component {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
+    this.echoLocate();
     this.assignImageKeys();
   }
 
@@ -729,11 +730,7 @@ class Game extends Component {
     for (let i = 0; i < this.elements.length; i++) {
       const { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(i);
       let cell = this.elements[i];
-
-<<<<<<< HEAD
       // wall top tiles
-=======
->>>>>>> 0b0fa1596e4cc3ddb8b4e345e250808ed5eecfbe
       if (cell.value === 0) {
         cell.imageKey = 9;
         // non edge cases
