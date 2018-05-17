@@ -506,7 +506,7 @@ class Game extends Component {
   }
 
   assignMonsterEdges = () => {
-    console.log('assign monster edges');
+    // console.log('assign monster edges');
     for (let i = 0; i < this.cellsTotal; i++) {
       let cell = this.elements[i];
       if (cell.value > 0) {
@@ -611,7 +611,7 @@ class Game extends Component {
 
   findShortestPath(start, end) {
     if (start.value < 1 || end.value < 1) {
-      console.log('shortest path error: start or end was a wall');
+      // console.log('shortest path error: start or end was a wall');
       return -1;
     }
     // array of cells to be checked
@@ -647,8 +647,8 @@ class Game extends Component {
       path.push(next);
       next = next.parent;
     }
-    this.resetGrid()
-    console.log((path.length - 1), path)
+    this.resetGrid();
+    console.log((path.length - 1));
     return (path.length - 1);
   }
 
@@ -668,14 +668,14 @@ class Game extends Component {
 
 
   assignMonsterStart = () => {
-    console.log('assign monster start')
+    // console.log('assign monster start')
     let cell = this.getRandomCell();
     let distance = this.findShortestPath(cell, this.humanSpace);
     while (distance < 20) {
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
     }
-    console.log('cell and distance', cell, distance);
+    // console.log('cell and distance', cell, distance);
     cell.hasMonster = true;
     this.monsterSpace = cell;
     if (!this.state.isHuman) {
