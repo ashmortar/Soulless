@@ -76324,12 +76324,38 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
               if (left.value < 0 && top.value < 0 && right.value < 0 && bottom.value >= 0 || left.value >= 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
                 cell.imageKey = 14;
+
+                if (topLeft) {
+                  if (topLeft.value !== cell.value) {
+                    cell.imageKey = 13;
+                  }
+                }
+
+                if (topRight) {
+                  if (topRight.value !== cell.value) {
+                    cell.imageKey = 15;
+                  }
+                }
               }
 
               if (left.value < 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
                 cell.imageKey = 15;
               }
-            }
+            } else if (bottom === null && left && right) {
+                cell.imageKey = 14;
+              } else if (left === null) {
+                  cell.imageKey = 10;
+
+                  if (bottom == null) {
+                    cell.imageKey = 13;
+                  }
+                } else if (right === null) {
+                    cell.imageKey = 12;
+
+                    if (bottom == null) {
+                      cell.imageKey = 15;
+                    }
+                  }
           }
 
           if (cell.value > 0) {
@@ -76615,7 +76641,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1103
+              lineNumber: 1131
             }
           },
           _react3.default.createElement(
@@ -76623,7 +76649,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1104
+                lineNumber: 1132
               }
             },
             "Game screen"
@@ -76637,7 +76663,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1106
+                lineNumber: 1134
               }
             },
             _react3.default.createElement(
@@ -76653,7 +76679,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1107
+                  lineNumber: 1135
                 }
               },
               _react3.default.createElement(
@@ -76664,7 +76690,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1116
+                    lineNumber: 1144
                   }
                 },
                 "+"
@@ -76680,7 +76706,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1121
+                lineNumber: 1149
               }
             },
             _react3.default.createElement(
@@ -76696,7 +76722,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1122
+                  lineNumber: 1150
                 }
               },
               _react3.default.createElement(
@@ -76707,7 +76733,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1130
+                    lineNumber: 1158
                   }
                 },
                 "-"
@@ -76729,7 +76755,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1140
+              lineNumber: 1168
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76737,7 +76763,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1141
+              lineNumber: 1169
             }
           }),
           _react3.default.createElement(
@@ -76755,7 +76781,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1142
+                lineNumber: 1170
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76763,7 +76789,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1147
+                lineNumber: 1175
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76771,7 +76797,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1148
+                lineNumber: 1176
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76779,7 +76805,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1149
+                lineNumber: 1177
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76787,7 +76813,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1150
+                lineNumber: 1178
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76795,7 +76821,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1151
+                lineNumber: 1179
               }
             })
           ),
@@ -76804,7 +76830,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1153
+              lineNumber: 1181
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76812,7 +76838,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1154
+              lineNumber: 1182
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76820,7 +76846,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1155
+              lineNumber: 1183
             }
           })
         );
@@ -76929,7 +76955,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           boardFinished: this.state.boardFinished,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1163
+            lineNumber: 1191
           }
         });
       }
@@ -78335,8 +78361,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           _react3.default.createElement(
             _native.Stage,
             {
-              height: this.screenDimensions.height,
-              width: this.screenDimensions.width,
+              height: this.gameBoardWidth,
+              width: this.gameBoardWidth,
               style: {
                 backgroundColor: "#515151"
               },
@@ -86468,7 +86494,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = _this.screenDimensions.height / 40;
+      _this.tileWidth = 100;
       _this.sourceWidth = _this.tileWidth;
       _this.gameBoardWidth = _this.tileWidth * 40;
       _this.tileMapArray = _this.props.gameBoard.map(function (a) {

@@ -16,7 +16,7 @@ export default class Board extends Component {
     super(props);
     // this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = (this.screenDimensions.height / 40);
+    this.tileWidth = 100;
     this.sourceWidth = this.tileWidth;
     this.gameBoardWidth = this.tileWidth * 40;
     this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);

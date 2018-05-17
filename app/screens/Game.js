@@ -832,9 +832,37 @@ class Game extends Component {
           // wall front south
           if ((left.value < 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) || (left.value >= 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0)) {
             cell.imageKey = 14;
+            if (topLeft) {
+              if (topLeft.value !== cell.value) {
+                cell.imageKey = 13;
+              }
+            }
+            if (topRight) {
+              if (topRight.value !== cell.value) {
+                cell.imageKey = 15;
+              }
+            }
           }
           // wall front southeast
           if (left.value < 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
+            cell.imageKey = 15;
+          }
+        }
+        // bottom row
+        else if (bottom === null && left && right) {
+          cell.imageKey = 14;
+        }
+        // left side
+        else if (left === null) {
+          cell.imageKey = 10;
+          if (bottom == null) {
+            cell.imageKey = 13;
+          }
+        }
+        // right side
+        else if (right === null) {
+          cell.imageKey = 12;
+          if (bottom == null) {
             cell.imageKey = 15;
           }
         }
