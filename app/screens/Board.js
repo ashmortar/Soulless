@@ -19,7 +19,11 @@ export default class Board extends Component {
     this.tileWidth = Math.ceil(this.screenDimensions.height/40);
     this.sourceWidth = this.tileWidth;
     this.gameBoardWidth = this.tileWidth * 40;
-    this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
+    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey);
+    this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache && this.props.isHuman ? 1 : 0);
+    this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
+    this.tileHumanMapArray = this.props.gameBoard.map(x => x.hasHuman && this.props.isHuman ? 1 : 0);
+    this.tileMonsterMapArray = this.props.gameBoard.map(x => x.hasMonster && !this.props.isHuman ? 1 : 0);
     this.state = {
       isZooming: false,
       isMoving: false,
@@ -33,7 +37,18 @@ export default class Board extends Component {
     };
   }
 
+  getCacheMapArray = (cell) => {
+    if (cell.hasCache) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
   componentWillMount() {
+    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
@@ -251,6 +266,38 @@ export default class Board extends Component {
           sourceWidth={this.tileWidth}
           layers={[this.tileMapArray]}
           renderTile={this.renderTile}
+        />
+        <TileMap
+          src={require("../data/images/cache.png")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.tileCashMapArray]}
+        />
+        <TileMap
+          src={require("../data/images/Magenta-square_100px.gif")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.tileHighlightedMapArray]}
+        />
+        <TileMap
+          src={require("../data/images/human.png")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.tileHumanMapArray]}
+        />
+        <TileMap
+          src={require("../data/images/monster.png")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.tileMonsterMapArray]}
         />
       </View>
     );

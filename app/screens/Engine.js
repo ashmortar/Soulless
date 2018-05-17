@@ -33,6 +33,7 @@ export default class Engine extends Component {
           {this.props.boardFinished ? (
             <Board
               gameBoard={this.props.gameBoard}
+              isHuman={this.props.isHuman}
             />
           ) : null}
         </Stage>
