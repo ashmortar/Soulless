@@ -743,6 +743,30 @@ class Game extends Component {
           if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
             cell.imageKey = 8;
           }
+          // wall top north/south
+          if(left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value !== 0) {
+            cell.imageKey = 23;
+          }
+          // wall top east/west
+          if (left.value !== 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
+            cell.imageKey = 24;
+          }
+          // wall top cap north/south/west
+          if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value !== 0) {
+            cell.imageKey = 25;
+          }
+          // wall top cap north/south/east
+          if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value !== 0) {
+            cell.imageKey = 26;
+          }
+          // wall top cap north/east/west
+          if (left.value !== 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
+            cell.imageKey = 27;
+          }
+          // wall top cap east/south/west
+          if (left.value !== 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
+            cell.imageKey = 28;
+          }
         }
         // top row
         else if (top === null && left && right && bottom) {

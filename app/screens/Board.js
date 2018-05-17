@@ -170,6 +170,24 @@ export default class Board extends Component {
       // floor tile center
       case 22:
         return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-1.gif")} />;
+      // wall top north/south
+      case 23:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n-s.png")} />;
+      // wall top east/west
+      case 24:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-e-w.png")} />;
+      // wall top cap north/south/west -- typo in image name -- this is correct image!!
+      case 25:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n-s-e.png")} />;
+      // wall top cap north/south/east -- typo in image name -- this is correct image!!
+      case 26:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n-s-w.png")} />;
+      // wall top cap north/east/west
+      case 27:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n-e-w.png")} />;
+      // wall top cap east/south/west
+      case 28:
+        return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-e-s-w.png")} />;
       default:
       console.log('the imageKey for this tile was not assigned correctly', tile);
         break;
@@ -182,7 +200,7 @@ export default class Board extends Component {
     // let scale = this.state.tileSize;
     // console.log('tileMap', this.tileMapArray);
     return (
-      <View style={{ position: 'absolute', left: this.state.left }} {...this._panResponder.panHandlers} >
+      <View style={{ position: 'absolute', left: this.state.left, top: this.state.top }} {...this._panResponder.panHandlers} >
         <TileMap
           src={require("../data/images/Black_square.jpeg")}
           tileSize={this.tileWidth}
