@@ -76001,29 +76001,65 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             for (var j = 0; j < cellsAround.length; j++) {
               if (_this.elements[cellsAround[j]].value > 0) {
                 adjacent++;
-
-                _this.elements[i].humanEdges.push(_this.elements[cellsAround[j]]);
-
-                _this.elements[i].monsterEdges.push(_this.elements[cellsAround[j]]);
               }
             }
 
             _this.elements[i].value = adjacent;
+          }
+        }
+      };
 
-            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i - (_this.cellsInRow - 1) > 0 && _this.elements[i - (_this.cellsInRow - 1)].value > 0) {
-              _this.elements[i].monsterEdges.push(_this.elements[i - (_this.cellsInRow - 1)]);
+      _this.assignMonsterEdges = function () {
+        console.log('assign monster edges');
+
+        for (var i = 0; i < _this.cellsTotal; i++) {
+          var cell = _this.elements[i];
+
+          if (cell.value > 0) {
+            var _this$getNeighboringC = _this.getNeighboringCells(i),
+                topLeft = _this$getNeighboringC.topLeft,
+                top = _this$getNeighboringC.top,
+                topRight = _this$getNeighboringC.topRight,
+                left = _this$getNeighboringC.left,
+                right = _this$getNeighboringC.right,
+                bottomLeft = _this$getNeighboringC.bottomLeft,
+                bottom = _this$getNeighboringC.bottom,
+                bottomRight = _this$getNeighboringC.bottomRight;
+
+            if (topLeft && topLeft.value > 0) {
+              cell.monsterEdges.push(topLeft);
             }
 
-            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i + (_this.cellsInRow + 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow + 1)].value > 0) {
-              _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow + 1)]);
+            if (top && top.value > 0) {
+              cell.monsterEdges.push(top);
             }
 
-            if (i % _this.cellsInRow != 0 && i - (_this.cellsInRow + 1) > 0 && _this.elements[i - (_this.cellsInRow + 1).value > 0]) {
-              _this.elements[i].monsterEdges.push(_this.elements[i - (_this.cellsInRow + 1)]);
+            if (topRight && topRight.value > 0) {
+              cell.monsterEdges.push(topRight);
             }
 
-            if (i % 20 != 0 && i + (_this.cellsInRow - 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow - 1)].value > 0) {
-              _this.elements[i].monsterEdges.push(_this.elements[i + (_this.cellsInRow - 1)]);
+            if (left && left.value > 0) {
+              cell.monsterEdges.push(left);
+            }
+
+            if (right && right.value > 0) {
+              cell.monsterEdges.push(right);
+            }
+
+            if (bottomLeft && bottomLeft.value > 0) {
+              cell.monsterEdges.push(bottomLeft);
+            }
+
+            if (bottom && bottom.value > 0) {
+              cell.monsterEdges.push(bottom);
+            }
+
+            if (bottomLeft && bottomLeft.value > 0) {
+              cell.monsterEdges.push(bottomLeft);
+            }
+
+            if (bottomRight && bottomRight.value > 0) {
+              cell.monsterEdges.push(bottomRight);
             }
           }
         }
@@ -76111,10 +76147,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
 
         cell.hasHuman = true;
-        cell.isRevealed = true;
         _this.humanSpace = cell;
 
         if (_this.state.isHuman) {
+          cell.isRevealed = true;
+
           _this.setState({
             playerSpace: cell
           });
@@ -76122,15 +76159,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.assignMonsterStart = function () {
+        console.log('assign monster start');
+
         var cell = _this.getRandomCell();
 
         var distance = _this.findShortestPath(cell, _this.humanSpace);
 
-        while (cell.value < 1 || distance < 20) {
+        while (distance < 20) {
           cell = _this.getRandomCell();
           distance = _this.findShortestPath(cell, _this.humanSpace);
         }
 
+        console.log('cell and distance', cell, distance);
         cell.hasMonster = true;
         _this.monsterSpace = cell;
 
@@ -76210,15 +76250,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       _this.assignImageKeys = function () {
         for (var i = 0; i < _this.elements.length; i++) {
-          var _this$getNeighboringC = _this.getNeighboringCells(i),
-              topLeft = _this$getNeighboringC.topLeft,
-              top = _this$getNeighboringC.top,
-              topRight = _this$getNeighboringC.topRight,
-              left = _this$getNeighboringC.left,
-              right = _this$getNeighboringC.right,
-              bottomLeft = _this$getNeighboringC.bottomLeft,
-              bottom = _this$getNeighboringC.bottom,
-              bottomRight = _this$getNeighboringC.bottomRight;
+          var _this$getNeighboringC2 = _this.getNeighboringCells(i),
+              topLeft = _this$getNeighboringC2.topLeft,
+              top = _this$getNeighboringC2.top,
+              topRight = _this$getNeighboringC2.topRight,
+              left = _this$getNeighboringC2.left,
+              right = _this$getNeighboringC2.right,
+              bottomLeft = _this$getNeighboringC2.bottomLeft,
+              bottom = _this$getNeighboringC2.bottom,
+              bottomRight = _this$getNeighboringC2.bottomRight;
 
           var cell = _this.elements[i];
 
@@ -76755,7 +76795,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1286
+              lineNumber: 1290
             }
           },
           _react3.default.createElement(
@@ -76763,7 +76803,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1287
+                lineNumber: 1291
               }
             },
             "Game screen"
@@ -76777,7 +76817,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1289
+                lineNumber: 1293
               }
             },
             _react3.default.createElement(
@@ -76793,7 +76833,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1290
+                  lineNumber: 1294
                 }
               },
               _react3.default.createElement(
@@ -76804,7 +76844,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1299
+                    lineNumber: 1303
                   }
                 },
                 "+"
@@ -76820,7 +76860,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1304
+                lineNumber: 1308
               }
             },
             _react3.default.createElement(
@@ -76836,7 +76876,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1305
+                  lineNumber: 1309
                 }
               },
               _react3.default.createElement(
@@ -76847,7 +76887,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1313
+                    lineNumber: 1317
                   }
                 },
                 "-"
@@ -76869,7 +76909,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1323
+              lineNumber: 1327
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76877,7 +76917,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1324
+              lineNumber: 1328
             }
           }),
           _react3.default.createElement(
@@ -76895,7 +76935,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1325
+                lineNumber: 1329
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76903,7 +76943,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1330
+                lineNumber: 1334
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76911,7 +76951,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1331
+                lineNumber: 1335
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76919,7 +76959,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1332
+                lineNumber: 1336
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76927,7 +76967,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1333
+                lineNumber: 1337
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76935,7 +76975,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1334
+                lineNumber: 1338
               }
             })
           ),
@@ -76944,7 +76984,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1336
+              lineNumber: 1340
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76952,7 +76992,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1337
+              lineNumber: 1341
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76960,7 +77000,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1338
+              lineNumber: 1342
             }
           })
         );
@@ -76992,7 +77032,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.allowedLengthOfWhiteLine = 14;
       _this.state = {
         redraw: false,
-        isHuman: false,
+        isHuman: true,
         echoDirection: 'radius',
         playerSpace: {
           name: 0
@@ -77006,6 +77046,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       key: "componentDidMount",
       value: function componentDidMount() {
         this.createMap();
+        this.assignMonsterEdges();
         this.assignHumanStart();
         this.assignMonsterStart();
         this.assignCacheLocations();
@@ -77015,50 +77056,47 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     }, {
       key: "findShortestPath",
       value: function findShortestPath(start, end) {
+        if (start.value < 1 || end.value < 1) {
+          console.log('shortest path error: start or end was a wall');
+          return -1;
+        }
+
         var queue = [];
         var visited = [];
-        var path = [];
+        visited.push(start);
         queue.push(start);
 
         while (queue.length > 0) {
           var cell = queue.shift();
 
-          if (!visited.includes(cell)) {
-            if (cell === end) {
-              path.push(cell);
-              var next = cell.parent;
+          if (cell === end) {
+            console.log("found you");
+            break;
+          }
 
-              while (next) {
-                path.push(next);
-                next = next.parent;
+          var neighbors = cell.monsterEdges;
 
-                if (path.length > 150) {
-                  break;
-                }
-              }
+          for (var i = 0; i < neighbors.length; i++) {
+            var neighbor = neighbors[i];
 
-              break;
-            } else {
-              var connections = cell.monsterEdges;
-
-              for (var i = 0; i < connections.length; i++) {
-                var neighbor = connections[i];
-
-                if (neighbor !== start && neighbor.parent === null) {
-                  neighbor.parent = cell;
-                }
-
-                queue.push(neighbor);
-              }
-
-              visited.push(cell);
+            if (!visited.includes(neighbor)) {
+              neighbor.parent = cell;
+              visited.push(neighbor);
+              queue.push(neighbor);
             }
           }
         }
 
-        if (path.length === 0) {}
+        var path = [];
+        var next = end;
 
-        setTimeout(this.resetGrid, 50);
+        while (next != null) {
+          path.push(next);
+          next = next.parent;
+        }
+
+        this.resetGrid();
+        console.log(path.length - 1, path);
         return path.length - 1;
       }
     }, {
@@ -77076,7 +77114,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           isHuman: this.state.isHuman,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1346
+            lineNumber: 1350
           }
         });
       }
@@ -78456,7 +78494,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Engine.__proto__ || Object.getPrototypeOf(Engine)).call(this, props));
 
-      console.log("Engine");
       _this.screenDimensions = _reactNative.Dimensions.get("window");
       _this.tileWidth = 100;
       _this.sourceWidth = 100;
@@ -78467,7 +78504,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     _createClass(Engine, [{
       key: "render",
       value: function render() {
-        console.log("engine render began");
         return _react3.default.createElement(
           _native.Loop,
           {
@@ -86815,8 +86851,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       value: function componentWillMount() {
         var _this2 = this;
 
-        console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        console.log(this.props.isHuman);
         this._panResponder = _reactNative.PanResponder.create({
           onStartShouldSetPanResponder: function onStartShouldSetPanResponder(evt, gestureState) {
             return true;
@@ -86834,7 +86868,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onPanResponderMove: function onPanResponderMove(evt, gestureState) {
             var touches = evt.nativeEvent.touches;
 
-            if (touches.length == 1 && !_this2.state.isZooming) {
+            if (touches.length === 2 && !_this2.state.isZooming) {
               _this2.processTouch(touches[0].pageX, touches[0].pageY);
             }
           },

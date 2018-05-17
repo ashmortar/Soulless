@@ -48,8 +48,8 @@ export default class Board extends Component {
   }
 
   componentWillMount() {
-    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    console.log(this.props.isHuman);
+    // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
@@ -60,7 +60,7 @@ export default class Board extends Component {
       },
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
-        if (touches.length == 1 && !this.state.isZooming) {
+        if (touches.length === 2 && !this.state.isZooming) {
           this.processTouch(touches[0].pageX, touches[0].pageY);
         }
       },
