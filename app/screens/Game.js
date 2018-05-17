@@ -779,18 +779,22 @@ class Game extends Component {
         } 
         // left side
         else if (left === null && top && right && bottom) {
+          cell.imageKey = 5;
           if (right.value === 0) {
             cell.imageKey = 9;
-          } else {
-            cell.imageKey = 5;
           }
+          if (bottom.value !== 0) {
+            cell.imageKey = 7;
+          } 
         } 
         // right side
         else if (right === null && top && left && bottom) {
+          cell.imageKey = 4;
           if (left.value === 0) {
             cell.imageKey = 9;
-          } else {
-            cell.imageKey = 4;
+          }
+          if (bottom.value !== 0) {
+            cell.imageKey = 7;
           }
          }
       }

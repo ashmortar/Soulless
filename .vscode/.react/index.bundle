@@ -76270,16 +76270,24 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   cell.imageKey = 7;
                 }
               } else if (left === null && top && right && bottom) {
+                  cell.imageKey = 5;
+
                   if (right.value === 0) {
                     cell.imageKey = 9;
-                  } else {
-                    cell.imageKey = 5;
+                  }
+
+                  if (bottom.value !== 0) {
+                    cell.imageKey = 7;
                   }
                 } else if (right === null && top && left && bottom) {
+                    cell.imageKey = 4;
+
                     if (left.value === 0) {
                       cell.imageKey = 9;
-                    } else {
-                      cell.imageKey = 4;
+                    }
+
+                    if (bottom.value !== 0) {
+                      cell.imageKey = 7;
                     }
                   }
           }
@@ -76607,7 +76615,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1099
+              lineNumber: 1103
             }
           },
           _react3.default.createElement(
@@ -76615,7 +76623,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1100
+                lineNumber: 1104
               }
             },
             "Game screen"
@@ -76629,7 +76637,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1102
+                lineNumber: 1106
               }
             },
             _react3.default.createElement(
@@ -76645,7 +76653,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1103
+                  lineNumber: 1107
                 }
               },
               _react3.default.createElement(
@@ -76656,7 +76664,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1112
+                    lineNumber: 1116
                   }
                 },
                 "+"
@@ -76672,7 +76680,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1117
+                lineNumber: 1121
               }
             },
             _react3.default.createElement(
@@ -76688,7 +76696,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1118
+                  lineNumber: 1122
                 }
               },
               _react3.default.createElement(
@@ -76699,7 +76707,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1126
+                    lineNumber: 1130
                   }
                 },
                 "-"
@@ -76721,7 +76729,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1136
+              lineNumber: 1140
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76729,7 +76737,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1137
+              lineNumber: 1141
             }
           }),
           _react3.default.createElement(
@@ -76747,7 +76755,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1138
+                lineNumber: 1142
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76755,7 +76763,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1143
+                lineNumber: 1147
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76763,7 +76771,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1144
+                lineNumber: 1148
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76771,7 +76779,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1145
+                lineNumber: 1149
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76779,7 +76787,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1146
+                lineNumber: 1150
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76787,7 +76795,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1147
+                lineNumber: 1151
               }
             })
           ),
@@ -76796,7 +76804,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1149
+              lineNumber: 1153
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76804,7 +76812,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1150
+              lineNumber: 1154
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76812,7 +76820,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1151
+              lineNumber: 1155
             }
           })
         );
@@ -76921,7 +76929,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           boardFinished: this.state.boardFinished,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1159
+            lineNumber: 1163
           }
         });
       }
