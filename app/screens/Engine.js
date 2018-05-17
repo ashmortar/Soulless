@@ -14,7 +14,7 @@ export default class Engine extends Component {
 
   constructor(props) {
     super(props);
-    console.log("Engine");
+    // console.log("Engine");
     this.screenDimensions = Dimensions.get("window");
     this.tileWidth = 100;
     this.sourceWidth = 100;
@@ -22,7 +22,7 @@ export default class Engine extends Component {
   }
 
   render() {
-    console.log("engine render began");
+    // console.log("engine render began");
     return (
       <Loop style={{ backgroundColor: "#212121" }}>
         <Stage

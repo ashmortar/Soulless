@@ -52,14 +52,14 @@ class Game extends Component {
   componentDidMount() {
 
     this.createMap();
-
+    this.assignMonsterEdges();
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
     this.echoLocate();
     this.assignImageKeys();
 
-    //
+    
     // console.log('==================================================');
     // console.log(this.findShortestPath(this.elements[this.humanSpace.name], this.elements[this.monsterSpace.name]));
     // console.log(this.findShortestPath(this.elements[121], this.elements[123]));
@@ -501,37 +501,57 @@ class Game extends Component {
         for (let j = 0; j < cellsAround.length; j++) {
           if (this.elements[cellsAround[j]].value > 0) {
             adjacent++;
-            this.elements[i].humanEdges.push(this.elements[cellsAround[j]]);
-            this.elements[i].monsterEdges.push(this.elements[cellsAround[j]]);
           }
         }
         this.elements[i].value = adjacent;
-
-
-        if (i % this.cellsInRow != (this.cellsInRow - 1) && (i - (this.cellsInRow - 1) > 0) && this.elements[i - (this.cellsInRow - 1)].value > 0) {
-          this.elements[i].monsterEdges.push(this.elements[i - (this.cellsInRow - 1)]);
-        }
-        if (i % this.cellsInRow != (this.cellsInRow - 1) && (i + (this.cellsInRow + 1) < this.cellsTotal && this.elements[i + (this.cellsInRow + 1)].value > 0)) {
-          this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow + 1)]);
-        }
-        if (i % this.cellsInRow != 0 && (i - (this.cellsInRow + 1) > 0) && (this.elements[i - (this.cellsInRow + 1).value > 0])) {
-          this.elements[i].monsterEdges.push(this.elements[i - (this.cellsInRow + 1)]);
-        }
-        if (i % 20 != 0 && (i + (this.cellsInRow - 1) < this.cellsTotal) && (this.elements[i + (this.cellsInRow - 1)].value > 0)) {
-          this.elements[i].monsterEdges.push(this.elements[i + (this.cellsInRow - 1)]);
-        }
-
       }
     }
   }
 
+  assignMonsterEdges = () => {
+    console.log('assign monster edges');
+    for (let i = 0; i < this.cellsTotal; i++) {
+      let cell = this.elements[i];
+      if (cell.value > 0) {
+        let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(i);
+        if (topLeft && topLeft.value > 0) {
+          cell.monsterEdges.push(topLeft);
+        }
+        if (top && top.value > 0) {
+          cell.monsterEdges.push(top);
+        }
+        if (topRight && topRight.value > 0) {
+          cell.monsterEdges.push(topRight);
+        }
+        if (left && left.value > 0) {
+          cell.monsterEdges.push(left);
+        }
+        if (right && right.value > 0) {
+          cell.monsterEdges.push(right);
+        }
+        if (bottomLeft && bottomLeft.value > 0) {
+          cell.monsterEdges.push(bottomLeft);
+        }
+        if (bottom && bottom.value > 0) {
+          cell.monsterEdges.push(bottom);
+        }
+        if (bottomLeft && bottomLeft.value > 0) {
+          cell.monsterEdges.push(bottomLeft);
+        }
+        if (bottomRight && bottomRight.value > 0) {
+          cell.monsterEdges.push(bottomRight);
+        }
+      }
+    }
+  }
+  
   createWall_straightHorizontal = (i, length) => {
 
     let a = i - 2 * this.cellsInRow;
     let b = i + length * 2 - 1;
     let c = i - 2 * this.cellsInRow + length * 2 - 1;
     let total = this.cellsTotal;
-
+    
     if ((i >= 0) && (i < total) && (a >= 0) && (a < total) && (b >= 0) && (b < total) && (c >= 0) && (c < total)) {
     // if ((i - 2 * this.cellsInRow >= 0) && ((i + 1) % this.cellsInRow != 0)) {
       for (let j=0; j<length; j++) {
@@ -593,66 +613,46 @@ class Game extends Component {
   }
 
   findShortestPath(start, end) {
+    if (start.value < 1 || end.value < 1) {
+      console.log('shortest path error: start or end was a wall');
+      return -1;
+    }
     // array of cells to be checked
     let queue = [];
     // all cells already checked
     let visited = [];
     // shortest path from end to beginning following parents
-    let path = [];
-
     // add starting square to the queue
+    visited.push(start);
     queue.push(start);
-
+    // console.log('start ', start, 'end ', end, 'everything: ', this.elements)
     // process the queue
     while (queue.length > 0) {
       // remove the first item
       let cell = queue.shift();
-      // see if we have been to this cell before
-      if (!visited.includes(cell)) {
-        // if not visited check to see if it is the end
-        if (cell === end) {
-          // if it is the end add it to the path
-          // cell.isHighlighted = true;
-          path.push(cell);
-          // assign the next variable to the parent of the final cell
-          let next = cell.parent;
-          // continue up the chain of parents until we run out
-          while (next) {
-            // add to path
-            // next.isHighlighted = true;
-            path.push(next);
-            // reassign next to parent
-            next = next.parent;
-            if (path.length > 150) {
-              break;
-            }
-          }
-          // log the path
-          // quit the function
-          break;
-
-        // if not the end find edges
-        } else {
-          // assign connections array as all edges from cell
-          let connections = cell.monsterEdges;
-          // iterate through the edges and push them into the queue
-          for (let i = 0; i < connections.length; i++) {
-            let neighbor = connections[i];
-            if (neighbor !== start && neighbor.parent === null) {
-              neighbor.parent = cell;
-            }
-            queue.push(neighbor);
-          }
-          // add our cell to the visited array
-          visited.push(cell);
+      if (cell === end) {
+        console.log("found you")
+        break; 
+      }
+      let neighbors = cell.monsterEdges;
+      for ( let i = 0; i < neighbors.length; i++) {
+        let neighbor = neighbors[i];
+        if (!visited.includes(neighbor)) {
+          neighbor.parent = cell;
+          visited.push(neighbor);
+          queue.push(neighbor);
         }
       }
     }
-    if (path.length === 0) {
+    let path = [];
+    let next = end;
+    while (next != null) {
+      path.push(next);
+      next = next.parent;
     }
-    // this.setState({ redraw: !this.state.redraw });
-    setTimeout(this.resetGrid, 50);
-    return path.length - 1;
+    this.resetGrid()
+    console.log((path.length - 1), path)
+    return (path.length - 1);
   }
 
   assignHumanStart = () => {
@@ -661,20 +661,24 @@ class Game extends Component {
       cell = this.getRandomCell();
     }
     cell.hasHuman = true;
-    cell.isRevealed = true;
     this.humanSpace = cell;
     if(this.state.isHuman) {
+      cell.isRevealed = true;
       this.setState({ playerSpace: cell });
     }
   }
 
+
+
   assignMonsterStart = () => {
+    console.log('assign monster start')
     let cell = this.getRandomCell();
     let distance = this.findShortestPath(cell, this.humanSpace);
-    while (cell.value < 1 || distance < 20) {
+    while (distance < 20) {
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
     }
+    console.log('cell and distance', cell, distance);
     cell.hasMonster = true;
     this.monsterSpace = cell;
     if (!this.state.isHuman) {
