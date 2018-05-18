@@ -55,7 +55,8 @@ class Game extends Component {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
-    // this.echoLocate();
+    this.echoLocate();
+    this.showHumanMoves();
     this.assignImageKeys();
   }
 
@@ -1054,7 +1055,7 @@ class Game extends Component {
     // console.log('echolocate', this.state.boardFinished)
     // this.setState({ boardFinished: false });
     // console.log('echolocate', this.state.boardFinished)
-    let direction = "radius";
+    let direction = "west";
     const item = this.humanSpace;
     switch (direction) {
       case 'north':
@@ -1237,7 +1238,9 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw });
   }
 
-  moveHuman = (item) => {
+  moveHuman = () => {
+    console.log('move human')
+    let item = this.elements[this.state.playerSpace.name - 2];
     if (item.isHighlighted) {
       this.elements[this.humanSpace.name].hasHuman = false;
       item.hasHuman = true;
@@ -1351,7 +1354,7 @@ class Game extends Component {
   // const menu = <Menu navigator={navigator}/>;
   render() {
     const finished = this.state.boardFinished;
-    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.showHumanMoves}/>;
+    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.moveHuman}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>; 
     if (finished) {
       return (

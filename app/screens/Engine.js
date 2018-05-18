@@ -20,8 +20,8 @@ export default class Engine extends Component {
     this.screenDimensions = Dimensions.get("window");
     this.tileWidth = Math.ceil(this.screenDimensions.height / 40);
     this.gameBoardWidth = this.tileWidth * 40;
-    this.playerX = (props.playerSpace.name / 40) * this.tileWidth;
-    this.playerY = Math.floor(props.playerSpace.name % 40) * this.tileWidth;
+    this.playerX = (props.playerSpace.name % 40) * this.tileWidth;
+    this.playerY = Math.floor(props.playerSpace.name / 40) * this.tileWidth;
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
@@ -66,6 +66,9 @@ export default class Engine extends Component {
     });
   }
 
+  UNSAFE_componentWillMount() {
+  }
+
   processTouch(x, y) {
     if (!this.state.isMoving) {
       this.setState({
@@ -97,6 +100,7 @@ export default class Engine extends Component {
   }
 
   render() {
+    console.log('render engine', this.state.playerX)
     return (
       <Loop style={{ backgroundColor: "#212121" }}>
         <Stage
@@ -117,7 +121,7 @@ export default class Engine extends Component {
               sourceWidth={this.tileWidth}
               layers={[this.state.highlightedTileMap]}
             />
-            <Image style={{ position: 'absolute', top: this.state.playerX - this.tileWidth, left: this.state.playerY, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
+            <Image style={{ position: 'absolute', top: this.state.playerY - this.tileWidth, left: this.state.playerX, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
           </View>
         </Stage>
       </Loop>
