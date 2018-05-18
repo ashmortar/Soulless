@@ -20,8 +20,8 @@ export default class Engine extends Component {
     this.screenDimensions = Dimensions.get("window");
     this.tileWidth = Math.ceil(this.screenDimensions.height / 40);
     this.gameBoardWidth = this.tileWidth * 40;
-    this.playerX = ((props.playerSpace.name % 40) * this.tileWidth);
-    this.playerY = (Math.floor(props.playerSpace.name / 40) * this.tileWidth);
+    this.playerX = (props.playerSpace.name % 40) * this.tileWidth;
+    this.playerY = Math.floor(props.playerSpace.name / 40) * this.tileWidth;
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
@@ -41,7 +41,7 @@ export default class Engine extends Component {
             gameBoard={this.props.gameBoard}
             isHuman={this.props.isHuman}
           />
-          <Image style={{ position: 'absolute', top: 100, left: 100, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
+          <Image style={{ position: 'absolute', top: this.state.playerX - this.tileWidth, left: this.state.playerY, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
         </Stage>
       </Loop>
     );
