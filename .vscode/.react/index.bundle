@@ -75592,9 +75592,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         _this.fillAngles();
 
-        for (var i = 0; i < _this.cellsTotal; i++) {
-          if (_this.elements[i].value === 0) {
-            _this.fillGaps(i);
+        for (var _i = 0; _i < _this.cellsTotal; _i++) {
+          if (_this.elements[_i].value === 0) {
+            _this.fillGaps(_i);
           }
         }
 
@@ -75602,9 +75602,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.adjustGrid = function () {
-        for (var i = 0; i < _this.cellsTotal; i++) {
-          if (_this.elements[i].value === 0) {
-            _this.fillGaps(i);
+        for (var _i2 = 0; _i2 < _this.cellsTotal; _i2++) {
+          if (_this.elements[_i2].value === 0) {
+            _this.fillGaps(_i2);
           }
         }
 
@@ -75618,11 +75618,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.createWalls = function () {
-        for (var i = 0; i < _this.cellsTotal; i++) {
-          _this.elements.push(new _Cell2.default(i));
+        for (var _i3 = 0; _i3 < _this.cellsTotal; _i3++) {
+          _this.elements.push(new _Cell2.default(_i3));
         }
 
-        for (var _i = 0; _i < 30; _i++) {
+        for (var _i4 = 0; _i4 < 30; _i4++) {
           var randWallType = Math.floor(Math.random() * 2);
           var randStartingPoint = Math.floor(Math.random() * _this.cellsTotal);
           var randLength = Math.floor(Math.random() * 4) + 2;
@@ -75708,56 +75708,56 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.fillWhiteGaps = function () {
-        for (var i = 3 * _this.cellsInRow + 1; i < _this.cellsTotal - 10 * _this.cellsInRow + 9; i++) {
-          if (_this.elements[i].value > 0) {
+        for (var _i5 = 3 * _this.cellsInRow + 1; _i5 < _this.cellsTotal - 10 * _this.cellsInRow + 9; _i5++) {
+          if (_this.elements[_i5].value > 0) {
             var flag = true;
 
             for (var j = 0; j < 8; j++) {
               for (var _k2 = 0; _k2 < 8; _k2++) {
-                if (_this.elements[i + j * _this.cellsInRow + _k2].value <= 0) {
+                if (_this.elements[_i5 + j * _this.cellsInRow + _k2].value <= 0) {
                   flag = false;
                 }
               }
             }
 
             if (flag) {
-              _this.createWall_squareColumn(i + 4 + 5 * _this.cellsInRow);
+              _this.createWall_squareColumn(_i5 + 4 + 5 * _this.cellsInRow);
             }
           }
         }
       };
 
       _this.fillWhiteHorLines = function () {
-        for (var i = 3 * _this.cellsInRow + 1; i < _this.cellsTotal - 2 * _this.cellsInRow - _this.allowedLengthOfWhiteLine; i++) {
-          if (_this.elements[i].value > 0) {
+        for (var _i6 = 3 * _this.cellsInRow + 1; _i6 < _this.cellsTotal - 2 * _this.cellsInRow - _this.allowedLengthOfWhiteLine; _i6++) {
+          if (_this.elements[_i6].value > 0) {
             var flag = true;
 
             for (var _k3 = 0; _k3 < _this.allowedLengthOfWhiteLine + 1; _k3++) {
-              if (_this.elements[i + _k3].value <= 0) {
+              if (_this.elements[_i6 + _k3].value <= 0) {
                 flag = false;
               }
             }
 
             if (flag) {
-              _this.createWall_straightVertical(i + _this.allowedLengthOfWhiteLine + 2 * _this.cellsInRow, 2);
+              _this.createWall_straightVertical(_i6 + _this.allowedLengthOfWhiteLine + 2 * _this.cellsInRow, 2);
             }
           }
         }
       };
 
       _this.fillWhiteVertLines = function () {
-        for (var i = 3 * _this.cellsInRow + 1; i < _this.cellsTotal - _this.allowedLengthOfWhiteLine * _this.cellsInRow; i++) {
-          if (_this.elements[i].value > 0) {
+        for (var _i7 = 3 * _this.cellsInRow + 1; _i7 < _this.cellsTotal - _this.allowedLengthOfWhiteLine * _this.cellsInRow; _i7++) {
+          if (_this.elements[_i7].value > 0) {
             var flag = true;
 
             for (var j = 0; j < _this.allowedLengthOfWhiteLine + 1; j++) {
-              if (_this.elements[i + j * _this.cellsInRow].value <= 0) {
+              if (_this.elements[_i7 + j * _this.cellsInRow].value <= 0) {
                 flag = false;
               }
             }
 
             if (flag) {
-              _this.createWall_straightHorizontal(i + _this.allowedLengthOfWhiteLine * _this.cellsInRow, 1);
+              _this.createWall_straightHorizontal(_i7 + _this.allowedLengthOfWhiteLine * _this.cellsInRow, 1);
             }
           }
         }
@@ -75771,9 +75771,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         var gamefield = [];
         var c = 0;
 
-        for (var i = 3 * _this.cellsInRow + 1; i < _this.cellsTotal - 3 * _this.cellsInRow - 1; i++) {
-          if (i % 40 != 0 && i % 40 != 39) {
-            var copy = _extends({}, _this.elements[i]);
+        for (var _i8 = 3 * _this.cellsInRow + 1; _i8 < _this.cellsTotal - 3 * _this.cellsInRow - 1; _i8++) {
+          if (_i8 % 40 != 0 && _i8 % 40 != 39) {
+            var copy = _extends({}, _this.elements[_i8]);
 
             copy.name = c;
             gamefield.push(copy);
@@ -75838,10 +75838,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         var max = 0;
         var k = void 0;
 
-        for (var i = 0; i < amountOfLoops; i++) {
-          if (cellAmounts[i] > max) {
-            max = cellAmounts[i];
-            k = i;
+        for (var _i9 = 0; _i9 < amountOfLoops; _i9++) {
+          if (cellAmounts[_i9] > max) {
+            max = cellAmounts[_i9];
+            k = _i9;
           }
         }
 
@@ -75849,15 +75849,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         var cellAmounts2 = [];
         var cellIndexesInLoops2 = [];
 
-        for (var _i2 = 0; _i2 < amountOfLoops; _i2++) {
-          if (_i2 < k) {
-            loopIndexes2[_i2] = loopIndexes[_i2];
-            cellAmounts2[_i2] = cellAmounts[_i2];
-            cellIndexesInLoops2.push(cellIndexesInLoops[_i2]);
-          } else if (_i2 > k) {
-            loopIndexes2[_i2 - 1] = loopIndexes[_i2];
-            cellAmounts2[_i2 - 1] = cellAmounts[_i2];
-            cellIndexesInLoops2.push(cellIndexesInLoops[_i2]);
+        for (var _i10 = 0; _i10 < amountOfLoops; _i10++) {
+          if (_i10 < k) {
+            loopIndexes2[_i10] = loopIndexes[_i10];
+            cellAmounts2[_i10] = cellAmounts[_i10];
+            cellIndexesInLoops2.push(cellIndexesInLoops[_i10]);
+          } else if (_i10 > k) {
+            loopIndexes2[_i10 - 1] = loopIndexes[_i10];
+            cellAmounts2[_i10 - 1] = cellAmounts[_i10];
+            cellIndexesInLoops2.push(cellIndexesInLoops[_i10]);
           }
         }
 
@@ -75932,21 +75932,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.findFirstTopLeftCorner = function (gamefield) {
         var row = _this.cellsInRow - 2;
 
-        for (var i = 0; i < gamefield.length; i++) {
-          if (gamefield[i].value > 0 && gamefield[i].value < 10) {
-            if (i === 0) {
-              return gamefield[i];
-            } else if (i % row === 0) {
-              if (gamefield[i - row].value <= 0) {
-                return gamefield[i];
+        for (var _i11 = 0; _i11 < gamefield.length; _i11++) {
+          if (gamefield[_i11].value > 0 && gamefield[_i11].value < 10) {
+            if (_i11 === 0) {
+              return gamefield[_i11];
+            } else if (_i11 % row === 0) {
+              if (gamefield[_i11 - row].value <= 0) {
+                return gamefield[_i11];
               }
-            } else if (i - row < 0) {
-              if (gamefield[i - 1].value <= 0) {
-                return gamefield[i];
+            } else if (_i11 - row < 0) {
+              if (gamefield[_i11 - 1].value <= 0) {
+                return gamefield[_i11];
               }
             } else {
-              if (gamefield[i - 1].value <= 0 && gamefield[i - row].value <= 0) {
-                return gamefield[i];
+              if (gamefield[_i11 - 1].value <= 0 && gamefield[_i11 - row].value <= 0) {
+                return gamefield[_i11];
               }
             }
           }
@@ -76000,11 +76000,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.addValuesToCells = function () {
-        for (var i = 0; i < _this.cellsTotal; i++) {
-          if (_this.elements[i].value > 0) {
+        for (var _i12 = 0; _i12 < _this.cellsTotal; _i12++) {
+          if (_this.elements[_i12].value > 0) {
             var adjacent = 0;
 
-            var cellsAround = _this.getIndexesOfAvailableCellsAround(i, _this.cellsInRow, _this.cellsTotal);
+            var cellsAround = _this.getIndexesOfAvailableCellsAround(_i12, _this.cellsInRow, _this.cellsTotal);
 
             for (var j = 0; j < cellsAround.length; j++) {
               if (_this.elements[cellsAround[j]].value > 0) {
@@ -76012,17 +76012,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               }
             }
 
-            _this.elements[i].value = adjacent;
+            _this.elements[_i12].value = adjacent;
           }
         }
       };
 
       _this.assignMonsterEdges = function () {
-        for (var i = 0; i < _this.cellsTotal; i++) {
-          var cell = _this.elements[i];
+        for (var _i13 = 0; _i13 < _this.cellsTotal; _i13++) {
+          var cell = _this.elements[_i13];
 
           if (cell.value > 0) {
-            var _this$getNeighboringC = _this.getNeighboringCells(i),
+            var _this$getNeighboringC = _this.getNeighboringCells(_i13),
                 topLeft = _this$getNeighboringC.topLeft,
                 top = _this$getNeighboringC.top,
                 topRight = _this$getNeighboringC.topRight,
@@ -76145,6 +76145,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
+      _this.resetParents = function () {
+        for (i = 0; i < _this.elements.length; i++) {
+          _this.elements[i].parent = null;
+        }
+      };
+
       _this.assignHumanStart = function () {
         var cell = _this.getRandomCell();
 
@@ -76175,11 +76181,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           console.log("counter: " + counter);
           cell = _this.getRandomCell();
           distance = _this.findShortestPath(cell, _this.humanSpace);
-
-          if (counter % 5 === 0) {
-            _this.assignHumanStart();
-          }
-
           counter++;
         }
 
@@ -76194,7 +76195,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.assignCacheLocations = function () {
-        for (var i = 0; i <= _this.cacheTotal; i++) {
+        for (var _i14 = 0; _i14 <= _this.cacheTotal; _i14++) {
           var cell = _this.getRandomCell();
 
           while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache) {
@@ -76261,8 +76262,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.assignImageKeys = function () {
-        for (var i = 0; i < _this.elements.length; i++) {
-          var _this$getNeighboringC2 = _this.getNeighboringCells(i),
+        for (var _i15 = 0; _i15 < _this.elements.length; _i15++) {
+          var _this$getNeighboringC2 = _this.getNeighboringCells(_i15),
               topLeft = _this$getNeighboringC2.topLeft,
               top = _this$getNeighboringC2.top,
               topRight = _this$getNeighboringC2.topRight,
@@ -76272,7 +76273,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               bottom = _this$getNeighboringC2.bottom,
               bottomRight = _this$getNeighboringC2.bottomRight;
 
-          var cell = _this.elements[i];
+          var cell = _this.elements[_i15];
 
           if (cell.value === 0) {
             cell.imageKey = 9;
@@ -76516,15 +76517,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         return _this.elements[Math.floor(Math.random() * _this.cellsTotal)];
       };
 
-      _this.resetGrid = function () {
-        for (var i = 0; i < _this.elements.length; i++) {
-          _this.elements[i].isHighlighted = false;
-          _this.elements[i].parent = null;
+      _this.resetHighlighted = function () {
+        for (var _i16 = 0; _i16 < _this.elements.length; _i16++) {
+          _this.elements[_i16].isHighlighted = false;
         }
       };
 
       _this.echoLocate = function () {
-        var direction = "west";
+        var direction = "radius";
         var item = _this.humanSpace;
 
         switch (direction) {
@@ -76630,7 +76630,113 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
-      _this.listen = function () {};
+      _this.listen = function () {
+        var distance = _this.findShortestPath(_this.monsterSpace, _this.humanSpace);
+
+        _reactNative.Alert.alert('You listened.', "Opponent is " + distance + " cells away", [{
+          text: 'OK',
+          onPress: function onPress() {
+            return console.log('OK Pressed');
+          }
+        }], {
+          cancelable: false
+        });
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
+      _this.sniff = function (cell1, cell2) {
+        var direction = '';
+
+        if (cell2 / _this.cellsInRow > cell1 / _this.cellsInRow) {
+          direction += 'S';
+        } else if (cell2 / _this.cellsInRow < cell1 / _this.cellsInRow) {
+          direction += 'N';
+        }
+
+        if (cell2 % _this.cellsInRow > cell1 % _this.cellsInRow) {
+          direction += 'E';
+        } else if (cell2 % _this.cellsInRow < cell1 % _this.cellsInRow) {
+          direction += 'W';
+        }
+
+        _reactNative.Alert.alert('You sniffed.', "Opponent is in " + direction + " direction from you.", [{
+          text: 'OK',
+          onPress: function onPress() {
+            return console.log('OK Pressed');
+          }
+        }], {
+          cancelable: false
+        });
+
+        _this.setState({
+          redraw: !_this.state.redraw
+        });
+      };
+
+      _this.onItemSelected = function (item) {
+        console.log('onItemSelected');
+
+        switch (item) {
+          case 'move':
+            if (_this.state.isHuman) {
+              _this.showHumanMoves();
+
+              _this.setState({
+                redraw: !_this.state.redraw
+              });
+            } else {
+              _this.showMonsterMoves();
+
+              _this.setState({
+                redraw: !_this.state.redraw
+              });
+            }
+
+            break;
+
+          case 'sniff':
+            var cell1 = void 0;
+            var cell2 = void 0;
+
+            if (_this.state.isHuman) {
+              cell1 = _this.humanSpace.name;
+              cell2 = _this.monsterSpace.name;
+            } else {
+              cell1 = _this.monsterSpace.name;
+              cell2 = _this.humanSpace.name;
+            }
+
+            _this.sniff(cell1, cell2);
+
+            break;
+
+          case 'listen':
+            _this.listen();
+
+            break;
+
+          case 'echo':
+            _this.moveHuman();
+
+            break;
+
+          case 'pounce':
+            break;
+
+          case 'home':
+            break;
+
+          case 'zoom':
+            break;
+
+          case 'exit':
+            break;
+
+          default:}
+      };
 
       _this.showMonsterMoves = function () {
         var index = _this.monsterSpace.name;
@@ -76667,7 +76773,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.showHumanMoves = function () {
-        console.log('show human moves');
+        console.log('show human moves', _this.humanSpace.name, _this.state.playerSpace.name);
         var i = _this.humanSpace.name;
 
         if (i - _this.cellsInRow > 0) {
@@ -76731,23 +76837,23 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         });
       };
 
-      _this.moveHuman = function () {
+      _this.moveHuman = function (item) {
         console.log('move human');
-        var item = _this.elements[_this.state.playerSpace.name - 2];
+        item = _this.elements[_this.state.playerSpace.name - 1];
 
         if (item.isHighlighted) {
           _this.elements[_this.humanSpace.name].hasHuman = false;
           item.hasHuman = true;
           _this.humanSpace = item;
 
-          _this.resetGrid();
+          _this.resetHighlighted();
+
+          _this.setState({
+            playerSpace: item
+          });
         } else {
           _reactNative.Alert.alert('Uh-Oh', 'Please select a highlighted space');
         }
-
-        _this.setState({
-          redraw: !_this.state.redraw
-        });
       };
 
       _this.handlePressNavButton = function () {
@@ -76791,7 +76897,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1291
+              lineNumber: 1378
             }
           },
           _react3.default.createElement(
@@ -76799,7 +76905,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1292
+                lineNumber: 1379
               }
             },
             "Game screen"
@@ -76813,7 +76919,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1294
+                lineNumber: 1381
               }
             },
             _react3.default.createElement(
@@ -76829,7 +76935,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1295
+                  lineNumber: 1382
                 }
               },
               _react3.default.createElement(
@@ -76840,7 +76946,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1304
+                    lineNumber: 1391
                   }
                 },
                 "+"
@@ -76856,7 +76962,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1309
+                lineNumber: 1396
               }
             },
             _react3.default.createElement(
@@ -76872,7 +76978,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1310
+                  lineNumber: 1397
                 }
               },
               _react3.default.createElement(
@@ -76883,7 +76989,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1318
+                    lineNumber: 1405
                   }
                 },
                 "-"
@@ -76905,7 +77011,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1328
+              lineNumber: 1415
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76913,7 +77019,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1329
+              lineNumber: 1416
             }
           }),
           _react3.default.createElement(
@@ -76931,7 +77037,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1330
+                lineNumber: 1417
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76939,7 +77045,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1335
+                lineNumber: 1422
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76947,7 +77053,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1336
+                lineNumber: 1423
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76955,7 +77061,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1337
+                lineNumber: 1424
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76963,7 +77069,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1338
+                lineNumber: 1425
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76971,7 +77077,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1339
+                lineNumber: 1426
               }
             })
           ),
@@ -76980,7 +77086,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1341
+              lineNumber: 1428
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76988,7 +77094,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1342
+              lineNumber: 1429
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76996,14 +77102,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1343
+              lineNumber: 1430
             }
           })
         );
-      };
-
-      _this.onItemSelected = function () {
-        console.log('onMenuItemSelected');
       };
 
       _this.scale = 0;
@@ -77051,7 +77153,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         this.assignMonsterStart();
         this.assignCacheLocations();
         this.echoLocate();
-        this.showHumanMoves();
         this.assignImageKeys();
       }
     }, {
@@ -77078,8 +77179,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
           var neighbors = cell.monsterEdges;
 
-          for (var i = 0; i < neighbors.length; i++) {
-            var neighbor = neighbors[i];
+          for (var _i17 = 0; _i17 < neighbors.length; _i17++) {
+            var neighbor = neighbors[_i17];
 
             if (!visited.includes(neighbor)) {
               neighbor.parent = cell;
@@ -77097,7 +77198,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           next = next.parent;
         }
 
-        this.resetGrid();
+        this.resetParents();
         return path.length - 1;
       }
     }, {
@@ -77112,10 +77213,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         var menuRight = _react3.default.createElement(_Menu2.default, {
           mode: this.state.isHuman ? 1 : 2,
-          onItemSelected: this.moveHuman,
+          onItemSelected: this.onItemSelected,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1357
+            lineNumber: 1441
           }
         });
 
@@ -77124,7 +77225,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onItemSelected: this.onItemSelected,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1358
+            lineNumber: 1442
           }
         });
 
@@ -77136,7 +77237,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               menuPosition: "right",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1361
+                lineNumber: 1445
               }
             },
             _react3.default.createElement(
@@ -77146,7 +77247,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 menuPosition: "left",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1365
+                  lineNumber: 1449
                 }
               },
               _react3.default.createElement(_Engine2.default, {
@@ -77157,7 +77258,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 playerSpace: this.state.playerSpace,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1369
+                  lineNumber: 1453
                 }
               })
             )
@@ -77168,7 +77269,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1380
+                lineNumber: 1464
               }
             },
             _react3.default.createElement(
@@ -77177,7 +77278,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 onPress: this.echoLocate,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1381
+                  lineNumber: 1465
                 }
               },
               _react3.default.createElement(
@@ -77185,7 +77286,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 {
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1382
+                    lineNumber: 1466
                   }
                 },
                 "descending into madness ..."
@@ -78572,6 +78673,23 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Engine.__proto__ || Object.getPrototypeOf(Engine)).call(this, props));
 
+      _this.renderHighlighted = function () {
+        if (_this.state.showHighlighted) {
+          return _react3.default.createElement(_native.TileMap, {
+            src: _require(_dependencyMap[6], "../data/images/Magenta-square_100px.gif"),
+            tileSize: _this.tileWidth,
+            columns: 40,
+            rows: 40,
+            sourceWidth: _this.tileWidth,
+            layers: [_this.state.highlightedTileMap],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 127
+            }
+          });
+        }
+      };
+
       _this.screenDimensions = _reactNative.Dimensions.get("window");
       _this.tileWidth = Math.ceil(_this.screenDimensions.height / 40);
       _this.gameBoardWidth = _this.tileWidth * 40;
@@ -78591,7 +78709,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         left: 0,
         highlightedTileMap: _this.props.gameBoard.map(function (x) {
           return x.isHighlighted ? 1 : 0;
-        })
+        }),
+        showHighlighted: false
       };
       return _this;
     }
@@ -78631,8 +78750,37 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         });
       }
     }, {
-      key: "UNSAFE_componentWillMount",
-      value: function UNSAFE_componentWillMount() {}
+      key: "UNSAFE_componentWillReceiveProps",
+      value: function UNSAFE_componentWillReceiveProps(nextProps) {
+        var newHighlightedTileMap = nextProps.gameBoard.map(function (x) {
+          return x.isHighlighted ? 1 : 0;
+        });
+
+        if (this.props.playerSpace !== nextProps.playerSpace) {
+          this.setState({
+            playerX: nextProps.playerSpace.name % 40 * this.tileWidth,
+            playerY: Math.floor(nextProps.playerSpace.name / 40) * this.tileWidth
+          });
+        }
+
+        if (this.state.highlightedTileMap !== newHighlightedTileMap) {
+          this.setState({
+            highlightedTileMap: nextProps.gameBoard.map(function (x) {
+              return x.isHighlighted ? 1 : 0;
+            })
+          });
+
+          if (newHighlightedTileMap.includes(1)) {
+            this.setState({
+              showHighlighted: true
+            });
+          } else {
+            this.setState({
+              showHighlighted: false
+            });
+          }
+        }
+      }
     }, {
       key: "processTouch",
       value: function processTouch(x, y) {
@@ -78656,7 +78804,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     }, {
       key: "render",
       value: function render() {
-        console.log('render engine', this.state.playerX);
         return _react3.default.createElement(
           _native.Loop,
           {
@@ -78665,7 +78812,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 105
+              lineNumber: 142
             }
           },
           _react3.default.createElement(
@@ -78678,7 +78825,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 106
+                lineNumber: 143
               }
             },
             _react3.default.createElement(
@@ -78692,7 +78839,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               }, this._panResponder.panHandlers, {
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 111
+                  lineNumber: 148
                 }
               }),
               _react3.default.createElement(_Board2.default, {
@@ -78700,21 +78847,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 isHuman: this.props.isHuman,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 112
+                  lineNumber: 149
                 }
               }),
-              _react3.default.createElement(_native.TileMap, {
-                src: _require(_dependencyMap[6], "../data/images/Magenta-square_100px.gif"),
-                tileSize: this.tileWidth,
-                columns: 40,
-                rows: 40,
-                sourceWidth: this.tileWidth,
-                layers: [this.state.highlightedTileMap],
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 116
-                }
-              }),
+              this.renderHighlighted(),
               _react3.default.createElement(_reactNative.Image, {
                 style: {
                   position: 'absolute',
@@ -78727,7 +78863,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 source: _require(_dependencyMap[7], "../data/images/human.png"),
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 124
+                  lineNumber: 156
                 }
               })
             )
@@ -86547,7 +86683,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[5], "../data/images/wall-t-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 136
+                lineNumber: 138
               }
             });
 
@@ -86558,7 +86694,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[6], "../data/images/wall-t-n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 139
+                lineNumber: 141
               }
             });
 
@@ -86569,7 +86705,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[7], "../data/images/wall-t-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 142
+                lineNumber: 144
               }
             });
 
@@ -86580,7 +86716,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[8], "../data/images/wall-t-w.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 145
+                lineNumber: 147
               }
             });
 
@@ -86591,7 +86727,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[9], "../data/images/wall-t-e.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 148
+                lineNumber: 150
               }
             });
 
@@ -86602,7 +86738,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[10], "../data/images/wall-t-sw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 151
+                lineNumber: 153
               }
             });
 
@@ -86613,7 +86749,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[11], "../data/images/wall-t-s.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 154
+                lineNumber: 156
               }
             });
 
@@ -86624,7 +86760,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[12], "../data/images/wall-t-se.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 157
+                lineNumber: 159
               }
             });
 
@@ -86635,7 +86771,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 160
+                lineNumber: 162
               }
             });
 
@@ -86646,7 +86782,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[14], "../data/images/wall-f-nw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 163
+                lineNumber: 165
               }
             });
 
@@ -86657,7 +86793,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[15], "../data/images/wall-f-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 166
+                lineNumber: 168
               }
             });
 
@@ -86668,7 +86804,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[16], "../data/images/wall-f-ne-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 169
+                lineNumber: 171
               }
             });
 
@@ -86679,7 +86815,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[17], "../data/images/wall-f-sw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 172
+                lineNumber: 174
               }
             });
 
@@ -86690,7 +86826,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[18], "../data/images/wall-f-s-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 175
+                lineNumber: 177
               }
             });
 
@@ -86701,7 +86837,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[19], "../data/images/wall-f-se-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 178
+                lineNumber: 180
               }
             });
 
@@ -86712,7 +86848,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[20], "../data/images/wall-f-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 181
+                lineNumber: 183
               }
             });
 
@@ -86723,7 +86859,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[21], "../data/images/floor-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 184
+                lineNumber: 186
               }
             });
 
@@ -86734,7 +86870,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[22], "../data/images/floor-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 187
+                lineNumber: 189
               }
             });
 
@@ -86745,7 +86881,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[23], "../data/images/floor-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 190
+                lineNumber: 192
               }
             });
 
@@ -86756,7 +86892,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[24], "../data/images/floor-w-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 193
+                lineNumber: 195
               }
             });
 
@@ -86767,7 +86903,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[25], "../data/images/floor-e-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 196
+                lineNumber: 198
               }
             });
 
@@ -86778,7 +86914,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[26], "../data/images/floor-c-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 199
+                lineNumber: 201
               }
             });
 
@@ -86789,7 +86925,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[27], "../data/images/wall-t-n-s.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 202
+                lineNumber: 204
               }
             });
 
@@ -86800,7 +86936,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[28], "../data/images/wall-t-e-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 205
+                lineNumber: 207
               }
             });
 
@@ -86811,7 +86947,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[29], "../data/images/wall-t-n-s-e.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 208
+                lineNumber: 210
               }
             });
 
@@ -86822,7 +86958,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[30], "../data/images/wall-t-n-s-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 211
+                lineNumber: 213
               }
             });
 
@@ -86833,7 +86969,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[31], "../data/images/wall-t-n-e-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 214
+                lineNumber: 216
               }
             });
 
@@ -86844,7 +86980,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[32], "../data/images/wall-t-e-s-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 217
+                lineNumber: 219
               }
             });
 
@@ -86855,7 +86991,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[33], "../data/images/floor-n-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 220
+                lineNumber: 222
               }
             });
 
@@ -86866,7 +87002,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[34], "../data/images/floor-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 223
+                lineNumber: 225
               }
             });
 
@@ -86877,7 +87013,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[35], "../data/images/floor-w-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 226
+                lineNumber: 228
               }
             });
 
@@ -86888,7 +87024,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[36], "../data/images/floor-e-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 229
+                lineNumber: 231
               }
             });
 
@@ -86899,7 +87035,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[37], "../data/images/floor-c-5.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 232
+                lineNumber: 234
               }
             });
 
@@ -86910,7 +87046,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[38], "../data/images/floor-c-6.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 235
+                lineNumber: 237
               }
             });
 
@@ -86921,7 +87057,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[39], "../data/images/floor-c-7.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 238
+                lineNumber: 240
               }
             });
 
@@ -86932,7 +87068,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[40], "../data/images/floor-c-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 241
+                lineNumber: 243
               }
             });
 
@@ -86943,7 +87079,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[41], "../data/images/floor-c-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 244
+                lineNumber: 246
               }
             });
 
@@ -86954,7 +87090,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[42], "../data/images/floor-c-4.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 247
+                lineNumber: 249
               }
             });
 
@@ -86965,7 +87101,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[43], "../data/images/floor-c-8.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 250
+                lineNumber: 252
               }
             });
 
@@ -86976,7 +87112,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[44], "../data/images/floor-c-9.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 253
+                lineNumber: 255
               }
             });
 
@@ -86987,7 +87123,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[45], "../data/images/floor-e2n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 256
+                lineNumber: 258
               }
             });
 
@@ -86998,7 +87134,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[46], "../data/images/floor-w2n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 259
+                lineNumber: 261
               }
             });
 
@@ -87022,10 +87158,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         return x.isHighlighted ? 1 : 0;
       });
       _this.tileHumanMapArray = _this.props.gameBoard.map(function (x) {
-        return x.hasHuman && _this.props.isHuman ? 1 : 0;
+        return x.hasHuman ? 1 : 0;
       });
       _this.tileMonsterMapArray = _this.props.gameBoard.map(function (x) {
-        return x.hasMonster && !_this.props.isHuman ? 1 : 0;
+        return x.hasMonster ? 1 : 0;
       });
       _this.state = {
         isZooming: false,
@@ -87054,7 +87190,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 271
+              lineNumber: 273
             }
           },
           _react3.default.createElement(_native.TileMap, {
@@ -87067,7 +87203,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             renderTile: this.renderTile,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 272
+              lineNumber: 274
             }
           }),
           _react3.default.createElement(_native.TileMap, {
@@ -87087,13 +87223,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 source: src,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 289
+                  lineNumber: 291
                 }
               });
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 281
+              lineNumber: 283
             }
           })
         );
@@ -87746,84 +87882,178 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       }, _this.getMonsterMenu = function () {
         return _react3.default.createElement(
-          _reactNative.Text,
+          _reactNative.View,
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 30
+              lineNumber: 33
             }
           },
-          "Monster menu"
+          _react3.default.createElement(
+            _reactNative.Text,
+            {
+              style: {
+                color: '#fff',
+                fontWeight: '600',
+                fontSize: 20
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 34
+              }
+            },
+            "Choose an action:"
+          ),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('move');
+            },
+            text: 'move',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 40
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('sniff');
+            },
+            text: 'sniff',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 45
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('listen');
+            },
+            text: 'listen',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 50
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('pounce');
+            },
+            text: 'pounce',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 55
+            }
+          })
         );
       }, _this.getHumanMenu = function () {
         return _react3.default.createElement(
           _reactNative.View,
           {
-            styles: {
-              flexDirection: "column"
-            },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 35
+              lineNumber: 66
             }
           },
           _react3.default.createElement(
-            _reactNative.TouchableOpacity,
+            _reactNative.Text,
             {
               style: {
-                backgroundColor: '#fff'
+                color: '#fff',
+                fontWeight: '600',
+                fontSize: 20
               },
-              onPress: _this.props.onItemSelected,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 36
+                lineNumber: 67
               }
             },
-            _react3.default.createElement(
-              _reactNative.Text,
-              {
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 37
-                }
-              },
-              "test moves"
-            )
+            "Choose an action:"
           ),
-          _react3.default.createElement(
-            _reactNative.TouchableOpacity,
-            {
-              style: {
-                backgroundColor: '#fff'
-              },
-              onPress: _this.props.onItemSelected,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 39
-              }
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('move');
             },
-            _react3.default.createElement(
-              _reactNative.Text,
-              {
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 40
-                }
-              },
-              "test moves"
-            )
-          )
+            text: 'move',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 73
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('echo');
+            },
+            text: 'echo',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 78
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('listen');
+            },
+            text: 'listen',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 83
+            }
+          })
         );
       }, _this.getSettingsMenu = function () {
         return _react3.default.createElement(
-          _reactNative.Text,
+          _reactNative.View,
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 47
+              lineNumber: 95
             }
           },
-          "Settings menu"
+          _react3.default.createElement(
+            _reactNative.Text,
+            {
+              style: {
+                color: '#fff',
+                fontWeight: '600',
+                fontSize: 20
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 96
+              }
+            },
+            "Settings"
+          ),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('home');
+            },
+            text: 'home',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 102
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('zoom');
+            },
+            text: 'zoom',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 107
+            }
+          }),
+          _react3.default.createElement(_Button.NavButton, {
+            onPress: function onPress() {
+              return _this.props.onItemSelected('exit');
+            },
+            text: 'exit',
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 112
+            }
+          })
         );
       }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -87837,7 +88067,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 55
+              lineNumber: 126
             }
           },
           menu
@@ -87848,8 +88078,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     return Menu;
   }(_react2.Component), _class.propTypes = {
     mode: _propTypes2.default.number,
-    onItemSelected: _propTypes2.default.func,
-    echoLocate: _propTypes2.default.func
+    onItemSelected: _propTypes2.default.func
   }, _temp2));
 
   exports.default = Menu;

@@ -42,7 +42,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: false,
+      isHuman: true,
       echoDirection: 'radius',
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -56,7 +56,7 @@ class Game extends Component {
     this.assignMonsterStart();
     this.assignCacheLocations();
     this.echoLocate();
-    this.showHumanMoves();
+    // this.showHumanMoves();
     this.assignImageKeys();
   }
 
@@ -652,9 +652,15 @@ class Game extends Component {
       path.push(next);
       next = next.parent;
     }
-    this.resetGrid()
+    this.resetParents()
     // console.log((path.length - 1), path)
     return (path.length - 1);
+  }
+
+  resetParents = () => {
+    for (i = 0; i < this.elements.length; i++) {
+      this.elements[i].parent = null;
+    }
   }
 
   assignHumanStart = () => {
@@ -681,9 +687,9 @@ class Game extends Component {
       console.log(`counter: ${counter}`);
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
-      if (counter % 5 === 0) {
-        this.assignHumanStart();
-      }
+      // if (counter % 5 === 0) {
+      //   this.assignHumanStart();
+      // }
       counter++;
     }
     // console.log('cell and distance', cell, distance);
@@ -1044,10 +1050,9 @@ class Game extends Component {
 
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
 
-  resetGrid = () => {
+  resetHighlighted = () => {
     for (let i = 0; i < this.elements.length; i++) {
       this.elements[i].isHighlighted = false;
-      this.elements[i].parent = null;
     }
   }
 
@@ -1055,7 +1060,7 @@ class Game extends Component {
     // console.log('echolocate', this.state.boardFinished)
     // this.setState({ boardFinished: false });
     // console.log('echolocate', this.state.boardFinished)
-    let direction = "west";
+    let direction = "radius";
     const item = this.humanSpace;
     switch (direction) {
       case 'north':
@@ -1219,7 +1224,7 @@ class Game extends Component {
         this.listen();
         break;
       case 'echo':
-        //
+        this.echoLocate();
         break;
       case 'pounce':
         //
@@ -1267,7 +1272,7 @@ class Game extends Component {
   }
 
   showHumanMoves = () => {
-    console.log('show human moves')
+    console.log('show human moves', this.humanSpace.name, this.state.playerSpace.name)
     let i = this.humanSpace.name;
     // north
     if (i - this.cellsInRow > 0) {
@@ -1320,21 +1325,21 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw });
   }
 
-  moveHuman = () => {
+  moveHuman = (item) => {
     console.log('move human')
-    let item = this.elements[this.state.playerSpace.name - 2];
+    item = this.elements[this.state.playerSpace.name - 1];
     if (item.isHighlighted) {
       this.elements[this.humanSpace.name].hasHuman = false;
       item.hasHuman = true;
       this.humanSpace = item;
-      this.resetGrid();
+      this.resetHighlighted();
+      this.setState({ playerSpace: item });
     } else {
       Alert.alert(
         'Uh-Oh',
         'Please select a highlighted space',
       );
     }
-    this.setState({ redraw: !this.state.redraw });
   }
 
 

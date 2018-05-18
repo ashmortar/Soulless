@@ -35,6 +35,7 @@ export default class Engine extends Component {
       top: 0,
       left: 0,
       highlightedTileMap: this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0),
+      showHighlighted: false,
 
     };
   }
@@ -66,8 +67,28 @@ export default class Engine extends Component {
     });
   }
 
-  UNSAFE_componentWillRecieveProps(nextProps) {
-    console.log('component will recieve props')
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
+    if (this.props.playerSpace !== nextProps.playerSpace) {
+      this.setState({
+        playerX: (nextProps.playerSpace.name % 40) * this.tileWidth,
+        playerY: Math.floor(nextProps.playerSpace.name / 40) * this.tileWidth,
+      });
+    }
+    if (this.state.highlightedTileMap !== newHighlightedTileMap) {
+      this.setState({
+        highlightedTileMap: nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0)
+      });
+      if (newHighlightedTileMap.includes(1)) {
+        this.setState({
+          showHighlighted: true,
+        });
+      } else {
+        this.setState({
+          showHighlighted: false,
+        })
+      }
+    }
   }
 
   processTouch(x, y) {
@@ -100,8 +121,23 @@ export default class Engine extends Component {
     }
   }
 
+  renderHighlighted = () => {
+    if (this.state.showHighlighted) {
+      return (
+        <TileMap
+          src={require("../data/images/Magenta-square_100px.gif")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.state.highlightedTileMap]}
+        />
+      );
+    }
+  };
+
   render() {
-    console.log('render engine', this.state.playerX)
+    // console.log(`playerX: ${this.state.playerX}, playerY: ${this.state.playerY} playerSpace: ${this.props.playerSpace.name}`);
     return (
       <Loop style={{ backgroundColor: "#212121" }}>
         <Stage
@@ -114,15 +150,10 @@ export default class Engine extends Component {
               gameBoard={this.props.gameBoard}
               isHuman={this.props.isHuman}
             />
-            <TileMap
-              src={require("../data/images/Magenta-square_100px.gif")}
-              tileSize={this.tileWidth}
-              columns={40}
-              rows={40}
-              sourceWidth={this.tileWidth}
-              layers={[this.state.highlightedTileMap]}
-            />
-            <Image style={{ position: 'absolute', top: this.state.playerY - this.tileWidth, left: this.state.playerX, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
+
+            {this.renderHighlighted()}
+            
+            <Image style={{ position: 'absolute', top: (this.state.playerY - this.tileWidth), left: this.state.playerX, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
           </View>
         </Stage>
       </Loop>
