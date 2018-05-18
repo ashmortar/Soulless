@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Picker, View, TouchableOpacity, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { Text, Picker, View, Animated, TouchableOpacity, Alert, Dimensions, ActivityIndicator } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid, AnimatedGrid } from '../components/Grid';
@@ -8,7 +8,7 @@ import WallTemplate from '../data/WallTemplate';
 import Cell from '../data/Cell';
 import Engine from './Engine';
 import Menu from './Menu';
-import SideMenu from 'react-native-side-menu'
+import SideMenu from 'react-native-side-menu';
 // const SideMenu = require('react-native-side-menu');
 
 class Game extends Component {
@@ -38,7 +38,7 @@ class Game extends Component {
     this.zoomedOutValue = Math.ceil(this.viewPortWidth / this.cellsInRow);
     this.fullGameDimension = this.zoomedInValue * this.cellsInRow;
     this.zoom = 'close';
-    this.allowedLengthOfWhiteLine = 14;//density
+    this.allowedLengthOfWhiteLine = 14; // density
 
     this.state = {
       redraw: false,
@@ -49,17 +49,18 @@ class Game extends Component {
     };
   }
 
-  componentDidMount() {
-
+  componentWillMount() {
     this.createMap();
     this.assignMonsterEdges();
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
-    this.echoLocate();
+    // this.echoLocate();
     this.assignImageKeys();
+  }
 
-    
+  componentDidMount() {
+
     // console.log('==================================================');
     // console.log(this.findShortestPath(this.elements[this.humanSpace.name], this.elements[this.monsterSpace.name]));
     // console.log(this.findShortestPath(this.elements[121], this.elements[123]));
@@ -631,7 +632,7 @@ class Game extends Component {
       // remove the first item
       let cell = queue.shift();
       if (cell === end) {
-        console.log("found you")
+        // console.log("found you")
         break; 
       }
       let neighbors = cell.monsterEdges;
@@ -650,8 +651,8 @@ class Game extends Component {
       path.push(next);
       next = next.parent;
     }
-    this.resetGrid();
-    console.log((path.length - 1));
+    this.resetGrid()
+    // console.log((path.length - 1), path)
     return (path.length - 1);
   }
 
@@ -674,9 +675,15 @@ class Game extends Component {
     // console.log('assign monster start')
     let cell = this.getRandomCell();
     let distance = this.findShortestPath(cell, this.humanSpace);
+    let counter = 0;
     while (distance < 20) {
+      console.log(`counter: ${counter}`);
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
+      if (counter % 5 === 0) {
+        this.assignHumanStart();
+      }
+      counter++;
     }
     // console.log('cell and distance', cell, distance);
     cell.hasMonster = true;
@@ -1044,8 +1051,11 @@ class Game extends Component {
   }
 
   echoLocate = () => {
+    // console.log('echolocate', this.state.boardFinished)
+    // this.setState({ boardFinished: false });
+    // console.log('echolocate', this.state.boardFinished)
+    let direction = "radius";
     const item = this.humanSpace;
-    const direction = this.state.echoDirection;
     switch (direction) {
       case 'north':
         if (item.name - this.cellsInRow < 0) {
@@ -1124,37 +1134,21 @@ class Game extends Component {
         break;
 
       case 'radius':
-        const i = item.name;
-        if ((i % this.cellsInRow != 0) && (i - (this.cellsInRow + 1) > 0) && (this.elements[i - (this.cellsInRow + 1)].value != 0)) {
-          this.elements[i - (this.cellsInRow + 1)].isRevealed = true;
-        }
-        if ((i - this.cellsInRow > 0) && (this.elements[i - this.cellsInRow].value != 0)) {
-          this.elements[i - this.cellsInRow].isRevealed = true;
-        }
-        if ((i % this.cellsInRow != (this.cellsInRow - 1)) && (i - (this.cellsInRow - 1) > 0 && this.elements[i - (this.cellsInRow - 1)].value != 0)) {
-          this.elements[i - (this.cellsInRow - 1)].isRevealed = true;
-        }
-        if ((i % this.cellsInRow != (this.cellsInRow - 1)) && (this.elements[i + 1].value != 0)) {
-          this.elements[i + 1].isRevealed = true;
-        }
-        if ((i % this.cellsInRow != (this.cellsInRow - 1)) && (i + (this.cellsInRow + 1) < this.cellsTotal && this.elements[i + (this.cellsInRow + 1)].value != 0)) {
-          this.elements[i + (this.cellsInRow + 1)].isRevealed = true;
-        }
-        if ((i + this.cellsInRow < this.cellsTotal) && (this.elements[i + this.cellsInRow].value != 0)) {
-          this.elements[i + this.cellsInRow].isRevealed = true;
-        }
-        if ((i % this.cellsInRow != 0) && (i + (this.cellsInRow - 1) < this.cellsTotal && this.elements[i + (this.cellsInRow - 1)].value != 0)) {
-          this.elements[i + (this.cellsInRow - 1)].isRevealed = true;
-        }
-        if ((i % this.cellsInRow != 0) && (this.elements[i - 1].value != 0)) {
-          this.elements[i - 1].isRevealed = true;
-        }
+        let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(item.name);
+        topLeft.isRevealed = true;
+        top.isRevealed = true;
+        topRight.isRevealed = true;
+        left.isRevealed = true;
+        right.isRevealed = true;
+        bottomLeft.isRevealed = true;
+        bottom.isRevealed = true;
+        bottomRight.isRevealed = true;
         break;
 
       default:
         break;
     }
-    this.setState({ redraw: !this.state.redraw });
+    // setTimeout(this.setState({ boardFinished: true }), 500);
   }
 
   listen = () => {
@@ -1351,39 +1345,44 @@ class Game extends Component {
   onItemSelected = () => {
     console.log('onMenuItemSelected');
   }
-
-  // const menu = <Menu navigator={navigator}/>;
   // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
   // <SideMenu menu={menu}>
+  // const menu = <Menu navigator={navigator}/>;
   render() {
-    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
-    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    return (
+    const finished = this.state.boardFinished;
+    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.echoLocate}/>;
+    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>; 
+    if (finished) {
+      return (
+        <SideMenu
+          menu={menuRight}
+          menuPosition='right'   
+        >
+        <SideMenu
+          menu={menuLeft}
+          menuPosition='left'
+        >
+          <Engine
+            gameBoard={this.elements}
+            tilesInRow={this.cellsInRow}
+            boardFinished={this.state.boardFinished}
+            isHuman={this.state.isHuman}
+            playerSpace={this.state.playerSpace}
+          />
+        </SideMenu>
+        </SideMenu> )  
+    } else {
+      return (
+        <View>
+        <TouchableOpacity onPress={this.echoLocate}>
+          <Text>descending into madness ...</Text>
+        </TouchableOpacity>
+        </View>
+      )
+    }
 
-
-
-      <SideMenu
-        menu={menuRight}
-        menuPosition='right'
-      >
-      <SideMenu
-        menu={menuLeft}
-        menuPosition='left'
-      >
-        <Engine
-          gameBoard={this.elements}
-          tilesInRow={this.cellsInRow}
-          boardFinished={this.state.boardFinished}
-          isHuman={this.state.isHuman}
-        />
-      </SideMenu>
-      </SideMenu>
-    );
   }
-
 }
-
-
 export default Game;
 
 

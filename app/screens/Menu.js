@@ -11,6 +11,7 @@ class Menu extends Component {
   static propTypes = {
     mode: PropTypes.number,//0 - settings, 1 - human, 2 - monster
     onItemSelected: PropTypes.func,
+    echoLocate: PropTypes.func,
   }
 
   getMenu = () => {
@@ -30,7 +31,16 @@ class Menu extends Component {
   }
 
   getHumanMenu = () => {
-    return(<Text>Human menu</Text>);
+    return (
+      <View styles={{ flexDirection: "column" }}>
+        <TouchableOpacity style={{ backgroundColor: '#fff' }} onPress={this.props.onItemSelected}>
+          <Text>test moves</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ backgroundColor: '#fff' }} onPress={this.props.onItemSelected}>
+          <Text>test moves</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   getSettingsMenu = () => {

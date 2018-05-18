@@ -22,7 +22,7 @@ export default class Board extends Component {
     this.tileWidth = Math.ceil(this.screenDimensions.height/40);
     this.sourceWidth = this.tileWidth;
     this.gameBoardWidth = this.tileWidth * 40;
-    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey);
+    this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache && this.props.isHuman ? 1 : 0);
     this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
@@ -38,6 +38,7 @@ export default class Board extends Component {
       top: 0,
       left: 0,
       tileSize: 100,
+      fogOfWar: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
     };
   }
 
@@ -85,6 +86,7 @@ export default class Board extends Component {
   //   this.context.loop.unsubscribe(this.update);
   // }
 
+
   processTouch(x, y) {
     if (!this.state.isMoving) {
       this.setState({
@@ -115,7 +117,13 @@ export default class Board extends Component {
     }
   }
 
-  // update = () => {};
+  // update = () => {
+  //   let map = this.props.gameBoard.map(a => a.isRevealed ? 0 : 1)
+  //   if (this.state.fogOfWar !== map) {
+  //     console.log('update');
+  //     this.setState({ fogOfWar: true });
+  //   }
+  // };
 
   fixImageStyle = (index) => {
     return ({ left: ((index - 1) * this.tileWidth) });
@@ -259,7 +267,6 @@ export default class Board extends Component {
     // Math.floor((this.tileWidth / this.state.zoom)/16)
     // Math.floor(100*this.state.zoom);
     // let scale = this.state.tileSize;
-    // console.log('tileMap', this.tileMapArray);
     return (
       <View style={{ position: 'absolute', left: this.state.left, top: this.state.top }} {...this._panResponder.panHandlers} >
         <TileMap
@@ -271,6 +278,14 @@ export default class Board extends Component {
           layers={[this.tileMapArray]}
           renderTile={this.renderTile}
         />
+        {/* <TileMap
+          src={require("../data/images/Black_square.jpeg")}
+          tileSize={this.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.tileWidth}
+          layers={[this.state.fogOfWar]}
+        /> */}
         <TileMap
           src={require("../data/images/shrine.png")}
           tileSize={this.tileWidth}
@@ -286,15 +301,15 @@ export default class Board extends Component {
             />
           )}
         />
-        <TileMap
+        {/* <TileMap
           src={require("../data/images/Magenta-square_100px.gif")}
           tileSize={this.tileWidth}
           columns={40}
           rows={40}
           sourceWidth={this.tileWidth}
           layers={[this.tileHighlightedMapArray]}
-        />
-        <TileMap
+        /> */}
+        {/* <TileMap
           src={require("../data/images/human.png")}
           tileSize={this.tileWidth}
           columns={40}
@@ -316,7 +331,7 @@ export default class Board extends Component {
           rows={40}
           sourceWidth={this.tileWidth}
           layers={[this.tileMonsterMapArray]}
-        />
+        /> */}
       </View>
     );
   }
