@@ -42,7 +42,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: false,
+      isHuman: true,
       echoDirection: 'radius',
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -1218,13 +1218,55 @@ class Game extends Component {
         this.listen();
         break;
       case 'echo':
-        //
+        Alert.alert(
+          'Echo.',
+          'Choose the way.',
+          [
+            {text: 'Burst', onPress: () => console.log('Burst Pressed')},
+            {text: 'North', onPress: () => console.log('North Pressed')},
+            {text: 'South', onPress: () => console.log('South Pressed')},
+            {text: 'East', onPress: () => console.log('East Pressed')},
+            {text: 'West', onPress: () => console.log('West Pressed')},
+          ],
+          { cancelable: true }
+        )
+        this.setState({ redraw: !this.state.redraw });
         break;
       case 'pounce':
-        //
+        if (this.monsterSpace.hasHuman) {
+          Alert.alert(
+            'You pounced.',
+            'And attacked your opponent.',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: false }
+          )
+          this.setState({ redraw: !this.state.redraw });
+        } else if (this.monsterSpace.hasCache) {
+          Alert.alert(
+            'You pounced.',
+            'And found cache.',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: false }
+          )
+          this.setState({ redraw: !this.state.redraw });
+        } else {
+          Alert.alert(
+            'You pounced.',
+            'There is nothing here.',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: false }
+          )
+          this.setState({ redraw: !this.state.redraw });
+        }
         break;
       case 'home':
-        //
+        this.props.navigation.navigate('Home');
         break;
       case 'zoom':
         //
