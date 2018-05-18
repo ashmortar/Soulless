@@ -1432,7 +1432,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   _reactNative.AppRegistry.registerComponent('ProjectEyeCue', function () {
     return _App2.default;
   });
-},676,[12,491],"index.js");
+},677,[12,491],"index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -3638,7 +3638,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ActivityIndicator\\ActivityIndicator.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ActivityIndicator\\ActivityIndicator.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -30208,7 +30208,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ProgressBarAndroid\\ProgressBarAndroid.android.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ProgressBarAndroid\\ProgressBarAndroid.android.js";
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32953,7 +32953,7 @@ __d(function (global, _require2, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\View\\View.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\View\\View.js";
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33543,7 +33543,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\ART\\ReactNativeART.js",
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\ART\\ReactNativeART.js",
       _class2,
       _temp2;
 
@@ -33574,7 +33574,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/ART/ReactNativeART.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/ART/ReactNativeART.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -38465,7 +38465,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Button.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Button.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38482,7 +38482,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/Button.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/Button.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -38656,7 +38656,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require2, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Text\\Text.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Text\\Text.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -38914,7 +38914,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Touchable\\Touchable.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Touchable\\Touchable.js";
 
   var BoundingDimensions = _require(_dependencyMap[0], 'BoundingDimensions');
 
@@ -39979,7 +39979,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Touchable\\TouchableOpacity.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Touchable\\TouchableOpacity.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -44080,7 +44080,7 @@ __d(function (global, _require2, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Animated\\src\\createAnimatedComponent.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Animated\\src\\createAnimatedComponent.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -44100,7 +44100,7 @@ __d(function (global, _require2, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Animated/src/createAnimatedComponent.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Animated/src/createAnimatedComponent.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -44294,7 +44294,7 @@ __d(function (global, _require2, module, exports, _dependencyMap) {
 __d(function (global, _require2, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Image\\Image.android.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Image\\Image.android.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -44496,7 +44496,7 @@ __d(function (global, _require2, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ScrollView\\ScrollView.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ScrollView\\ScrollView.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -45502,7 +45502,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ScrollView\\ScrollViewStickyHeader.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ScrollView\\ScrollViewStickyHeader.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -45521,7 +45521,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/ScrollView/ScrollViewStickyHeader.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/ScrollView/ScrollViewStickyHeader.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -45693,7 +45693,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\CheckBox\\CheckBox.android.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\CheckBox\\CheckBox.android.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -45790,7 +45790,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\DatePicker\\DatePickerIOS.android.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\DatePicker\\DatePickerIOS.android.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -45809,7 +45809,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/DatePicker/DatePickerIOS.android.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/DatePicker/DatePickerIOS.android.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -45889,7 +45889,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\DrawerAndroid\\DrawerLayoutAndroid.android.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\DrawerAndroid\\DrawerLayoutAndroid.android.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -46131,7 +46131,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/StatusBar/StatusBar.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/StatusBar/StatusBar.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -46374,7 +46374,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\FlatList.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\FlatList.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -46393,7 +46393,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index3.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Lists/FlatList.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Lists/FlatList.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -46731,7 +46731,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\MetroListView.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\MetroListView.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46748,7 +46748,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Lists/MetroListView.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Lists/MetroListView.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -46965,7 +46965,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\ListView\\ListView.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\ListView\\ListView.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -47765,7 +47765,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/StaticRenderer.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/StaticRenderer.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -47850,7 +47850,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\RefreshControl\\RefreshControl.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\RefreshControl\\RefreshControl.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -47963,7 +47963,7 @@ __d(function (global, _require2, module, exports, _dependencyMap) {
   var _class,
       _temp,
       _initialiseProps,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\VirtualizedList.js",
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\VirtualizedList.js",
       _class2,
       _temp3,
       _class3,
@@ -47992,7 +47992,7 @@ __d(function (global, _require2, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index3.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Lists/VirtualizedList.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Lists/VirtualizedList.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -50216,7 +50216,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Image\\ImageBackground.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Image\\ImageBackground.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -50237,7 +50237,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Image/ImageBackground.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Image/ImageBackground.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -50418,7 +50418,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Keyboard\\KeyboardAvoidingView.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Keyboard\\KeyboardAvoidingView.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -50647,7 +50647,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\UnimplementedViews\\UnimplementedView.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\UnimplementedViews\\UnimplementedView.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -50666,7 +50666,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/UnimplementedViews/UnimplementedView.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/UnimplementedViews/UnimplementedView.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -50740,7 +50740,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Modal\\Modal.js",
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Modal\\Modal.js",
       _container;
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -50760,7 +50760,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Modal/Modal.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Modal/Modal.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -50970,7 +50970,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\ReactNative\\AppContainer.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\ReactNative\\AppContainer.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50987,7 +50987,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/ReactNative/AppContainer.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/ReactNative/AppContainer.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -51178,7 +51178,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var _class,
       _temp,
       _initialiseProps,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\Inspector.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\Inspector.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51195,7 +51195,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/Inspector.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/Inspector.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -51549,7 +51549,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\InspectorOverlay.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\InspectorOverlay.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51566,7 +51566,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/InspectorOverlay.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/InspectorOverlay.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -51691,7 +51691,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\ElementBox.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\ElementBox.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -51710,7 +51710,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/ElementBox.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/ElementBox.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -51845,7 +51845,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\BorderBox.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\BorderBox.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -51864,7 +51864,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/BorderBox.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/BorderBox.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -51981,7 +51981,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\InspectorPanel.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\InspectorPanel.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -52003,7 +52003,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/InspectorPanel.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/InspectorPanel.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -52301,7 +52301,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\ElementProperties.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\ElementProperties.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52318,7 +52318,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/ElementProperties.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/ElementProperties.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -52586,7 +52586,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\BoxInspector.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\BoxInspector.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -52608,7 +52608,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/BoxInspector.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/BoxInspector.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -52878,7 +52878,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\StyleInspector.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\StyleInspector.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -52897,7 +52897,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/StyleInspector.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/StyleInspector.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -53038,7 +53038,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Touchable\\TouchableHighlight.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Touchable\\TouchableHighlight.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -53294,7 +53294,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\NetworkOverlay.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\NetworkOverlay.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -53313,7 +53313,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/NetworkOverlay.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/NetworkOverlay.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -54378,7 +54378,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\PerformanceOverlay.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Inspector\\PerformanceOverlay.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -54397,7 +54397,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/PerformanceOverlay.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Inspector/PerformanceOverlay.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -54525,7 +54525,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\ReactNative\\YellowBox.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\ReactNative\\YellowBox.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54544,7 +54544,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/ReactNative/YellowBox.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/ReactNative/YellowBox.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -55336,7 +55336,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _temp,
       _class2,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Picker\\Picker.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Picker\\Picker.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -55358,7 +55358,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/Picker/Picker.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/Picker/Picker.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -55505,7 +55505,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var _class,
       _temp,
       _initialiseProps,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Picker\\PickerAndroid.android.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Picker\\PickerAndroid.android.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -55524,7 +55524,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/Picker/PickerAndroid.android.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/Picker/PickerAndroid.android.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -55706,7 +55706,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ProgressViewIOS\\ProgressViewIOS.android.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ProgressViewIOS\\ProgressViewIOS.android.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -55725,7 +55725,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/ProgressViewIOS/ProgressViewIOS.android.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/ProgressViewIOS/ProgressViewIOS.android.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -55817,7 +55817,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\SectionList.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\SectionList.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -55836,7 +55836,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Lists/SectionList.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Lists/SectionList.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -55963,7 +55963,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\VirtualizedSectionList.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Lists\\VirtualizedSectionList.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55983,7 +55983,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Lists/VirtualizedSectionList.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Lists/VirtualizedSectionList.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -56433,7 +56433,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\SegmentedControlIOS\\SegmentedControlIOS.android.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\SegmentedControlIOS\\SegmentedControlIOS.android.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -56452,7 +56452,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/SegmentedControlIOS/SegmentedControlIOS.android.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/SegmentedControlIOS/SegmentedControlIOS.android.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -56532,7 +56532,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Slider\\Slider.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Slider\\Slider.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -56671,7 +56671,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Switch\\Switch.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\Switch\\Switch.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -56803,7 +56803,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Experimental\\SwipeableRow\\SwipeableFlatList.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Experimental\\SwipeableRow\\SwipeableFlatList.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56820,7 +56820,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Experimental/SwipeableRow/SwipeableFlatList.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Experimental/SwipeableRow/SwipeableFlatList.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -56986,7 +56986,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Experimental\\SwipeableRow\\SwipeableRow.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Experimental\\SwipeableRow\\SwipeableRow.js";
 
   var Animated = _require(_dependencyMap[0], 'Animated');
 
@@ -57449,7 +57449,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Experimental\\SwipeableRow\\SwipeableListView.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Experimental\\SwipeableRow\\SwipeableListView.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57466,7 +57466,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Experimental/SwipeableRow/SwipeableListView.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Experimental/SwipeableRow/SwipeableListView.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -57759,7 +57759,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\TabBarIOS\\TabBarIOS.android.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\TabBarIOS\\TabBarIOS.android.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57776,7 +57776,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/TabBarIOS/TabBarIOS.android.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/TabBarIOS/TabBarIOS.android.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -57843,7 +57843,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\TabBarIOS\\TabBarItemIOS.android.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\TabBarIOS\\TabBarItemIOS.android.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -57862,7 +57862,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/TabBarIOS/TabBarItemIOS.android.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/TabBarIOS/TabBarItemIOS.android.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -57933,7 +57933,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require2, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\TextInput\\TextInput.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\TextInput\\TextInput.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -58949,7 +58949,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ToolbarAndroid\\ToolbarAndroid.android.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ToolbarAndroid\\ToolbarAndroid.android.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -59078,7 +59078,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ViewPager\\ViewPagerAndroid.android.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\ViewPager\\ViewPagerAndroid.android.js";
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59095,7 +59095,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/ViewPager/ViewPagerAndroid.android.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/ViewPager/ViewPagerAndroid.android.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -59242,7 +59242,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\WebView\\WebView.android.js",
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\Components\\WebView\\WebView.android.js",
       _class,
       _temp2;
 
@@ -59261,7 +59261,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native/Libraries/Components/WebView/WebView.android.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native/Libraries/Components/WebView/WebView.android.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -59921,7 +59921,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\ReactNative\\renderApplication.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native\\Libraries\\ReactNative\\renderApplication.js";
 
   var AppContainer = _require(_dependencyMap[0], 'AppContainer');
 
@@ -61249,7 +61249,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\index.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\index.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -62910,7 +62910,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     }
   });
-},509,[510,585,598,667,674],"app\\config\\routes.js");
+},509,[510,585,598,668,675],"app\\config\\routes.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -63042,7 +63042,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\createNavigationContainer.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\createNavigationContainer.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -63082,7 +63082,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/createNavigationContainer.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/createNavigationContainer.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -63777,7 +63777,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\createNavigator.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\createNavigator.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -63799,7 +63799,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/navigators/createNavigator.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/navigators/createNavigator.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -63851,7 +63851,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\StackNavigator.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\StackNavigator.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -63946,7 +63946,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\CardStack\\CardStackTransitioner.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\CardStack\\CardStackTransitioner.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -63981,7 +63981,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/CardStack/CardStackTransitioner.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/CardStack/CardStackTransitioner.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -64083,7 +64083,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\CardStack\\CardStack.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\CardStack\\CardStack.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -64146,7 +64146,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/CardStack/CardStack.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/CardStack/CardStack.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -64655,7 +64655,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\CardStack\\Card.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\CardStack\\Card.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -64680,7 +64680,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/CardStack/Card.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/CardStack/Card.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -64763,7 +64763,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\CardStack\\PointerEventsContainer.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\CardStack\\PointerEventsContainer.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -64793,7 +64793,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/CardStack/PointerEventsContainer.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/CardStack/PointerEventsContainer.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -64963,7 +64963,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Header\\Header.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Header\\Header.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -65012,7 +65012,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/Header/Header.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/Header/Header.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -65654,7 +65654,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-safe-area-view\\index.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-safe-area-view\\index.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -65679,7 +65679,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-safe-area-view/index.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-safe-area-view/index.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -66048,7 +66048,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-safe-area-view\\withOrientation.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-safe-area-view\\withOrientation.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -66135,7 +66135,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-safe-area-view/withOrientation.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-safe-area-view/withOrientation.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -66227,7 +66227,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Header\\HeaderTitle.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Header\\HeaderTitle.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -66286,7 +66286,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Header\\HeaderBackButton.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Header\\HeaderBackButton.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -66309,7 +66309,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/Header/HeaderBackButton.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/Header/HeaderBackButton.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -66481,7 +66481,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TouchableItem.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TouchableItem.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -66502,7 +66502,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/TouchableItem.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/TouchableItem.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -66607,7 +66607,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Header\\ModularHeaderBackButton.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Header\\ModularHeaderBackButton.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -66630,7 +66630,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/Header/ModularHeaderBackButton.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/Header/ModularHeaderBackButton.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -67012,7 +67012,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\withOrientation.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\withOrientation.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -67097,7 +67097,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/withOrientation.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/withOrientation.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -67282,7 +67282,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\SceneView.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\SceneView.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -67303,7 +67303,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/SceneView.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/SceneView.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -67664,7 +67664,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Transitioner.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Transitioner.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -67695,7 +67695,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/Transitioner.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/Transitioner.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -69283,7 +69283,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\SwitchNavigator.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\SwitchNavigator.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -69682,7 +69682,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\SwitchView\\SwitchView.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\SwitchView\\SwitchView.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -69709,7 +69709,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/SwitchView/SwitchView.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/SwitchView/SwitchView.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -69769,7 +69769,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\withCachedChildNavigation.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\withCachedChildNavigation.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -69798,7 +69798,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/withCachedChildNavigation.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/withCachedChildNavigation.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -69905,7 +69905,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\TabNavigator.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\TabNavigator.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -70346,7 +70346,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TabView\\TabView.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TabView\\TabView.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -70379,7 +70379,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/TabView/TabView.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/TabView/TabView.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -70648,7 +70648,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var _class,
       _temp,
       _initialiseProps,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewAnimated.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewAnimated.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -70677,7 +70677,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewAnimated.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewAnimated.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -70979,7 +70979,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewPagerAndroid.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewPagerAndroid.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -71002,7 +71002,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewPagerAndroid.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewPagerAndroid.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -71179,7 +71179,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var _class,
       _temp,
       _initialiseProps,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewPagerScroll.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewPagerScroll.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -71202,7 +71202,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewPagerScroll.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewPagerScroll.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -71405,7 +71405,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewPagerPan.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewPagerPan.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -71434,7 +71434,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewPagerPan.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewPagerPan.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -71677,7 +71677,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewPagerExperimental.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabViewPagerExperimental.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -71706,7 +71706,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewPagerExperimental.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-tab-view/src/TabViewPagerExperimental.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -71930,7 +71930,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var _class,
       _temp,
       _initialiseProps,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabBar.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TabBar.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -71963,7 +71963,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-tab-view/src/TabBar.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-tab-view/src/TabBar.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -72551,7 +72551,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TouchableItem.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\TouchableItem.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -72578,7 +72578,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-tab-view/src/TouchableItem.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-tab-view/src/TouchableItem.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -72689,7 +72689,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\SceneMap.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-tab-view\\src\\SceneMap.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -72713,7 +72713,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-tab-view/src/SceneMap.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-tab-view/src/SceneMap.js",
     components: _components,
     locals: [module],
     imports: [React.default]
@@ -72773,7 +72773,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\ResourceSavingSceneView.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\ResourceSavingSceneView.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -72806,7 +72806,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/ResourceSavingSceneView.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/ResourceSavingSceneView.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -73036,7 +73036,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TabView\\TabBarTop.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TabView\\TabBarTop.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -73063,7 +73063,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/TabView/TabBarTop.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/TabView/TabBarTop.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -73250,7 +73250,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TabView\\TabBarIcon.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TabView\\TabBarIcon.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -73273,7 +73273,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/TabView/TabBarIcon.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/TabView/TabBarIcon.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -73407,7 +73407,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TabView\\TabBarBottom.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\TabView\\TabBarBottom.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -73444,7 +73444,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/TabView/TabBarBottom.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/TabView/TabBarBottom.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -73839,7 +73839,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\DrawerNavigator.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\navigators\\DrawerNavigator.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -74012,7 +74012,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Drawer\\DrawerScreen.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Drawer\\DrawerScreen.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -74039,7 +74039,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/Drawer/DrawerScreen.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/Drawer/DrawerScreen.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -74103,7 +74103,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Drawer\\DrawerView.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Drawer\\DrawerView.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -74140,7 +74140,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/Drawer/DrawerView.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/Drawer/DrawerView.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -74374,7 +74374,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Drawer\\DrawerSidebar.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Drawer\\DrawerSidebar.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -74413,7 +74413,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/Drawer/DrawerSidebar.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/Drawer/DrawerSidebar.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -74566,7 +74566,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Drawer\\DrawerNavigatorItems.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\Drawer\\DrawerNavigatorItems.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -74744,7 +74744,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\withNavigation.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\withNavigation.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -74774,7 +74774,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/withNavigation.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/withNavigation.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -74836,7 +74836,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\withNavigationFocus.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-navigation\\src\\views\\withNavigationFocus.js";
 
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -74870,7 +74870,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-navigation/src/views/withNavigationFocus.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-navigation/src/views/withNavigationFocus.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -74973,7 +74973,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\screens\\Home.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\Home.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -75002,7 +75002,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/screens/Home.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/Home.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -75110,7 +75110,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\Container\\Container.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Container\\Container.js";
 
   var _propTypes = _require(_dependencyMap[0], "prop-types");
 
@@ -75191,7 +75191,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\Button\\NavButton.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Button\\NavButton.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -75314,7 +75314,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\Header\\Header.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Header\\Header.js";
 
   var _propTypes = _require(_dependencyMap[0], "prop-types");
 
@@ -75412,7 +75412,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\Blurb\\Blurb.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Blurb\\Blurb.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -75508,7 +75508,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\screens\\Game.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\Game.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -75534,6 +75534,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _Engine2 = _interopRequireDefault(_Engine);
 
+  var _Menu = _require(_dependencyMap[10], "./Menu");
+
+  var _Menu2 = _interopRequireDefault(_Menu);
+
+  var _reactNativeSideMenu = _require(_dependencyMap[11], "react-native-side-menu");
+
+  var _reactNativeSideMenu2 = _interopRequireDefault(_reactNativeSideMenu);
+
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -75549,7 +75557,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/screens/Game.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/Game.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -76010,8 +76018,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.assignMonsterEdges = function () {
-        console.log('assign monster edges');
-
         for (var i = 0; i < _this.cellsTotal; i++) {
           var cell = _this.elements[i];
 
@@ -76165,12 +76171,20 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         var distance = _this.findShortestPath(cell, _this.humanSpace);
 
+        var counter = 0;
+
         while (distance < 20) {
+          console.log("counter: " + counter);
           cell = _this.getRandomCell();
           distance = _this.findShortestPath(cell, _this.humanSpace);
+
+          if (counter % 5 === 0) {
+            _this.assignHumanStart();
+          }
+
+          counter++;
         }
 
-        console.log('cell and distance', cell, distance);
         cell.hasMonster = true;
         _this.monsterSpace = cell;
 
@@ -76512,8 +76526,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.echoLocate = function () {
+        var direction = "radius";
         var item = _this.humanSpace;
-        var direction = _this.state.echoDirection;
 
         switch (direction) {
           case 'north':
@@ -76593,49 +76607,29 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'radius':
-            var i = item.name;
+            var _this$getNeighboringC3 = _this.getNeighboringCells(item.name),
+                topLeft = _this$getNeighboringC3.topLeft,
+                top = _this$getNeighboringC3.top,
+                topRight = _this$getNeighboringC3.topRight,
+                left = _this$getNeighboringC3.left,
+                right = _this$getNeighboringC3.right,
+                bottomLeft = _this$getNeighboringC3.bottomLeft,
+                bottom = _this$getNeighboringC3.bottom,
+                bottomRight = _this$getNeighboringC3.bottomRight;
 
-            if (i % _this.cellsInRow != 0 && i - (_this.cellsInRow + 1) > 0 && _this.elements[i - (_this.cellsInRow + 1)].value != 0) {
-              _this.elements[i - (_this.cellsInRow + 1)].isRevealed = true;
-            }
-
-            if (i - _this.cellsInRow > 0 && _this.elements[i - _this.cellsInRow].value != 0) {
-              _this.elements[i - _this.cellsInRow].isRevealed = true;
-            }
-
-            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i - (_this.cellsInRow - 1) > 0 && _this.elements[i - (_this.cellsInRow - 1)].value != 0) {
-              _this.elements[i - (_this.cellsInRow - 1)].isRevealed = true;
-            }
-
-            if (i % _this.cellsInRow != _this.cellsInRow - 1 && _this.elements[i + 1].value != 0) {
-              _this.elements[i + 1].isRevealed = true;
-            }
-
-            if (i % _this.cellsInRow != _this.cellsInRow - 1 && i + (_this.cellsInRow + 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow + 1)].value != 0) {
-              _this.elements[i + (_this.cellsInRow + 1)].isRevealed = true;
-            }
-
-            if (i + _this.cellsInRow < _this.cellsTotal && _this.elements[i + _this.cellsInRow].value != 0) {
-              _this.elements[i + _this.cellsInRow].isRevealed = true;
-            }
-
-            if (i % _this.cellsInRow != 0 && i + (_this.cellsInRow - 1) < _this.cellsTotal && _this.elements[i + (_this.cellsInRow - 1)].value != 0) {
-              _this.elements[i + (_this.cellsInRow - 1)].isRevealed = true;
-            }
-
-            if (i % _this.cellsInRow != 0 && _this.elements[i - 1].value != 0) {
-              _this.elements[i - 1].isRevealed = true;
-            }
-
+            topLeft.isRevealed = true;
+            top.isRevealed = true;
+            topRight.isRevealed = true;
+            left.isRevealed = true;
+            right.isRevealed = true;
+            bottomLeft.isRevealed = true;
+            bottom.isRevealed = true;
+            bottomRight.isRevealed = true;
             break;
 
           default:
             break;
         }
-
-        _this.setState({
-          redraw: !_this.state.redraw
-        });
       };
 
       _this.listen = function () {};
@@ -76795,7 +76789,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1290
+              lineNumber: 1287
             }
           },
           _react3.default.createElement(
@@ -76803,7 +76797,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1291
+                lineNumber: 1288
               }
             },
             "Game screen"
@@ -76817,7 +76811,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1293
+                lineNumber: 1290
               }
             },
             _react3.default.createElement(
@@ -76833,7 +76827,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1294
+                  lineNumber: 1291
                 }
               },
               _react3.default.createElement(
@@ -76844,7 +76838,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1303
+                    lineNumber: 1300
                   }
                 },
                 "+"
@@ -76860,7 +76854,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1308
+                lineNumber: 1305
               }
             },
             _react3.default.createElement(
@@ -76876,7 +76870,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1309
+                  lineNumber: 1306
                 }
               },
               _react3.default.createElement(
@@ -76887,7 +76881,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1317
+                    lineNumber: 1314
                   }
                 },
                 "-"
@@ -76909,7 +76903,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1327
+              lineNumber: 1324
             }
           },
           _react3.default.createElement(_Button.NavButton, {
@@ -76917,7 +76911,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "human? " + _this.state.isHuman,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1328
+              lineNumber: 1325
             }
           }),
           _react3.default.createElement(
@@ -76935,7 +76929,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1329
+                lineNumber: 1326
               }
             },
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76943,7 +76937,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "radius",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1334
+                lineNumber: 1331
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76951,7 +76945,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "north",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1335
+                lineNumber: 1332
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76959,7 +76953,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "east",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1336
+                lineNumber: 1333
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76967,7 +76961,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "south",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1337
+                lineNumber: 1334
               }
             }),
             _react3.default.createElement(_reactNative.Picker.Item, {
@@ -76975,7 +76969,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               value: "west",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1338
+                lineNumber: 1335
               }
             })
           ),
@@ -76984,7 +76978,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "echo-locate",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1340
+              lineNumber: 1337
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -76992,7 +76986,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "move human",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1341
+              lineNumber: 1338
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -77000,10 +76994,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "go to home screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1342
+              lineNumber: 1339
             }
           })
         );
+      };
+
+      _this.onItemSelected = function () {
+        console.log('onMenuItemSelected');
       };
 
       _this.scale = 0;
@@ -77043,21 +77041,22 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     }
 
     _createClass(Game, [{
-      key: "componentDidMount",
-      value: function componentDidMount() {
+      key: "componentWillMount",
+      value: function componentWillMount() {
         this.createMap();
         this.assignMonsterEdges();
         this.assignHumanStart();
         this.assignMonsterStart();
         this.assignCacheLocations();
-        this.echoLocate();
         this.assignImageKeys();
       }
+    }, {
+      key: "componentDidMount",
+      value: function componentDidMount() {}
     }, {
       key: "findShortestPath",
       value: function findShortestPath(start, end) {
         if (start.value < 1 || end.value < 1) {
-          console.log('shortest path error: start or end was a wall');
           return -1;
         }
 
@@ -77070,7 +77069,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           var cell = queue.shift();
 
           if (cell === end) {
-            console.log("found you");
             break;
           }
 
@@ -77096,7 +77094,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
 
         this.resetGrid();
-        console.log(path.length - 1, path);
         return path.length - 1;
       }
     }, {
@@ -77107,16 +77104,91 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     }, {
       key: "render",
       value: function render() {
-        return _react3.default.createElement(_Engine2.default, {
-          gameBoard: this.elements,
-          tilesInRow: this.cellsInRow,
-          boardFinished: this.state.boardFinished,
-          isHuman: this.state.isHuman,
+        var finished = this.state.boardFinished;
+
+        var menuRight = _react3.default.createElement(_Menu2.default, {
+          mode: this.state.isHuman ? 1 : 2,
+          onItemSelected: this.echoLocate,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1350
+            lineNumber: 1353
           }
         });
+
+        var menuLeft = _react3.default.createElement(_Menu2.default, {
+          mode: 0,
+          onItemSelected: this.onItemSelected,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 1354
+          }
+        });
+
+        if (finished) {
+          return _react3.default.createElement(
+            _reactNativeSideMenu2.default,
+            {
+              menu: menuRight,
+              menuPosition: "right",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1357
+              }
+            },
+            _react3.default.createElement(
+              _reactNativeSideMenu2.default,
+              {
+                menu: menuLeft,
+                menuPosition: "left",
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1361
+                }
+              },
+              _react3.default.createElement(_Engine2.default, {
+                gameBoard: this.elements,
+                tilesInRow: this.cellsInRow,
+                boardFinished: this.state.boardFinished,
+                isHuman: this.state.isHuman,
+                playerSpace: this.state.playerSpace,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1365
+                }
+              })
+            )
+          );
+        } else {
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1376
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.TouchableOpacity,
+              {
+                onPress: this.echoLocate,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1377
+                }
+              },
+              _react3.default.createElement(
+                _reactNative.Text,
+                {
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 1378
+                  }
+                },
+                "descending into madness ..."
+              )
+            )
+          );
+        }
       }
     }]);
 
@@ -77126,7 +77198,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Game;
-},598,[118,179,129,12,586,589,599,607,608,609],"app\\screens\\Game.js");
+},598,[118,179,129,12,586,589,599,607,608,609,665,666],"app\\screens\\Game.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -77155,7 +77227,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\Grid\\Grid.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Grid\\Grid.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -77290,7 +77362,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-super-grid\\index.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-super-grid\\index.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -77327,7 +77399,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-super-grid/index.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-super-grid/index.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -77662,7 +77734,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _index2 = _interopRequireDefault(_index);
 
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\node_modules\\react-native-super-grid\\SuperGridSectionList.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-super-grid\\SuperGridSectionList.js";
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -77695,7 +77767,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/node_modules/react-native-super-grid/SuperGridSectionList.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-super-grid/SuperGridSectionList.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -77996,7 +78068,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\Grid\\AnimatedGrid.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Grid\\AnimatedGrid.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -78027,7 +78099,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/components/Grid/AnimatedGrid.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/components/Grid/AnimatedGrid.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -78262,7 +78334,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\Grid\\AnimatedGridItem.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Grid\\AnimatedGridItem.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -78289,7 +78361,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/components/Grid/AnimatedGridItem.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/components/Grid/AnimatedGridItem.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -78445,7 +78517,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\screens\\Engine.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\Engine.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -78474,7 +78546,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/screens/Engine.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/Engine.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -78495,9 +78567,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       var _this = _possibleConstructorReturn(this, (Engine.__proto__ || Object.getPrototypeOf(Engine)).call(this, props));
 
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = 100;
-      _this.sourceWidth = 100;
+      _this.tileWidth = Math.ceil(_this.screenDimensions.height / 40);
       _this.gameBoardWidth = _this.tileWidth * 40;
+      _this.playerX = props.playerSpace.name % 40 * _this.tileWidth;
+      _this.playerY = Math.floor(props.playerSpace.name / 40) * _this.tileWidth;
+      _this.state = {
+        playerSpace: _this.props.playerSpace,
+        playerX: _this.playerX,
+        playerY: _this.playerY
+      };
       return _this;
     }
 
@@ -78512,7 +78590,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 27
+              lineNumber: 34
             }
           },
           _react3.default.createElement(
@@ -78525,17 +78603,32 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 28
+                lineNumber: 35
               }
             },
-            this.props.boardFinished ? _react3.default.createElement(_Board2.default, {
+            _react3.default.createElement(_Board2.default, {
               gameBoard: this.props.gameBoard,
               isHuman: this.props.isHuman,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 34
+                lineNumber: 40
               }
-            }) : null
+            }),
+            _react3.default.createElement(_reactNative.Image, {
+              style: {
+                position: 'absolute',
+                top: 100,
+                left: 100,
+                height: this.tileWidth * 2,
+                width: this.tileWidth,
+                resizeMode: 'contain'
+              },
+              source: _require(_dependencyMap[6], "../data/images/human.png"),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 44
+              }
+            })
           )
         );
       }
@@ -78545,11 +78638,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }(_react2.Component), _class.propTypes = {
     gameBoard: _propTypes2.default.array,
     tilesInRow: _propTypes2.default.number,
-    boardFinished: _propTypes2.default.bool
+    boardFinished: _propTypes2.default.bool,
+    playerSpace: _propTypes2.default.object,
+    isHuman: _propTypes2.default.bool
   }, _temp));
 
   exports.default = Engine;
-},609,[118,179,129,12,610,619],"app\\screens\\Engine.js");
+},609,[118,179,129,12,610,619,664],"app\\screens\\Engine.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86284,7 +86379,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\screens\\Board.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\Board.js";
 
   var _reactNative = _require(_dependencyMap[2], "react-native");
 
@@ -86309,7 +86404,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/screens/Board.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/Board.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -86352,7 +86447,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[5], "../data/images/wall-t-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 125
+                lineNumber: 136
               }
             });
 
@@ -86363,7 +86458,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[6], "../data/images/wall-t-n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 128
+                lineNumber: 139
               }
             });
 
@@ -86374,7 +86469,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[7], "../data/images/wall-t-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 131
+                lineNumber: 142
               }
             });
 
@@ -86385,7 +86480,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[8], "../data/images/wall-t-w.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 134
+                lineNumber: 145
               }
             });
 
@@ -86396,7 +86491,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[9], "../data/images/wall-t-e.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 137
+                lineNumber: 148
               }
             });
 
@@ -86407,7 +86502,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[10], "../data/images/wall-t-sw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 140
+                lineNumber: 151
               }
             });
 
@@ -86418,7 +86513,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[11], "../data/images/wall-t-s.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 143
+                lineNumber: 154
               }
             });
 
@@ -86429,7 +86524,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[12], "../data/images/wall-t-se.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 146
+                lineNumber: 157
               }
             });
 
@@ -86440,7 +86535,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 149
+                lineNumber: 160
               }
             });
 
@@ -86451,7 +86546,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[14], "../data/images/wall-f-nw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 152
+                lineNumber: 163
               }
             });
 
@@ -86462,7 +86557,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[15], "../data/images/wall-f-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 155
+                lineNumber: 166
               }
             });
 
@@ -86473,7 +86568,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[16], "../data/images/wall-f-ne-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 158
+                lineNumber: 169
               }
             });
 
@@ -86484,7 +86579,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[17], "../data/images/wall-f-sw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 161
+                lineNumber: 172
               }
             });
 
@@ -86495,7 +86590,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[18], "../data/images/wall-f-s-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 164
+                lineNumber: 175
               }
             });
 
@@ -86506,7 +86601,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[19], "../data/images/wall-f-se-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 167
+                lineNumber: 178
               }
             });
 
@@ -86517,7 +86612,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[20], "../data/images/wall-f-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 170
+                lineNumber: 181
               }
             });
 
@@ -86528,7 +86623,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[21], "../data/images/floor-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 173
+                lineNumber: 184
               }
             });
 
@@ -86539,7 +86634,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[22], "../data/images/floor-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 176
+                lineNumber: 187
               }
             });
 
@@ -86550,7 +86645,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[23], "../data/images/floor-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 179
+                lineNumber: 190
               }
             });
 
@@ -86561,7 +86656,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[24], "../data/images/floor-w-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 182
+                lineNumber: 193
               }
             });
 
@@ -86572,7 +86667,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[25], "../data/images/floor-e-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 185
+                lineNumber: 196
               }
             });
 
@@ -86583,7 +86678,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[26], "../data/images/floor-c-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 188
+                lineNumber: 199
               }
             });
 
@@ -86594,7 +86689,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[27], "../data/images/wall-t-n-s.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 191
+                lineNumber: 202
               }
             });
 
@@ -86605,7 +86700,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[28], "../data/images/wall-t-e-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 194
+                lineNumber: 205
               }
             });
 
@@ -86616,7 +86711,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[29], "../data/images/wall-t-n-s-e.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 197
+                lineNumber: 208
               }
             });
 
@@ -86627,7 +86722,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[30], "../data/images/wall-t-n-s-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 200
+                lineNumber: 211
               }
             });
 
@@ -86638,7 +86733,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[31], "../data/images/wall-t-n-e-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 203
+                lineNumber: 214
               }
             });
 
@@ -86649,7 +86744,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[32], "../data/images/wall-t-e-s-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 206
+                lineNumber: 217
               }
             });
 
@@ -86660,7 +86755,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[33], "../data/images/floor-n-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 209
+                lineNumber: 220
               }
             });
 
@@ -86671,7 +86766,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[34], "../data/images/floor-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 212
+                lineNumber: 223
               }
             });
 
@@ -86682,7 +86777,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[35], "../data/images/floor-w-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 215
+                lineNumber: 226
               }
             });
 
@@ -86693,7 +86788,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[36], "../data/images/floor-e-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 218
+                lineNumber: 229
               }
             });
 
@@ -86704,7 +86799,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[37], "../data/images/floor-c-5.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 221
+                lineNumber: 232
               }
             });
 
@@ -86715,7 +86810,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[38], "../data/images/floor-c-6.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 224
+                lineNumber: 235
               }
             });
 
@@ -86726,7 +86821,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[39], "../data/images/floor-c-7.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 227
+                lineNumber: 238
               }
             });
 
@@ -86737,7 +86832,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[40], "../data/images/floor-c-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 230
+                lineNumber: 241
               }
             });
 
@@ -86748,7 +86843,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[41], "../data/images/floor-c-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 233
+                lineNumber: 244
               }
             });
 
@@ -86759,7 +86854,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[42], "../data/images/floor-c-4.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 236
+                lineNumber: 247
               }
             });
 
@@ -86770,7 +86865,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[43], "../data/images/floor-c-8.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 239
+                lineNumber: 250
               }
             });
 
@@ -86781,7 +86876,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[44], "../data/images/floor-c-9.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 242
+                lineNumber: 253
               }
             });
 
@@ -86792,7 +86887,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[45], "../data/images/floor-e2n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 245
+                lineNumber: 256
               }
             });
 
@@ -86803,7 +86898,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[46], "../data/images/floor-w2n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 248
+                lineNumber: 259
               }
             });
 
@@ -86818,7 +86913,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.sourceWidth = _this.tileWidth;
       _this.gameBoardWidth = _this.tileWidth * 40;
       _this.tileMapArray = _this.props.gameBoard.map(function (a) {
-        return _this.props.isHuman ? a.isRevealed ? a.imageKey : 9 : a.imageKey;
+        return a.imageKey;
       });
       _this.tileCashMapArray = _this.props.gameBoard.map(function (x) {
         return x.hasCache && _this.props.isHuman ? 1 : 0;
@@ -86841,7 +86936,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         initialLeft: 0,
         top: 0,
         left: 0,
-        tileSize: 100
+        tileSize: 100,
+        fogOfWar: _this.props.gameBoard.map(function (a) {
+          return a.isRevealed ? 0 : 1;
+        })
       };
       return _this;
     }
@@ -86916,7 +87014,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           }, this._panResponder.panHandlers, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 261
+              lineNumber: 271
             }
           }),
           _react3.default.createElement(_native.TileMap, {
@@ -86929,7 +87027,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             renderTile: this.renderTile,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 262
+              lineNumber: 272
             }
           }),
           _react3.default.createElement(_native.TileMap, {
@@ -86949,63 +87047,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 source: src,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 279
+                  lineNumber: 297
                 }
               });
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 271
-            }
-          }),
-          _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[49], "../data/images/Magenta-square_100px.gif"),
-            tileSize: this.tileWidth,
-            columns: 40,
-            rows: 40,
-            sourceWidth: this.tileWidth,
-            layers: [this.tileHighlightedMapArray],
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 286
-            }
-          }),
-          _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[50], "../data/images/human.png"),
-            tileSize: this.tileWidth,
-            columns: 40,
-            rows: 40,
-            sourceWidth: this.tileWidth,
-            layers: [this.tileHumanMapArray],
-            renderTile: function renderTile(tile, src, styles) {
-              return _react3.default.createElement(_reactNative.Image, {
-                resizeMode: "stretch",
-                style: [styles, {
-                  height: _this3.tileWidth * 2,
-                  top: -_this3.tileWidth
-                }],
-                source: src,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 302
-                }
-              });
-            },
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 294
-            }
-          }),
-          _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[51], "../data/images/monster.png"),
-            tileSize: this.tileWidth,
-            columns: 40,
-            rows: 40,
-            sourceWidth: this.tileWidth,
-            layers: [this.tileMonsterMapArray],
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 309
+              lineNumber: 289
             }
           })
         );
@@ -87021,7 +87069,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Board;
-},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,656,657,658,659,660,661,662,663,664,665,666],"app\\screens\\Board.js");
+},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,656,657,658,659,660,661,662,663],"app\\screens\\Board.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87551,18 +87599,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   });
 },663,[164],"app\\data\\images\\shrine.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 100,
-    "height": 100,
-    "scales": [1],
-    "hash": "fb48c5c42f08d947fe9c6f682b343232",
-    "name": "Magenta-square_100px",
-    "type": "gif"
-  });
-},664,[164],"app\\data\\images\\Magenta-square_100px.gif");
-__d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
 		"httpServerLocation": "/assets/app/data/images",
@@ -87573,19 +87609,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "human",
 		"type": "png"
 	});
-},665,[164],"app\\data\\images\\human.png");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-    "__packager_asset": true,
-    "httpServerLocation": "/assets/app/data/images",
-    "width": 100,
-    "height": 100,
-    "scales": [1],
-    "hash": "3ba08df9f5b816a3eda3c55af733c1e7",
-    "name": "monster",
-    "type": "png"
-  });
-},666,[164],"app\\data\\images\\monster.png");
+},664,[164],"app\\data\\images\\human.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87603,7 +87627,618 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\screens\\Connect.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\Menu.js";
+
+  var _propTypes = _require(_dependencyMap[2], "prop-types");
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _reactNative = _require(_dependencyMap[3], "react-native");
+
+  var _Container = _require(_dependencyMap[4], "../components/Container");
+
+  var _Button = _require(_dependencyMap[5], "../components/Button");
+
+  var _Header = _require(_dependencyMap[6], "../components/Header");
+
+  var _Blurb = _require(_dependencyMap[7], "../components/Blurb");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    Menu: {
+      displayName: "Menu"
+    }
+  };
+
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/Menu.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var Menu = _wrapComponent("Menu")((_temp2 = _class = function (_Component) {
+    _inherits(Menu, _Component);
+
+    function Menu() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      _classCallCheck(this, Menu);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Menu.__proto__ || Object.getPrototypeOf(Menu)).call.apply(_ref, [this].concat(args))), _this), _this.getMenu = function () {
+        if (_this.props.mode === 1) {
+          return _this.getHumanMenu();
+        } else if (_this.props.mode === 2) {
+          return _this.getMonsterMenu();
+        } else {
+          return _this.getSettingsMenu();
+        }
+      }, _this.getMonsterMenu = function () {
+        return _react3.default.createElement(
+          _reactNative.Text,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 30
+            }
+          },
+          "Monster menu"
+        );
+      }, _this.getHumanMenu = function () {
+        return _react3.default.createElement(
+          _reactNative.View,
+          {
+            styles: {
+              flexDirection: "column"
+            },
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 35
+            }
+          },
+          _react3.default.createElement(
+            _reactNative.TouchableOpacity,
+            {
+              style: {
+                backgroundColor: '#fff'
+              },
+              onPress: _this.props.onItemSelected,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 36
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 37
+                }
+              },
+              "test moves"
+            )
+          ),
+          _react3.default.createElement(
+            _reactNative.TouchableOpacity,
+            {
+              style: {
+                backgroundColor: '#fff'
+              },
+              onPress: _this.props.onItemSelected,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 39
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 40
+                }
+              },
+              "test moves"
+            )
+          )
+        );
+      }, _this.getSettingsMenu = function () {
+        return _react3.default.createElement(
+          _reactNative.Text,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 47
+            }
+          },
+          "Settings menu"
+        );
+      }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(Menu, [{
+      key: "render",
+      value: function render() {
+        var menu = this.getMenu();
+        return _react3.default.createElement(
+          _Container.Container,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 55
+            }
+          },
+          menu
+        );
+      }
+    }]);
+
+    return Menu;
+  }(_react2.Component), _class.propTypes = {
+    mode: _propTypes2.default.number,
+    onItemSelected: _propTypes2.default.func,
+    echoLocate: _propTypes2.default.func
+  }, _temp2));
+
+  exports.default = Menu;
+},665,[118,179,129,12,586,589,592,595],"app\\screens\\Menu.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  var _jsxFileName = 'index.js';
+
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  var _react = _require(_dependencyMap[0], 'react');
+
+  var _react2 = _interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], 'react-native');
+
+  var _propTypes = _require(_dependencyMap[2], 'prop-types');
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _styles = _require(_dependencyMap[3], './styles');
+
+  var _styles2 = _interopRequireDefault(_styles);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  var deviceScreen = _reactNative.Dimensions.get('window');
+
+  var barrierForward = deviceScreen.width / 4;
+
+  function shouldOpenMenu(dx) {
+    return dx > barrierForward;
+  }
+
+  var SideMenu = function (_React$Component) {
+    _inherits(SideMenu, _React$Component);
+
+    function SideMenu(props) {
+      _classCallCheck(this, SideMenu);
+
+      var _this = _possibleConstructorReturn(this, (SideMenu.__proto__ || Object.getPrototypeOf(SideMenu)).call(this, props));
+
+      _this.prevLeft = 0;
+      _this.isOpen = !!props.isOpen;
+      var initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1;
+      var openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
+      var hiddenMenuOffsetPercentage = props.hiddenMenuOffset / deviceScreen.width;
+      var left = new _reactNative.Animated.Value(props.isOpen ? props.openMenuOffset * initialMenuPositionMultiplier : props.hiddenMenuOffset);
+      _this.onLayoutChange = _this.onLayoutChange.bind(_this);
+      _this.onStartShouldSetResponderCapture = props.onStartShouldSetResponderCapture.bind(_this);
+      _this.onMoveShouldSetPanResponder = _this.handleMoveShouldSetPanResponder.bind(_this);
+      _this.onPanResponderMove = _this.handlePanResponderMove.bind(_this);
+      _this.onPanResponderRelease = _this.handlePanResponderEnd.bind(_this);
+      _this.onPanResponderTerminate = _this.handlePanResponderEnd.bind(_this);
+      _this.state = {
+        width: deviceScreen.width,
+        height: deviceScreen.height,
+        openOffsetMenuPercentage: openOffsetMenuPercentage,
+        openMenuOffset: deviceScreen.width * openOffsetMenuPercentage,
+        hiddenMenuOffsetPercentage: hiddenMenuOffsetPercentage,
+        hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
+        left: left
+      };
+
+      _this.state.left.addListener(function (_ref) {
+        var value = _ref.value;
+        return _this.props.onSliding(Math.abs((value - _this.state.hiddenMenuOffset) / (_this.state.openMenuOffset - _this.state.hiddenMenuOffset)));
+      });
+
+      return _this;
+    }
+
+    _createClass(SideMenu, [{
+      key: 'componentWillMount',
+      value: function componentWillMount() {
+        this.responder = _reactNative.PanResponder.create({
+          onStartShouldSetResponderCapture: this.onStartShouldSetResponderCapture,
+          onMoveShouldSetPanResponder: this.onMoveShouldSetPanResponder,
+          onPanResponderMove: this.onPanResponderMove,
+          onPanResponderRelease: this.onPanResponderRelease,
+          onPanResponderTerminate: this.onPanResponderTerminate
+        });
+      }
+    }, {
+      key: 'componentWillReceiveProps',
+      value: function componentWillReceiveProps(props) {
+        if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen && (props.autoClosing || this.isOpen === false)) {
+          this.openMenu(props.isOpen);
+        }
+      }
+    }, {
+      key: 'onLayoutChange',
+      value: function onLayoutChange(e) {
+        var _e$nativeEvent$layout = e.nativeEvent.layout,
+            width = _e$nativeEvent$layout.width,
+            height = _e$nativeEvent$layout.height;
+        var openMenuOffset = width * this.state.openOffsetMenuPercentage;
+        var hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
+        this.setState({
+          width: width,
+          height: height,
+          openMenuOffset: openMenuOffset,
+          hiddenMenuOffset: hiddenMenuOffset
+        });
+      }
+    }, {
+      key: 'getContentView',
+      value: function getContentView() {
+        var _this2 = this;
+
+        var overlay = null;
+
+        if (this.isOpen) {
+          overlay = _react2.default.createElement(_reactNative.TouchableWithoutFeedback, {
+            onPress: function onPress() {
+              return _this2.openMenu(false);
+            },
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 138
+            }
+          }, _react2.default.createElement(_reactNative.View, {
+            style: _styles2.default.overlay,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 139
+            }
+          }));
+        }
+
+        var _state = this.state,
+            width = _state.width,
+            height = _state.height;
+
+        var ref = function ref(sideMenu) {
+          return _this2.sideMenu = sideMenu;
+        };
+
+        var style = [_styles2.default.frontView, {
+          width: width,
+          height: height
+        }, this.props.animationStyle(this.state.left)];
+        return _react2.default.createElement(_reactNative.Animated.View, _extends({
+          style: style,
+          ref: ref
+        }, this.responder.panHandlers, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 153
+          }
+        }), this.props.children, overlay);
+      }
+    }, {
+      key: 'moveLeft',
+      value: function moveLeft(offset) {
+        var newOffset = this.menuPositionMultiplier() * offset;
+        this.props.animationFunction(this.state.left, newOffset).start();
+        this.prevLeft = newOffset;
+      }
+    }, {
+      key: 'menuPositionMultiplier',
+      value: function menuPositionMultiplier() {
+        return this.props.menuPosition === 'right' ? -1 : 1;
+      }
+    }, {
+      key: 'handlePanResponderMove',
+      value: function handlePanResponderMove(e, gestureState) {
+        if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {
+          var newLeft = this.prevLeft + gestureState.dx;
+
+          if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.state.openMenuOffset) {
+            newLeft = this.menuPositionMultiplier() * this.state.openMenuOffset;
+          }
+
+          this.props.onMove(newLeft);
+          this.state.left.setValue(newLeft);
+        }
+      }
+    }, {
+      key: 'handlePanResponderEnd',
+      value: function handlePanResponderEnd(e, gestureState) {
+        var offsetLeft = this.menuPositionMultiplier() * (this.state.left.__getValue() + gestureState.dx);
+        this.openMenu(shouldOpenMenu(offsetLeft));
+      }
+    }, {
+      key: 'handleMoveShouldSetPanResponder',
+      value: function handleMoveShouldSetPanResponder(e, gestureState) {
+        if (this.gesturesAreEnabled()) {
+          var x = Math.round(Math.abs(gestureState.dx));
+          var y = Math.round(Math.abs(gestureState.dy));
+          var touchMoved = x > this.props.toleranceX && y < this.props.toleranceY;
+
+          if (this.isOpen) {
+            return touchMoved;
+          }
+
+          var withinEdgeHitWidth = this.props.menuPosition === 'right' ? gestureState.moveX > deviceScreen.width - this.props.edgeHitWidth : gestureState.moveX < this.props.edgeHitWidth;
+          var swipingToOpen = this.menuPositionMultiplier() * gestureState.dx > 0;
+          return withinEdgeHitWidth && touchMoved && swipingToOpen;
+        }
+
+        return false;
+      }
+    }, {
+      key: 'openMenu',
+      value: function openMenu(isOpen) {
+        var _state2 = this.state,
+            hiddenMenuOffset = _state2.hiddenMenuOffset,
+            openMenuOffset = _state2.openMenuOffset;
+        this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
+        this.isOpen = isOpen;
+        this.forceUpdate();
+        this.props.onChange(isOpen);
+      }
+    }, {
+      key: 'gesturesAreEnabled',
+      value: function gesturesAreEnabled() {
+        var disableGestures = this.props.disableGestures;
+
+        if (typeof disableGestures === 'function') {
+          return !disableGestures();
+        }
+
+        return !disableGestures;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var boundryStyle = this.props.menuPosition === 'right' ? {
+          left: this.state.width - this.state.openMenuOffset
+        } : {
+          right: this.state.width - this.state.openMenuOffset
+        };
+
+        var menu = _react2.default.createElement(_reactNative.View, {
+          style: [_styles2.default.menu, boundryStyle],
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 241
+          }
+        }, this.props.menu);
+
+        return _react2.default.createElement(_reactNative.View, {
+          style: _styles2.default.container,
+          onLayout: this.onLayoutChange,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 247
+          }
+        }, menu, this.getContentView());
+      }
+    }]);
+
+    return SideMenu;
+  }(_react2.default.Component);
+
+  exports.default = SideMenu;
+  SideMenu.propTypes = {
+    edgeHitWidth: _propTypes2.default.number,
+    toleranceX: _propTypes2.default.number,
+    toleranceY: _propTypes2.default.number,
+    menuPosition: _propTypes2.default.oneOf(['left', 'right']),
+    onChange: _propTypes2.default.func,
+    onMove: _propTypes2.default.func,
+    children: _propTypes2.default.node,
+    menu: _propTypes2.default.node,
+    openMenuOffset: _propTypes2.default.number,
+    hiddenMenuOffset: _propTypes2.default.number,
+    animationStyle: _propTypes2.default.func,
+    disableGestures: _propTypes2.default.oneOfType([_propTypes2.default.func, _propTypes2.default.bool]),
+    animationFunction: _propTypes2.default.func,
+    onStartShouldSetResponderCapture: _propTypes2.default.func,
+    isOpen: _propTypes2.default.bool,
+    bounceBackOnOverdraw: _propTypes2.default.bool,
+    autoClosing: _propTypes2.default.bool
+  };
+  SideMenu.defaultProps = {
+    toleranceY: 10,
+    toleranceX: 10,
+    edgeHitWidth: 60,
+    children: null,
+    menu: null,
+    openMenuOffset: deviceScreen.width * (2 / 3),
+    disableGestures: false,
+    menuPosition: 'left',
+    hiddenMenuOffset: 0,
+    onMove: function onMove() {},
+    onStartShouldSetResponderCapture: function onStartShouldSetResponderCapture() {
+      return true;
+    },
+    onChange: function onChange() {},
+    onSliding: function onSliding() {},
+    animationStyle: function animationStyle(value) {
+      return {
+        transform: [{
+          translateX: value
+        }]
+      };
+    },
+    animationFunction: function animationFunction(prop, value) {
+      return _reactNative.Animated.spring(prop, {
+        toValue: value,
+        friction: 8
+      });
+    },
+    isOpen: false,
+    bounceBackOnOverdraw: true,
+    autoClosing: true
+  };
+},666,[118,12,129,667],"node_modules\\react-native-side-menu\\build\\index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  var _reactNative = _require(_dependencyMap[0], 'react-native');
+
+  var absoluteStretch = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
+  };
+  exports.default = _reactNative.StyleSheet.create({
+    container: _extends({}, absoluteStretch, {
+      justifyContent: 'center'
+    }),
+    menu: _extends({}, absoluteStretch),
+    frontView: {
+      flex: 1,
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      backgroundColor: 'transparent',
+      overflow: 'hidden'
+    },
+    overlay: _extends({}, absoluteStretch, {
+      backgroundColor: 'transparent'
+    })
+  });
+},667,[12],"node_modules\\react-native-side-menu\\build\\styles.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react2 = _require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = _require(_dependencyMap[1], "./../../node_modules/react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _class,
+      _temp2,
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\Connect.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -87636,7 +88271,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/screens/Connect.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/Connect.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -87711,7 +88346,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Connect;
-},667,[118,179,129,586,589,592,668,673],"app\\screens\\Connect.js");
+},668,[118,179,129,586,589,592,669,674],"app\\screens\\Connect.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87730,12 +88365,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.GameList = _GameList2.default;
   exports.styles = _styles2.default;
-},668,[669,670],"app\\components\\GameList\\index.js");
+},669,[670,671],"app\\components\\GameList\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\GameList\\GameList.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\GameList\\GameList.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -87800,7 +88435,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = GameList;
-},669,[118,12,129,670,671,672],"app\\components\\GameList\\GameList.js");
+},670,[118,12,129,671,672,673],"app\\components\\GameList\\GameList.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87838,12 +88473,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       alignItems: 'center'
     }
   });
-},670,[493,12],"app\\components\\GameList\\styles.js");
+},671,[493,12],"app\\components\\GameList\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\GameList\\ListItem.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\GameList\\ListItem.js";
 
   var _propTypes = _require(_dependencyMap[0], "prop-types");
 
@@ -87903,12 +88538,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = ListItem;
-},671,[129,118,12,670],"app\\components\\GameList\\ListItem.js");
+},672,[129,118,12,671],"app\\components\\GameList\\ListItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\components\\GameList\\Separator.js";
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\GameList\\Separator.js";
 
   var _react = _require(_dependencyMap[0], "react");
 
@@ -87933,7 +88568,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = Separator;
-},672,[118,12,670],"app\\components\\GameList\\Separator.js");
+},673,[118,12,671],"app\\components\\GameList\\Separator.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87951,7 +88586,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     key: '3',
     name: 'game the third'
   }];
-},673,[],"app\\data\\testGames.js");
+},674,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -87969,7 +88604,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _class,
       _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\react-native-cli\\ProjectEyeCue\\app\\screens\\Waiting.js";
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\Waiting.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
 
@@ -87998,7 +88633,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/react-native-cli/ProjectEyeCue/app/screens/Waiting.js",
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/Waiting.js",
     components: _components,
     locals: [module],
     imports: [_react3.default]
@@ -88072,7 +88707,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Waiting;
-},674,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+},675,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
 require(44);
-require(676);
+require(677);
 //# sourceMappingURL=index.map
