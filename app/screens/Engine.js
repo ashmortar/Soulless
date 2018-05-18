@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Dimensions, Image, View, PanResponder } from "react-native";
-import { Loop, Stage } from "react-game-kit/native";
+import { Loop, Stage, TileMap } from "react-game-kit/native";
 
 import Board from "./Board";
 
@@ -20,8 +20,8 @@ export default class Engine extends Component {
     this.screenDimensions = Dimensions.get("window");
     this.tileWidth = Math.ceil(this.screenDimensions.height / 40);
     this.gameBoardWidth = this.tileWidth * 40;
-    this.playerX = (props.playerSpace.name % 40) * this.tileWidth;
-    this.playerY = Math.floor(props.playerSpace.name / 40) * this.tileWidth;
+    this.playerX = (props.playerSpace.name / 40) * this.tileWidth;
+    this.playerY = Math.floor(props.playerSpace.name % 40) * this.tileWidth;
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
@@ -34,6 +34,8 @@ export default class Engine extends Component {
       initialLeft: 0,
       top: 0,
       left: 0,
+      highlightedTileMap: this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0),
+
     };
   }
 
@@ -106,6 +108,14 @@ export default class Engine extends Component {
             <Board
               gameBoard={this.props.gameBoard}
               isHuman={this.props.isHuman}
+            />
+            <TileMap
+              src={require("../data/images/Magenta-square_100px.gif")}
+              tileSize={this.tileWidth}
+              columns={40}
+              rows={40}
+              sourceWidth={this.tileWidth}
+              layers={[this.state.highlightedTileMap]}
             />
             <Image style={{ position: 'absolute', top: this.state.playerX - this.tileWidth, left: this.state.playerY, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
           </View>

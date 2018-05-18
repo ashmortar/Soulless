@@ -1184,6 +1184,7 @@ class Game extends Component {
   }
 
   showHumanMoves = () => {
+    console.log('show human moves')
     let i = this.humanSpace.name;
     // north
     if (i - this.cellsInRow > 0) {
@@ -1350,7 +1351,7 @@ class Game extends Component {
   // const menu = <Menu navigator={navigator}/>;
   render() {
     const finished = this.state.boardFinished;
-    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.echoLocate}/>;
+    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.showHumanMoves}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>; 
     if (finished) {
       return (
