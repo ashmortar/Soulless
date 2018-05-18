@@ -42,7 +42,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: true,
+      isHuman: false,
       echoDirection: 'radius',
       playerSpace: { name: 0 },
       boardFinished: false,
