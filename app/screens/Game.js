@@ -55,7 +55,7 @@ class Game extends Component {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
-    this.echoLocate();
+    // this.echoLocate();
     // this.showHumanMoves();
     this.assignImageKeys();
   }
@@ -1154,7 +1154,7 @@ class Game extends Component {
       default:
         break;
     }
-    // setTimeout(this.setState({ boardFinished: true }), 500);
+    this.setState({ redraw: !this.state.redraw })
   }
 
   listen = () => {
@@ -1197,7 +1197,7 @@ class Game extends Component {
   }
 
   onItemSelected = (item) => {
-    console.log('onItemSelected');
+    console.log('onItemSelected', item);
     switch (item) {
       case 'move':
         if (this.state.isHuman) {
@@ -1272,7 +1272,7 @@ class Game extends Component {
   }
 
   showHumanMoves = () => {
-    console.log('show human moves', this.humanSpace.name, this.state.playerSpace.name)
+    // console.log('show human moves', this.humanSpace.name, this.state.playerSpace.name)
     let i = this.humanSpace.name;
     // north
     if (i - this.cellsInRow > 0) {
@@ -1326,7 +1326,7 @@ class Game extends Component {
   }
 
   moveHuman = (item) => {
-    console.log('move human')
+    // console.log('move human')
     item = this.elements[this.state.playerSpace.name - 1];
     if (item.isHighlighted) {
       this.elements[this.humanSpace.name].hasHuman = false;
@@ -1440,37 +1440,28 @@ class Game extends Component {
     const finished = this.state.boardFinished;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    if (finished) {
-      return (
-        <SideMenu
-          menu={menuRight}
-          menuPosition='right'
-        >
-        <SideMenu
-          menu={menuLeft}
-          menuPosition='left'
-        >
-          <Engine
-            gameBoard={this.elements}
-            tilesInRow={this.cellsInRow}
-            boardFinished={this.state.boardFinished}
-            isHuman={this.state.isHuman}
-            playerSpace={this.state.playerSpace}
-          />
-        </SideMenu>
-        </SideMenu> )
-    } else {
-      return (
-        <View>
-        <TouchableOpacity onPress={this.echoLocate}>
-          <Text>descending into madness ...</Text>
-        </TouchableOpacity>
-        </View>
-      )
-    }
-
+    return (
+      <SideMenu
+        menu={menuRight}
+        menuPosition='right'
+      >
+      <SideMenu
+        menu={menuLeft}
+        menuPosition='left'
+      >
+        <Engine
+          gameBoard={this.elements}
+          tilesInRow={this.cellsInRow}
+          boardFinished={this.state.boardFinished}
+          isHuman={this.state.isHuman}
+          playerSpace={this.state.playerSpace}
+        />
+      </SideMenu>
+      </SideMenu> 
+    )
   }
 }
+
 export default Game;
 
 

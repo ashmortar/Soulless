@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Dimensions, Image, View, PanResponder } from "react-native";
+import { Dimensions, Image, View, PanResponder, TouchableHighlight } from "react-native";
 import { Loop, Stage, TileMap } from "react-game-kit/native";
 
 import Board from "./Board";
@@ -18,7 +18,7 @@ export default class Engine extends Component {
     super(props);
     // console.log("Engine");
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = Math.ceil(this.screenDimensions.height / 40);
+    this.tileWidth = Math.ceil(this.screenDimensions.height / 30);
     this.gameBoardWidth = this.tileWidth * 40;
     this.playerX = (props.playerSpace.name % 40) * this.tileWidth;
     this.playerY = Math.floor(props.playerSpace.name / 40) * this.tileWidth;
@@ -36,6 +36,8 @@ export default class Engine extends Component {
       left: 0,
       highlightedTileMap: this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0),
       showHighlighted: false,
+      fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
+      finishedUpdatingFogMap: true,
 
     };
   }
@@ -68,16 +70,18 @@ export default class Engine extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log('received props');
     let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
+    let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
     if (this.props.playerSpace !== nextProps.playerSpace) {
       this.setState({
         playerX: (nextProps.playerSpace.name % 40) * this.tileWidth,
         playerY: Math.floor(nextProps.playerSpace.name / 40) * this.tileWidth,
       });
     }
-    if (this.state.highlightedTileMap !== newHighlightedTileMap) {
+    if (JSON.stringify(this.state.highlightedTileMap !== newHighlightedTileMap)) {
       this.setState({
-        highlightedTileMap: nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0)
+        highlightedTileMap: newHighlightedTileMap,
       });
       if (newHighlightedTileMap.includes(1)) {
         this.setState({
@@ -86,8 +90,14 @@ export default class Engine extends Component {
       } else {
         this.setState({
           showHighlighted: false,
-        })
+        });
       }
+    }
+    if (JSON.stringify(this.state.fogMap) !== JSON.stringify(newFogMap)) {
+      this.setState({
+        finishedUpdatingFogMap: false,
+        fogMap: newFogMap,
+      });
     }
   }
 
@@ -131,6 +141,13 @@ export default class Engine extends Component {
           rows={40}
           sourceWidth={this.tileWidth}
           layers={[this.state.highlightedTileMap]}
+          renderTile={(tile, src, styles) => (
+            <Image
+              resizeMode="stretch"
+              style={[styles, { opacity: 0.25 }]}
+              source={src}
+            />
+          )}
         />
       );
     }
