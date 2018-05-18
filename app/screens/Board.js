@@ -51,32 +51,32 @@ export default class Board extends Component {
     }
   }
 
-  componentWillMount() {
-    // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    // console.log(this.props.isHuman);
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => {
-        // console.log("on pan responder grant");
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        let { touches } = evt.nativeEvent;
-        if (touches.length === 2 && !this.state.isZooming) {
-          this.processTouch(touches[0].pageX, touches[0].pageY);
-        }
-      },
-      onPanResponderRelease: () => {
-        // console.log("on pan responder release");
-        this.setState({
-          isZooming: false,
-          isMoving: false,
-        });
-      }
-    });
-  }
+  // componentWillMount() {
+  //   // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+  //   // console.log(this.props.isHuman);
+  //   this._panResponder = PanResponder.create({
+  //     onStartShouldSetPanResponder: (evt, gestureState) => true,
+  //     onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+  //     onMoveShouldSetPanResponder: (evt, gestureState) => true,
+  //     onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+  //     onPanResponderGrant: (evt, gestureState) => {
+  //       // console.log("on pan responder grant");
+  //     },
+  //     onPanResponderMove: (evt, gestureState) => {
+  //       let { touches } = evt.nativeEvent;
+  //       if (touches.length === 2 && !this.state.isZooming) {
+  //         this.processTouch(touches[0].pageX, touches[0].pageY);
+  //       }
+  //     },
+  //     onPanResponderRelease: () => {
+  //       // console.log("on pan responder release");
+  //       this.setState({
+  //         isZooming: false,
+  //         isMoving: false,
+  //       });
+  //     }
+  //   });
+  // }
 
   // componentDidMount() {
   //   this.context.loop.subscribe(this.update);
@@ -87,35 +87,35 @@ export default class Board extends Component {
   // }
 
 
-  processTouch(x, y) {
-    if (!this.state.isMoving) {
-      this.setState({
-        isMoving: true,
-        initialX: x,
-        initialY: y,
-        initialTop: this.state.top,
-        initialLeft: this.state.left,
-      });
-    } else {
-      let left = this.state.initialLeft + x - this.state.initialX;
-      let top = this.state.initialTop + y - this.state.initialY;
-      // console.log(left, this.gameBoardWidth);
-      this.setState({
-          left:
-            left > 0
-            ? 0
-            : left < (-this.gameBoardWidth + this.screenDimensions.width)
-              ? (-this.gameBoardWidth + this.screenDimensions.width)
-              : left,
-          top:
-            top > 0
-            ? 0
-            : top < (-this.gameBoardWidth + this.screenDimensions.height)
-            ? (-this.gameBoardWidth + this.screenDimensions.height)
-            : top,
-        });
-    }
-  }
+  // processTouch(x, y) {
+  //   if (!this.state.isMoving) {
+  //     this.setState({
+  //       isMoving: true,
+  //       initialX: x,
+  //       initialY: y,
+  //       initialTop: this.state.top,
+  //       initialLeft: this.state.left,
+  //     });
+  //   } else {
+  //     let left = this.state.initialLeft + x - this.state.initialX;
+  //     let top = this.state.initialTop + y - this.state.initialY;
+  //     // console.log(left, this.gameBoardWidth);
+  //     this.setState({
+  //         left:
+  //           left > 0
+  //           ? 0
+  //           : left < (-this.gameBoardWidth + this.screenDimensions.width)
+  //             ? (-this.gameBoardWidth + this.screenDimensions.width)
+  //             : left,
+  //         top:
+  //           top > 0
+  //           ? 0
+  //           : top < (-this.gameBoardWidth + this.screenDimensions.height)
+  //           ? (-this.gameBoardWidth + this.screenDimensions.height)
+  //           : top,
+  //       });
+  //   }
+  // }
 
   // update = () => {
   //   let map = this.props.gameBoard.map(a => a.isRevealed ? 0 : 1)
@@ -268,7 +268,7 @@ export default class Board extends Component {
     // Math.floor(100*this.state.zoom);
     // let scale = this.state.tileSize;
     return (
-      <View style={{ position: 'absolute', left: this.state.left, top: this.state.top }} {...this._panResponder.panHandlers} >
+      <View>
         <TileMap
           src={require("../data/images/Black_square.jpeg")}
           tileSize={this.tileWidth}
@@ -278,14 +278,6 @@ export default class Board extends Component {
           layers={[this.tileMapArray]}
           renderTile={this.renderTile}
         />
-        {/* <TileMap
-          src={require("../data/images/Black_square.jpeg")}
-          tileSize={this.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.tileWidth}
-          layers={[this.state.fogOfWar]}
-        /> */}
         <TileMap
           src={require("../data/images/shrine.png")}
           tileSize={this.tileWidth}
@@ -301,37 +293,6 @@ export default class Board extends Component {
             />
           )}
         />
-        {/* <TileMap
-          src={require("../data/images/Magenta-square_100px.gif")}
-          tileSize={this.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.tileWidth}
-          layers={[this.tileHighlightedMapArray]}
-        /> */}
-        {/* <TileMap
-          src={require("../data/images/human.png")}
-          tileSize={this.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.tileWidth}
-          layers={[this.tileHumanMapArray]}
-          renderTile={(tile, src, styles) => (
-            <Image
-              resizeMode="stretch"
-              style={[styles, { height: (this.tileWidth * 2), top: -this.tileWidth }]}
-              source={src}
-            />
-          )}
-        />
-        <TileMap
-          src={require("../data/images/monster.png")}
-          tileSize={this.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.tileWidth}
-          layers={[this.tileMonsterMapArray]}
-        /> */}
       </View>
     );
   }
