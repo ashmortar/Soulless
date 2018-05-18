@@ -66,7 +66,8 @@ export default class Engine extends Component {
     });
   }
 
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillRecieveProps(nextProps) {
+    console.log('component will recieve props')
   }
 
   processTouch(x, y) {

@@ -7,12 +7,14 @@ import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 
+
 class Menu extends Component {
   static propTypes = {
     mode: PropTypes.number,//0 - settings, 1 - human, 2 - monster
     onItemSelected: PropTypes.func,
-    echoLocate: PropTypes.func,
   }
+
+
 
   getMenu = () => {
     if (this.props.mode === 1) {
@@ -27,24 +29,93 @@ class Menu extends Component {
   }
 
   getMonsterMenu = () => {
-    return(<Text>Monster menu</Text>);
-  }
+    return(
+      <View>
+        <Text style={{
+          color: '#fff',
+          fontWeight: '600',
+          fontSize: 20,
+        }}>Choose an action:</Text>
 
-  getHumanMenu = () => {
-    return (
-      <View styles={{ flexDirection: "column" }}>
-        <TouchableOpacity style={{ backgroundColor: '#fff' }} onPress={this.props.onItemSelected}>
-          <Text>test moves</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ backgroundColor: '#fff' }} onPress={this.props.onItemSelected}>
-          <Text>test moves</Text>
-        </TouchableOpacity>
+        <NavButton
+          onPress={() => this.props.onItemSelected('move')}
+          text={'move'}
+        />
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('sniff')}
+          text={'sniff'}
+        />
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('listen')}
+          text={'listen'}
+        />
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('pounce')}
+          text={'pounce'}
+        />
+
       </View>
     );
   }
 
+  getHumanMenu = () => {
+    return(
+      <View>
+        <Text style={{
+          color: '#fff',
+          fontWeight: '600',
+          fontSize: 20,
+        }}>Choose an action:</Text>
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('move')}
+          text={'move'}
+        />
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('echo')}
+          text={'echo'}
+        />
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('listen')}
+          text={'listen'}
+        />
+
+      </View>
+    );
+  }
+
+
   getSettingsMenu = () => {
-    return(<Text>Settings menu</Text>);
+    return(
+      <View>
+        <Text style={{
+          color: '#fff',
+          fontWeight: '600',
+          fontSize: 20,
+        }}>Settings</Text>
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('home')}
+          text={'home'}
+        />
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('zoom')}
+          text={'zoom'}
+        />
+
+        <NavButton
+          onPress={() => this.props.onItemSelected('exit')}
+          text={'exit'}
+        />
+
+      </View>
+    );
   }
 
 
