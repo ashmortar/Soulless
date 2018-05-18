@@ -55,7 +55,8 @@ class Game extends Component {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
-    // this.echoLocate();
+    this.echoLocate();
+    // this.showHumanMoves();
     this.assignImageKeys();
   }
 
@@ -651,9 +652,15 @@ class Game extends Component {
       path.push(next);
       next = next.parent;
     }
-    this.resetGrid()
+    this.resetParents()
     // console.log((path.length - 1), path)
     return (path.length - 1);
+  }
+
+  resetParents = () => {
+    for (i = 0; i < this.elements.length; i++) {
+      this.elements[i].parent = null;
+    }
   }
 
   assignHumanStart = () => {
@@ -680,9 +687,9 @@ class Game extends Component {
       console.log(`counter: ${counter}`);
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
-      if (counter % 5 === 0) {
-        this.assignHumanStart();
-      }
+      // if (counter % 5 === 0) {
+      //   this.assignHumanStart();
+      // }
       counter++;
     }
     // console.log('cell and distance', cell, distance);
@@ -1043,10 +1050,9 @@ class Game extends Component {
 
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
 
-  resetGrid = () => {
+  resetHighlighted = () => {
     for (let i = 0; i < this.elements.length; i++) {
       this.elements[i].isHighlighted = false;
-      this.elements[i].parent = null;
     }
   }
 
@@ -1218,18 +1224,19 @@ class Game extends Component {
         this.listen();
         break;
       case 'echo':
-        Alert.alert(
-          'Echo.',
-          'Choose the way.',
-          [
-            {text: 'Burst', onPress: () => console.log('Burst Pressed')},
-            {text: 'North', onPress: () => console.log('North Pressed')},
-            {text: 'South', onPress: () => console.log('South Pressed')},
-            {text: 'East', onPress: () => console.log('East Pressed')},
-            {text: 'West', onPress: () => console.log('West Pressed')},
-          ],
-          { cancelable: true }
-        )
+        // Alert.alert(
+        //   'Echo.',
+        //   'Choose the way.',
+        //   [
+        //     {text: 'Burst', onPress: () => console.log('Burst Pressed')},
+        //     {text: 'North', onPress: () => console.log('North Pressed')},
+        //     {text: 'South', onPress: () => console.log('South Pressed')},
+        //     {text: 'East', onPress: () => console.log('East Pressed')},
+        //     {text: 'West', onPress: () => console.log('West Pressed')},
+        //   ],
+        //   { cancelable: true }
+        // )
+        this.echoLocate();
         this.setState({ redraw: !this.state.redraw });
         break;
       case 'pounce':
@@ -1308,7 +1315,7 @@ class Game extends Component {
   }
 
   showHumanMoves = () => {
-    console.log('show human moves')
+    console.log('show human moves', this.humanSpace.name, this.state.playerSpace.name)
     let i = this.humanSpace.name;
     // north
     if (i - this.cellsInRow > 0) {
@@ -1362,18 +1369,20 @@ class Game extends Component {
   }
 
   moveHuman = (item) => {
+    console.log('move human')
+    item = this.elements[this.state.playerSpace.name - 1];
     if (item.isHighlighted) {
       this.elements[this.humanSpace.name].hasHuman = false;
       item.hasHuman = true;
       this.humanSpace = item;
-      this.resetGrid();
+      this.resetHighlighted();
+      this.setState({ playerSpace: item });
     } else {
       Alert.alert(
         'Uh-Oh',
         'Please select a highlighted space',
       );
     }
-    this.setState({ redraw: !this.state.redraw });
   }
 
 
