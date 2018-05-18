@@ -31,16 +31,29 @@ class Menu extends Component {
   }
 
   getHumanMenu = () => {
-    return (
-      <View styles={{ flexDirection: "column" }}>
-        <TouchableOpacity style={{ backgroundColor: '#fff' }} onPress={this.props.onItemSelected}>
-          <Text>test moves</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ backgroundColor: '#fff' }} onPress={this.props.onItemSelected}>
-          <Text>test moves</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    <View>
+      <Text style={{
+        color: '#fff',
+        fontWeight: '600',
+        fontSize: 20,
+      }}>Choose an action:</Text>
+
+      <NavButton
+        onPress={() => this.props.onItemSelected('move')}
+        text={'move'}
+      />
+
+      <NavButton
+        onPress={() => this.props.onItemSelected('echo')}
+        text={'echo'}
+      />
+
+      <NavButton
+        onPress={() => this.props.onItemSelected('listen')}
+        text={'listen'}
+      />
+
+    </View>
   }
 
   getSettingsMenu = () => {

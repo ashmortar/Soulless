@@ -545,14 +545,14 @@ class Game extends Component {
       }
     }
   }
-  
+
   createWall_straightHorizontal = (i, length) => {
 
     let a = i - 2 * this.cellsInRow;
     let b = i + length * 2 - 1;
     let c = i - 2 * this.cellsInRow + length * 2 - 1;
     let total = this.cellsTotal;
-    
+
     if ((i >= 0) && (i < total) && (a >= 0) && (a < total) && (b >= 0) && (b < total) && (c >= 0) && (c < total)) {
     // if ((i - 2 * this.cellsInRow >= 0) && ((i + 1) % this.cellsInRow != 0)) {
       for (let j=0; j<length; j++) {
@@ -633,7 +633,7 @@ class Game extends Component {
       let cell = queue.shift();
       if (cell === end) {
         // console.log("found you")
-        break; 
+        break;
       }
       let neighbors = cell.monsterEdges;
       for ( let i = 0; i < neighbors.length; i++) {
@@ -1152,7 +1152,89 @@ class Game extends Component {
   }
 
   listen = () => {
-    // findShortestPath();
+    let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
+    Alert.alert(
+      'You listened.',
+      `Opponent is ${distance} cells away`,
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+    this.setState({ redraw: !this.state.redraw });
+  }
+
+  sniff = (cell1, cell2) => {
+
+    let direction = '';
+    if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
+      direction += 'S';
+    } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
+      direction += 'N';
+    }
+
+    if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
+      direction += 'E';
+    } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
+      direction += 'W';
+    }
+
+    Alert.alert(
+      'You sniffed.',
+      `Opponent is in ${direction} direction from you.`,
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+    this.setState({ redraw: !this.state.redraw });
+  }
+
+  onItemSelected = (item) => {
+    console.log('onItemSelected');
+    switch (item) {
+      case 'move':
+        if (this.state.isHuman) {
+          this.showHumanMoves();
+          this.setState({ redraw: !this.state.redraw });
+        } else {
+          this.showMonsterMoves();
+          this.setState({ redraw: !this.state.redraw });
+        }
+        break;
+      case 'sniff':
+        let cell1;
+        let cell2;
+        if (this.state.isHuman) {
+          cell1 = this.humanSpace.name;
+          cell2 = this.monsterSpace.name;
+        } else {
+          cell1 = this.monsterSpace.name;
+          cell2 = this.humanSpace.name;
+        }
+        this.sniff(cell1, cell2);
+        break;
+      case 'listen':
+        this.listen();
+        break;
+      case 'echo':
+        //
+        break;
+      case 'pounce':
+        //
+        break;
+      case 'home':
+        //
+        break;
+      case 'zoom':
+        //
+        break;
+      case 'exit':
+        //
+        break;
+      default:
+        // console.log('');
+    }
   }
 
   showMonsterMoves = () => {
@@ -1352,12 +1434,12 @@ class Game extends Component {
   render() {
     const finished = this.state.boardFinished;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.showHumanMoves}/>;
-    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>; 
+    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
     if (finished) {
       return (
         <SideMenu
           menu={menuRight}
-          menuPosition='right'   
+          menuPosition='right'
         >
         <SideMenu
           menu={menuLeft}
@@ -1371,7 +1453,7 @@ class Game extends Component {
             playerSpace={this.state.playerSpace}
           />
         </SideMenu>
-        </SideMenu> )  
+        </SideMenu> )
     } else {
       return (
         <View>
