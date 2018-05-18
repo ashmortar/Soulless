@@ -26,8 +26,10 @@ export default class Board extends Component {
     // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache && this.props.isHuman ? 1 : 0);
     this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
-    this.tileHumanMapArray = this.props.gameBoard.map(x => x.hasHuman && this.props.isHuman ? 1 : 0);
-    this.tileMonsterMapArray = this.props.gameBoard.map(x => x.hasMonster && !this.props.isHuman ? 1 : 0);
+    // this.tileHumanMapArray = this.props.gameBoard.map(x => x.hasHuman && this.props.isHuman ? 1 : 0);
+    // this.tileMonsterMapArray = this.props.gameBoard.map(x => x.hasMonster && !this.props.isHuman ? 1 : 0);
+    this.tileHumanMapArray = this.props.gameBoard.map(x => x.hasHuman ? 1 : 0);
+    this.tileMonsterMapArray = this.props.gameBoard.map(x => x.hasMonster ? 1 : 0);
     this.state = {
       isZooming: false,
       isMoving: false,
