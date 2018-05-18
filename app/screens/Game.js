@@ -1428,15 +1428,12 @@ class Game extends Component {
     );
   };
 
-  onItemSelected = () => {
-    console.log('onMenuItemSelected');
-  }
   // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
   // <SideMenu menu={menu}>
   // const menu = <Menu navigator={navigator}/>;
   render() {
     const finished = this.state.boardFinished;
-    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.showHumanMoves}/>;
+    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
     if (finished) {
       return (
