@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Dimensions, Image, View, PanResponder, TouchableHighlight } from "react-native";
+import { Dimensions, Image, View, PanResponder, TouchableOpacity } from "react-native";
 import { Loop, Stage, TileMap } from "react-game-kit/native";
 
 import Board from "./Board";
@@ -12,16 +12,18 @@ export default class Engine extends Component {
     boardFinished: PropTypes.bool,
     playerSpace: PropTypes.object,
     isHuman: PropTypes.bool,
+    move: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     // console.log("Engine");
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = Math.ceil(this.screenDimensions.height / 30);
+    this.tileWidth = Math.ceil(this.screenDimensions.height / this.props.tilesInRow);
     this.gameBoardWidth = this.tileWidth * 40;
     this.playerX = (props.playerSpace.name % 40) * this.tileWidth;
     this.playerY = Math.floor(props.playerSpace.name / 40) * this.tileWidth;
+    this.highlightedTileRanges = [];
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
@@ -47,16 +49,18 @@ export default class Engine extends Component {
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => {
-        // console.log("on pan responder grant");
-      },
+      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onPanResponderGrant: (evt, gestureState) => {},
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
+        // let { touches } = evt.nativeEvent;
         if (touches.length === 2 && !this.state.isZooming) {
-          this.processTouch(touches[0].pageX, touches[0].pageY);
+          this.processPan(touches[0].pageX, touches[0].pageY);
+        }
+        if (this.state.showHighlighted && touches.length === 1) {
+          this.processMove(touches[0].pageX, touches[0].pageY);
         }
       },
       onPanResponderRelease: () => {
@@ -101,7 +105,7 @@ export default class Engine extends Component {
     }
   }
 
-  processTouch(x, y) {
+  processPan(x, y) {
     if (!this.state.isMoving) {
       this.setState({
         isMoving: true,
@@ -131,6 +135,36 @@ export default class Engine extends Component {
     }
   }
 
+  processMove(touchX, touchY) {
+    let x = touchX - this.state.left;
+    let y = touchY - this.state.top;
+    // console.log("process move", this.highlightedTileRanges, touchX, touchY, x, y, this.state.left, this.state.top);
+    for (let i = 0; i < this.highlightedTileRanges.length; i++) {
+      if (
+        x > this.highlightedTileRanges[i].xMin &&
+        x < this.highlightedTileRanges[i].xMax &&
+        y > this.highlightedTileRanges[i].yMin &&
+        y < this.highlightedTileRanges[i].yMax
+      ) {
+        let newPlayerTile = this.getTileFromXY(x, y);
+        this.props.move(newPlayerTile);
+      }
+    }
+  }
+
+  getTileFromXY(x, y) {
+    y = Math.floor(y/this.tileWidth);
+    x = Math.floor(x/this.tileWidth);
+    let index = ((y * 40) + x);
+    console.log(this.state.playerSpace.name, index);
+    return (this.props.gameBoard[index]);
+  }
+
+  getRangesFromTile = (tile) => {
+    let { size, top, left } = tile;
+    return ({ xMin: left, xMax: (left + size), yMin: top, yMax: (top + size) });
+  }
+
   renderHighlighted = () => {
     if (this.state.showHighlighted) {
       return (
@@ -141,36 +175,44 @@ export default class Engine extends Component {
           rows={40}
           sourceWidth={this.tileWidth}
           layers={[this.state.highlightedTileMap]}
-          renderTile={(tile, src, styles) => (
-            <Image
-              resizeMode="stretch"
-              style={[styles, { opacity: 0.25 }]}
-              source={src}
-            />
-          )}
+          renderTile={(tile, src, styles) => {
+            this.highlightedTileRanges.push(this.getRangesFromTile(tile));
+            return (
+              <TouchableOpacity style={[styles]}>
+                <Image
+                  resizeMode="stretch"
+                  style={[styles, { opacity: 0.25 }]}
+                  source={src}
+                />
+              </TouchableOpacity>
+            );
+            }
+          }
         />
       );
+    } else {
+      this.highlightedTileRanges = [];
     }
   };
 
   render() {
-    // console.log(`playerX: ${this.state.playerX}, playerY: ${this.state.playerY} playerSpace: ${this.props.playerSpace.name}`);
     return (
       <Loop style={{ backgroundColor: "#212121" }}>
         <Stage
           height={this.screenDimensions.height}
           width={this.screenDimensions.width}
           style={{ backgroundColor: "#515151" }}
+          removeClippedSubviews={true}
         >
-          <View style={{ position: 'absolute', left: this.state.left, top: this.state.top }} {...this._panResponder.panHandlers} >
+          <View style={{ position: 'absolute', left: this.state.left, top: this.state.top, overflow: 'hidden' }} {...this._panResponder.panHandlers} >
             <Board
               gameBoard={this.props.gameBoard}
               isHuman={this.props.isHuman}
             />
+            <Image style={{ position: 'absolute', top: (this.state.playerY - this.tileWidth), left: this.state.playerX, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
 
             {this.renderHighlighted()}
             
-            <Image style={{ position: 'absolute', top: (this.state.playerY - this.tileWidth), left: this.state.playerX, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
           </View>
         </Stage>
       </Loop>

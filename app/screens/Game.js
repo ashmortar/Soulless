@@ -1326,8 +1326,7 @@ class Game extends Component {
   }
 
   moveHuman = (item) => {
-    // console.log('move human')
-    item = this.elements[this.state.playerSpace.name - 1];
+    // console.log('move human') 
     if (item.isHighlighted) {
       this.elements[this.humanSpace.name].hasHuman = false;
       item.hasHuman = true;
@@ -1455,6 +1454,7 @@ class Game extends Component {
           boardFinished={this.state.boardFinished}
           isHuman={this.state.isHuman}
           playerSpace={this.state.playerSpace}
+          move={this.state.isHuman ? this.moveHuman : this.moveMonster}
         />
       </SideMenu>
       </SideMenu> 

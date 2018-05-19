@@ -19,11 +19,11 @@ export default class Board extends Component {
     super(props);
     // this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = Math.ceil(this.screenDimensions.height/30);
+    this.tileWidth = Math.ceil(this.screenDimensions.height/40);
     this.sourceWidth = this.tileWidth;
     this.gameBoardWidth = this.tileWidth * 40;
-    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey)
-    this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
+    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey);
+    // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache && this.props.isHuman ? 1 : 0);
     this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     // this.tileHumanMapArray = this.props.gameBoard.map(x => x.hasHuman && this.props.isHuman ? 1 : 0);
@@ -55,12 +55,12 @@ export default class Board extends Component {
   }
 
   fixImageStyle = (index) => {
-    return ({ left: ((index - 1) * this.tileWidth) });
+    return ({ left: ((index - 1) * this.tileWidth), overflow: 'hidden' });
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     let newFogMap = nextProps.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey);
-    console.log('received props');
+    // console.log('received props');
     if (JSON.stringify(this.state.tileMap) !== JSON.stringify(newFogMap)) {
       this.setState({
         finishedUpdatingFogMap: !this.state.finishedUpdatingFogMap,
@@ -97,6 +97,7 @@ export default class Board extends Component {
         return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-se.gif")} />;
       // wall top center
       case 9:
+      // console.log("tile", tile);
         return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-c.gif")} />;
       // wall front northwest
       case 10:
@@ -240,7 +241,7 @@ export default class Board extends Component {
     // Math.floor(100*this.state.zoom);
     // let scale = this.state.tileSize;
     return (
-      <View>
+      <View style={{ overflow: 'hidden' }}>
         {/* <TileMap
           src={require("../data/images/Black_square.jpeg")}
           tileSize={this.tileWidth}
@@ -262,7 +263,7 @@ export default class Board extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="stretch"
-              style={[styles, { height: (this.tileWidth * 2), top: -this.tileWidth }]}
+              style={[styles, { height: (this.tileWidth * 2), top: -this.tileWidth, overflow: 'hidden' }]}
               source={src}
             />
           )}
