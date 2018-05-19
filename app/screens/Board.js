@@ -13,61 +13,49 @@ export default class Board extends Component {
   };
   static propTypes = {
     gameBoard: PropTypes.array,
+    tileWidth: PropTypes.number,
   };
 
   constructor(props) {
     super(props);
-    // this.counter = 0;
+    this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = Math.ceil(this.screenDimensions.height/40);
-    this.sourceWidth = this.tileWidth;
-    this.gameBoardWidth = this.tileWidth * 40;
-    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey);
+    this.sourceWidth = this.props.tileWidth;
+    this.gameBoardWidth = this.props.tileWidth * 40;
+    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 0) : a.imageKey);
     // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache && this.props.isHuman ? 1 : 0);
     this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
-    // this.tileHumanMapArray = this.props.gameBoard.map(x => x.hasHuman && this.props.isHuman ? 1 : 0);
-    // this.tileMonsterMapArray = this.props.gameBoard.map(x => x.hasMonster && !this.props.isHuman ? 1 : 0);
-    this.tileHumanMapArray = this.props.gameBoard.map(x => x.hasHuman ? 1 : 0);
-    this.tileMonsterMapArray = this.props.gameBoard.map(x => x.hasMonster ? 1 : 0);
     this.state = {
-      isZooming: false,
-      isMoving: false,
-      initialX: null,
-      offsetLeft: 0,
-      initialTop: 0,
-      initialLeft: 0,
-      top: 0,
-      left: 0,
-      tileSize: 100,
-      finishedUpdatingFogMap: true,
+      finishedUpdatingFogMap: this.props.boardFinished,
       tileMap: this.tileMapArray,
     };
   }
 
-  getCacheMapArray = (cell) => {
-    if (cell.hasCache) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
+  getIndexFromTile = (tile) => {
+    let size = tile.size;
+    let x = tile.left / size;
+    let y = tile.top / size;
+    let index = (y * 40) + x;
+    return index;
   }
 
-  fixImageStyle = (index) => {
-    return ({ left: ((index - 1) * this.tileWidth), overflow: 'hidden' });
+  fixImageStyle = (index, tile) => {
+    return ({ left: ((index - 1) * this.props.tileWidth), overflow: 'hidden' });
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    let newFogMap = nextProps.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey);
-    // console.log('received props');
-    if (JSON.stringify(this.state.tileMap) !== JSON.stringify(newFogMap)) {
-      this.setState({
-        finishedUpdatingFogMap: !this.state.finishedUpdatingFogMap,
-        tileMap: newFogMap,
-      });
-    }
-  }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   console.log('board received props');
+  //   let newFogMap = nextProps.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey);
+  //   // console.log('received props');
+  //   if (JSON.stringify(this.state.tileMap) !== JSON.stringify(newFogMap)) {
+  //     this.setState({
+  //       finishedUpdatingFogMap: !this.state.finishedUpdatingFogMap,
+  //       tileMap: newFogMap,
+  //     });
+  //   }
+  // }
+  // { opacity: this.props.gameBoard[this.getIndexFromTile(tile)].isRevealed ? 1 : 0 }
 
   renderTile = (tile, src, styles) => {
     switch (tile.index) {
@@ -206,29 +194,33 @@ export default class Board extends Component {
 
   renderFogMap1 = () => {
     if (this.state.finishedUpdatingFogMap) {
+      // console.log('render fog map 1');
       return (
-        <TileMap
-          src={require("../data/images/Black_square.jpeg")}
-          tileSize={this.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.tileWidth}
-          layers={[this.state.tileMap]}
-          renderTile={this.renderTile}
-        />
+        <View>
+          <TileMap
+            src={require("../data/images/Black_square.jpeg")}
+            tileSize={this.props.tileWidth}
+            columns={40}
+            rows={40}
+            sourceWidth={this.props.tileWidth}
+            layers={[this.state.tileMap]}
+            renderTile={this.renderTile}
+          />
+        </View>
       );
     }
   }
   
   renderFogMap2 = () => {
     if (!this.state.finishedUpdatingFogMap) {
+      // console.log('render fog map 2');
       return (
         <TileMap
           src={require("../data/images/Black_square.jpeg")}
-          tileSize={this.tileWidth}
+          tileSize={this.props.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.tileWidth}
+          sourceWidth={this.props.tileWidth}
           layers={[this.state.tileMap]}
           renderTile={this.renderTile}
         />
@@ -237,33 +229,34 @@ export default class Board extends Component {
   }
 
   render() {
-    // Math.floor((this.tileWidth / this.state.zoom)/16)
+    // console.log('board rendered');
+    // Math.floor((this.props.tileWidth / this.state.zoom)/16)
     // Math.floor(100*this.state.zoom);
     // let scale = this.state.tileSize;
     return (
       <View style={{ overflow: 'hidden' }}>
         {/* <TileMap
           src={require("../data/images/Black_square.jpeg")}
-          tileSize={this.tileWidth}
+          tileSize={this.props.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.tileWidth}
+          sourceWidth={this.props.tileWidth}
           layers={[this.tileMapArray]}
-          renderTile={this.renderTile}
+          renderTile={tboard renderedle}
         /> */}
         {this.renderFogMap1()}
         {this.renderFogMap2()}
         <TileMap
           src={require("../data/images/shrine.png")}
-          tileSize={this.tileWidth}
+          tileSize={this.props.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.tileWidth}
+          sourceWidth={this.props.tileWidth}
           layers={[this.tileCashMapArray]}
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="stretch"
-              style={[styles, { height: (this.tileWidth * 2), top: -this.tileWidth, overflow: 'hidden' }]}
+              style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
               source={src}
             />
           )}

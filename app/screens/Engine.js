@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Dimensions, Image, View, PanResponder, TouchableOpacity } from "react-native";
+import { Dimensions, Image, View, PanResponder, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { Loop, Stage, TileMap } from "react-game-kit/native";
 
 import Board from "./Board";
@@ -13,16 +13,40 @@ export default class Engine extends Component {
     playerSpace: PropTypes.object,
     isHuman: PropTypes.bool,
     move: PropTypes.func,
+    tileWidth: PropTypes.number,
   };
 
   constructor(props) {
     super(props);
     // console.log("Engine");
     this.screenDimensions = Dimensions.get("window");
-    this.tileWidth = Math.ceil(this.screenDimensions.height / this.props.tilesInRow);
-    this.gameBoardWidth = this.tileWidth * 40;
-    this.playerX = (props.playerSpace.name % 40) * this.tileWidth;
-    this.playerY = Math.floor(props.playerSpace.name / 40) * this.tileWidth;
+    this.gameBoardWidth = this.props.tileWidth * 40;
+    this.xOffsetMax = this.gameBoardWidth - this.screenDimensions.width;
+    this.yOffsetMax = this.gameBoardWidth - this.screenDimensions.height;
+    this.playerX = (this.props.playerSpace.name % 40) * this.props.tileWidth;
+    this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.props.tileWidth;
+    this.cameraX = this.playerX - this.screenDimensions.width/2;
+    this.cameraY = this.playerY - this.screenDimensions.height/2;
+
+  //   left:
+  //   left > 0 ?
+  //   0 :
+  //     left < (-this.gameBoardWidth + this.screenDimensions.width) ?
+  //       (-this.gameBoardWidth + this.screenDimensions.width) :
+  //       left,
+  // top:
+  //   top > 0 ?
+  //   0 :
+  //     top < (-this.gameBoardWidth + this.screenDimensions.height) ?
+  //       (-this.gameBoardWidth + this.screenDimensions.height) :
+  //       top,
+
+    this.beginningX = this.getBeginningX();
+
+    this.beginningY = this.getBeginningY();
+
+
+    // this.getBeginningY(); 
     this.highlightedTileRanges = [];
     this.state = {
       playerSpace: this.props.playerSpace,
@@ -34,8 +58,8 @@ export default class Engine extends Component {
       offsetLeft: 0,
       initialTop: 0,
       initialLeft: 0,
-      top: 0,
-      left: 0,
+      top: this.beginningY,
+      left: this.beginningX,
       highlightedTileMap: this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0),
       showHighlighted: false,
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
@@ -44,43 +68,69 @@ export default class Engine extends Component {
     };
   }
 
+  getBeginningX = () => {
+    if (this.cameraX < 0) {
+      return 0;
+    } else if (this.cameraX > this.xOffsetMax) {
+      return -this.xOffsetMax;
+    } else {
+      return -this.cameraX;
+    }
+  }
+
+  getBeginningY = () => {
+    if (this.cameraY < 0) {
+      return 0;
+    } else if (this.cameraY > this.yOffsetMax) {
+      return -this.yOffsetMax;
+    } else {
+      return -this.cameraY;
+    }
+  }
+
   componentWillMount() {
     // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
-      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => {},
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onPanResponderGrant: (evt, gestureState) => {
+        
+      },
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
         // let { touches } = evt.nativeEvent;
-        if (touches.length === 2 && !this.state.isZooming) {
+        if (touches.length === 2 && (Math.abs(touches[0].pageX - touches[1].pageX) > 5)) {
           this.processPan(touches[0].pageX, touches[0].pageY);
-        }
-        if (this.state.showHighlighted && touches.length === 1) {
+        } else if (this.state.showHighlighted && touches.length === 1) {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
       },
       onPanResponderRelease: () => {
         // console.log("on pan responder release");
         this.setState({
-          isZooming: false,
           isMoving: false,
         });
       }
     });
   }
 
+  componentDidUpdate() {
+    // console.log(this.state.left, this.state.top);
+  }
+
   UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log('received props');
+    // console.log('engine received props');
     let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
     if (this.props.playerSpace !== nextProps.playerSpace) {
+      console.log("player space", this.props.playerSpace, nextProps.playerSpace)
       this.setState({
-        playerX: (nextProps.playerSpace.name % 40) * this.tileWidth,
-        playerY: Math.floor(nextProps.playerSpace.name / 40) * this.tileWidth,
+        playerSpace: nextProps.playerSpace,
+        playerX: (nextProps.playerSpace.name % 40) * this.props.tileWidth,
+        playerY: Math.floor(nextProps.playerSpace.name / 40) * this.props.tileWidth,
       });
     }
     if (JSON.stringify(this.state.highlightedTileMap !== newHighlightedTileMap)) {
@@ -120,17 +170,17 @@ export default class Engine extends Component {
       // console.log(left, this.gameBoardWidth);
       this.setState({
           left:
-            left > 0
-            ? 0
-            : left < (-this.gameBoardWidth + this.screenDimensions.width)
-              ? (-this.gameBoardWidth + this.screenDimensions.width)
-              : left,
+            left > 0 ?
+            0 :
+              left < (-this.gameBoardWidth + this.screenDimensions.width) ?
+                (-this.gameBoardWidth + this.screenDimensions.width) :
+                left,
           top:
-            top > 0
-            ? 0
-            : top < (-this.gameBoardWidth + this.screenDimensions.height)
-            ? (-this.gameBoardWidth + this.screenDimensions.height)
-            : top,
+            top > 0 ?
+            0 :
+              top < (-this.gameBoardWidth + this.screenDimensions.height) ?
+                (-this.gameBoardWidth + this.screenDimensions.height) :
+                top,
         });
     }
   }
@@ -153,10 +203,10 @@ export default class Engine extends Component {
   }
 
   getTileFromXY(x, y) {
-    y = Math.floor(y/this.tileWidth);
-    x = Math.floor(x/this.tileWidth);
+    y = Math.floor(y/this.props.tileWidth);
+    x = Math.floor(x/this.props.tileWidth);
     let index = ((y * 40) + x);
-    console.log(this.state.playerSpace.name, index);
+    console.log(this.state.playerSpace.name, index, this.state.playerX, this.state.playerY);
     return (this.props.gameBoard[index]);
   }
 
@@ -170,10 +220,10 @@ export default class Engine extends Component {
       return (
         <TileMap
           src={require("../data/images/Magenta-square_100px.gif")}
-          tileSize={this.tileWidth}
+          tileSize={this.props.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.tileWidth}
+          sourceWidth={this.props.tileWidth}
           layers={[this.state.highlightedTileMap]}
           renderTile={(tile, src, styles) => {
             this.highlightedTileRanges.push(this.getRangesFromTile(tile));
@@ -196,23 +246,29 @@ export default class Engine extends Component {
   };
 
   render() {
+    // console.log('engine', this.props.tileWidth)
     return (
-      <Loop style={{ backgroundColor: "#212121" }}>
+      <Loop>
         <Stage
           height={this.screenDimensions.height}
           width={this.screenDimensions.width}
-          style={{ backgroundColor: "#515151" }}
+          style={{ backgroundColor: "#000" }}
           removeClippedSubviews={true}
         >
-          <View style={{ position: 'absolute', left: this.state.left, top: this.state.top, overflow: 'hidden' }} {...this._panResponder.panHandlers} >
-            <Board
-              gameBoard={this.props.gameBoard}
-              isHuman={this.props.isHuman}
-            />
-            <Image style={{ position: 'absolute', top: (this.state.playerY - this.tileWidth), left: this.state.playerX, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
+          <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1}} {...this._panResponder.panHandlers}>
+            <View style={{ position: 'absolute', left: this.state.left, top: this.state.top, overflow: 'hidden', width: this.gameBoardWidth, height: this.gameBoardWidth }}  >
+              <Board
+                gameBoard={this.props.gameBoard}
+                isHuman={this.props.isHuman}
+                boardFinished={this.props.boardFinished}
+                tileWidth={this.props.tileWidth}
+              />
 
-            {this.renderHighlighted()}
-            
+              <Image style={{ position: 'absolute', top: (this.state.playerY - this.props.tileWidth), left: this.state.playerX, height: (this.props.tileWidth * 2), width: this.props.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
+
+              {this.renderHighlighted()}
+              
+            </View>
           </View>
         </Stage>
       </Loop>

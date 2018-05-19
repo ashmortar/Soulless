@@ -1432,7 +1432,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   _reactNative.AppRegistry.registerComponent('ProjectEyeCue', function () {
     return _App2.default;
   });
-},11,[12,491],"index.js");
+},671,[12,491],"index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -62910,7 +62910,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     }
   });
-},509,[510,585,598,669,676],"app\\config\\routes.js");
+},509,[510,585,598,662,669],"app\\config\\routes.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -75514,33 +75514,29 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _propTypes2 = _interopRequireDefault(_propTypes);
 
-  var _reactNative = _require(_dependencyMap[3], "react-native");
+  var _reactNativeSideMenu = _require(_dependencyMap[3], "react-native-side-menu");
 
-  var _Container = _require(_dependencyMap[4], "../components/Container");
+  var _reactNativeSideMenu2 = _interopRequireDefault(_reactNativeSideMenu);
 
-  var _Button = _require(_dependencyMap[5], "../components/Button");
+  var _reactNative = _require(_dependencyMap[4], "react-native");
 
-  var _Grid = _require(_dependencyMap[6], "../components/Grid");
-
-  var _WallTemplate = _require(_dependencyMap[7], "../data/WallTemplate");
-
-  var _WallTemplate2 = _interopRequireDefault(_WallTemplate);
-
-  var _Cell = _require(_dependencyMap[8], "../data/Cell");
-
-  var _Cell2 = _interopRequireDefault(_Cell);
-
-  var _Engine = _require(_dependencyMap[9], "./Engine");
+  var _Engine = _require(_dependencyMap[5], "./Engine");
 
   var _Engine2 = _interopRequireDefault(_Engine);
 
-  var _Menu = _require(_dependencyMap[10], "./Menu");
+  var _Menu = _require(_dependencyMap[6], "./Menu");
 
   var _Menu2 = _interopRequireDefault(_Menu);
 
-  var _reactNativeSideMenu = _require(_dependencyMap[11], "react-native-side-menu");
+  var _Cell = _require(_dependencyMap[7], "../data/Cell");
 
-  var _reactNativeSideMenu2 = _interopRequireDefault(_reactNativeSideMenu);
+  var _Cell2 = _interopRequireDefault(_Cell);
+
+  var _Button = _require(_dependencyMap[8], "../components/Button");
+
+  var _EchoScreen = _require(_dependencyMap[9], "./EchoScreen");
+
+  var _EchoScreen2 = _interopRequireDefault(_EchoScreen);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -76152,6 +76148,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.assignHumanStart = function () {
+        if (_this.humanSpace) {
+          _this.humanSpace.isRevealed = false;
+        }
+
         var cell = _this.getRandomCell();
 
         while (cell.value < 1) {
@@ -76178,9 +76178,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         var counter = 0;
 
         while (distance < 20) {
-          console.log("counter: " + counter);
+          console.log("assign monster counter: " + counter);
           cell = _this.getRandomCell();
           distance = _this.findShortestPath(cell, _this.humanSpace);
+
+          if (counter % 5 === 0) {
+            _this.assignHumanStart();
+          }
+
           counter++;
         }
 
@@ -76507,10 +76512,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                       }
           }
         }
-
-        _this.setState({
-          boardFinished: true
-        });
       };
 
       _this.getRandomCell = function () {
@@ -76523,22 +76524,26 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
-      _this.echoLocate = function () {
-        var direction = "radius";
-        var item = _this.humanSpace;
+      _this.echoLocate = function (direction) {
+        _this.setState({
+          boardFinished: false
+        });
+
+        direction = "radius";
+        var index = _this.humanSpace.name;
 
         switch (direction) {
           case 'north':
-            if (item.name - _this.cellsInRow < 0) {
+            if (index - _this.cellsInRow < 0 || _this.elements[index].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate North from here..');
             } else {
-              var cell = _this.elements[item.name - _this.cellsInRow];
+              var cell = _this.elements[index - _this.cellsInRow];
 
               while (cell.value > 0) {
                 cell.isRevealed = true;
 
-                if (cell.name - _this.cellsInRow > 0) {
-                  cell = _this.elements[cell.name - _this.cellsInRow];
+                if (cell - _this.cellsInRow > 0) {
+                  cell = _this.elements[cell - _this.cellsInRow];
                 } else {
                   break;
                 }
@@ -76548,18 +76553,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'east':
-            if (item.name % _this.cellsInRow === _this.cellsInRow - 1) {
+            if (index % _this.cellsInRow === _this.cellsInRow - 1 || _this.elements[index].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate East from here..');
             } else {
-              var _cell = _this.elements[item.name + 1];
+              var _cell = _this.elements[index + 1];
 
               while (_cell.value > 0) {
                 _cell.isRevealed = true;
 
-                if ((_cell.name + 1) % _this.cellsInRow === 0) {
+                if ((_cell + 1) % _this.cellsInRow === 0) {
                   break;
                 } else {
-                  _cell = _this.elements[_cell.name + 1];
+                  _cell = _this.elements[_cell + 1];
                 }
               }
             }
@@ -76567,16 +76572,16 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'south':
-            if (item.name + _this.cellsInRow > _this.cellsTotal) {
+            if (index + _this.cellsInRow > _this.cellsTotal || _this.elements[index].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate South from here..');
             } else {
-              var _cell2 = _this.elements[item.name + _this.cellsInRow];
+              var _cell2 = _this.elements[index + _this.cellsInRow];
 
               while (_cell2.value > 0) {
                 _cell2.isRevealed = true;
 
-                if (_cell2.name + _this.cellsInRow < _this.cellsTotal) {
-                  _cell2 = _this.elements[_cell2.name + _this.cellsInRow];
+                if (_cell2 + _this.cellsInRow < _this.cellsTotal) {
+                  _cell2 = _this.elements[_cell2 + _this.cellsInRow];
                 } else {
                   break;
                 }
@@ -76586,18 +76591,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'west':
-            if (item.name % _this.cellsInRow === 0) {
+            if (index % _this.cellsInRow === 0 || _this.elements[index].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate West from here..');
             } else {
-              var _cell3 = _this.elements[item.name - 1];
+              var _cell3 = _this.elements[index - 1];
 
               while (_cell3.value > 0) {
                 _cell3.isRevealed = true;
 
-                if ((_cell3.name - 1) % _this.cellsInRow === 0) {
+                if ((_cell3 - 1) % _this.cellsInRow === 0) {
                   break;
                 } else {
-                  _cell3 = _this.elements[_cell3.name - 1];
+                  _cell3 = _this.elements[_cell3 - 1];
                 }
               }
             }
@@ -76605,7 +76610,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'radius':
-            var _this$getNeighboringC3 = _this.getNeighboringCells(item.name),
+            var _this$getNeighboringC3 = _this.getNeighboringCells(index),
                 topLeft = _this$getNeighboringC3.topLeft,
                 top = _this$getNeighboringC3.top,
                 topRight = _this$getNeighboringC3.topRight,
@@ -76734,12 +76739,28 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'zoom':
+            _this.alterZoom();
+
             break;
 
           case 'exit':
             break;
 
           default:}
+      };
+
+      _this.alterZoom = function () {
+        if (_this.state.tileWidth === _this.zoomedInValue) {
+          _this.setState({
+            tileWidth: _this.zoomedOutValue,
+            boardFinished: false
+          });
+        } else {
+          _this.setState({
+            tileWidth: _this.zoomedInValue,
+            boardFinished: false
+          });
+        }
       };
 
       _this.showMonsterMoves = function () {
@@ -76766,14 +76787,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             playerSpace: item
           });
 
-          _this.resetGrid();
+          _this.resetHighlighted();
         } else {
           _reactNative.Alert.alert('Uh-Oh', 'Please select a highlighted space');
         }
-
-        _this.setState({
-          redraw: !_this.state.redraw
-        });
       };
 
       _this.showHumanMoves = function () {
@@ -76897,7 +76914,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1377
+              lineNumber: 1390
             }
           },
           _react3.default.createElement(
@@ -76905,7 +76922,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1378
+                lineNumber: 1391
               }
             },
             "Game screen"
@@ -76919,7 +76936,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1380
+                lineNumber: 1393
               }
             },
             _react3.default.createElement(
@@ -76935,7 +76952,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1381
+                  lineNumber: 1394
                 }
               },
               _react3.default.createElement(
@@ -76946,7 +76963,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1390
+                    lineNumber: 1403
                   }
                 },
                 "+"
@@ -76962,7 +76979,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1395
+                lineNumber: 1408
               }
             },
             _react3.default.createElement(
@@ -76978,7 +76995,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1396
+                  lineNumber: 1409
                 }
               },
               _react3.default.createElement(
@@ -76989,7 +77006,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1404
+                    lineNumber: 1417
                   }
                 },
                 "-"
@@ -76999,113 +77016,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         );
       };
 
-      _this.renderFooter = function () {
-        return _react3.default.createElement(
-          _reactNative.View,
-          {
-            style: {
-              marginBottom: 20,
-              marginTop: 0,
-              flex: 1,
-              flexDirection: 'row'
-            },
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1414
-            }
-          },
-          _react3.default.createElement(_Button.NavButton, {
-            onPress: _this.handleChangePlayer,
-            text: "human? " + _this.state.isHuman,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1415
-            }
-          }),
-          _react3.default.createElement(
-            _reactNative.Picker,
-            {
-              selectedValue: _this.state.echoDirection,
-              style: {
-                height: 50,
-                width: 100
-              },
-              onValueChange: function onValueChange(itemValue, itemIndex) {
-                return _this.setState({
-                  echoDirection: itemValue
-                });
-              },
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1416
-              }
-            },
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "radius",
-              value: "radius",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1421
-              }
-            }),
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "north",
-              value: "north",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1422
-              }
-            }),
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "east",
-              value: "east",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1423
-              }
-            }),
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "south",
-              value: "south",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1424
-              }
-            }),
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "west",
-              value: "west",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1425
-              }
-            })
-          ),
-          _react3.default.createElement(_Button.NavButton, {
-            onPress: _this.echoLocate,
-            text: "echo-locate",
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1427
-            }
-          }),
-          _react3.default.createElement(_Button.NavButton, {
-            onPress: _this.showHumanMoves,
-            text: "move human",
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1428
-            }
-          }),
-          _react3.default.createElement(_Button.NavButton, {
-            onPress: _this.handlePressNavButton,
-            text: "go to home screen",
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1429
-            }
-          })
-        );
+      _this.callback = function () {
+        return _this.setState({
+          boardFinished: true
+        });
       };
 
       _this.scale = 0;
@@ -77118,7 +77032,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.cacheTotal = 13;
       _this.cellsInRow = 40;
       _this.cellsTotal = 1600;
-      _this.cellsPerScreen = 6;
+      _this.cellsPerScreen = 13;
       _this.scrollOffset = Math.floor(_this.cellsPerScreen / 2);
 
       var _Dimensions$get = _reactNative.Dimensions.get("window"),
@@ -77127,15 +77041,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       _this.viewPortWidth = width;
       _this.viewPortHeight = height;
-      _this.zoomedInValue = Math.ceil(_this.viewPortWidth / _this.cellsPerScreen);
-      _this.zoomedOutValue = Math.ceil(_this.viewPortWidth / _this.cellsInRow);
+      _this.zoomedInValue = Math.ceil(_this.viewPortHeight / _this.cellsPerScreen);
+      _this.zoomedOutValue = Math.ceil(_this.viewPortHeight / _this.cellsInRow);
       _this.fullGameDimension = _this.zoomedInValue * _this.cellsInRow;
       _this.zoom = 'close';
       _this.allowedLengthOfWhiteLine = 14;
       _this.state = {
         redraw: false,
         isHuman: true,
-        echoDirection: 'radius',
+        tileWidth: _this.zoomedInValue,
         playerSpace: {
           name: 0
         },
@@ -77154,9 +77068,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         this.assignCacheLocations();
         this.assignImageKeys();
       }
-    }, {
-      key: "componentDidMount",
-      value: function componentDidMount() {}
     }, {
       key: "findShortestPath",
       value: function findShortestPath(start, end) {
@@ -77215,7 +77126,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onItemSelected: this.onItemSelected,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1440
+            lineNumber: 1462
           }
         });
 
@@ -77224,44 +77135,70 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onItemSelected: this.onItemSelected,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 1441
+            lineNumber: 1463
           }
         });
 
-        return _react3.default.createElement(
-          _reactNativeSideMenu2.default,
-          {
-            menu: menuRight,
-            menuPosition: "right",
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1443
-            }
-          },
-          _react3.default.createElement(
+        if (this.state.boardFinished) {
+          return _react3.default.createElement(
             _reactNativeSideMenu2.default,
             {
-              menu: menuLeft,
-              menuPosition: "left",
+              menu: menuRight,
+              menuPosition: "right",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1447
+                lineNumber: 1466
               }
             },
-            _react3.default.createElement(_Engine2.default, {
-              gameBoard: this.elements,
-              tilesInRow: this.cellsInRow,
-              boardFinished: this.state.boardFinished,
-              isHuman: this.state.isHuman,
-              playerSpace: this.state.playerSpace,
-              move: this.state.isHuman ? this.moveHuman : this.moveMonster,
+            _react3.default.createElement(
+              _reactNativeSideMenu2.default,
+              {
+                menu: menuLeft,
+                menuPosition: "left",
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1470
+                }
+              },
+              _react3.default.createElement(_Engine2.default, {
+                gameBoard: this.elements,
+                tilesInRow: this.cellsInRow,
+                boardFinished: this.state.boardFinished,
+                isHuman: this.state.isHuman,
+                playerSpace: this.state.playerSpace,
+                move: this.state.isHuman ? this.moveHuman : this.moveMonster,
+                echolocate: this.echoLocate,
+                tileWidth: this.state.tileWidth,
+                monsterMoves: this.showMonsterMoves,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1474
+                }
+              })
+            )
+          );
+        } else {
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              style: {
+                backgroundColor: '#000',
+                flex: 1
+              },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1451
+                lineNumber: 1491
+              }
+            },
+            _react3.default.createElement(_EchoScreen2.default, {
+              callback: this.callback,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1492
               }
             })
-          )
-        );
+          );
+        }
       }
     }]);
 
@@ -77271,1308 +77208,426 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Game;
-},598,[118,179,129,12,586,589,599,607,608,609,666,667],"app\\screens\\Game.js");
+},598,[118,179,129,599,12,601,658,659,589,660],"app\\screens\\Game.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.AnimatedGrid = exports.styles = exports.Grid = undefined;
 
-  var _Grid = _require(_dependencyMap[0], "./Grid");
+  var _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
 
-  var _Grid2 = _interopRequireDefault(_Grid);
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
 
-  var _styles = _require(_dependencyMap[1], "./styles");
+    return target;
+  };
 
-  var _styles2 = _interopRequireDefault(_styles);
+  var _jsxFileName = 'index.js';
 
-  var _AnimatedGrid = _require(_dependencyMap[2], "./AnimatedGrid");
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
 
-  var _AnimatedGrid2 = _interopRequireDefault(_AnimatedGrid);
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  exports.Grid = _Grid2.default;
-  exports.styles = _styles2.default;
-  exports.AnimatedGrid = _AnimatedGrid2.default;
-},599,[600,604,605],"app\\components\\Grid\\index.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Grid\\Grid.js";
-
-  var _react = _require(_dependencyMap[0], "react");
+  var _react = _require(_dependencyMap[0], 'react');
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _propTypes = _require(_dependencyMap[1], "prop-types");
+  var _reactNative = _require(_dependencyMap[1], 'react-native');
+
+  var _propTypes = _require(_dependencyMap[2], 'prop-types');
 
   var _propTypes2 = _interopRequireDefault(_propTypes);
 
-  var _reactNativeSuperGrid = _require(_dependencyMap[2], "react-native-super-grid");
-
-  var _reactNativeSuperGrid2 = _interopRequireDefault(_reactNativeSuperGrid);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  var Grid = function Grid(_ref) {
-    var items = _ref.items,
-        itemDimension = _ref.itemDimension,
-        gridDimension = _ref.gridDimension,
-        _onPress = _ref.onPress,
-        header = _ref.header,
-        footer = _ref.footer,
-        getCellStyle = _ref.getCellStyle,
-        screenWidth = _ref.screenWidth;
-    return _react2.default.createElement(
-      _reactNative.View,
-      {
-        style: {
-          marginTop: 10,
-          marginBottom: 0,
-          justifyContent: "flex-start",
-          width: screenWidth - 15,
-          height: screenWidth - 15
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 16
-        }
-      },
-      _react2.default.createElement(
-        _reactNative.ScrollView,
-        {
-          horizontal: true,
-          style: {
-            width: gridDimension
-          },
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 19
-          }
-        },
-        _react2.default.createElement(_reactNativeSuperGrid2.default, {
-          spacing: 0,
-          style: {
-            width: gridDimension
-          },
-          itemDimension: itemDimension,
-          items: items,
-          fixed: true,
-          renderItem: function renderItem(item) {
-            return _react2.default.createElement(
-              _reactNative.TouchableHighlight,
-              {
-                onPress: function onPress() {
-                  return _onPress(item);
-                },
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 29
-                }
-              },
-              _react2.default.createElement(
-                _reactNative.View,
-                {
-                  style: getCellStyle(item),
-                  __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 30
-                  }
-                },
-                _react2.default.createElement(
-                  _reactNative.Text,
-                  {
-                    style: {
-                      fontSize: itemDimension * 0.4,
-                      textAlign: 'center'
-                    },
-                    __source: {
-                      fileName: _jsxFileName,
-                      lineNumber: 35
-                    }
-                  },
-                  item.name
-                )
-              )
-            );
-          },
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 20
-          }
-        })
-      )
-    );
-  };
-
-  Grid.propTypes = {
-    items: _propTypes2.default.array,
-    itemDimension: _propTypes2.default.number,
-    gridDimension: _propTypes2.default.number,
-    onPress: _propTypes2.default.func,
-    header: _propTypes2.default.func,
-    footer: _propTypes2.default.func,
-    getCellStyle: _propTypes2.default.func,
-    screenWidth: _propTypes2.default.number
-  };
-  exports.default = Grid;
-},600,[118,129,601,12],"app\\components\\Grid\\Grid.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.SuperGridSectionList = undefined;
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-super-grid\\index.js";
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _utils = _require(_dependencyMap[4], "./utils");
-
-  var _SuperGridSectionList = _require(_dependencyMap[5], "./SuperGridSectionList");
-
-  var _SuperGridSectionList2 = _interopRequireDefault(_SuperGridSectionList);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-  function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    SuperGrid: {
-      displayName: "SuperGrid"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-super-grid/index.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var SuperGrid = _wrapComponent("SuperGrid")(function (_Component) {
-    _inherits(SuperGrid, _Component);
-
-    function SuperGrid(props) {
-      _classCallCheck(this, SuperGrid);
-
-      var _this = _possibleConstructorReturn(this, (SuperGrid.__proto__ || Object.getPrototypeOf(SuperGrid)).call(this, props));
-
-      _this.renderRow = _this.renderRow.bind(_this);
-      _this.onLayout = _this.onLayout.bind(_this);
-      _this.getDimensions = _this.getDimensions.bind(_this);
-      _this.state = _this.getDimensions();
-      return _this;
-    }
-
-    _createClass(SuperGrid, [{
-      key: "componentWillReceiveProps",
-      value: function componentWillReceiveProps(nextProps) {
-        if (nextProps.itemDimension !== this.props.itemDimension) {
-          this.setState(_extends({}, this.getDimensions(this.state.totalDimension, nextProps.itemDimension)));
-        }
-      }
-    }, {
-      key: "onLayout",
-      value: function onLayout(e) {
-        var _props = this.props,
-            staticDimension = _props.staticDimension,
-            horizontal = _props.horizontal;
-
-        if (!staticDimension) {
-          var _ref = e.nativeEvent.layout || {},
-              width = _ref.width,
-              height = _ref.height;
-
-          this.setState(_extends({}, this.getDimensions(horizontal ? height : width)));
-        }
-      }
-    }, {
-      key: "getDimensions",
-      value: function getDimensions(lvDimension, itemDim) {
-        var _props2 = this.props,
-            itemWidth = _props2.itemWidth,
-            spacing = _props2.spacing,
-            fixed = _props2.fixed,
-            staticDimension = _props2.staticDimension,
-            horizontal = _props2.horizontal;
-        var itemDimension = itemDim || this.props.itemDimension;
-
-        if (itemWidth) {
-          itemDimension = itemWidth;
-          console.warn('React Native Super Grid - property "itemWidth" is depreciated. Use "itemDimension" instead.');
-        }
-
-        var dimension = horizontal ? 'height' : 'width';
-
-        var totalDimension = lvDimension || staticDimension || _reactNative.Dimensions.get('window')[dimension];
-
-        var itemTotalDimension = itemDimension + spacing;
-        var availableDimension = totalDimension - spacing;
-        var itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
-        var containerDimension = availableDimension / itemsPerRow;
-        return {
-          totalDimension: totalDimension,
-          itemDimension: itemDimension,
-          spacing: spacing,
-          itemsPerRow: itemsPerRow,
-          containerDimension: containerDimension,
-          fixed: fixed
-        };
-      }
-    }, {
-      key: "renderVerticalRow",
-      value: function renderVerticalRow(data) {
-        var _this2 = this;
-
-        var _state = this.state,
-            itemDimension = _state.itemDimension,
-            spacing = _state.spacing,
-            containerDimension = _state.containerDimension,
-            fixed = _state.fixed;
-        var rowStyle = {
-          flexDirection: 'column',
-          paddingTop: spacing,
-          paddingRight: spacing
-        };
-
-        if (data.isLast) {
-          rowStyle.marginRight = spacing;
-        }
-
-        var itemContainerStyle = {
-          justifyContent: 'center',
-          height: containerDimension,
-          paddingBottom: spacing
-        };
-        var itemStyle = {};
-
-        if (fixed) {
-          itemStyle = {
-            height: itemDimension,
-            justifyContent: 'center'
-          };
-          delete itemContainerStyle.paddingBottom;
-        }
-
-        return _react3.default.createElement(
-          _reactNative.View,
-          {
-            style: rowStyle,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 86
-            }
-          },
-          (data || []).map(function (item, i) {
-            return _react3.default.createElement(
-              _reactNative.View,
-              {
-                key: data.key + "_" + i,
-                style: itemContainerStyle,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 88
-                }
-              },
-              _react3.default.createElement(
-                _reactNative.View,
-                {
-                  style: itemStyle,
-                  __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 89
-                  }
-                },
-                _this2.props.renderItem(item, i)
-              )
-            );
-          })
-        );
-      }
-    }, {
-      key: "renderHorizontalRow",
-      value: function renderHorizontalRow(data) {
-        var _this3 = this;
-
-        var _state2 = this.state,
-            itemDimension = _state2.itemDimension,
-            containerDimension = _state2.containerDimension,
-            spacing = _state2.spacing,
-            fixed = _state2.fixed;
-        var rowStyle = {
-          flexDirection: 'row',
-          paddingLeft: spacing,
-          paddingBottom: spacing
-        };
-
-        if (data.isLast) {
-          rowStyle.marginBottom = spacing;
-        }
-
-        var itemContainerStyle = {
-          flexDirection: 'column',
-          justifyContent: 'center',
-          width: containerDimension,
-          paddingRight: spacing
-        };
-        var itemStyle = {};
-
-        if (fixed) {
-          itemStyle = {
-            width: itemDimension,
-            alignSelf: 'center'
-          };
-        }
-
-        return _react3.default.createElement(
-          _reactNative.View,
-          {
-            style: rowStyle,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 123
-            }
-          },
-          (data || []).map(function (item, i) {
-            return _react3.default.createElement(
-              _reactNative.View,
-              {
-                key: data.key + "_" + i,
-                style: itemContainerStyle,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 125
-                }
-              },
-              _react3.default.createElement(
-                _reactNative.View,
-                {
-                  style: itemStyle,
-                  __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 126
-                  }
-                },
-                _this3.props.renderItem(item, i)
-              )
-            );
-          })
-        );
-      }
-    }, {
-      key: "renderRow",
-      value: function renderRow(_ref2) {
-        var item = _ref2.item;
-        var horizontal = this.props.horizontal;
-
-        if (horizontal) {
-          return this.renderVerticalRow(item);
-        }
-
-        return this.renderHorizontalRow(item);
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _props3 = this.props,
-            items = _props3.items,
-            style = _props3.style,
-            spacing = _props3.spacing,
-            fixed = _props3.fixed,
-            itemDimension = _props3.itemDimension,
-            renderItem = _props3.renderItem,
-            horizontal = _props3.horizontal,
-            props = _objectWithoutProperties(_props3, ["items", "style", "spacing", "fixed", "itemDimension", "renderItem", "horizontal"]);
-
-        var itemsPerRow = this.state.itemsPerRow;
-        var chunked = (0, _utils.chunkArray)(items, itemsPerRow);
-        var rows = chunked.map(function (r, i) {
-          var keydRow = [].concat(_toConsumableArray(r));
-          keydRow.key = "row_" + i;
-          keydRow.isLast = chunked.length - 1 === i;
-          return keydRow;
-        });
-        return _react3.default.createElement(_reactNative.FlatList, _extends({
-          data: rows,
-          renderItem: this.renderRow,
-          style: [_extends({}, horizontal ? {
-            paddingLeft: spacing
-          } : {
-            paddingTop: spacing
-          }), style],
-          onLayout: this.onLayout
-        }, props, {
-          horizontal: horizontal,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 157
-          }
-        }));
-      }
-    }]);
-
-    return SuperGrid;
-  }(_react2.Component));
-
-  SuperGrid.propTypes = {
-    renderItem: _propTypes2.default.func.isRequired,
-    items: _propTypes2.default.arrayOf(_propTypes2.default.any).isRequired,
-    itemDimension: _propTypes2.default.number,
-    itemWidth: _propTypes2.default.number,
-    fixed: _propTypes2.default.bool,
-    spacing: _propTypes2.default.number,
-    style: _reactNative.ViewPropTypes.style,
-    staticDimension: _propTypes2.default.number,
-    horizontal: _propTypes2.default.bool
-  };
-  SuperGrid.defaultProps = {
-    fixed: false,
-    itemDimension: 120,
-    itemWidth: null,
-    spacing: 10,
-    style: {},
-    staticDimension: undefined,
-    horizontal: false
-  };
-  exports.default = SuperGrid;
-  exports.SuperGridSectionList = _SuperGridSectionList2.default;
-},601,[118,179,129,12,602,603],"node_modules\\react-native-super-grid\\index.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.chunkArray = chunkArray;
-
-  function chunkArray(array, size) {
-    if (array == []) return [];
-    return array.reduce(function (acc, val) {
-      if (acc.length === 0) acc.push([]);
-      var last = acc[acc.length - 1];
-
-      if (last.length < size) {
-        last.push(val);
-      } else {
-        acc.push([val]);
-      }
-
-      return acc;
-    }, []);
-  }
-},602,[],"node_modules\\react-native-super-grid\\utils.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-super-grid\\SuperGridSectionList.js";
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _utils = _require(_dependencyMap[4], "./utils");
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-  function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    SuperGridSectionList: {
-      displayName: "SuperGridSectionList"
-    }
-  };
-
-  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-super-grid/SuperGridSectionList.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _reactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var SuperGridSectionList = _wrapComponent("SuperGridSectionList")(function (_Component) {
-    _inherits(SuperGridSectionList, _Component);
-
-    function SuperGridSectionList(props) {
-      _classCallCheck(this, SuperGridSectionList);
-
-      var _this = _possibleConstructorReturn(this, (SuperGridSectionList.__proto__ || Object.getPrototypeOf(SuperGridSectionList)).call(this, props));
-
-      _this.onLayout = _this.onLayout.bind(_this);
-      _this.renderHorizontalRow = _this.renderHorizontalRow.bind(_this);
-      _this.getDimensions = _this.getDimensions.bind(_this);
-      _this.state = _this.getDimensions();
-      return _this;
-    }
-
-    _createClass(SuperGridSectionList, [{
-      key: "componentWillReceiveProps",
-      value: function componentWillReceiveProps(nextProps) {
-        if (nextProps.itemDimension !== this.props.itemDimension) {
-          this.setState(_extends({}, this.getDimensions(this.state.totalDimension, nextProps.itemDimension)));
-        }
-      }
-    }, {
-      key: "onLayout",
-      value: function onLayout(e) {
-        var staticDimension = this.props.staticDimension;
-
-        if (!staticDimension) {
-          var _ref = e.nativeEvent.layout || {},
-              width = _ref.width,
-              height = _ref.height;
-
-          this.setState(_extends({}, this.getDimensions(width)));
-        }
-      }
-    }, {
-      key: "getDimensions",
-      value: function getDimensions(lvDimension, itemDim) {
-        var _props = this.props,
-            itemWidth = _props.itemWidth,
-            spacing = _props.spacing,
-            fixed = _props.fixed,
-            staticDimension = _props.staticDimension;
-        var itemDimension = itemDim || this.props.itemDimension;
-
-        if (itemWidth) {
-          itemDimension = itemWidth;
-          console.warn('React Native Super Grid - property "itemWidth" is depreciated. Use "itemDimension" instead.');
-        }
-
-        var dimension = 'width';
-
-        var totalDimension = lvDimension || staticDimension || _reactNative.Dimensions.get('window')[dimension];
-
-        var itemTotalDimension = itemDimension + spacing;
-        var availableDimension = totalDimension - spacing;
-        var itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
-        var containerDimension = availableDimension / itemsPerRow;
-        return {
-          totalDimension: totalDimension,
-          itemDimension: itemDimension,
-          spacing: spacing,
-          itemsPerRow: itemsPerRow,
-          containerDimension: containerDimension,
-          fixed: fixed
-        };
-      }
-    }, {
-      key: "renderHorizontalRow",
-      value: function renderHorizontalRow(_ref2) {
-        var _this2 = this;
-
-        var item = _ref2.item,
-            index = _ref2.index,
-            section = _ref2.section,
-            separators = _ref2.separators;
-        var _state = this.state,
-            itemDimension = _state.itemDimension,
-            containerDimension = _state.containerDimension,
-            spacing = _state.spacing,
-            fixed = _state.fixed,
-            sections = _state.sections,
-            itemsPerRow = _state.itemsPerRow;
-        var rowStyle = {
-          flexDirection: 'row',
-          paddingLeft: spacing,
-          paddingBottom: spacing
-        };
-
-        if (item.isLast) {
-          rowStyle.marginBottom = spacing;
-        }
-
-        var itemContainerStyle = {
-          flexDirection: 'column',
-          justifyContent: 'center',
-          width: containerDimension,
-          paddingRight: spacing
-        };
-        var itemStyle = {};
-
-        if (fixed) {
-          itemStyle = {
-            width: itemDimension,
-            alignSelf: 'center'
-          };
-        }
-
-        return _react3.default.createElement(
-          _reactNative.View,
-          {
-            style: rowStyle,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 90
-            }
-          },
-          (item || []).map(function (itemObject, i) {
-            return _react3.default.createElement(
-              _reactNative.View,
-              {
-                key: item.key + "_" + i,
-                style: itemContainerStyle,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 92
-                }
-              },
-              _react3.default.createElement(
-                _reactNative.View,
-                {
-                  style: itemStyle,
-                  __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 93
-                  }
-                },
-                _this2.props.renderItem({
-                  item: itemObject,
-                  index: i + item.rowNumber * itemsPerRow,
-                  separators: separators,
-                  section: section
-                })
-              )
-            );
-          })
-        );
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _props2 = this.props,
-            sections = _props2.sections,
-            style = _props2.style,
-            spacing = _props2.spacing,
-            fixed = _props2.fixed,
-            itemDimension = _props2.itemDimension,
-            renderItem = _props2.renderItem,
-            renderSectionHeader = _props2.renderSectionHeader,
-            props = _objectWithoutProperties(_props2, ["sections", "style", "spacing", "fixed", "itemDimension", "renderItem", "renderSectionHeader"]);
-
-        var itemsPerRow = this.state.itemsPerRow;
-        var sectionsCopy = JSON.parse(JSON.stringify(sections));
-
-        var _loop = function _loop() {
-          var chunked = (0, _utils.chunkArray)(sectionsPair.data, itemsPerRow);
-          var rows = chunked.map(function (r, i) {
-            var keydRow = [].concat(_toConsumableArray(r));
-            keydRow.key = "row_" + i;
-            keydRow.rowNumber = i;
-            keydRow.isLast = chunked.length - 1 === i;
-            return keydRow;
-          });
-          sectionsPair.data = rows;
-        };
-
-        for (var _iterator = sectionsCopy, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[typeof Symbol === "function" ? Symbol.iterator : "@@iterator"]();;) {
-          if (_isArray) {
-            if (_i >= _iterator.length) break;
-            sectionsPair = _iterator[_i++];
-          } else {
-            _i = _iterator.next();
-            if (_i.done) break;
-            sectionsPair = _i.value;
-          }
-
-          _loop();
-        }
-
-        return _react3.default.createElement(_reactNative.SectionList, _extends({
-          sections: sectionsCopy,
-          renderSectionHeader: renderSectionHeader,
-          renderItem: this.renderHorizontalRow,
-          style: [{
-            paddingTop: spacing
-          }, style],
-          onLayout: this.onLayout
-        }, props, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 123
-          }
-        }));
-      }
-    }]);
-
-    return SuperGridSectionList;
-  }(_react2.Component));
-
-  SuperGridSectionList.propTypes = {
-    renderItem: _propTypes2.default.func.isRequired,
-    sections: _propTypes2.default.arrayOf(_propTypes2.default.any).isRequired,
-    itemDimension: _propTypes2.default.number,
-    itemWidth: _propTypes2.default.number,
-    fixed: _propTypes2.default.bool,
-    spacing: _propTypes2.default.number,
-    style: _reactNative.ViewPropTypes.style,
-    staticDimension: _propTypes2.default.number
-  };
-  SuperGridSectionList.defaultProps = {
-    fixed: false,
-    itemDimension: 120,
-    itemWidth: null,
-    spacing: 10,
-    style: {},
-    staticDimension: undefined
-  };
-  exports.default = SuperGridSectionList;
-},603,[118,179,129,12,602],"node_modules\\react-native-super-grid\\SuperGridSectionList.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _reactNativeExtendedStylesheet = _require(_dependencyMap[0], "react-native-extended-stylesheet");
-
-  var _reactNativeExtendedStylesheet2 = _interopRequireDefault(_reactNativeExtendedStylesheet);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  exports.default = _reactNativeExtendedStylesheet2.default.create({
-    grid: {
-      marginTop: 10,
-      marginBottom: 0,
-      justifyContent: "flex-start"
-    },
-    cell: {
-      flex: 1
-    },
-    space: {
-      backgroundColor: "#542a0e",
-      borderColor: "#603101",
-      borderLeftWidth: 0.5,
-      borderRightWidth: 0.5
-    },
-    wallTop: {
-      backgroundColor: "#000"
-    },
-    wallFacing: {
-      backgroundColor: "#888"
-    },
-    highlighted: {
-      backgroundColor: "#ff00ff"
-    },
-    container: {
-      flex: 1,
-      marginVertical: 20
-    }
-  });
-},604,[493],"app\\components\\Grid\\styles.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../node_modules/react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _class,
-      _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Grid\\AnimatedGrid.js";
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNativeExtendedStylesheet = _require(_dependencyMap[3], "react-native-extended-stylesheet");
-
-  var _reactNativeExtendedStylesheet2 = _interopRequireDefault(_reactNativeExtendedStylesheet);
-
-  var _reactNative = _require(_dependencyMap[4], "react-native");
-
-  var _AnimatedGridItem = _require(_dependencyMap[5], "./AnimatedGridItem");
-
-  var _AnimatedGridItem2 = _interopRequireDefault(_AnimatedGridItem);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    AnimatedGrid: {
-      displayName: "AnimatedGrid"
-    }
-  };
-
-  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/components/Grid/AnimatedGrid.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
-    };
-  }
-
-  var styles = _reactNativeExtendedStylesheet2.default.create({
-    grid: {
-      marginTop: 10,
-      marginBottom: 0,
-      justifyContent: "flex-start"
-    },
-    cell: {
-      borderWidth: 0.5
-    },
-    space: {
-      backgroundColor: "#fff"
-    },
-    wallTop: {
-      backgroundColor: "#000"
-    },
-    wallFacing: {
-      backgroundColor: "#777"
-    },
-    highlighted: {
-      backgroundColor: "#ff00ff"
-    },
-    container: {
-      flex: 1,
-      marginVertical: 20
-    }
-  });
-
-  var ANIMATION_DURATION = 1000;
-
-  var AnimatedGrid = _wrapComponent("AnimatedGrid")((_temp2 = _class = function (_React$Component) {
-    _inherits(AnimatedGrid, _React$Component);
-
-    function AnimatedGrid() {
-      var _ref;
-
-      var _temp, _this, _ret;
-
-      _classCallCheck(this, AnimatedGrid);
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AnimatedGrid.__proto__ || Object.getPrototypeOf(AnimatedGrid)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-        itemDimension: new _reactNative.Animated.Value(_this.props.zoomedInValue),
-        isZoomedIn: true
-      }, _this.getIndex = function () {
-        var offsetIndex = Math.floor(_this.props.playerSpace.name / _this.props.cellsInRow) - _this.props.scrollOffset;
-
-        if (offsetIndex < 0) {
-          return 0;
-        } else if (offsetIndex > 39) {
-          return 39;
-        } else {
-          return offsetIndex;
-        }
-      }, _this.getXScrollPos = function () {
-        var xOffset = _this.props.itemDimension * (_this.props.playerSpace.name % _this.props.cellsInRow) - _this.props.itemDimension * _this.props.scrollOffset;
-
-        if (xOffset < 0) {
-          return 0;
-        } else if (xOffset > _this.props.itemDimension) {
-          return _this.props.itemDimension;
-        } else {
-          return xOffset;
-        }
-      }, _this.getItemLayout = function (data, index) {
-        return _this.state.isZoomedIn ? {
-          length: _this.props.zoomedInValue,
-          offset: _this.props.zoomedInValue * index,
-          index: index
-        } : {
-          length: _this.props.zoomedOutValue,
-          offset: _this.props.zoomedOutValue * index,
-          index: index
-        };
-      }, _this.alterZoom = function () {
-        _reactNative.Vibration.vibrate(10);
-
-        _this.setState({
-          isZoomedIn: !_this.state.isZoomedIn
-        });
-
-        _reactNative.Vibration.cancel();
-      }, _temp), _possibleConstructorReturn(_this, _ret);
-    }
-
-    _createClass(AnimatedGrid, [{
-      key: "componentDidUpdate",
-      value: function componentDidUpdate() {
-        if (this.state.itemDimension._value === this.props.zoomedInValue && !this.state.isZoomedIn) {
-          _reactNative.Animated.timing(this.state.itemDimension, {
-            toValue: this.props.zoomedOutValue,
-            duration: ANIMATION_DURATION
-          }).start();
-
-          setTimeout(function () {}, ANIMATION_DURATION + 500);
-        } else if (this.state.itemDimension._value === this.props.zoomedOutValue && this.state.isZoomedIn) {
-          console.log("= =\n I ");
-
-          _reactNative.Animated.timing(this.state.itemDimension, {
-            toValue: this.props.zoomedInValue,
-            duration: ANIMATION_DURATION
-          }).start();
-
-          setTimeout(function () {}, ANIMATION_DURATION + 500);
-        } else if (this.props.zoom === "close") {
-          setTimeout(function () {}, 500);
-        }
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var _this2 = this;
-
-        var itemDimension = this.state.itemDimension;
-        return _react3.default.createElement(
-          _reactNative.View,
-          {
-            style: [this.state.isZoomedIn ? {
-              justifyContent: "center",
-              width: this.props.viewPortWidth,
-              height: this.props.viewPortHeight
-            } : {
-              justifyContent: "center",
-              width: this.props.viewPortWidth,
-              height: (this.props.cellsInRow + 5) * this.props.zoomedOutValue
-            }],
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 134
-            }
-          },
-          _react3.default.createElement(
-            _reactNative.ScrollView,
-            {
-              ref: function ref(_ref4) {
-                _this2.scrollViewRef = _ref4;
-              },
-              horizontal: true,
-              pagingEnabled: true,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 139
-              }
-            },
-            _react3.default.createElement(_reactNative.FlatList, {
-              ref: function ref(_ref3) {
-                _this2.flatListRef = _ref3;
-              },
-              data: this.props.items,
-              style: styles.container,
-              horizontal: false,
-              numColumns: this.props.numColumns,
-              keyExtractor: function keyExtractor(item) {
-                return item.name.toString();
-              },
-              renderItem: function renderItem(_ref2) {
-                var item = _ref2.item,
-                    index = _ref2.index;
-                return _react3.default.createElement(_AnimatedGridItem2.default, _extends({}, _this2.props, {
-                  index: index,
-                  itemDimension: itemDimension,
-                  isZoomedIn: _this2.state.isZoomedIn,
-                  alterZoom: _this2.alterZoom,
-                  __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 149
-                  }
-                }));
-              },
-              extraData: [this.props.isHuman, this.props.items, this.props.zoom],
-              getItemLayout: this.getItemLayout,
-              initialScrollIndex: this.getIndex(),
-              initialNumToRender: this.props.cellsInRow / 2,
-              pagingEnabled: true,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 140
-              }
-            })
-          )
-        );
-      }
-    }]);
-
-    return AnimatedGrid;
-  }(_react3.default.Component), _class.propTypes = {
-    items: _propTypes2.default.array,
-    getCellStyle: _propTypes2.default.func,
-    itemDimension: _propTypes2.default.number,
-    onPress: _propTypes2.default.func,
-    viewPortWidth: _propTypes2.default.number,
-    viewPortHeight: _propTypes2.default.number,
-    numColumns: _propTypes2.default.number,
-    isHuman: _propTypes2.default.bool,
-    playerSpace: _propTypes2.default.object,
-    zoom: _propTypes2.default.string,
-    cellsInRow: _propTypes2.default.number,
-    scrollOffset: _propTypes2.default.number,
-    zoomedInValue: _propTypes2.default.number,
-    zoomedOutValue: _propTypes2.default.number
-  }, _temp2));
-
-  exports.default = AnimatedGrid;
-},605,[118,179,129,493,12,606],"app\\components\\Grid\\AnimatedGrid.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _react2 = _require(_dependencyMap[0], "react");
-
-  var _react3 = _interopRequireDefault(_react2);
-
-  var _index = _require(_dependencyMap[1], "./../../../node_modules/react-transform-hmr/lib/index.js");
-
-  var _index2 = _interopRequireDefault(_index);
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  var _class,
-      _temp2,
-      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\components\\Grid\\AnimatedGridItem.js";
-
-  var _propTypes = _require(_dependencyMap[2], "prop-types");
-
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-
-  var _reactNative = _require(_dependencyMap[3], "react-native");
-
-  var _styles = _require(_dependencyMap[4], "./styles");
+  var _styles = _require(_dependencyMap[3], './styles');
 
   var _styles2 = _interopRequireDefault(_styles);
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-  var _components = {
-    AnimatedGridITem: {
-      displayName: "AnimatedGridITem"
-    }
-  };
-
-  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
-    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/components/Grid/AnimatedGridItem.js",
-    components: _components,
-    locals: [module],
-    imports: [_react3.default]
-  });
-
-  function _wrapComponent(id) {
-    return function (Component) {
-      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
     };
   }
 
-  var AnimatedTouchable = _reactNative.Animated.createAnimatedComponent(_reactNative.TouchableOpacity);
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
 
-  var AnimatedGridITem = _wrapComponent("AnimatedGridITem")((_temp2 = _class = function (_React$Component) {
-    _inherits(AnimatedGridITem, _React$Component);
-
-    function AnimatedGridITem() {
-      var _ref;
-
-      var _temp, _this, _ret;
-
-      _classCallCheck(this, AnimatedGridITem);
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AnimatedGridITem.__proto__ || Object.getPrototypeOf(AnimatedGridITem)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-        itemDimension: _this.props.itemDimension
-      }, _temp), _possibleConstructorReturn(_this, _ret);
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
 
-    _createClass(AnimatedGridITem, [{
-      key: "render",
-      value: function render() {
-        var itemDimension = this.state.itemDimension;
-        return _react3.default.createElement(
-          _reactNative.TouchableOpacity,
-          {
-            onLongPress: this.props.alterZoom,
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  var deviceScreen = _reactNative.Dimensions.get('window');
+
+  var barrierForward = deviceScreen.width / 4;
+
+  function shouldOpenMenu(dx) {
+    return dx > barrierForward;
+  }
+
+  var SideMenu = function (_React$Component) {
+    _inherits(SideMenu, _React$Component);
+
+    function SideMenu(props) {
+      _classCallCheck(this, SideMenu);
+
+      var _this = _possibleConstructorReturn(this, (SideMenu.__proto__ || Object.getPrototypeOf(SideMenu)).call(this, props));
+
+      _this.prevLeft = 0;
+      _this.isOpen = !!props.isOpen;
+      var initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1;
+      var openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
+      var hiddenMenuOffsetPercentage = props.hiddenMenuOffset / deviceScreen.width;
+      var left = new _reactNative.Animated.Value(props.isOpen ? props.openMenuOffset * initialMenuPositionMultiplier : props.hiddenMenuOffset);
+      _this.onLayoutChange = _this.onLayoutChange.bind(_this);
+      _this.onStartShouldSetResponderCapture = props.onStartShouldSetResponderCapture.bind(_this);
+      _this.onMoveShouldSetPanResponder = _this.handleMoveShouldSetPanResponder.bind(_this);
+      _this.onPanResponderMove = _this.handlePanResponderMove.bind(_this);
+      _this.onPanResponderRelease = _this.handlePanResponderEnd.bind(_this);
+      _this.onPanResponderTerminate = _this.handlePanResponderEnd.bind(_this);
+      _this.state = {
+        width: deviceScreen.width,
+        height: deviceScreen.height,
+        openOffsetMenuPercentage: openOffsetMenuPercentage,
+        openMenuOffset: deviceScreen.width * openOffsetMenuPercentage,
+        hiddenMenuOffsetPercentage: hiddenMenuOffsetPercentage,
+        hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
+        left: left
+      };
+
+      _this.state.left.addListener(function (_ref) {
+        var value = _ref.value;
+        return _this.props.onSliding(Math.abs((value - _this.state.hiddenMenuOffset) / (_this.state.openMenuOffset - _this.state.hiddenMenuOffset)));
+      });
+
+      return _this;
+    }
+
+    _createClass(SideMenu, [{
+      key: 'componentWillMount',
+      value: function componentWillMount() {
+        this.responder = _reactNative.PanResponder.create({
+          onStartShouldSetResponderCapture: this.onStartShouldSetResponderCapture,
+          onMoveShouldSetPanResponder: this.onMoveShouldSetPanResponder,
+          onPanResponderMove: this.onPanResponderMove,
+          onPanResponderRelease: this.onPanResponderRelease,
+          onPanResponderTerminate: this.onPanResponderTerminate
+        });
+      }
+    }, {
+      key: 'componentWillReceiveProps',
+      value: function componentWillReceiveProps(props) {
+        if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen && (props.autoClosing || this.isOpen === false)) {
+          this.openMenu(props.isOpen);
+        }
+      }
+    }, {
+      key: 'onLayoutChange',
+      value: function onLayoutChange(e) {
+        var _e$nativeEvent$layout = e.nativeEvent.layout,
+            width = _e$nativeEvent$layout.width,
+            height = _e$nativeEvent$layout.height;
+        var openMenuOffset = width * this.state.openOffsetMenuPercentage;
+        var hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
+        this.setState({
+          width: width,
+          height: height,
+          openMenuOffset: openMenuOffset,
+          hiddenMenuOffset: hiddenMenuOffset
+        });
+      }
+    }, {
+      key: 'getContentView',
+      value: function getContentView() {
+        var _this2 = this;
+
+        var overlay = null;
+
+        if (this.isOpen) {
+          overlay = _react2.default.createElement(_reactNative.TouchableWithoutFeedback, {
+            onPress: function onPress() {
+              return _this2.openMenu(false);
+            },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 30
+              lineNumber: 138
             }
-          },
-          _react3.default.createElement(
-            _reactNative.Animated.View,
-            {
-              style: [{
-                width: itemDimension,
-                height: itemDimension
-              }, _styles2.default.cell, this.props.items[this.props.index].value === 0 ? _styles2.default.wallTop : null, this.props.items[this.props.index].value === -1 ? _styles2.default.wallFacing : null, this.props.items[this.props.index].value > 0 ? _styles2.default.space : null, this.props.items[this.props.index].isHighlighted ? _styles2.default.highlighted : null],
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 31
-              }
-            },
-            _react3.default.createElement(
-              _reactNative.Text,
-              {
-                style: [this.props.isZoomedIn ? {
-                  fontSize: 20
-                } : {
-                  fontSize: 8
-                }, {
-                  textAlign: 'center'
-                }],
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 39
-                }
-              },
-              this.props.items[this.props.index].hasHuman ? 'P' : null,
-              this.props.items[this.props.index].hasMonster ? 'D' : null,
-              this.props.items[this.props.index].hasCache ? 'S' : null
-            )
-          )
-        );
+          }, _react2.default.createElement(_reactNative.View, {
+            style: _styles2.default.overlay,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 139
+            }
+          }));
+        }
+
+        var _state = this.state,
+            width = _state.width,
+            height = _state.height;
+
+        var ref = function ref(sideMenu) {
+          return _this2.sideMenu = sideMenu;
+        };
+
+        var style = [_styles2.default.frontView, {
+          width: width,
+          height: height
+        }, this.props.animationStyle(this.state.left)];
+        return _react2.default.createElement(_reactNative.Animated.View, _extends({
+          style: style,
+          ref: ref
+        }, this.responder.panHandlers, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 153
+          }
+        }), this.props.children, overlay);
+      }
+    }, {
+      key: 'moveLeft',
+      value: function moveLeft(offset) {
+        var newOffset = this.menuPositionMultiplier() * offset;
+        this.props.animationFunction(this.state.left, newOffset).start();
+        this.prevLeft = newOffset;
+      }
+    }, {
+      key: 'menuPositionMultiplier',
+      value: function menuPositionMultiplier() {
+        return this.props.menuPosition === 'right' ? -1 : 1;
+      }
+    }, {
+      key: 'handlePanResponderMove',
+      value: function handlePanResponderMove(e, gestureState) {
+        if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {
+          var newLeft = this.prevLeft + gestureState.dx;
+
+          if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.state.openMenuOffset) {
+            newLeft = this.menuPositionMultiplier() * this.state.openMenuOffset;
+          }
+
+          this.props.onMove(newLeft);
+          this.state.left.setValue(newLeft);
+        }
+      }
+    }, {
+      key: 'handlePanResponderEnd',
+      value: function handlePanResponderEnd(e, gestureState) {
+        var offsetLeft = this.menuPositionMultiplier() * (this.state.left.__getValue() + gestureState.dx);
+        this.openMenu(shouldOpenMenu(offsetLeft));
+      }
+    }, {
+      key: 'handleMoveShouldSetPanResponder',
+      value: function handleMoveShouldSetPanResponder(e, gestureState) {
+        if (this.gesturesAreEnabled()) {
+          var x = Math.round(Math.abs(gestureState.dx));
+          var y = Math.round(Math.abs(gestureState.dy));
+          var touchMoved = x > this.props.toleranceX && y < this.props.toleranceY;
+
+          if (this.isOpen) {
+            return touchMoved;
+          }
+
+          var withinEdgeHitWidth = this.props.menuPosition === 'right' ? gestureState.moveX > deviceScreen.width - this.props.edgeHitWidth : gestureState.moveX < this.props.edgeHitWidth;
+          var swipingToOpen = this.menuPositionMultiplier() * gestureState.dx > 0;
+          return withinEdgeHitWidth && touchMoved && swipingToOpen;
+        }
+
+        return false;
+      }
+    }, {
+      key: 'openMenu',
+      value: function openMenu(isOpen) {
+        var _state2 = this.state,
+            hiddenMenuOffset = _state2.hiddenMenuOffset,
+            openMenuOffset = _state2.openMenuOffset;
+        this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
+        this.isOpen = isOpen;
+        this.forceUpdate();
+        this.props.onChange(isOpen);
+      }
+    }, {
+      key: 'gesturesAreEnabled',
+      value: function gesturesAreEnabled() {
+        var disableGestures = this.props.disableGestures;
+
+        if (typeof disableGestures === 'function') {
+          return !disableGestures();
+        }
+
+        return !disableGestures;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var boundryStyle = this.props.menuPosition === 'right' ? {
+          left: this.state.width - this.state.openMenuOffset
+        } : {
+          right: this.state.width - this.state.openMenuOffset
+        };
+
+        var menu = _react2.default.createElement(_reactNative.View, {
+          style: [_styles2.default.menu, boundryStyle],
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 241
+          }
+        }, this.props.menu);
+
+        return _react2.default.createElement(_reactNative.View, {
+          style: _styles2.default.container,
+          onLayout: this.onLayoutChange,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 247
+          }
+        }, menu, this.getContentView());
       }
     }]);
 
-    return AnimatedGridITem;
-  }(_react3.default.Component), _class.propTypes = {
-    itemDimension: _propTypes2.default.object,
-    index: _propTypes2.default.number,
-    items: _propTypes2.default.array,
-    zoomedInValue: _propTypes2.default.number,
-    zoomedOutValue: _propTypes2.default.number,
-    isZoomedIn: _propTypes2.default.bool,
-    children: _propTypes2.default.any,
-    alterZoom: _propTypes2.default.func
-  }, _temp2));
+    return SideMenu;
+  }(_react2.default.Component);
 
-  exports.default = AnimatedGridITem;
-},606,[118,179,129,12,604],"app\\components\\Grid\\AnimatedGridItem.js");
+  exports.default = SideMenu;
+  SideMenu.propTypes = {
+    edgeHitWidth: _propTypes2.default.number,
+    toleranceX: _propTypes2.default.number,
+    toleranceY: _propTypes2.default.number,
+    menuPosition: _propTypes2.default.oneOf(['left', 'right']),
+    onChange: _propTypes2.default.func,
+    onMove: _propTypes2.default.func,
+    children: _propTypes2.default.node,
+    menu: _propTypes2.default.node,
+    openMenuOffset: _propTypes2.default.number,
+    hiddenMenuOffset: _propTypes2.default.number,
+    animationStyle: _propTypes2.default.func,
+    disableGestures: _propTypes2.default.oneOfType([_propTypes2.default.func, _propTypes2.default.bool]),
+    animationFunction: _propTypes2.default.func,
+    onStartShouldSetResponderCapture: _propTypes2.default.func,
+    isOpen: _propTypes2.default.bool,
+    bounceBackOnOverdraw: _propTypes2.default.bool,
+    autoClosing: _propTypes2.default.bool
+  };
+  SideMenu.defaultProps = {
+    toleranceY: 10,
+    toleranceX: 10,
+    edgeHitWidth: 60,
+    children: null,
+    menu: null,
+    openMenuOffset: deviceScreen.width * (2 / 3),
+    disableGestures: false,
+    menuPosition: 'left',
+    hiddenMenuOffset: 0,
+    onMove: function onMove() {},
+    onStartShouldSetResponderCapture: function onStartShouldSetResponderCapture() {
+      return true;
+    },
+    onChange: function onChange() {},
+    onSliding: function onSliding() {},
+    animationStyle: function animationStyle(value) {
+      return {
+        transform: [{
+          translateX: value
+        }]
+      };
+    },
+    animationFunction: function animationFunction(prop, value) {
+      return _reactNative.Animated.spring(prop, {
+        toValue: value,
+        friction: 8
+      });
+    },
+    isOpen: false,
+    bounceBackOnOverdraw: true,
+    autoClosing: true
+  };
+},599,[118,12,129,600],"node_modules\\react-native-side-menu\\build\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = [{
-    'x': 2,
-    'y': 4
-  }, {
-    'x': 40,
-    'y': 80,
-    'z': 120,
-    'k': 160
-  }, {
-    'x': 2,
-    'y': 42
-  }];
-},607,[],"app\\data\\WallTemplate.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
 
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  var _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
 
-  var Cell = function Cell(name) {
-    _classCallCheck(this, Cell);
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
 
-    this.name = name;
-    this.value = 5;
-    this.imageKey = 0;
-    this.humanEdges = [];
-    this.monsterEdges = [];
-    this.searched = false;
-    this.parent = null;
-    this.isHighlighted = false;
-    this.isRevealed = false;
-    this.hasHuman = false;
-    this.hasMonster = false;
-    this.hasCache = false;
+    return target;
   };
 
-  exports.default = Cell;
-},608,[],"app\\data\\Cell.js");
+  var _reactNative = _require(_dependencyMap[0], 'react-native');
+
+  var absoluteStretch = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
+  };
+  exports.default = _reactNative.StyleSheet.create({
+    container: _extends({}, absoluteStretch, {
+      justifyContent: 'center'
+    }),
+    menu: _extends({}, absoluteStretch),
+    frontView: {
+      flex: 1,
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      backgroundColor: 'transparent',
+      overflow: 'hidden'
+    },
+    overlay: _extends({}, absoluteStretch, {
+      backgroundColor: 'transparent'
+    })
+  });
+},600,[12],"node_modules\\react-native-side-menu\\build\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -78641,6 +77696,26 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Engine.__proto__ || Object.getPrototypeOf(Engine)).call(this, props));
 
+      _this.getBeginningX = function () {
+        if (_this.cameraX < 0) {
+          return 0;
+        } else if (_this.cameraX > _this.xOffsetMax) {
+          return -_this.xOffsetMax;
+        } else {
+          return -_this.cameraX;
+        }
+      };
+
+      _this.getBeginningY = function () {
+        if (_this.cameraY < 0) {
+          return 0;
+        } else if (_this.cameraY > _this.yOffsetMax) {
+          return -_this.yOffsetMax;
+        } else {
+          return -_this.cameraY;
+        }
+      };
+
       _this.getRangesFromTile = function (tile) {
         var size = tile.size,
             top = tile.top,
@@ -78657,10 +77732,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (_this.state.showHighlighted) {
           return _react3.default.createElement(_native.TileMap, {
             src: _require(_dependencyMap[6], "../data/images/Magenta-square_100px.gif"),
-            tileSize: _this.tileWidth,
+            tileSize: _this.props.tileWidth,
             columns: 40,
             rows: 40,
-            sourceWidth: _this.tileWidth,
+            sourceWidth: _this.props.tileWidth,
             layers: [_this.state.highlightedTileMap],
             renderTile: function renderTile(tile, src, styles) {
               _this.highlightedTileRanges.push(_this.getRangesFromTile(tile));
@@ -78671,7 +77746,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   style: [styles],
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 181
+                    lineNumber: 231
                   }
                 },
                 _react3.default.createElement(_reactNative.Image, {
@@ -78682,14 +77757,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   source: src,
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 182
+                    lineNumber: 232
                   }
                 })
               );
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 171
+              lineNumber: 221
             }
           });
         } else {
@@ -78698,10 +77773,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = Math.ceil(_this.screenDimensions.height / _this.props.tilesInRow);
-      _this.gameBoardWidth = _this.tileWidth * 40;
-      _this.playerX = props.playerSpace.name % 40 * _this.tileWidth;
-      _this.playerY = Math.floor(props.playerSpace.name / 40) * _this.tileWidth;
+      _this.gameBoardWidth = _this.props.tileWidth * 40;
+      _this.xOffsetMax = _this.gameBoardWidth - _this.screenDimensions.width;
+      _this.yOffsetMax = _this.gameBoardWidth - _this.screenDimensions.height;
+      _this.playerX = _this.props.playerSpace.name % 40 * _this.props.tileWidth;
+      _this.playerY = Math.floor(_this.props.playerSpace.name / 40) * _this.props.tileWidth;
+      _this.cameraX = _this.playerX - _this.screenDimensions.width / 2;
+      _this.cameraY = _this.playerY - _this.screenDimensions.height / 2;
+      _this.beginningX = _this.getBeginningX();
+      _this.beginningY = _this.getBeginningY();
       _this.highlightedTileRanges = [];
       _this.state = {
         playerSpace: _this.props.playerSpace,
@@ -78713,8 +77793,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         offsetLeft: 0,
         initialTop: 0,
         initialLeft: 0,
-        top: 0,
-        left: 0,
+        top: _this.beginningY,
+        left: _this.beginningX,
         highlightedTileMap: _this.props.gameBoard.map(function (x) {
           return x.isHighlighted ? 1 : 0;
         }),
@@ -78736,33 +77816,38 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onStartShouldSetPanResponder: function onStartShouldSetPanResponder(evt, gestureState) {
             return true;
           },
+          onStartShouldSetPanResponderCapture: function onStartShouldSetPanResponderCapture(evt, gestureState) {
+            return true;
+          },
           onMoveShouldSetPanResponder: function onMoveShouldSetPanResponder(evt, gestureState) {
+            return true;
+          },
+          onMoveShouldSetPanResponderCapture: function onMoveShouldSetPanResponderCapture(evt, gestureState) {
             return true;
           },
           onPanResponderGrant: function onPanResponderGrant(evt, gestureState) {},
           onPanResponderMove: function onPanResponderMove(evt, gestureState) {
             var touches = evt.nativeEvent.touches;
 
-            if (touches.length === 2 && !_this2.state.isZooming) {
+            if (touches.length === 2 && Math.abs(touches[0].pageX - touches[1].pageX) > 5) {
               _this2.processPan(touches[0].pageX, touches[0].pageY);
-            }
-
-            if (_this2.state.showHighlighted && touches.length === 1) {
+            } else if (_this2.state.showHighlighted && touches.length === 1) {
               _this2.processMove(touches[0].pageX, touches[0].pageY);
             }
           },
           onPanResponderRelease: function onPanResponderRelease() {
             _this2.setState({
-              isZooming: false,
               isMoving: false
             });
           }
         });
       }
     }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate() {}
+    }, {
       key: "UNSAFE_componentWillReceiveProps",
       value: function UNSAFE_componentWillReceiveProps(nextProps) {
-        console.log('received props');
         var newHighlightedTileMap = nextProps.gameBoard.map(function (x) {
           return x.isHighlighted ? 1 : 0;
         });
@@ -78771,9 +77856,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         });
 
         if (this.props.playerSpace !== nextProps.playerSpace) {
+          console.log("player space", this.props.playerSpace, nextProps.playerSpace);
           this.setState({
-            playerX: nextProps.playerSpace.name % 40 * this.tileWidth,
-            playerY: Math.floor(nextProps.playerSpace.name / 40) * this.tileWidth
+            playerSpace: nextProps.playerSpace,
+            playerX: nextProps.playerSpace.name % 40 * this.props.tileWidth,
+            playerY: Math.floor(nextProps.playerSpace.name / 40) * this.props.tileWidth
           });
         }
 
@@ -78836,10 +77923,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     }, {
       key: "getTileFromXY",
       value: function getTileFromXY(x, y) {
-        y = Math.floor(y / this.tileWidth);
-        x = Math.floor(x / this.tileWidth);
+        y = Math.floor(y / this.props.tileWidth);
+        x = Math.floor(x / this.props.tileWidth);
         var index = y * 40 + x;
-        console.log(this.state.playerSpace.name, index);
+        console.log(this.state.playerSpace.name, index, this.state.playerX, this.state.playerY);
         return this.props.gameBoard[index];
       }
     }, {
@@ -78848,12 +77935,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         return _react3.default.createElement(
           _native.Loop,
           {
-            style: {
-              backgroundColor: "#212121"
-            },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 200
+              lineNumber: 251
             }
           },
           _react3.default.createElement(
@@ -78862,53 +77946,71 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               height: this.screenDimensions.height,
               width: this.screenDimensions.width,
               style: {
-                backgroundColor: "#515151"
+                backgroundColor: "#000"
               },
               removeClippedSubviews: true,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 201
+                lineNumber: 252
               }
             },
             _react3.default.createElement(
               _reactNative.View,
               _extends({
                 style: {
-                  position: 'absolute',
-                  left: this.state.left,
-                  top: this.state.top,
-                  overflow: 'hidden'
+                  width: this.screenDimensions.width,
+                  height: this.screenDimensions.height,
+                  zIndex: 1
                 }
               }, this._panResponder.panHandlers, {
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 207
+                  lineNumber: 258
                 }
               }),
-              _react3.default.createElement(_Board2.default, {
-                gameBoard: this.props.gameBoard,
-                isHuman: this.props.isHuman,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 208
-                }
-              }),
-              _react3.default.createElement(_reactNative.Image, {
-                style: {
-                  position: 'absolute',
-                  top: this.state.playerY - this.tileWidth,
-                  left: this.state.playerX,
-                  height: this.tileWidth * 2,
-                  width: this.tileWidth,
-                  resizeMode: 'contain'
+              _react3.default.createElement(
+                _reactNative.View,
+                {
+                  style: {
+                    position: 'absolute',
+                    left: this.state.left,
+                    top: this.state.top,
+                    overflow: 'hidden',
+                    width: this.gameBoardWidth,
+                    height: this.gameBoardWidth
+                  },
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 259
+                  }
                 },
-                source: _require(_dependencyMap[7], "../data/images/human.png"),
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 212
-                }
-              }),
-              this.renderHighlighted()
+                _react3.default.createElement(_Board2.default, {
+                  gameBoard: this.props.gameBoard,
+                  isHuman: this.props.isHuman,
+                  boardFinished: this.props.boardFinished,
+                  tileWidth: this.props.tileWidth,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 260
+                  }
+                }),
+                _react3.default.createElement(_reactNative.Image, {
+                  style: {
+                    position: 'absolute',
+                    top: this.state.playerY - this.props.tileWidth,
+                    left: this.state.playerX,
+                    height: this.props.tileWidth * 2,
+                    width: this.props.tileWidth,
+                    resizeMode: 'contain'
+                  },
+                  source: _require(_dependencyMap[7], "../data/images/human.png"),
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 267
+                  }
+                }),
+                this.renderHighlighted()
+              )
             )
           )
         );
@@ -78922,11 +78024,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     boardFinished: _propTypes2.default.bool,
     playerSpace: _propTypes2.default.object,
     isHuman: _propTypes2.default.bool,
-    move: _propTypes2.default.func
+    move: _propTypes2.default.func,
+    tileWidth: _propTypes2.default.number
   }, _temp));
 
   exports.default = Engine;
-},609,[118,179,129,12,610,619,664,665],"app\\screens\\Engine.js");
+},601,[118,179,129,12,602,611,656,657],"app\\screens\\Engine.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -78965,7 +78068,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   exports.Stage = _stage2.default;
   exports.TileMap = _tileMap2.default;
   exports.World = _world2.default;
-},610,[611,613,615,616,617,618],"node_modules\\react-game-kit\\native.js");
+},602,[603,605,607,608,609,610],"node_modules\\react-game-kit\\native.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -79185,7 +78288,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     body: _propTypes2.default.object
   }, _temp);
   exports.default = Body;
-},611,[118,129,612],"node_modules\\react-game-kit\\lib\\native\\components\\body.js");
+},603,[118,129,604],"node_modules\\react-game-kit\\lib\\native\\components\\body.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
     (function (f) {
         if (typeof exports === "object" && typeof module !== "undefined") {
@@ -85518,7 +84621,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             }]
         }, {}, [30])(30);
     });
-},612,[],"node_modules\\matter-js\\build\\matter.js");
+},604,[],"node_modules\\matter-js\\build\\matter.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -85663,7 +84766,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     loop: _propTypes2.default.object
   }, _temp);
   exports.default = Loop;
-},613,[118,129,12,614],"node_modules\\react-game-kit\\lib\\native\\components\\loop.js");
+},605,[118,129,12,606],"node_modules\\react-game-kit\\lib\\native\\components\\loop.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   "use strict";
 
@@ -85743,7 +84846,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }();
 
   exports.default = GameLoop;
-},614,[],"node_modules\\react-game-kit\\lib\\native\\utils\\game-loop.js");
+},606,[],"node_modules\\react-game-kit\\lib\\native\\utils\\game-loop.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -85981,7 +85084,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     scale: _propTypes2.default.number
   }, _temp);
   exports.default = Sprite;
-},615,[118,129,12],"node_modules\\react-game-kit\\lib\\native\\components\\sprite.js");
+},607,[118,129,12],"node_modules\\react-game-kit\\lib\\native\\components\\sprite.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -86213,7 +85316,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     scale: _propTypes2.default.number
   }, _temp);
   exports.default = Stage;
-},616,[118,129,12],"node_modules\\react-game-kit\\lib\\native\\components\\stage.js");
+},608,[118,129,12],"node_modules\\react-game-kit\\lib\\native\\components\\stage.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -86457,7 +85560,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     scale: _propTypes2.default.number
   }, _temp);
   exports.default = TileMap;
-},617,[118,129,12],"node_modules\\react-game-kit\\lib\\native\\components\\tile-map.js");
+},609,[118,129,12],"node_modules\\react-game-kit\\lib\\native\\components\\tile-map.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -86641,7 +85744,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     engine: _propTypes2.default.object
   }, _temp);
   exports.default = World;
-},618,[118,129,12,612],"node_modules\\react-game-kit\\lib\\native\\components\\world.js");
+},610,[118,129,12,604],"node_modules\\react-game-kit\\lib\\native\\components\\world.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -86704,17 +85807,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
 
-      _this.getCacheMapArray = function (cell) {
-        if (cell.hasCache) {
-          return 1;
-        } else {
-          return 0;
-        }
+      _this.getIndexFromTile = function (tile) {
+        var size = tile.size;
+        var x = tile.left / size;
+        var y = tile.top / size;
+        var index = y * 40 + x;
+        return index;
       };
 
-      _this.fixImageStyle = function (index) {
+      _this.fixImageStyle = function (index, tile) {
         return {
-          left: (index - 1) * _this.tileWidth,
+          left: (index - 1) * _this.props.tileWidth,
           overflow: 'hidden'
         };
       };
@@ -86728,7 +85831,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[5], "../data/images/wall-t-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 76
+                lineNumber: 64
               }
             });
 
@@ -86739,7 +85842,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[6], "../data/images/wall-t-n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 79
+                lineNumber: 67
               }
             });
 
@@ -86750,7 +85853,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[7], "../data/images/wall-t-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 82
+                lineNumber: 70
               }
             });
 
@@ -86761,7 +85864,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[8], "../data/images/wall-t-w.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 85
+                lineNumber: 73
               }
             });
 
@@ -86772,7 +85875,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[9], "../data/images/wall-t-e.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 88
+                lineNumber: 76
               }
             });
 
@@ -86783,7 +85886,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[10], "../data/images/wall-t-sw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 91
+                lineNumber: 79
               }
             });
 
@@ -86794,7 +85897,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[11], "../data/images/wall-t-s.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 94
+                lineNumber: 82
               }
             });
 
@@ -86805,7 +85908,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[12], "../data/images/wall-t-se.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 97
+                lineNumber: 85
               }
             });
 
@@ -86816,7 +85919,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 101
+                lineNumber: 89
               }
             });
 
@@ -86827,7 +85930,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[14], "../data/images/wall-f-nw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 104
+                lineNumber: 92
               }
             });
 
@@ -86838,7 +85941,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[15], "../data/images/wall-f-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 107
+                lineNumber: 95
               }
             });
 
@@ -86849,7 +85952,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[16], "../data/images/wall-f-ne-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 110
+                lineNumber: 98
               }
             });
 
@@ -86860,7 +85963,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[17], "../data/images/wall-f-sw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 113
+                lineNumber: 101
               }
             });
 
@@ -86871,7 +85974,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[18], "../data/images/wall-f-s-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 116
+                lineNumber: 104
               }
             });
 
@@ -86882,7 +85985,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[19], "../data/images/wall-f-se-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 119
+                lineNumber: 107
               }
             });
 
@@ -86893,7 +85996,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[20], "../data/images/wall-f-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 122
+                lineNumber: 110
               }
             });
 
@@ -86904,7 +86007,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[21], "../data/images/floor-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 125
+                lineNumber: 113
               }
             });
 
@@ -86915,7 +86018,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[22], "../data/images/floor-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 128
+                lineNumber: 116
               }
             });
 
@@ -86926,7 +86029,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[23], "../data/images/floor-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 131
+                lineNumber: 119
               }
             });
 
@@ -86937,7 +86040,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[24], "../data/images/floor-w-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 134
+                lineNumber: 122
               }
             });
 
@@ -86948,7 +86051,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[25], "../data/images/floor-e-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 137
+                lineNumber: 125
               }
             });
 
@@ -86959,7 +86062,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[26], "../data/images/floor-c-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 140
+                lineNumber: 128
               }
             });
 
@@ -86970,7 +86073,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[27], "../data/images/wall-t-n-s.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 143
+                lineNumber: 131
               }
             });
 
@@ -86981,7 +86084,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[28], "../data/images/wall-t-e-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 146
+                lineNumber: 134
               }
             });
 
@@ -86992,7 +86095,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[29], "../data/images/wall-t-n-s-e.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 149
+                lineNumber: 137
               }
             });
 
@@ -87003,7 +86106,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[30], "../data/images/wall-t-n-s-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 152
+                lineNumber: 140
               }
             });
 
@@ -87014,7 +86117,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[31], "../data/images/wall-t-n-e-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 155
+                lineNumber: 143
               }
             });
 
@@ -87025,7 +86128,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[32], "../data/images/wall-t-e-s-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 158
+                lineNumber: 146
               }
             });
 
@@ -87036,7 +86139,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[33], "../data/images/floor-n-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 161
+                lineNumber: 149
               }
             });
 
@@ -87047,7 +86150,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[34], "../data/images/floor-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 164
+                lineNumber: 152
               }
             });
 
@@ -87058,7 +86161,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[35], "../data/images/floor-w-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 167
+                lineNumber: 155
               }
             });
 
@@ -87069,7 +86172,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[36], "../data/images/floor-e-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 170
+                lineNumber: 158
               }
             });
 
@@ -87080,7 +86183,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[37], "../data/images/floor-c-5.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 173
+                lineNumber: 161
               }
             });
 
@@ -87091,7 +86194,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[38], "../data/images/floor-c-6.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 176
+                lineNumber: 164
               }
             });
 
@@ -87102,7 +86205,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[39], "../data/images/floor-c-7.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 179
+                lineNumber: 167
               }
             });
 
@@ -87113,7 +86216,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[40], "../data/images/floor-c-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 182
+                lineNumber: 170
               }
             });
 
@@ -87124,7 +86227,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[41], "../data/images/floor-c-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 185
+                lineNumber: 173
               }
             });
 
@@ -87135,7 +86238,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[42], "../data/images/floor-c-4.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 188
+                lineNumber: 176
               }
             });
 
@@ -87146,7 +86249,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[43], "../data/images/floor-c-8.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 191
+                lineNumber: 179
               }
             });
 
@@ -87157,7 +86260,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[44], "../data/images/floor-c-9.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 194
+                lineNumber: 182
               }
             });
 
@@ -87168,7 +86271,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[45], "../data/images/floor-e2n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 197
+                lineNumber: 185
               }
             });
 
@@ -87179,7 +86282,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[46], "../data/images/floor-w2n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 200
+                lineNumber: 188
               }
             });
 
@@ -87191,19 +86294,28 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       _this.renderFogMap1 = function () {
         if (_this.state.finishedUpdatingFogMap) {
-          return _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[47], "../data/images/Black_square.jpeg"),
-            tileSize: _this.tileWidth,
-            columns: 40,
-            rows: 40,
-            sourceWidth: _this.tileWidth,
-            layers: [_this.state.tileMap],
-            renderTile: _this.renderTile,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 210
-            }
-          });
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 199
+              }
+            },
+            _react3.default.createElement(_native.TileMap, {
+              src: _require(_dependencyMap[47], "../data/images/Black_square.jpeg"),
+              tileSize: _this.props.tileWidth,
+              columns: 40,
+              rows: 40,
+              sourceWidth: _this.props.tileWidth,
+              layers: [_this.state.tileMap],
+              renderTile: _this.renderTile,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 200
+              }
+            })
+          );
         }
       };
 
@@ -87211,26 +86323,26 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (!_this.state.finishedUpdatingFogMap) {
           return _react3.default.createElement(_native.TileMap, {
             src: _require(_dependencyMap[47], "../data/images/Black_square.jpeg"),
-            tileSize: _this.tileWidth,
+            tileSize: _this.props.tileWidth,
             columns: 40,
             rows: 40,
-            sourceWidth: _this.tileWidth,
+            sourceWidth: _this.props.tileWidth,
             layers: [_this.state.tileMap],
             renderTile: _this.renderTile,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 226
+              lineNumber: 218
             }
           });
         }
       };
 
+      _this.counter = 0;
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = Math.ceil(_this.screenDimensions.height / 40);
-      _this.sourceWidth = _this.tileWidth;
-      _this.gameBoardWidth = _this.tileWidth * 40;
+      _this.sourceWidth = _this.props.tileWidth;
+      _this.gameBoardWidth = _this.props.tileWidth * 40;
       _this.tileMapArray = _this.props.gameBoard.map(function (a) {
-        return _this.props.isHuman ? a.isRevealed ? a.imageKey : 9 : a.imageKey;
+        return _this.props.isHuman ? a.isRevealed ? a.imageKey : 0 : a.imageKey;
       });
       _this.tileCashMapArray = _this.props.gameBoard.map(function (x) {
         return x.hasCache && _this.props.isHuman ? 1 : 0;
@@ -87238,48 +86350,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.tileHighlightedMapArray = _this.props.gameBoard.map(function (x) {
         return x.isHighlighted ? 1 : 0;
       });
-      _this.tileHumanMapArray = _this.props.gameBoard.map(function (x) {
-        return x.hasHuman ? 1 : 0;
-      });
-      _this.tileMonsterMapArray = _this.props.gameBoard.map(function (x) {
-        return x.hasMonster ? 1 : 0;
-      });
       _this.state = {
-        isZooming: false,
-        isMoving: false,
-        initialX: null,
-        offsetLeft: 0,
-        initialTop: 0,
-        initialLeft: 0,
-        top: 0,
-        left: 0,
-        tileSize: 100,
-        finishedUpdatingFogMap: true,
+        finishedUpdatingFogMap: _this.props.boardFinished,
         tileMap: _this.tileMapArray
       };
       return _this;
     }
 
     _createClass(Board, [{
-      key: "UNSAFE_componentWillReceiveProps",
-      value: function UNSAFE_componentWillReceiveProps(nextProps) {
-        var _this2 = this;
-
-        var newFogMap = nextProps.gameBoard.map(function (a) {
-          return _this2.props.isHuman ? a.isRevealed ? a.imageKey : 9 : a.imageKey;
-        });
-
-        if (JSON.stringify(this.state.tileMap) !== JSON.stringify(newFogMap)) {
-          this.setState({
-            finishedUpdatingFogMap: !this.state.finishedUpdatingFogMap,
-            tileMap: newFogMap
-          });
-        }
-      }
-    }, {
       key: "render",
       value: function render() {
-        var _this3 = this;
+        var _this2 = this;
 
         return _react3.default.createElement(
           _reactNative.View,
@@ -87289,36 +86370,36 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 244
+              lineNumber: 237
             }
           },
           this.renderFogMap1(),
           this.renderFogMap2(),
           _react3.default.createElement(_native.TileMap, {
             src: _require(_dependencyMap[48], "../data/images/shrine.png"),
-            tileSize: this.tileWidth,
+            tileSize: this.props.tileWidth,
             columns: 40,
             rows: 40,
-            sourceWidth: this.tileWidth,
+            sourceWidth: this.props.tileWidth,
             layers: [this.tileCashMapArray],
             renderTile: function renderTile(tile, src, styles) {
               return _react3.default.createElement(_reactNative.Image, {
                 resizeMode: "stretch",
                 style: [styles, {
-                  height: _this3.tileWidth * 2,
-                  top: -_this3.tileWidth,
+                  height: _this2.props.tileWidth * 2,
+                  top: -_this2.props.tileWidth,
                   overflow: 'hidden'
                 }],
                 source: src,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 264
+                  lineNumber: 257
                 }
               });
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 256
+              lineNumber: 249
             }
           })
         );
@@ -87330,11 +86411,12 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     scale: _propTypes2.default.number,
     loop: _propTypes2.default.object
   }, _class.propTypes = {
-    gameBoard: _propTypes2.default.array
+    gameBoard: _propTypes2.default.array,
+    tileWidth: _propTypes2.default.number
   }, _temp));
 
   exports.default = Board;
-},619,[118,179,12,129,610,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,656,657,658,659,660,661,662,663],"app\\screens\\Board.js");
+},611,[118,179,12,129,602,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655],"app\\screens\\Board.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87346,7 +86428,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-t-nw",
 		"type": "gif"
 	});
-},620,[164],"app\\data\\images\\wall-t-nw.gif");
+},612,[164],"app\\data\\images\\wall-t-nw.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87358,7 +86440,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-t-n",
 		"type": "gif"
 	});
-},621,[164],"app\\data\\images\\wall-t-n.gif");
+},613,[164],"app\\data\\images\\wall-t-n.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -87370,7 +86452,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     "name": "wall-t-ne",
     "type": "gif"
   });
-},622,[164],"app\\data\\images\\wall-t-ne.gif");
+},614,[164],"app\\data\\images\\wall-t-ne.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87382,7 +86464,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-t-w",
 		"type": "gif"
 	});
-},623,[164],"app\\data\\images\\wall-t-w.gif");
+},615,[164],"app\\data\\images\\wall-t-w.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87394,7 +86476,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-t-e",
 		"type": "gif"
 	});
-},624,[164],"app\\data\\images\\wall-t-e.gif");
+},616,[164],"app\\data\\images\\wall-t-e.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87406,7 +86488,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-t-sw",
 		"type": "gif"
 	});
-},625,[164],"app\\data\\images\\wall-t-sw.gif");
+},617,[164],"app\\data\\images\\wall-t-sw.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87418,7 +86500,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-t-s",
 		"type": "gif"
 	});
-},626,[164],"app\\data\\images\\wall-t-s.gif");
+},618,[164],"app\\data\\images\\wall-t-s.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87430,7 +86512,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-t-se",
 		"type": "gif"
 	});
-},627,[164],"app\\data\\images\\wall-t-se.gif");
+},619,[164],"app\\data\\images\\wall-t-se.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87442,7 +86524,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-t-c",
 		"type": "gif"
 	});
-},628,[164],"app\\data\\images\\wall-t-c.gif");
+},620,[164],"app\\data\\images\\wall-t-c.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87454,7 +86536,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-f-nw-2",
 		"type": "gif"
 	});
-},629,[164],"app\\data\\images\\wall-f-nw-2.gif");
+},621,[164],"app\\data\\images\\wall-f-nw-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87466,7 +86548,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-f-n-1",
 		"type": "gif"
 	});
-},630,[164],"app\\data\\images\\wall-f-n-1.gif");
+},622,[164],"app\\data\\images\\wall-f-n-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87478,7 +86560,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-f-ne-2",
 		"type": "gif"
 	});
-},631,[164],"app\\data\\images\\wall-f-ne-2.gif");
+},623,[164],"app\\data\\images\\wall-f-ne-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87490,7 +86572,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-f-sw-2",
 		"type": "gif"
 	});
-},632,[164],"app\\data\\images\\wall-f-sw-2.gif");
+},624,[164],"app\\data\\images\\wall-f-sw-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87502,7 +86584,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-f-s-1",
 		"type": "gif"
 	});
-},633,[164],"app\\data\\images\\wall-f-s-1.gif");
+},625,[164],"app\\data\\images\\wall-f-s-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87514,7 +86596,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-f-se-2",
 		"type": "gif"
 	});
-},634,[164],"app\\data\\images\\wall-f-se-2.gif");
+},626,[164],"app\\data\\images\\wall-f-se-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87526,7 +86608,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "wall-f-n-3",
 		"type": "gif"
 	});
-},635,[164],"app\\data\\images\\wall-f-n-3.gif");
+},627,[164],"app\\data\\images\\wall-f-n-3.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87538,7 +86620,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-nw",
 		"type": "gif"
 	});
-},636,[164],"app\\data\\images\\floor-nw.gif");
+},628,[164],"app\\data\\images\\floor-nw.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87550,7 +86632,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-n-1",
 		"type": "gif"
 	});
-},637,[164],"app\\data\\images\\floor-n-1.gif");
+},629,[164],"app\\data\\images\\floor-n-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87562,7 +86644,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-ne",
 		"type": "gif"
 	});
-},638,[164],"app\\data\\images\\floor-ne.gif");
+},630,[164],"app\\data\\images\\floor-ne.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87574,7 +86656,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-w-1",
 		"type": "gif"
 	});
-},639,[164],"app\\data\\images\\floor-w-1.gif");
+},631,[164],"app\\data\\images\\floor-w-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87586,7 +86668,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-e-1",
 		"type": "gif"
 	});
-},640,[164],"app\\data\\images\\floor-e-1.gif");
+},632,[164],"app\\data\\images\\floor-e-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87598,7 +86680,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-1",
 		"type": "gif"
 	});
-},641,[164],"app\\data\\images\\floor-c-1.gif");
+},633,[164],"app\\data\\images\\floor-c-1.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -87610,7 +86692,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     "name": "wall-t-n-s",
     "type": "png"
   });
-},642,[164],"app\\data\\images\\wall-t-n-s.png");
+},634,[164],"app\\data\\images\\wall-t-n-s.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -87622,7 +86704,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     "name": "wall-t-e-w",
     "type": "png"
   });
-},643,[164],"app\\data\\images\\wall-t-e-w.png");
+},635,[164],"app\\data\\images\\wall-t-e-w.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -87634,7 +86716,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     "name": "wall-t-n-s-e",
     "type": "png"
   });
-},644,[164],"app\\data\\images\\wall-t-n-s-e.png");
+},636,[164],"app\\data\\images\\wall-t-n-s-e.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -87646,7 +86728,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     "name": "wall-t-n-s-w",
     "type": "png"
   });
-},645,[164],"app\\data\\images\\wall-t-n-s-w.png");
+},637,[164],"app\\data\\images\\wall-t-n-s-w.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -87658,7 +86740,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     "name": "wall-t-n-e-w",
     "type": "png"
   });
-},646,[164],"app\\data\\images\\wall-t-n-e-w.png");
+},638,[164],"app\\data\\images\\wall-t-n-e-w.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -87670,7 +86752,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     "name": "wall-t-e-s-w",
     "type": "png"
   });
-},647,[164],"app\\data\\images\\wall-t-e-s-w.png");
+},639,[164],"app\\data\\images\\wall-t-e-s-w.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87682,7 +86764,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-n-2",
 		"type": "gif"
 	});
-},648,[164],"app\\data\\images\\floor-n-2.gif");
+},640,[164],"app\\data\\images\\floor-n-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87694,7 +86776,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-n-3",
 		"type": "gif"
 	});
-},649,[164],"app\\data\\images\\floor-n-3.gif");
+},641,[164],"app\\data\\images\\floor-n-3.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87706,7 +86788,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-w-2",
 		"type": "gif"
 	});
-},650,[164],"app\\data\\images\\floor-w-2.gif");
+},642,[164],"app\\data\\images\\floor-w-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87718,7 +86800,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-e-2",
 		"type": "gif"
 	});
-},651,[164],"app\\data\\images\\floor-e-2.gif");
+},643,[164],"app\\data\\images\\floor-e-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87730,7 +86812,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-5",
 		"type": "gif"
 	});
-},652,[164],"app\\data\\images\\floor-c-5.gif");
+},644,[164],"app\\data\\images\\floor-c-5.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87742,7 +86824,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-6",
 		"type": "gif"
 	});
-},653,[164],"app\\data\\images\\floor-c-6.gif");
+},645,[164],"app\\data\\images\\floor-c-6.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87754,7 +86836,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-7",
 		"type": "gif"
 	});
-},654,[164],"app\\data\\images\\floor-c-7.gif");
+},646,[164],"app\\data\\images\\floor-c-7.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87766,7 +86848,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-2",
 		"type": "gif"
 	});
-},655,[164],"app\\data\\images\\floor-c-2.gif");
+},647,[164],"app\\data\\images\\floor-c-2.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87778,7 +86860,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-3",
 		"type": "gif"
 	});
-},656,[164],"app\\data\\images\\floor-c-3.gif");
+},648,[164],"app\\data\\images\\floor-c-3.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87790,7 +86872,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-4",
 		"type": "gif"
 	});
-},657,[164],"app\\data\\images\\floor-c-4.gif");
+},649,[164],"app\\data\\images\\floor-c-4.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87802,7 +86884,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-8",
 		"type": "gif"
 	});
-},658,[164],"app\\data\\images\\floor-c-8.gif");
+},650,[164],"app\\data\\images\\floor-c-8.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87814,7 +86896,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-c-9",
 		"type": "gif"
 	});
-},659,[164],"app\\data\\images\\floor-c-9.gif");
+},651,[164],"app\\data\\images\\floor-c-9.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87826,7 +86908,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-e2n",
 		"type": "gif"
 	});
-},660,[164],"app\\data\\images\\floor-e2n.gif");
+},652,[164],"app\\data\\images\\floor-e2n.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87838,7 +86920,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "floor-w2n",
 		"type": "gif"
 	});
-},661,[164],"app\\data\\images\\floor-w2n.gif");
+},653,[164],"app\\data\\images\\floor-w2n.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 		module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 				"__packager_asset": true,
@@ -87850,19 +86932,19 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 				"name": "Black_square",
 				"type": "jpeg"
 		});
-},662,[164],"app\\data\\images\\Black_square.jpeg");
+},654,[164],"app\\data\\images\\Black_square.jpeg");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
     "httpServerLocation": "/assets/app/data/images",
-    "width": 500,
-    "height": 1000,
+    "width": 73,
+    "height": 159,
     "scales": [1],
-    "hash": "f3e40940d334891337330acabdfecb38",
+    "hash": "bddf31f53ae663c0b83c96d2a217d8a7",
     "name": "shrine",
     "type": "png"
   });
-},663,[164],"app\\data\\images\\shrine.png");
+},655,[164],"app\\data\\images\\shrine.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
@@ -87874,7 +86956,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     "name": "Magenta-square_100px",
     "type": "gif"
   });
-},664,[164],"app\\data\\images\\Magenta-square_100px.gif");
+},656,[164],"app\\data\\images\\Magenta-square_100px.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -87886,7 +86968,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "human",
 		"type": "png"
 	});
-},665,[164],"app\\data\\images\\human.png");
+},657,[164],"app\\data\\images\\human.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88171,426 +87253,203 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Menu;
-},666,[118,179,129,12,586,589,592,595],"app\\screens\\Menu.js");
+},658,[118,179,129,12,586,589,592,595],"app\\screens\\Menu.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
+  var Cell = function Cell(name) {
+    _classCallCheck(this, Cell);
 
-    return target;
+    this.name = name;
+    this.value = 5;
+    this.imageKey = 0;
+    this.humanEdges = [];
+    this.monsterEdges = [];
+    this.searched = false;
+    this.parent = null;
+    this.isHighlighted = false;
+    this.isRevealed = false;
+    this.hasHuman = false;
+    this.hasMonster = false;
+    this.hasCache = false;
   };
 
-  var _jsxFileName = 'index.js';
+  exports.default = Cell;
+},659,[],"app\\data\\Cell.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _createClass = function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-      }
-    }
+  var _react2 = _require(_dependencyMap[0], "react");
 
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  }();
+  var _react3 = _interopRequireDefault(_react2);
 
-  var _react = _require(_dependencyMap[0], 'react');
+  var _index = _require(_dependencyMap[1], "./../../node_modules/react-transform-hmr/lib/index.js");
 
-  var _react2 = _interopRequireDefault(_react);
+  var _index2 = _interopRequireDefault(_index);
 
-  var _reactNative = _require(_dependencyMap[1], 'react-native');
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  var _propTypes = _require(_dependencyMap[2], 'prop-types');
+  var _class,
+      _temp,
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\EchoScreen.js";
+
+  var _propTypes = _require(_dependencyMap[2], "prop-types");
 
   var _propTypes2 = _interopRequireDefault(_propTypes);
 
-  var _styles = _require(_dependencyMap[3], './styles');
+  var _reactNative = _require(_dependencyMap[3], "react-native");
 
-  var _styles2 = _interopRequireDefault(_styles);
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    EchoScreen: {
+      displayName: "EchoScreen"
+    }
+  };
+
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/EchoScreen.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
     };
   }
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  var EXISTENCE_TIMER = 3000;
+  var ANIMATION_TIMER = EXISTENCE_TIMER - 2000;
 
-  function _possibleConstructorReturn(self, call) {
-    if (!self) {
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    }
+  var EchoScreen = _wrapComponent("EchoScreen")((_temp = _class = function (_Component) {
+    _inherits(EchoScreen, _Component);
 
-    return call && (typeof call === "object" || typeof call === "function") ? call : self;
-  }
+    function EchoScreen(props) {
+      _classCallCheck(this, EchoScreen);
 
-  function _inherits(subClass, superClass) {
-    if (typeof superClass !== "function" && superClass !== null) {
-      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-    }
+      var _this = _possibleConstructorReturn(this, (EchoScreen.__proto__ || Object.getPrototypeOf(EchoScreen)).call(this, props));
 
-    subClass.prototype = Object.create(superClass && superClass.prototype, {
-      constructor: {
-        value: subClass,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-  }
+      _this.startAnimation = function () {
+        var _this$state = _this.state,
+            opacity = _this$state.opacity,
+            size = _this$state.size;
 
-  var deviceScreen = _reactNative.Dimensions.get('window');
+        _reactNative.Animated.parallel([_reactNative.Animated.sequence([_reactNative.Animated.timing(opacity, {
+          toValue: 0.7,
+          duration: ANIMATION_TIMER / 2
+        }), _reactNative.Animated.timing(opacity, {
+          toValue: 0,
+          duration: ANIMATION_TIMER / 2
+        })]), _reactNative.Animated.timing(size, {
+          toValue: _this.big,
+          duration: ANIMATION_TIMER,
+          easing: _reactNative.Easing.linear
+        })]).start();
 
-  var barrierForward = deviceScreen.width / 4;
-
-  function shouldOpenMenu(dx) {
-    return dx > barrierForward;
-  }
-
-  var SideMenu = function (_React$Component) {
-    _inherits(SideMenu, _React$Component);
-
-    function SideMenu(props) {
-      _classCallCheck(this, SideMenu);
-
-      var _this = _possibleConstructorReturn(this, (SideMenu.__proto__ || Object.getPrototypeOf(SideMenu)).call(this, props));
-
-      _this.prevLeft = 0;
-      _this.isOpen = !!props.isOpen;
-      var initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1;
-      var openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
-      var hiddenMenuOffsetPercentage = props.hiddenMenuOffset / deviceScreen.width;
-      var left = new _reactNative.Animated.Value(props.isOpen ? props.openMenuOffset * initialMenuPositionMultiplier : props.hiddenMenuOffset);
-      _this.onLayoutChange = _this.onLayoutChange.bind(_this);
-      _this.onStartShouldSetResponderCapture = props.onStartShouldSetResponderCapture.bind(_this);
-      _this.onMoveShouldSetPanResponder = _this.handleMoveShouldSetPanResponder.bind(_this);
-      _this.onPanResponderMove = _this.handlePanResponderMove.bind(_this);
-      _this.onPanResponderRelease = _this.handlePanResponderEnd.bind(_this);
-      _this.onPanResponderTerminate = _this.handlePanResponderEnd.bind(_this);
-      _this.state = {
-        width: deviceScreen.width,
-        height: deviceScreen.height,
-        openOffsetMenuPercentage: openOffsetMenuPercentage,
-        openMenuOffset: deviceScreen.width * openOffsetMenuPercentage,
-        hiddenMenuOffsetPercentage: hiddenMenuOffsetPercentage,
-        hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
-        left: left
+        setTimeout(function () {
+          this.props.callback();
+        }.bind(_this), EXISTENCE_TIMER);
       };
 
-      _this.state.left.addListener(function (_ref) {
-        var value = _ref.value;
-        return _this.props.onSliding(Math.abs((value - _this.state.hiddenMenuOffset) / (_this.state.openMenuOffset - _this.state.hiddenMenuOffset)));
-      });
+      _this.animatedOpacity = function () {
+        return {
+          opacity: _this.state.opacity
+        };
+      };
 
+      _this.animatedSize = function () {
+        return {
+          width: _this.state.size
+        };
+      };
+
+      _this.small = 100;
+      _this.big = 115;
+      _this.state = {
+        opacity: new _reactNative.Animated.Value(0),
+        size: new _reactNative.Animated.Value(_this.small)
+      };
       return _this;
     }
 
-    _createClass(SideMenu, [{
-      key: 'componentWillMount',
-      value: function componentWillMount() {
-        this.responder = _reactNative.PanResponder.create({
-          onStartShouldSetResponderCapture: this.onStartShouldSetResponderCapture,
-          onMoveShouldSetPanResponder: this.onMoveShouldSetPanResponder,
-          onPanResponderMove: this.onPanResponderMove,
-          onPanResponderRelease: this.onPanResponderRelease,
-          onPanResponderTerminate: this.onPanResponderTerminate
-        });
+    _createClass(EchoScreen, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        this.startAnimation();
       }
     }, {
-      key: 'componentWillReceiveProps',
-      value: function componentWillReceiveProps(props) {
-        if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen && (props.autoClosing || this.isOpen === false)) {
-          this.openMenu(props.isOpen);
-        }
-      }
-    }, {
-      key: 'onLayoutChange',
-      value: function onLayoutChange(e) {
-        var _e$nativeEvent$layout = e.nativeEvent.layout,
-            width = _e$nativeEvent$layout.width,
-            height = _e$nativeEvent$layout.height;
-        var openMenuOffset = width * this.state.openOffsetMenuPercentage;
-        var hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
-        this.setState({
-          width: width,
-          height: height,
-          openMenuOffset: openMenuOffset,
-          hiddenMenuOffset: hiddenMenuOffset
-        });
-      }
-    }, {
-      key: 'getContentView',
-      value: function getContentView() {
-        var _this2 = this;
-
-        var overlay = null;
-
-        if (this.isOpen) {
-          overlay = _react2.default.createElement(_reactNative.TouchableWithoutFeedback, {
-            onPress: function onPress() {
-              return _this2.openMenu(false);
-            },
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 138
-            }
-          }, _react2.default.createElement(_reactNative.View, {
-            style: _styles2.default.overlay,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 139
-            }
-          }));
-        }
-
-        var _state = this.state,
-            width = _state.width,
-            height = _state.height;
-
-        var ref = function ref(sideMenu) {
-          return _this2.sideMenu = sideMenu;
-        };
-
-        var style = [_styles2.default.frontView, {
-          width: width,
-          height: height
-        }, this.props.animationStyle(this.state.left)];
-        return _react2.default.createElement(_reactNative.Animated.View, _extends({
-          style: style,
-          ref: ref
-        }, this.responder.panHandlers, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 153
-          }
-        }), this.props.children, overlay);
-      }
-    }, {
-      key: 'moveLeft',
-      value: function moveLeft(offset) {
-        var newOffset = this.menuPositionMultiplier() * offset;
-        this.props.animationFunction(this.state.left, newOffset).start();
-        this.prevLeft = newOffset;
-      }
-    }, {
-      key: 'menuPositionMultiplier',
-      value: function menuPositionMultiplier() {
-        return this.props.menuPosition === 'right' ? -1 : 1;
-      }
-    }, {
-      key: 'handlePanResponderMove',
-      value: function handlePanResponderMove(e, gestureState) {
-        if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {
-          var newLeft = this.prevLeft + gestureState.dx;
-
-          if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.state.openMenuOffset) {
-            newLeft = this.menuPositionMultiplier() * this.state.openMenuOffset;
-          }
-
-          this.props.onMove(newLeft);
-          this.state.left.setValue(newLeft);
-        }
-      }
-    }, {
-      key: 'handlePanResponderEnd',
-      value: function handlePanResponderEnd(e, gestureState) {
-        var offsetLeft = this.menuPositionMultiplier() * (this.state.left.__getValue() + gestureState.dx);
-        this.openMenu(shouldOpenMenu(offsetLeft));
-      }
-    }, {
-      key: 'handleMoveShouldSetPanResponder',
-      value: function handleMoveShouldSetPanResponder(e, gestureState) {
-        if (this.gesturesAreEnabled()) {
-          var x = Math.round(Math.abs(gestureState.dx));
-          var y = Math.round(Math.abs(gestureState.dy));
-          var touchMoved = x > this.props.toleranceX && y < this.props.toleranceY;
-
-          if (this.isOpen) {
-            return touchMoved;
-          }
-
-          var withinEdgeHitWidth = this.props.menuPosition === 'right' ? gestureState.moveX > deviceScreen.width - this.props.edgeHitWidth : gestureState.moveX < this.props.edgeHitWidth;
-          var swipingToOpen = this.menuPositionMultiplier() * gestureState.dx > 0;
-          return withinEdgeHitWidth && touchMoved && swipingToOpen;
-        }
-
-        return false;
-      }
-    }, {
-      key: 'openMenu',
-      value: function openMenu(isOpen) {
-        var _state2 = this.state,
-            hiddenMenuOffset = _state2.hiddenMenuOffset,
-            openMenuOffset = _state2.openMenuOffset;
-        this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
-        this.isOpen = isOpen;
-        this.forceUpdate();
-        this.props.onChange(isOpen);
-      }
-    }, {
-      key: 'gesturesAreEnabled',
-      value: function gesturesAreEnabled() {
-        var disableGestures = this.props.disableGestures;
-
-        if (typeof disableGestures === 'function') {
-          return !disableGestures();
-        }
-
-        return !disableGestures;
-      }
-    }, {
-      key: 'render',
+      key: "render",
       value: function render() {
-        var boundryStyle = this.props.menuPosition === 'right' ? {
-          left: this.state.width - this.state.openMenuOffset
-        } : {
-          right: this.state.width - this.state.openMenuOffset
-        };
-
-        var menu = _react2.default.createElement(_reactNative.View, {
-          style: [_styles2.default.menu, boundryStyle],
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 241
-          }
-        }, this.props.menu);
-
-        return _react2.default.createElement(_reactNative.View, {
-          style: _styles2.default.container,
-          onLayout: this.onLayoutChange,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 247
-          }
-        }, menu, this.getContentView());
+        return _react3.default.createElement(
+          _reactNative.Animated.View,
+          {
+            style: [styles.background, this.animatedOpacity()],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 46
+            }
+          },
+          _react3.default.createElement(_reactNative.Animated.Image, {
+            style: [this.animatedSize(), this.animatedOpacity()],
+            resizeMode: "contain",
+            source: _require(_dependencyMap[4], "../data/images/echo-hands.png"),
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 47
+            }
+          })
+        );
       }
     }]);
 
-    return SideMenu;
-  }(_react2.default.Component);
+    return EchoScreen;
+  }(_react2.Component), _class.propTypes = {
+    callback: _propTypes2.default.func
+  }, _temp));
 
-  exports.default = SideMenu;
-  SideMenu.propTypes = {
-    edgeHitWidth: _propTypes2.default.number,
-    toleranceX: _propTypes2.default.number,
-    toleranceY: _propTypes2.default.number,
-    menuPosition: _propTypes2.default.oneOf(['left', 'right']),
-    onChange: _propTypes2.default.func,
-    onMove: _propTypes2.default.func,
-    children: _propTypes2.default.node,
-    menu: _propTypes2.default.node,
-    openMenuOffset: _propTypes2.default.number,
-    hiddenMenuOffset: _propTypes2.default.number,
-    animationStyle: _propTypes2.default.func,
-    disableGestures: _propTypes2.default.oneOfType([_propTypes2.default.func, _propTypes2.default.bool]),
-    animationFunction: _propTypes2.default.func,
-    onStartShouldSetResponderCapture: _propTypes2.default.func,
-    isOpen: _propTypes2.default.bool,
-    bounceBackOnOverdraw: _propTypes2.default.bool,
-    autoClosing: _propTypes2.default.bool
-  };
-  SideMenu.defaultProps = {
-    toleranceY: 10,
-    toleranceX: 10,
-    edgeHitWidth: 60,
-    children: null,
-    menu: null,
-    openMenuOffset: deviceScreen.width * (2 / 3),
-    disableGestures: false,
-    menuPosition: 'left',
-    hiddenMenuOffset: 0,
-    onMove: function onMove() {},
-    onStartShouldSetResponderCapture: function onStartShouldSetResponderCapture() {
-      return true;
-    },
-    onChange: function onChange() {},
-    onSliding: function onSliding() {},
-    animationStyle: function animationStyle(value) {
-      return {
-        transform: [{
-          translateX: value
-        }]
-      };
-    },
-    animationFunction: function animationFunction(prop, value) {
-      return _reactNative.Animated.spring(prop, {
-        toValue: value,
-        friction: 8
-      });
-    },
-    isOpen: false,
-    bounceBackOnOverdraw: true,
-    autoClosing: true
-  };
-},667,[118,12,129,668],"node_modules\\react-native-side-menu\\build\\index.js");
-__d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
+  exports.default = EchoScreen;
 
-  var _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
+  var styles = _reactNative.StyleSheet.create({
+    background: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#000',
+      flex: 1
+    },
+    text: {
+      color: '#f500f5',
+      opacity: 0.9,
+      fontWeight: 'bold',
+      fontSize: 20
     }
-
-    return target;
-  };
-
-  var _reactNative = _require(_dependencyMap[0], 'react-native');
-
-  var absoluteStretch = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0
-  };
-  exports.default = _reactNative.StyleSheet.create({
-    container: _extends({}, absoluteStretch, {
-      justifyContent: 'center'
-    }),
-    menu: _extends({}, absoluteStretch),
-    frontView: {
-      flex: 1,
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      backgroundColor: 'transparent',
-      overflow: 'hidden'
-    },
-    overlay: _extends({}, absoluteStretch, {
-      backgroundColor: 'transparent'
-    })
   });
-},668,[12],"node_modules\\react-native-side-menu\\build\\styles.js");
+},660,[118,179,129,12,661],"app\\screens\\EchoScreen.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 520,
+		"height": 640,
+		"scales": [1],
+		"hash": "0431bb0333521dadb30c7507f1fc98e3",
+		"name": "echo-hands",
+		"type": "png"
+	});
+},661,[164],"app\\data\\images\\echo-hands.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88716,7 +87575,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Connect;
-},669,[118,179,129,586,589,592,670,675],"app\\screens\\Connect.js");
+},662,[118,179,129,586,589,592,663,668],"app\\screens\\Connect.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88735,7 +87594,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.GameList = _GameList2.default;
   exports.styles = _styles2.default;
-},670,[671,672],"app\\components\\GameList\\index.js");
+},663,[664,665],"app\\components\\GameList\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88805,7 +87664,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = GameList;
-},671,[118,12,129,672,673,674],"app\\components\\GameList\\GameList.js");
+},664,[118,12,129,665,666,667],"app\\components\\GameList\\GameList.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88843,7 +87702,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       alignItems: 'center'
     }
   });
-},672,[493,12],"app\\components\\GameList\\styles.js");
+},665,[493,12],"app\\components\\GameList\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88908,7 +87767,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = ListItem;
-},673,[129,118,12,672],"app\\components\\GameList\\ListItem.js");
+},666,[129,118,12,665],"app\\components\\GameList\\ListItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88938,7 +87797,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = Separator;
-},674,[118,12,672],"app\\components\\GameList\\Separator.js");
+},667,[118,12,665],"app\\components\\GameList\\Separator.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88956,7 +87815,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     key: '3',
     name: 'game the third'
   }];
-},675,[],"app\\data\\testGames.js");
+},668,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -89077,7 +87936,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Waiting;
-},676,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+},669,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
 require(44);
-require(11);
+require(671);
 //# sourceMappingURL=index.map
