@@ -9,7 +9,7 @@ import Cell from '../data/Cell';
 import Engine from './Engine';
 import Menu from './Menu';
 import SideMenu from 'react-native-side-menu';
-// const SideMenu = require('react-native-side-menu');
+import Modal from "react-native-modal";
 
 class Game extends Component {
   static propTypes = {
@@ -46,6 +46,7 @@ class Game extends Component {
       echoDirection: 'radius',
       playerSpace: { name: 0 },
       boardFinished: false,
+      modal: 0,
     };
   }
 
@@ -1157,44 +1158,44 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw })
   }
 
-  listen = () => {
-    let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
-    Alert.alert(
-      'You listened.',
-      `Opponent is ${distance} cells away`,
-      [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-      { cancelable: false }
-    )
-    this.setState({ redraw: !this.state.redraw });
-  }
-
-  sniff = (cell1, cell2) => {
-
-    let direction = '';
-    if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
-      direction += 'S';
-    } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
-      direction += 'N';
-    }
-
-    if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
-      direction += 'E';
-    } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
-      direction += 'W';
-    }
-
-    Alert.alert(
-      'You sniffed.',
-      `Opponent is in ${direction} direction from you.`,
-      [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-      { cancelable: false }
-    )
-    this.setState({ redraw: !this.state.redraw });
-  }
+  // listen = () => {
+  //   let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
+  //   Alert.alert(
+  //     'You listened.',
+  //     `Opponent is ${distance} cells away`,
+  //     [
+  //       {text: 'OK', onPress: () => console.log('OK Pressed')},
+  //     ],
+  //     { cancelable: false }
+  //   )
+  //   this.setState({ redraw: !this.state.redraw });
+  // }
+  //
+  // sniff = (cell1, cell2) => {
+  //
+  //   let direction = '';
+  //   if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
+  //     direction += 'S';
+  //   } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
+  //     direction += 'N';
+  //   }
+  //
+  //   if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
+  //     direction += 'E';
+  //   } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
+  //     direction += 'W';
+  //   }
+  //
+  //   Alert.alert(
+  //     'You sniffed.',
+  //     `Opponent is in ${direction} direction from you.`,
+  //     [
+  //       {text: 'OK', onPress: () => console.log('OK Pressed')},
+  //     ],
+  //     { cancelable: false }
+  //   )
+  //   this.setState({ redraw: !this.state.redraw });
+  // }
 
   onItemSelected = (item) => {
     console.log('onItemSelected', item);
@@ -1209,68 +1210,16 @@ class Game extends Component {
         }
         break;
       case 'sniff':
-        let cell1;
-        let cell2;
-        if (this.state.isHuman) {
-          cell1 = this.humanSpace.name;
-          cell2 = this.monsterSpace.name;
-        } else {
-          cell1 = this.monsterSpace.name;
-          cell2 = this.humanSpace.name;
-        }
-        this.sniff(cell1, cell2);
+        this.setState({ modal: 1 });
         break;
       case 'listen':
-        this.listen();
+        this.setState({ modal: 2 });
         break;
       case 'echo':
-        // Alert.alert(
-        //   'Echo.',
-        //   'Choose the way.',
-        //   [
-        //     {text: 'Burst', onPress: () => console.log('Burst Pressed')},
-        //     {text: 'North', onPress: () => console.log('North Pressed')},
-        //     {text: 'South', onPress: () => console.log('South Pressed')},
-        //     {text: 'East', onPress: () => console.log('East Pressed')},
-        //     {text: 'West', onPress: () => console.log('West Pressed')},
-        //   ],
-        //   { cancelable: true }
-        // )
-        this.echoLocate();
-        this.setState({ redraw: !this.state.redraw });
+        this.setState({ modal: 4 });
         break;
       case 'pounce':
-        if (this.monsterSpace.hasHuman) {
-          Alert.alert(
-            'You pounced.',
-            'And attacked your opponent.',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            { cancelable: false }
-          )
-          this.setState({ redraw: !this.state.redraw });
-        } else if (this.monsterSpace.hasCache) {
-          Alert.alert(
-            'You pounced.',
-            'And found cache.',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            { cancelable: false }
-          )
-          this.setState({ redraw: !this.state.redraw });
-        } else {
-          Alert.alert(
-            'You pounced.',
-            'There is nothing here.',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            { cancelable: false }
-          )
-          this.setState({ redraw: !this.state.redraw });
-        }
+        this.setState({ modal: 3 });
         break;
       case 'home':
         this.props.navigation.navigate('Home');
@@ -1285,6 +1234,126 @@ class Game extends Component {
         // console.log('');
     }
   }
+
+
+  renderModalContent = () => {
+    if (this.state.modal === 1) {//SNIFF
+      let cell1;
+      let cell2;
+      if (this.state.isHuman) {
+        cell1 = this.humanSpace.name;
+        cell2 = this.monsterSpace.name;
+      } else {
+        cell1 = this.monsterSpace.name;
+        cell2 = this.humanSpace.name;
+      }
+      let direction = '';
+      if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
+        direction += 'S';
+      } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
+        direction += 'N';
+      }
+      if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
+        direction += 'E';
+      } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
+        direction += 'W';
+      }
+
+      let text1 = 'You sniffed.';
+      let text2 = `Opponent is in ${direction} direction from you.`;
+
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff'}}>{text2}</Text>
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+        </View>
+      )
+    }
+    else if (this.state.modal === 2) {//LISTEN
+      let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
+      let text1 = 'You listened.';
+      let text2 = `Opponent is ${distance} cells away`;
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff'}}>{text2}</Text>
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+        </View>
+      );
+    }
+    else if (this.state.modal === 3) {//POUNCE
+      let text1;
+      let text2;
+      if (this.monsterSpace.hasHuman) {
+        text1 = 'You pounced.';
+        text2 = 'And attacked your opponent.';
+      } else if (this.monsterSpace.hasCache) {
+        text1 = 'You pounced.';
+        text2 = 'And found cache.';
+      } else {
+        text1 = 'You pounced.';
+        text2 = 'There is nothing here.';
+      }
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff'}}>{text2}</Text>
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+        </View>
+      );
+    }
+    else if (this.state.modal === 4) {//ECHO
+      let text1 = 'Choose echo direction:';
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='North' />
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='South' />
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='East' />
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='West' />
+          <NavButton onPress={() => {this.echoLocate(); this.setState({ modal: 0 });}} text='Burst' />
+        </View>
+      );
+    }
+  }
+
 
   showMonsterMoves = () => {
     let index = this.monsterSpace.name;
@@ -1369,7 +1438,7 @@ class Game extends Component {
   }
 
   moveHuman = (item) => {
-    // console.log('move human') 
+    // console.log('move human')
     if (item.isHighlighted) {
       this.elements[this.humanSpace.name].hasHuman = false;
       item.hasHuman = true;
@@ -1383,8 +1452,6 @@ class Game extends Component {
       );
     }
   }
-
-
 
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
@@ -1499,8 +1566,19 @@ class Game extends Component {
           playerSpace={this.state.playerSpace}
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
         />
+
+        <Modal
+          isVisible={this.state.modal != 0}
+          onBackdropPress={() => this.setState({ modal: 0 })}
+          animationIn="slideInLeft"
+          animationOut="slideOutRight"
+          onSwipe={() => this.setState({ modal: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
       </SideMenu>
-      </SideMenu> 
+      </SideMenu>
     )
   }
 }
