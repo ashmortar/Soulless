@@ -93,9 +93,9 @@ export default class Engine extends Component {
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
       onPanResponderGrant: (evt, gestureState) => {
         
       },
@@ -126,7 +126,7 @@ export default class Engine extends Component {
     let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
     if (this.props.playerSpace !== nextProps.playerSpace) {
-      console.log("player space", this.props.playerSpace, nextProps.playerSpace)
+      // console.log("player space", this.props.playerSpace, nextProps.playerSpace)
       this.setState({
         playerSpace: nextProps.playerSpace,
         playerX: (nextProps.playerSpace.name % 40) * this.props.tileWidth,
@@ -206,7 +206,7 @@ export default class Engine extends Component {
     y = Math.floor(y/this.props.tileWidth);
     x = Math.floor(x/this.props.tileWidth);
     let index = ((y * 40) + x);
-    console.log(this.state.playerSpace.name, index, this.state.playerX, this.state.playerY);
+    // console.log(this.state.playerSpace.name, index, this.state.playerX, this.state.playerY);
     return (this.props.gameBoard[index]);
   }
 
@@ -253,10 +253,9 @@ export default class Engine extends Component {
           height={this.screenDimensions.height}
           width={this.screenDimensions.width}
           style={{ backgroundColor: "#000" }}
-          removeClippedSubviews={true}
         >
           <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1}} {...this._panResponder.panHandlers}>
-            <View style={{ position: 'absolute', left: this.state.left, top: this.state.top, overflow: 'hidden', width: this.gameBoardWidth, height: this.gameBoardWidth }}  >
+            <View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.gameBoardWidth, height: this.gameBoardWidth }}  >
               <Board
                 gameBoard={this.props.gameBoard}
                 isHuman={this.props.isHuman}

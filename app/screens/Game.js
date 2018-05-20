@@ -18,6 +18,10 @@ class Game extends Component {
   constructor() {
     // TODO remove unused items and pull back all possible params/states from children
     super();
+
+    this.assignCacheCounter = 0;
+    this.assignMonsterCounter = 0;
+
     this.scale = 0;
     this.elements = [];
     this.start = null;
@@ -43,7 +47,7 @@ class Game extends Component {
     this.state = {
       redraw: false,
       isHuman: true,
-      tileWidth: this.zoomedInValue,
+      tileWidth: this.zoomedOutValue,
       playerSpace: { name: 0 },
       boardFinished: false,
     };
@@ -680,15 +684,14 @@ class Game extends Component {
   assignMonsterStart = () => {
     let cell = this.getRandomCell();
     let distance = this.findShortestPath(cell, this.humanSpace);
-    let counter = 0;
-    while (distance < 20) {
-      console.log(`assign monster counter: ${counter}`);
+    while (distance < 25) {
+      console.log(`assign monster counter: ${this.assignMonsterCounter}`);
+      this.assignMonsterCounter++;
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
-      if (counter % 5 === 0) {
+      if (this.assignMonsterCounter % 5 === 0) {
         this.assignHumanStart();
       }
-      counter++;
     }
     // console.log('cell and distance', cell, distance);
     cell.hasMonster = true;
@@ -700,14 +703,30 @@ class Game extends Component {
 
   assignCacheLocations = () => {
     // TODO make caches more evenly spaced out
+    let cacheArray = [this.humanSpace, this.monsterSpace];
     for (let i = 0; i <= this.cacheTotal; i++) {
       let cell = this.getRandomCell();
-      while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache) {
+      while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache || this.compareToCacheArray(cell, cacheArray)) {
         cell = this.getRandomCell();
       }
       cell.hasCache = true;
       cell.isRevealed = true;
+      cacheArray.push(cell);
     }
+  }
+
+  compareToCacheArray = (cell, cacheArray) => {
+    console.log('cache boolean counter: ', this.assignCacheCounter);
+    this.assignCacheCounter++;
+    if (cacheArray.length > 0 ) {
+      for (let i = 0; i < cacheArray.length; i++) {
+        let distance = this.findShortestPath(cell, cacheArray[i]);
+        if (distance < 5) {
+          return true;
+        } 
+      }
+    }
+   return false;
   }
 
   getNeighboringCells = (i) => {
@@ -1442,11 +1461,87 @@ class Game extends Component {
 
   //   );
   // };
+
+
+
+
   callback = () => (
     this.setState({
       boardFinished: true,
     })
   )
+
+  renderAnimator = () => {
+    if (!this.state.boardFinished) {
+      return(
+        <View style={{ backgroundColor: '#000', flex: 1 }}>
+          <EchoScreen callback={this.callback} />
+        </View>
+      )
+    }
+  }
+
+  renderEngine1 = () => {
+    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
+    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
+    if (this.state.boardFinished) {
+      return (
+        <SideMenu
+        menu={menuRight}
+        menuPosition='right'
+      >
+      <SideMenu
+        menu={menuLeft}
+        menuPosition='left'
+      >
+        <Engine
+          gameBoard={this.elements}
+          tilesInRow={this.cellsInRow}
+          boardFinished={this.state.boardFinished}
+          isHuman={this.state.isHuman}
+          playerSpace={this.state.playerSpace}
+          move={this.state.isHuman ? this.moveHuman : this.moveMonster}
+          echolocate={this.echoLocate}
+          tileWidth={this.state.tileWidth}
+          // debug
+          monsterMoves={this.showMonsterMoves}
+        />
+      </SideMenu>
+      </SideMenu>
+      )
+    }
+  }
+
+  renderEngine2 = () => {
+    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
+    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
+    if (!this.state.boardFinished) {
+      return (
+        <SideMenu 
+        menu={menuRight}
+        menuPosition='right'
+      >
+      <SideMenu
+        menu={menuLeft}
+        menuPosition='left'
+      >
+        <Engine
+          gameBoard={this.elements}
+          tilesInRow={this.cellsInRow}
+          boardFinished={this.state.boardFinished}
+          isHuman={this.state.isHuman}
+          playerSpace={this.state.playerSpace}
+          move={this.state.isHuman ? this.moveHuman : this.moveMonster}
+          echolocate={this.echoLocate}
+          tileWidth={this.state.tileWidth}
+          // debug
+          monsterMoves={this.showMonsterMoves}
+        />
+      </SideMenu>
+      </SideMenu>
+      )
+    }
+  }
   
 
   // timer() {
@@ -1457,42 +1552,17 @@ class Game extends Component {
   // const menu = <Menu navigator={navigator}/>;
   render() {
     const finished = this.state.boardFinished;
-    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
-    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    if (this.state.boardFinished) {
+
       return (
-        <SideMenu
-          menu={menuRight}
-          menuPosition='right'
-        >
-        <SideMenu
-          menu={menuLeft}
-          menuPosition='left'
-        >
-          <Engine
-            gameBoard={this.elements}
-            tilesInRow={this.cellsInRow}
-            boardFinished={this.state.boardFinished}
-            isHuman={this.state.isHuman}
-            playerSpace={this.state.playerSpace}
-            move={this.state.isHuman ? this.moveHuman : this.moveMonster}
-            echolocate={this.echoLocate}
-            tileWidth={this.state.tileWidth}
-            // debug
-            monsterMoves={this.showMonsterMoves}
-          />
-        </SideMenu>
-        </SideMenu> 
-      )
-    } else {
-      return (
-        <View style={{ backgroundColor: '#000', flex: 1 }}>
-          <EchoScreen callback={this.callback} />
+        <View style={{flex:1}}>
+ 
+          {this.renderEngine1()}
+          {this.renderEngine2()}
+          {this.renderAnimator()}
         </View>
       )
     }
   }
-}
 
 export default Game;
 
