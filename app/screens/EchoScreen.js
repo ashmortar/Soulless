@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, StyleSheet, Easing } from 'react-native';
+import { Animated, StyleSheet, TouchableOpacity } from 'react-native';
 
-const EXISTENCE_TIMER = 4000;
-const ANIMATION_TIMER = EXISTENCE_TIMER;
+const ANIMATION_TIMER = 2000;
 
 export default class EchoScreen extends Component {
   static propTypes = {
@@ -12,30 +11,27 @@ export default class EchoScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.small = 150;
-    this.big = 175;
     this.state = {
       opacity: new Animated.Value(0),
-      // size: new Animated.Value(this.small),
     };
   }
   
-  startAnimation = () => {
-    const { opacity, size } = this.state;
-    Animated.parallel([
-      Animated.sequence([
-        Animated.timing(opacity, { toValue: 0.7, duration: ANIMATION_TIMER/2, useNativeDriver: true }),
-        Animated.timing(opacity, { toValue: 0, duration: ANIMATION_TIMER/2, useNativeDriver: true }),
-      ]),
-      // Animated.timing(size, { toValue: this.big, duration: ANIMATION_TIMER, easing: Easing.bounce })
-    ]).start();
-// bug: for some reason values below ~ 2.5 sec are ignored and callback is invoked quickly
-    setTimeout(function() {this.props.showAnimationCallback()}.bind(this), EXISTENCE_TIMER);
+  animateIn = () => {
+    const { opacity } = this.state;
+    Animated.timing(opacity, { toValue: 1, duration: ANIMATION_TIMER/2, useNativeDriver: true }).start();
   }
 
+  animateOut = () => {
+    const {opacity } = this.state;
+    Animated.timing(opacity, { toValue: 0, duration: ANIMATION_TIMER/2, useNativeDriver: true }).start();
+    setTimeout(function() {
+      this.props.showAnimationCallback()
+    }.bind(this), ANIMATION_TIMER);
+  }
+  
   componentDidMount() {
     this.props.boardFinishedCallback();
-    this.startAnimation();
+    this.animateIn();
   }
 
   animatedOpacity = () => ({ opacity: this.state.opacity })
@@ -45,7 +41,9 @@ export default class EchoScreen extends Component {
   render() {
     return (
       <Animated.View style={[styles.background, this.animatedOpacity()]}>
-        <Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/echo-hands.png")} />
+        <TouchableOpacity onPress={this.animateOut}>
+          <Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/echo-hands.png")} />
+        </TouchableOpacity>
       </Animated.View>
     );
   }

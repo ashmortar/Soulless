@@ -1257,9 +1257,12 @@ class Game extends Component {
   }
 
   changePlayerMode = () => {
+    this.setState({ 
+      animationVisible: true,
+      boardFinished: !this.state.boardFinished 
+     });
     this.handleChangePlayer();
-    this.setState({ boardFinished: false });
-    this.setState({ redraw: !this.state.redraw });
+    // this.setState({ boardFinished: !this.state.boardFinished });
   }
 
 
