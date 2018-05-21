@@ -13,6 +13,7 @@ export default class Engine extends Component {
     playerSpace: PropTypes.object,
     isHuman: PropTypes.bool,
     move: PropTypes.func,
+    incrementTurnCounter: PropTypes.func,
   };
 
   constructor(props) {
@@ -148,6 +149,7 @@ export default class Engine extends Component {
       ) {
         let newPlayerTile = this.getTileFromXY(x, y);
         this.props.move(newPlayerTile);
+        this.props.incrementTurnCounter();
       }
     }
   }
@@ -212,7 +214,7 @@ export default class Engine extends Component {
             <Image style={{ position: 'absolute', top: (this.state.playerY - this.tileWidth), left: this.state.playerX, height: (this.tileWidth * 2), width: this.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
 
             {this.renderHighlighted()}
-            
+
           </View>
         </Stage>
       </Loop>

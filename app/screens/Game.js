@@ -42,12 +42,14 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: true,
+      isHuman: false,
       echoDirection: 'radius',
       playerSpace: { name: 0 },
       boardFinished: false,
       modal: 0,
       modalLeft: 0,
+      modalDialogOnly: 0,
+      turnCounter: 0,
     };
   }
 
@@ -67,6 +69,12 @@ class Game extends Component {
     // console.log('==================================================');
     // console.log(this.findShortestPath(this.elements[this.humanSpace.name], this.elements[this.monsterSpace.name]));
     // console.log(this.findShortestPath(this.elements[121], this.elements[123]));
+  }
+
+  componentWillUnmount() {
+    this.setState({ modal: 0 });
+    this.setState({ modalLeft: 0 });
+    this.setState({ modalDialogOnly: 0 });
   }
 
   createMap = () => {
@@ -1159,45 +1167,6 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw })
   }
 
-  // listen = () => {
-  //   let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
-  //   Alert.alert(
-  //     'You listened.',
-  //     `Opponent is ${distance} cells away`,
-  //     [
-  //       {text: 'OK', onPress: () => console.log('OK Pressed')},
-  //     ],
-  //     { cancelable: false }
-  //   )
-  //   this.setState({ redraw: !this.state.redraw });
-  // }
-  //
-  // sniff = (cell1, cell2) => {
-  //
-  //   let direction = '';
-  //   if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
-  //     direction += 'S';
-  //   } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
-  //     direction += 'N';
-  //   }
-  //
-  //   if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
-  //     direction += 'E';
-  //   } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
-  //     direction += 'W';
-  //   }
-  //
-  //   Alert.alert(
-  //     'You sniffed.',
-  //     `Opponent is in ${direction} direction from you.`,
-  //     [
-  //       {text: 'OK', onPress: () => console.log('OK Pressed')},
-  //     ],
-  //     { cancelable: false }
-  //   )
-  //   this.setState({ redraw: !this.state.redraw });
-  // }
-
   onItemSelected = (item) => {
     console.log('onItemSelected', item);
     switch (item) {
@@ -1211,16 +1180,16 @@ class Game extends Component {
         }
         break;
       case 'sniff':
-        this.setState({ modal: 1 });
+        this.setState({ modalDialogOnly: 1 });
         break;
       case 'listen':
-        this.setState({ modal: 2 });
+        this.setState({ modalDialogOnly: 2 });
         break;
       case 'echo':
-        this.setState({ modal: 4 });
+        this.setState({ modal: 1 });
         break;
       case 'pounce':
-        this.setState({ modal: 3 });
+        this.setState({ modal: 2 });
         break;
       case 'home':
         this.setState({ modalLeft: 2 });
@@ -1236,9 +1205,14 @@ class Game extends Component {
     }
   }
 
+  incrementTurnCounter = () => {
+    this.setState({ turnCounter: this.state.turnCounter + 1 });
+    console.log('--------------------------');
+    console.log(this.state.turnCounter);
+  }
 
   renderModalContent = () => {
-    if (this.state.modal === 1) {//SNIFF
+    if (this.state.modalDialogOnly === 1) {//SNIFF
       let cell1;
       let cell2;
       if (this.state.isHuman) {
@@ -1276,11 +1250,12 @@ class Game extends Component {
         }}>
           <Text style={{color:'#fff'}}>{text1}</Text>
           <Text style={{color:'#fff'}}>{text2}</Text>
-          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
         </View>
       )
     }
-    else if (this.state.modal === 2) {//LISTEN
+    // <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
+    else if (this.state.modalDialogOnly === 2) {//LISTEN
       let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
       let text1 = 'You listened.';
       let text2 = `Opponent is ${distance} cells away`;
@@ -1297,11 +1272,11 @@ class Game extends Component {
         }}>
           <Text style={{color:'#fff'}}>{text1}</Text>
           <Text style={{color:'#fff'}}>{text2}</Text>
-          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
         </View>
       );
     }
-    else if (this.state.modal === 3) {//POUNCE
+    else if (this.state.modal === 2) {//POUNCE
       let text1;
       let text2;
       if (this.monsterSpace.hasHuman) {
@@ -1327,11 +1302,11 @@ class Game extends Component {
         }}>
           <Text style={{color:'#fff'}}>{text1}</Text>
           <Text style={{color:'#fff'}}>{text2}</Text>
-          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
         </View>
       );
     }
-    else if (this.state.modal === 4) {//ECHO
+    else if (this.state.modal === 1) {//ECHO
       let text1 = 'Choose echo direction:';
       return (
         <View style={{
@@ -1345,11 +1320,11 @@ class Game extends Component {
           backgroundColor: '#212121',
         }}>
           <Text style={{color:'#fff'}}>{text1}</Text>
-          <NavButton onPress={() => this.setState({ modal: 0 })} text='North' />
-          <NavButton onPress={() => this.setState({ modal: 0 })} text='South' />
-          <NavButton onPress={() => this.setState({ modal: 0 })} text='East' />
-          <NavButton onPress={() => this.setState({ modal: 0 })} text='West' />
-          <NavButton onPress={() => {this.echoLocate(); this.setState({ modal: 0 });}} text='Burst' />
+          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='North' />
+          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='South' />
+          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='East' />
+          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='West' />
+          <NavButton onPress={() => {this.echoLocate(); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='Burst' />
         </View>
       );
     }
@@ -1581,6 +1556,11 @@ class Game extends Component {
     );
   };
 
+  closeModalDialogOnly = () => {
+    this.setState({ modalDialogOnly: 0 });
+    this.incrementTurnCounter();
+  }
+
   // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
   // <SideMenu menu={menu}>
   // const menu = <Menu navigator={navigator}/>;
@@ -1604,6 +1584,7 @@ class Game extends Component {
           isHuman={this.state.isHuman}
           playerSpace={this.state.playerSpace}
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
+          incrementTurnCounter={this.incrementTurnCounter}
         />
 
         <Modal
@@ -1612,6 +1593,17 @@ class Game extends Component {
           animationIn="slideInLeft"
           animationOut="slideOutRight"
           onSwipe={() => this.setState({ modal: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
+
+        <Modal
+          isVisible={this.state.modalDialogOnly != 0}
+          onBackdropPress={() => this.closeModalDialogOnly()}
+          animationIn="slideInLeft"
+          animationOut="slideOutRight"
+          onSwipe={() => this.closeModalDialogOnly()}
           swipeDirection="right"
         >
           {this.renderModalContent()}
