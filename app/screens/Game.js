@@ -8,7 +8,7 @@ import WallTemplate from '../data/WallTemplate';
 import Cell from '../data/Cell';
 import Engine from './Engine';
 import Menu from './Menu';
-import EchoScreen from './EchoScreen';
+import AnimatedSplashScreen from './AnimatedSplashScreen';
 import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
 
@@ -52,12 +52,16 @@ class Game extends Component {
       tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
+      animationType: 'hands',
       animationVisible: true,
       modal: 0,
       modalLeft: 0,
       modalDialogOnly: 0,
       turnCounter: 0,
       outOfMoves: false,
+      shrinesUnclaimed: this.cacheTotal,
+      shrinesHumanClaimed: 0,
+      shrinesMonsterClaimed: 0,
     };
   }
 
@@ -1084,10 +1088,7 @@ class Game extends Component {
   }
 
   echoLocate = (direction) => {
-    this.setState({
-      boardFinished: false,
-      animationVisible: true,
-    })
+
     // console.log('echolocate');
     // TODO fix all cases to reveal wall tiles but not beyond them
     // TODO fix restrictions to check for wall instead of edge
@@ -1095,12 +1096,17 @@ class Game extends Component {
     const index = this.humanSpace.name;
     switch (direction) {
       case 'north':
-        if (index - this.cellsInRow < 0 || this.elements[index - this.cellsInRow].value < 1) {
+        if (index - this.cellsInRow < 0) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate North from here..',
           );
         } else {
+          this.setState({
+            boardFinished: !this.state.boardFinished,
+            animationType: 'hands',
+            animationVisible: true,
+          })
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1110,18 +1116,24 @@ class Game extends Component {
               break;
             }
           }
+          cell.isRevealed = true;
         }
         break;
 
       case 'east':
-        if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index].value < 1) {
+        if (index % this.cellsInRow === (this.cellsInRow - 1)) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate East from here..',
           );
         } else {
+          this.setState({
+            boardFinished: !this.state.boardFinished,
+            animationType: 'hands',
+            animationVisible: true,
+          })
           let cell = this.elements[index + 1];
-          while (cell.value !== 0) {
+          while (cell.value > 0) {
             cell.isRevealed = true;
             if ((cell.name + 1) % this.cellsInRow === 0) {
               break;
@@ -1129,16 +1141,22 @@ class Game extends Component {
               cell = this.elements[cell.name + 1];
             }
           }
+          cell.isRevealed = true;
         }
         break;
 
       case 'south':
-        if (index + this.cellsInRow > this.cellsTotal || this.elements[index].value < 1) {
+        if (index + this.cellsInRow > this.cellsTotal) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate South from here..',
           );
         } else {
+          this.setState({
+            boardFinished: !this.state.boardFinished,
+            animationType: 'hands',
+            animationVisible: true,
+          })
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1148,18 +1166,24 @@ class Game extends Component {
               break;
             }
           }
+          cell.isRevealed = true;
         }
         break;
 
       case 'west':
-        if (index % this.cellsInRow === 0 || this.elements[index].value < 1) {
+        if (index % this.cellsInRow === 0) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate West from here..',
           );
         } else {
+          this.setState({
+            boardFinished: !this.state.boardFinished,
+            animationType: 'hands',
+            animationVisible: true,
+          })
           let cell = this.elements[index - 1];
-          while (cell.value !== 0) {
+          while (cell.value > 0) {
             cell.isRevealed = true;
             if ((cell.name - 1) % this.cellsInRow === 0) {
               break;
@@ -1167,10 +1191,16 @@ class Game extends Component {
               cell = this.elements[cell.name - 1];
             }
           }
+          cell.isRevealed = true;
         }
         break;
 
       case 'radius':
+        this.setState({
+          boardFinished: !this.state.boardFinished,
+          animationType: 'hands',
+          animationVisible: true,
+        })
         let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
         topLeft.isRevealed = true;
         top.isRevealed = true;
@@ -1235,13 +1265,15 @@ class Game extends Component {
     if(this.state.tileWidth === this.zoomedInValue) {
       this.setState({
         tileWidth: this.zoomedOutValue,
-        boardFinished: false,
+        boardFinished: this.state.boardFinished,
+        animationType: 'hands',
         animationVisible: true,
       })
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
-        boardFinished: false,
+        boardFinished: !this.state.boardFinished,
+        animationType: 'hands',
         animationVisible: true,
       })
     }
@@ -1258,6 +1290,7 @@ class Game extends Component {
 
   changePlayerMode = () => {
     this.setState({ 
+      animationType: 'hands',
       animationVisible: true,
       boardFinished: !this.state.boardFinished 
      });
@@ -1509,8 +1542,23 @@ class Game extends Component {
   moveHuman = (item) => {
     // console.log('move human')
     if (item.isHighlighted) {
+      // player moves to the space
+      // clear previous cell
       this.elements[this.humanSpace.name].hasHuman = false;
+      // put human in new cell,
       item.hasHuman = true;
+      // check if the space has a cache
+      if (item.hasCache) {
+        //take the cache
+        item.hasCache = false;
+        this.setState({
+          shrinesUnclaimed: this.state.shrinesUnclaimed - 1,
+          shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1,
+          animationType: 'shrine',
+          animationVisible: true,
+        })
+        console.log('shrine collected: ', this.state.shrinesHumanClaimed, this.state.shrinesMonsterClaimed, this.state.shrinesUnclaimed);
+      }
       this.humanSpace = item;
       this.resetHighlighted();
       this.setState({ playerSpace: item });
@@ -1632,7 +1680,7 @@ class Game extends Component {
     if (this.state.animationVisible) {
       return(
         <View style={{ backgroundColor: '#000', flex: 1 }}>
-          <EchoScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} />
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} />
         </View>
       )
     }

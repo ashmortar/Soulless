@@ -4,9 +4,11 @@ import { Animated, StyleSheet, TouchableOpacity } from 'react-native';
 
 const ANIMATION_TIMER = 2000;
 
-export default class EchoScreen extends Component {
+export default class AnimatedSplashScreen extends Component {
   static propTypes = {
-    callback: PropTypes.func,
+    showAnimationCallback: PropTypes.func,
+    boardFinishedCallback: PropTypes.func,
+    animationType: PropTypes.string,
   }
 
   constructor(props) {
@@ -32,6 +34,11 @@ export default class EchoScreen extends Component {
   componentDidMount() {
     this.props.boardFinishedCallback();
     this.animateIn();
+    if (this.props.animationType === "shrine") {
+      setTimeout(function() {
+        this.animateOut();
+      }.bind(this), ANIMATION_TIMER);
+    }
   }
 
   animatedOpacity = () => ({ opacity: this.state.opacity })
@@ -39,13 +46,21 @@ export default class EchoScreen extends Component {
 // animatedSize = () => ({ width: this.state.size })
 
   render() {
-    return (
-      <Animated.View style={[styles.background, this.animatedOpacity()]}>
-        <TouchableOpacity onPress={this.animateOut}>
-          <Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/echo-hands.png")} />
-        </TouchableOpacity>
-      </Animated.View>
-    );
+    if (this.props.animationType === "shrine") {
+      return (
+        <Animated.View style={[styles.background, this.animatedOpacity()]}>
+          <Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/shrine.png")} />
+        </Animated.View>
+      );
+    } else {
+      return (
+        <Animated.View style={[styles.background, this.animatedOpacity()]}>
+          <TouchableOpacity onPress={this.animateOut}>
+            <Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/echo-hands.png")} />
+          </TouchableOpacity>
+        </Animated.View>
+      );
+    }
   }
 }
 
