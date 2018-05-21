@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, StyleSheet, Easing } from 'react-native';
 
-const EXISTENCE_TIMER = 2000;
+const EXISTENCE_TIMER = 4000;
 const ANIMATION_TIMER = EXISTENCE_TIMER;
 
 export default class EchoScreen extends Component {
@@ -30,10 +30,11 @@ export default class EchoScreen extends Component {
       // Animated.timing(size, { toValue: this.big, duration: ANIMATION_TIMER, easing: Easing.bounce })
     ]).start();
 // bug: for some reason values below ~ 2.5 sec are ignored and callback is invoked quickly
-    setTimeout(function() {this.props.callback()}.bind(this), EXISTENCE_TIMER);
+    setTimeout(function() {this.props.showAnimationCallback()}.bind(this), EXISTENCE_TIMER);
   }
 
   componentDidMount() {
+    this.props.boardFinishedCallback();
     this.startAnimation();
   }
 
