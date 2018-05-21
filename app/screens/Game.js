@@ -48,7 +48,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: false,
+      isHuman: true,
       tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -1102,7 +1102,7 @@ class Game extends Component {
           );
         } else {
           let cell = this.elements[index - this.cellsInRow];
-          while (cell.value > 0) {
+          while (cell.value !== 0) {
             cell.isRevealed = true;
             if (cell.name - this.cellsInRow > 0) {
               cell = this.elements[cell.name - this.cellsInRow];
@@ -1121,7 +1121,7 @@ class Game extends Component {
           );
         } else {
           let cell = this.elements[index + 1];
-          while (cell.value > 0) {
+          while (cell.value !== 0) {
             cell.isRevealed = true;
             if ((cell.name + 1) % this.cellsInRow === 0) {
               break;
@@ -1140,7 +1140,7 @@ class Game extends Component {
           );
         } else {
           let cell = this.elements[index + this.cellsInRow];
-          while (cell.value > 0) {
+          while (cell.value !== 0) {
             cell.isRevealed = true;
             if (cell.name + this.cellsInRow < this.cellsTotal) {
               cell = this.elements[cell.name + this.cellsInRow];
@@ -1159,7 +1159,7 @@ class Game extends Component {
           );
         } else {
           let cell = this.elements[index - 1];
-          while (cell.value > 0) {
+          while (cell.value !== 0) {
             cell.isRevealed = true;
             if ((cell.name - 1) % this.cellsInRow === 0) {
               break;
