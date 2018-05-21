@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SideMenu from 'react-native-side-menu';
-import { Text, Picker, View, TouchableOpacity, Alert, Dimensions } from 'react-native';
-
+import { Text, Picker, View, Animated, TouchableOpacity, Alert, Dimensions, ActivityIndicator, BackAndroid } from 'react-native';
+import { Container } from '../components/Container';
+import { NavButton } from '../components/Button';
+import { Grid, AnimatedGrid } from '../components/Grid';
+import WallTemplate from '../data/WallTemplate';
+import Cell from '../data/Cell';
 import Engine from './Engine';
 import Menu from './Menu';
-import Cell from '../data/Cell';
-import { NavButton } from '../components/Button';
 import EchoScreen from './EchoScreen';
-// const SideMenu = require('react-native-side-menu');
+import SideMenu from 'react-native-side-menu';
+import Modal from "react-native-modal";
 
 class Game extends Component {
   static propTypes = {
@@ -46,10 +48,12 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: false,
+      isHuman: true,
       tileWidth: this.zoomedOutValue,
       playerSpace: { name: 0 },
       boardFinished: false,
+      modal: 0,
+      modalLeft: 0,
     };
   }
 
@@ -1076,7 +1080,7 @@ class Game extends Component {
     // console.log('echolocate');
     // TODO fix all cases to reveal wall tiles but not beyond them
     // TODO fix restrictions to check for wall instead of edge
-    direction = "radius";
+    // direction = "radius";
     const index = this.humanSpace.name;
     switch (direction) {
       case 'north':
@@ -1173,44 +1177,44 @@ class Game extends Component {
     this.setState({ redraw: !this.state.redraw });
   }
 
-  listen = () => {
-    let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
-    Alert.alert(
-      'You listened.',
-      `Opponent is ${distance} cells away`,
-      [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-      { cancelable: false }
-    )
-    this.setState({ redraw: !this.state.redraw });
-  }
-
-  sniff = (cell1, cell2) => {
-
-    let direction = '';
-    if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
-      direction += 'S';
-    } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
-      direction += 'N';
-    }
-
-    if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
-      direction += 'E';
-    } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
-      direction += 'W';
-    }
-
-    Alert.alert(
-      'You sniffed.',
-      `Opponent is in ${direction} direction from you.`,
-      [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-      { cancelable: false }
-    )
-    this.setState({ redraw: !this.state.redraw });
-  }
+  // listen = () => {
+  //   let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
+  //   Alert.alert(
+  //     'You listened.',
+  //     `Opponent is ${distance} cells away`,
+  //     [
+  //       {text: 'OK', onPress: () => console.log('OK Pressed')},
+  //     ],
+  //     { cancelable: false }
+  //   )
+  //   this.setState({ redraw: !this.state.redraw });
+  // }
+  //
+  // sniff = (cell1, cell2) => {
+  //
+  //   let direction = '';
+  //   if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
+  //     direction += 'S';
+  //   } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
+  //     direction += 'N';
+  //   }
+  //
+  //   if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
+  //     direction += 'E';
+  //   } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
+  //     direction += 'W';
+  //   }
+  //
+  //   Alert.alert(
+  //     'You sniffed.',
+  //     `Opponent is in ${direction} direction from you.`,
+  //     [
+  //       {text: 'OK', onPress: () => console.log('OK Pressed')},
+  //     ],
+  //     { cancelable: false }
+  //   )
+  //   this.setState({ redraw: !this.state.redraw });
+  // }
 
   onItemSelected = (item) => {
     console.log('onItemSelected', item);
@@ -1225,34 +1229,25 @@ class Game extends Component {
         }
         break;
       case 'sniff':
-        let cell1;
-        let cell2;
-        if (this.state.isHuman) {
-          cell1 = this.humanSpace.name;
-          cell2 = this.monsterSpace.name;
-        } else {
-          cell1 = this.monsterSpace.name;
-          cell2 = this.humanSpace.name;
-        }
-        this.sniff(cell1, cell2);
+        this.setState({ modal: 1 });
         break;
       case 'listen':
-        this.listen();
+        this.setState({ modal: 2 });
         break;
       case 'echo':
-        this.echoLocate();
+        this.setState({ modal: 4 });
         break;
       case 'pounce':
-        //
+        this.setState({ modal: 3 });
         break;
       case 'home':
-        //
+        this.setState({ modalLeft: 2 });
         break;
       case 'zoom':
         this.alterZoom();
         break;
       case 'exit':
-        //
+        this.setState({ modalLeft: 1 });
         break;
       default:
         // console.log('');
@@ -1272,6 +1267,164 @@ class Game extends Component {
       })
     }
   }
+
+
+  renderModalContent = () => {
+    if (this.state.modal === 1) {//SNIFF
+      let cell1;
+      let cell2;
+      if (this.state.isHuman) {
+        cell1 = this.humanSpace.name;
+        cell2 = this.monsterSpace.name;
+      } else {
+        cell1 = this.monsterSpace.name;
+        cell2 = this.humanSpace.name;
+      }
+      let direction = '';
+      if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
+        direction += 'S';
+      } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
+        direction += 'N';
+      }
+      if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
+        direction += 'E';
+      } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
+        direction += 'W';
+      }
+
+      let text1 = 'You sniffed.';
+      let text2 = `Opponent is in ${direction} direction from you.`;
+
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff'}}>{text2}</Text>
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+        </View>
+      )
+    }
+    else if (this.state.modal === 2) {//LISTEN
+      let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
+      let text1 = 'You listened.';
+      let text2 = `Opponent is ${distance} cells away`;
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff'}}>{text2}</Text>
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+        </View>
+      );
+    }
+    else if (this.state.modal === 3) {//POUNCE
+      let text1;
+      let text2;
+      if (this.monsterSpace.hasHuman) {
+        text1 = 'You pounced.';
+        text2 = 'And attacked your opponent.';
+      } else if (this.monsterSpace.hasCache) {
+        text1 = 'You pounced.';
+        text2 = 'And found cache.';
+      } else {
+        text1 = 'You pounced.';
+        text2 = 'There is nothing here.';
+      }
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff'}}>{text2}</Text>
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='OK' />
+        </View>
+      );
+    }
+    else if (this.state.modal === 4) {//ECHO
+      let text1 = 'Choose echo direction:';
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='North' />
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='South' />
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='East' />
+          <NavButton onPress={() => this.setState({ modal: 0 })} text='West' />
+          <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 });}} text='Burst' />
+        </View>
+      );
+    }
+    else if (this.state.modalLeft === 1) {//EXIT
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>Are you sure you want to exit?</Text>
+          <NavButton onPress={() => BackAndroid.exitApp()} text='Yes' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+
+        </View>
+      );
+    }
+    else if (this.state.modalLeft === 2) {//HOME
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>Are you sure you want to exit?</Text>
+          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+
+        </View>
+      );
+    }
+  }
+
 
   showMonsterMoves = () => {
     let index = this.monsterSpace.name;
@@ -1356,7 +1509,7 @@ class Game extends Component {
   }
 
   moveHuman = (item) => {
-    // console.log('move human') 
+    // console.log('move human')
     if (item.isHighlighted) {
       this.elements[this.humanSpace.name].hasHuman = false;
       item.hasHuman = true;
@@ -1370,8 +1523,6 @@ class Game extends Component {
       );
     }
   }
-
-
 
   handlePressNavButton = () => {
     this.props.navigation.navigate('Home');
@@ -1506,6 +1657,27 @@ class Game extends Component {
           zoomedInValue={this.zoomedInValue}
           zoomedOutValue={this.zoomedOutValue}
         />
+        <Modal
+          isVisible={this.state.modal != 0}
+          onBackdropPress={() => this.setState({ modal: 0 })}
+          animationIn="slideInLeft"
+          animationOut="slideOutRight"
+          onSwipe={() => this.setState({ modal: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
+
+        <Modal
+          isVisible={this.state.modalLeft != 0}
+          onBackdropPress={() => this.setState({ modalLeft: 0 })}
+          animationIn="slideInRight"
+          animationOut="slideOutLeft"
+          onSwipe={() => this.setState({ modalLeft: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
       </SideMenu>
       </SideMenu>
       )
@@ -1537,6 +1709,29 @@ class Game extends Component {
           zoomedInValue={this.zoomedInValue}
           zoomedOutValue={this.zoomedOutValue}
         />
+
+        <Modal
+          isVisible={this.state.modal != 0}
+          onBackdropPress={() => this.setState({ modal: 0 })}
+          animationIn="slideInLeft"
+          animationOut="slideOutRight"
+          onSwipe={() => this.setState({ modal: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
+
+        <Modal
+          isVisible={this.state.modalLeft != 0}
+          onBackdropPress={() => this.setState({ modalLeft: 0 })}
+          animationIn="slideInRight"
+          animationOut="slideOutLeft"
+          onSwipe={() => this.setState({ modalLeft: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
+
       </SideMenu>
       </SideMenu>
       )
