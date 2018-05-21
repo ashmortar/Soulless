@@ -100,6 +100,11 @@ class Menu extends Component {
         }}>Settings</Text>
 
         <NavButton
+          onPress={() => this.props.onItemSelected('endTurn')}
+          text={'end turn'}
+        />
+
+        <NavButton
           onPress={() => this.props.onItemSelected('home')}
           text={'home'}
         />

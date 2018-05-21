@@ -57,6 +57,7 @@ class Game extends Component {
       modalLeft: 0,
       modalDialogOnly: 0,
       turnCounter: 0,
+      outOfMoves: false,
     };
   }
 
@@ -1189,6 +1190,11 @@ class Game extends Component {
   onItemSelected = (item) => {
     console.log('onItemSelected', item);
     switch (item) {
+      case 'endTurn':
+        if (this.state.outOfMoves) {
+          this.changePlayerMode();
+        }
+        break;
       case 'move':
         if (this.state.isHuman) {
           this.showHumanMoves();
@@ -1242,6 +1248,15 @@ class Game extends Component {
     this.setState({ turnCounter: this.state.turnCounter + 1 });
     console.log('--------------------------');
     console.log(this.state.turnCounter);
+    if (this.state.turnCounter >= 1) {
+      this.setState({ outOfMoves: true });
+    }
+  }
+
+  changePlayerMode = () => {
+    this.handleChangePlayer();
+    this.setState({ boardFinished: false });
+    this.setState({ redraw: !this.state.redraw });
   }
 
 
@@ -1528,6 +1543,8 @@ class Game extends Component {
         playerSpace: this.humanSpace,
       });
     }
+    this.setState({ turnCounter: 0 });
+    this.setState({ outOfMoves: false });
   }
 
   renderHeader = () => {
@@ -1591,8 +1608,6 @@ class Game extends Component {
   // };
 
 
-
-
   callback = () => (
     this.setState({
       boardFinished: true,
@@ -1609,7 +1624,13 @@ class Game extends Component {
     }
   }
 
+  closeModalDialogOnly = () => {
+    this.setState({ modalDialogOnly: 0 });
+    this.incrementTurnCounter();
+  }
+
   renderEngine1 = () => {
+    let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
     if (this.state.boardFinished) {
@@ -1617,6 +1638,7 @@ class Game extends Component {
         <SideMenu
         menu={menuRight}
         menuPosition='right'
+        disableGestures={disableGestures}
       >
       <SideMenu
         menu={menuLeft}
@@ -1673,17 +1695,13 @@ class Game extends Component {
     }
   }
 
-  closeModalDialogOnly = () => {
-    this.setState({ modalDialogOnly: 0 });
-    this.incrementTurnCounter();
-  }
-
   // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
   // <SideMenu menu={menu}>
   // const menu = <Menu navigator={navigator}/>;
   renderEngine2 = () => {
   // render() {
     // const finished = this.state.boardFinished;
+    let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
     if (!this.state.boardFinished) {
@@ -1691,6 +1709,7 @@ class Game extends Component {
         <SideMenu
         menu={menuRight}
         menuPosition='right'
+        disableGestures={disableGestures}
       >
       <SideMenu
         menu={menuLeft}
