@@ -8,6 +8,7 @@ import WallTemplate from '../data/WallTemplate';
 import Cell from '../data/Cell';
 import Engine from './Engine';
 import Menu from './Menu';
+import EchoScreen from './EchoScreen';
 import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
 
@@ -17,7 +18,12 @@ class Game extends Component {
   }
 
   constructor() {
+    // TODO remove unused items and pull back all possible params/states from children
     super();
+
+    this.assignCacheCounter = 0;
+    this.assignMonsterCounter = 0;
+
     this.scale = 0;
     this.elements = [];
     this.start = null;
@@ -29,13 +35,13 @@ class Game extends Component {
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
     // offset should be so that edge walls correspond to scroll bounce
-    this.cellsPerScreen = 6;
+    this.cellsPerScreen = 20;
     this.scrollOffset = Math.floor(this.cellsPerScreen / 2);
     let { width, height } = Dimensions.get("window");
     this.viewPortWidth = width;
     this.viewPortHeight = height;
-    this.zoomedInValue = Math.ceil(this.viewPortWidth / this.cellsPerScreen);
-    this.zoomedOutValue = Math.ceil(this.viewPortWidth / this.cellsInRow);
+    this.zoomedInValue = Math.ceil(this.viewPortHeight / this.cellsPerScreen);
+    this.zoomedOutValue = Math.ceil(this.viewPortHeight / this.cellsInRow);
     this.fullGameDimension = this.zoomedInValue * this.cellsInRow;
     this.zoom = 'close';
     this.allowedLengthOfWhiteLine = 14; // density
@@ -43,13 +49,15 @@ class Game extends Component {
     this.state = {
       redraw: false,
       isHuman: true,
-      echoDirection: 'radius',
+      tileWidth: this.zoomedOutValue,
       playerSpace: { name: 0 },
       boardFinished: false,
       modal: 0,
       modalLeft: 0,
     };
   }
+
+  // TODO figure out difference between generation in component will mount versus component did mount etc
 
   componentWillMount() {
     this.createMap();
@@ -62,12 +70,8 @@ class Game extends Component {
     this.assignImageKeys();
   }
 
-  componentDidMount() {
-
-    // console.log('==================================================');
-    // console.log(this.findShortestPath(this.elements[this.humanSpace.name], this.elements[this.monsterSpace.name]));
-    // console.log(this.findShortestPath(this.elements[121], this.elements[123]));
-  }
+  // componentDidMount() {
+  // }
 
   createMap = () => {
     this.getGridLayout();
@@ -109,8 +113,8 @@ class Game extends Component {
       this.elements.push(new Cell(i));
     }
 
-    //creating straight lines of walls
-    for (let i = 0; i < 30; i++) {//bug: block goes beyond boundaries
+    // creating straight lines of walls
+    for (let i = 0; i < 30; i++) { // bug: block goes beyond boundaries
       let randWallType = Math.floor(Math.random() * 2);
       let randStartingPoint = Math.floor(Math.random() * this.cellsTotal);
       let randLength = Math.floor(Math.random() * 4) + 2;
@@ -135,8 +139,8 @@ class Game extends Component {
   }
 
   createBorderWalls = () => {
-    this.createWall_straightHorizontal(80, this.cellsInRow/2);
-    this.createWall_straightHorizontal(this.cellsTotal - this.cellsInRow, this.cellsInRow/2);
+    this.createWall_straightHorizontal(80, this.cellsInRow / 2);
+    this.createWall_straightHorizontal(this.cellsTotal - this.cellsInRow, this.cellsInRow / 2);
 
     this.createWall_straightVertical(80, this.cellsInRow - 2);
     this.createWall_straightVertical(80 + this.cellsInRow - 1, this.cellsInRow - 2);
@@ -160,7 +164,7 @@ class Game extends Component {
         counterForExtraGreyCells++;
       }
       else {
-        //white
+        // white
         if (counterForExtraGreyCells > 2) {
           let j = i;
           while (counterForExtraGreyCells != 2) {
@@ -171,7 +175,7 @@ class Game extends Component {
         }
         else if (counterForExtraGreyCells < 2) {
           let k = i;
-          //go back to black
+          // go back to black
           while (this.elements[k].value != 0) {
             k -= this.cellsInRow;
           }
@@ -193,7 +197,7 @@ class Game extends Component {
       if (this.elements[i].value > 0) {
 
 
-        //square spaces with columns
+        // square spaces with columns
         let flag = true;
         for (let j=0; j<8; j++) {
           for (let k=0; k<8; k++) {
@@ -204,7 +208,7 @@ class Game extends Component {
           }
         }
         if (flag) {
-          //white space 9x9 detected
+          // white space 9x9 detected
           this.createWall_squareColumn(i + 4 + 5 * this.cellsInRow);
           // break;
         }
@@ -217,7 +221,7 @@ class Game extends Component {
     for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 2*this.cellsInRow - this.allowedLengthOfWhiteLine; i++) {
       if (this.elements[i].value > 0) {
 
-        //horizontal white lines
+        // horizontal white lines
         let flag = true;
         for (let k = 0; k < this.allowedLengthOfWhiteLine + 1; k++) {
           if (this.elements[i + k].value <= 0) {
@@ -227,7 +231,7 @@ class Game extends Component {
         }
 
         if (flag) {
-          //white hor line detected
+          // white hor line detected
           this.createWall_straightVertical(i + this.allowedLengthOfWhiteLine + 2 * this.cellsInRow, 2);
         }
       }
@@ -238,7 +242,7 @@ class Game extends Component {
     for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - this.allowedLengthOfWhiteLine*this.cellsInRow; i++) {
       if (this.elements[i].value > 0) {
 
-        //horizontal white lines
+        // horizontal white lines
         let flag = true;
         for (let j=0; j<this.allowedLengthOfWhiteLine + 1; j++) {
           if (this.elements[i + j*this.cellsInRow].value <= 0) {
@@ -246,7 +250,7 @@ class Game extends Component {
           }
         }
         if (flag) {
-          //white space 9x9 detected
+          // white space 9x9 detected
           this.createWall_straightHorizontal(i + this.allowedLengthOfWhiteLine * this.cellsInRow, 1);
         }
       }
@@ -258,7 +262,7 @@ class Game extends Component {
     let loopIndexes = [];
     let cellAmounts = [];
     let cellIndexesInLoops = [];
-    //copy gamefield without borders to a separate array
+    // copy gamefield without borders to a separate array
     let gamefield = [];
     let c = 0;
     for (let i = 3 * this.cellsInRow + 1; i < this.cellsTotal - 3 * this.cellsInRow - 1; i++) {
@@ -287,13 +291,13 @@ class Game extends Component {
       cellsInThisLoop = [];
       amountOfLoops++;
       current_cell.value = current_zone;
-      //change values of all empty cells around it to current_zone------------------------------------
+      // change values of all empty cells around it to current_zone------------------------------------
       queue = [];
       queue.push(current_cell);
 
       thereAreNewItemsInQueue = true;
 
-      while (thereAreNewItemsInQueue) {//adding new items in queue; changing their values to current_zone
+      while (thereAreNewItemsInQueue) {// adding new items in queue; changing their values to current_zone
         thereAreNewItemsInQueue = false;
 
         queue.forEach((cellInAQueue) => {
@@ -310,9 +314,7 @@ class Game extends Component {
               thereAreNewItemsInQueue = true;
             }
           });
-
         });
-
       }
 
       cellAmounts.push(cellAmountInThisLoop);
@@ -513,6 +515,7 @@ class Game extends Component {
   }
 
   assignMonsterEdges = () => {
+    // TODO comment up code? also try and simplify
     // console.log('assign monster edges');
     for (let i = 0; i < this.cellsTotal; i++) {
       let cell = this.elements[i];
@@ -588,13 +591,13 @@ class Game extends Component {
     if ((i - 2 * this.cellsInRow >= 0)) {
       for (let j=0; j<length; j++) {
         k = i + 40 * j;
-        if (this.elements[k].value != 0){
-          this.elements[k].value = -1;//starting cell
+        if (this.elements[k].value != 0) {
+          this.elements[k].value = -1;// starting cell
         }
-        if (this.elements[k - this.cellsInRow].value != 0){
-          this.elements[k - this.cellsInRow].value = -1;//top first
+        if (this.elements[k - this.cellsInRow].value != 0) {
+          this.elements[k - this.cellsInRow].value = -1;// top first
         }
-        this.elements[k - 2 * this.cellsInRow].value = 0;//top second
+        this.elements[k - 2 * this.cellsInRow].value = 0;// top second
       }
     }
   }
@@ -604,19 +607,21 @@ class Game extends Component {
 
       for (let j=0; j<2; j++) {
         k = i + j;
-        if (this.elements[k].value != 0){
-          this.elements[k].value = -1;//starting cell
+        if (this.elements[k].value != 0) {
+          this.elements[k].value = -1;// starting cell
         }
-        if (this.elements[k - this.cellsInRow].value != 0){
-          this.elements[k - this.cellsInRow].value = -1;//top first
+        if (this.elements[k - this.cellsInRow].value != 0) {
+          this.elements[k - this.cellsInRow].value = -1;// top first
         }
-        this.elements[k - 2 * this.cellsInRow].value = 0;//top second
-        this.elements[k - 3 * this.cellsInRow].value = 0;//top third
+        this.elements[k - 2 * this.cellsInRow].value = 0;// top second
+        this.elements[k - 3 * this.cellsInRow].value = 0;// top third
       }
     }
   }
 
   findShortestPath(start, end) {
+
+    // TODO cleanup and possibly refactor
     if (start.value < 1 || end.value < 1) {
       // console.log('shortest path error: start or end was a wall');
       return -1;
@@ -629,13 +634,12 @@ class Game extends Component {
     // add starting square to the queue
     visited.push(start);
     queue.push(start);
-    // console.log('start ', start, 'end ', end, 'everything: ', this.elements)
     // process the queue
     while (queue.length > 0) {
       // remove the first item
       let cell = queue.shift();
       if (cell === end) {
-        // console.log("found you")
+        // console.log("shortest path: found target")
         break;
       }
       let neighbors = cell.monsterEdges;
@@ -655,7 +659,7 @@ class Game extends Component {
       next = next.parent;
     }
     this.resetParents()
-    // console.log((path.length - 1), path)
+    // console.log(`shortest path: ${path.length - 1}`, path)
     return (path.length - 1);
   }
 
@@ -666,33 +670,32 @@ class Game extends Component {
   }
 
   assignHumanStart = () => {
+    if (this.humanSpace) {
+      this.humanSpace.isRevealed = false;
+    }
     let cell = this.getRandomCell();
     while (cell.value < 1) {
       cell = this.getRandomCell();
     }
     cell.hasHuman = true;
     this.humanSpace = cell;
-    if(this.state.isHuman) {
+    if (this.state.isHuman) {
       cell.isRevealed = true;
       this.setState({ playerSpace: cell });
     }
   }
 
-
-
   assignMonsterStart = () => {
-    // console.log('assign monster start')
     let cell = this.getRandomCell();
     let distance = this.findShortestPath(cell, this.humanSpace);
-    let counter = 0;
-    while (distance < 20) {
-      console.log(`counter: ${counter}`);
+    while (distance < 25) {
+      console.log(`assign monster counter: ${this.assignMonsterCounter}`);
+      this.assignMonsterCounter++;
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
-      // if (counter % 5 === 0) {
-      //   this.assignHumanStart();
-      // }
-      counter++;
+      if (this.assignMonsterCounter % 5 === 0) {
+        this.assignHumanStart();
+      }
     }
     // console.log('cell and distance', cell, distance);
     cell.hasMonster = true;
@@ -703,17 +706,35 @@ class Game extends Component {
   }
 
   assignCacheLocations = () => {
+    // TODO make caches more evenly spaced out
+    let cacheArray = [this.humanSpace, this.monsterSpace];
     for (let i = 0; i <= this.cacheTotal; i++) {
       let cell = this.getRandomCell();
-      while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache) {
+      while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache || this.compareToCacheArray(cell, cacheArray)) {
         cell = this.getRandomCell();
       }
       cell.hasCache = true;
       cell.isRevealed = true;
+      cacheArray.push(cell);
     }
   }
 
+  compareToCacheArray = (cell, cacheArray) => {
+    console.log('cache boolean counter: ', this.assignCacheCounter);
+    this.assignCacheCounter++;
+    if (cacheArray.length > 0 ) {
+      for (let i = 0; i < cacheArray.length; i++) {
+        let distance = this.findShortestPath(cell, cacheArray[i]);
+        if (distance < 5) {
+          return true;
+        } 
+      }
+    }
+   return false;
+  }
+
   getNeighboringCells = (i) => {
+    // TODO simplify
     let top = null;
     let left = null;
     let right = null;
@@ -729,7 +750,7 @@ class Game extends Component {
     if (i - this.cellsInRow >= 0) {
       top = this.elements[i - this.cellsInRow];
     }
-    if((i - (this.cellsInRow - 1) >= 0) && (i % this.cellsInRow !== (this.cellsInRow - 1))) {
+    if ((i - (this.cellsInRow - 1) >= 0) && (i % this.cellsInRow !== (this.cellsInRow - 1))) {
       topRight = this.elements[i - (this.cellsInRow - 1)];
     }
     if ((i - 1 >= 0) && (i % this.cellsInRow !== 0)) {
@@ -755,6 +776,7 @@ class Game extends Component {
   }
 
   assignImageKeys = () => {
+    // TODO simplify decision tree
     for (let i = 0; i < this.elements.length; i++) {
       const { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(i);
       let cell = this.elements[i];
@@ -1039,14 +1061,7 @@ class Game extends Component {
         }
       }
     }
-    // let imageKeys = [];
-    // for (let i = 0; i < this.elements.length; i++) {
-    //   if (this.elements[i].imageKey !== 0) {
-    //     imageKeys.push([this.elements[i].name, this.elements[i].imageKey]);
-    //   }
-    // }
-    this.setState({ boardFinished: true });
-    // // console.log('elements', this.elements, 'image keys', imageKeys);
+
   }
 
 
@@ -1058,25 +1073,28 @@ class Game extends Component {
     }
   }
 
-  echoLocate = () => {
-    // console.log('echolocate', this.state.boardFinished)
-    // this.setState({ boardFinished: false });
-    // console.log('echolocate', this.state.boardFinished)
-    let direction = "radius";
-    const item = this.humanSpace;
+  echoLocate = (direction) => {
+    this.setState({
+      boardFinished: false,
+    })
+    // console.log('echolocate');
+    // TODO fix all cases to reveal wall tiles but not beyond them
+    // TODO fix restrictions to check for wall instead of edge
+    // direction = "radius";
+    const index = this.humanSpace.name;
     switch (direction) {
       case 'north':
-        if (item.name - this.cellsInRow < 0) {
+        if (index - this.cellsInRow < 0 || this.elements[index].value < 1) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate North from here..',
           );
         } else {
-          let cell = this.elements[item.name - this.cellsInRow];
+          let cell = this.elements[index - this.cellsInRow];
           while (cell.value > 0) {
             cell.isRevealed = true;
-            if (cell.name - this.cellsInRow > 0) {
-              cell = this.elements[cell.name - this.cellsInRow];
+            if (cell - this.cellsInRow > 0) {
+              cell = this.elements[cell - this.cellsInRow];
             } else {
               break;
             }
@@ -1085,36 +1103,36 @@ class Game extends Component {
         break;
 
       case 'east':
-        if (item.name % this.cellsInRow === (this.cellsInRow - 1)) {
+        if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index].value < 1) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate East from here..',
           );
         } else {
-          let cell = this.elements[item.name + 1];
+          let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
-            if ((cell.name + 1) % this.cellsInRow === 0) {
+            if ((cell + 1) % this.cellsInRow === 0) {
               break;
             } else {
-              cell = this.elements[cell.name + 1];
+              cell = this.elements[cell + 1];
             }
           }
         }
         break;
 
       case 'south':
-        if (item.name + this.cellsInRow > this.cellsTotal) {
+        if (index + this.cellsInRow > this.cellsTotal || this.elements[index].value < 1) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate South from here..',
           );
         } else {
-          let cell = this.elements[item.name + this.cellsInRow];
+          let cell = this.elements[index + this.cellsInRow];
           while (cell.value > 0) {
             cell.isRevealed = true;
-            if (cell.name + this.cellsInRow < this.cellsTotal) {
-              cell = this.elements[cell.name + this.cellsInRow];
+            if (cell + this.cellsInRow < this.cellsTotal) {
+              cell = this.elements[cell + this.cellsInRow];
             } else {
               break;
             }
@@ -1123,26 +1141,26 @@ class Game extends Component {
         break;
 
       case 'west':
-        if (item.name % this.cellsInRow === 0) {
+        if (index % this.cellsInRow === 0 || this.elements[index].value < 1) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate West from here..',
           );
         } else {
-          let cell = this.elements[item.name - 1];
+          let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
-            if ((cell.name - 1) % this.cellsInRow === 0) {
+            if ((cell - 1) % this.cellsInRow === 0) {
               break;
             } else {
-              cell = this.elements[cell.name - 1];
+              cell = this.elements[cell - 1];
             }
           }
         }
         break;
 
       case 'radius':
-        let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(item.name);
+        let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
         topLeft.isRevealed = true;
         top.isRevealed = true;
         topRight.isRevealed = true;
@@ -1156,7 +1174,7 @@ class Game extends Component {
       default:
         break;
     }
-    this.setState({ redraw: !this.state.redraw })
+    this.setState({ redraw: !this.state.redraw });
   }
 
   // listen = () => {
@@ -1226,13 +1244,27 @@ class Game extends Component {
         this.setState({ modalLeft: 2 });
         break;
       case 'zoom':
-        //
+        this.alterZoom();
         break;
       case 'exit':
         this.setState({ modalLeft: 1 });
         break;
       default:
         // console.log('');
+    }
+  }
+
+  alterZoom = () => {
+    if(this.state.tileWidth === this.zoomedInValue) {
+      this.setState({
+        tileWidth: this.zoomedOutValue,
+        boardFinished: false,
+      })
+    } else {
+      this.setState({
+        tileWidth: this.zoomedInValue,
+        boardFinished: false,
+      })
     }
   }
 
@@ -1349,7 +1381,7 @@ class Game extends Component {
           <NavButton onPress={() => this.setState({ modal: 0 })} text='South' />
           <NavButton onPress={() => this.setState({ modal: 0 })} text='East' />
           <NavButton onPress={() => this.setState({ modal: 0 })} text='West' />
-          <NavButton onPress={() => {this.echoLocate(); this.setState({ modal: 0 });}} text='Burst' />
+          <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 });}} text='Burst' />
         </View>
       );
     }
@@ -1412,14 +1444,14 @@ class Game extends Component {
       item.hasMonster = true;
       this.monsterSpace = item;
       this.setState({ playerSpace: item });
-      this.resetGrid();
+      this.resetHighlighted();
     } else {
       Alert.alert(
         'Uh-Oh',
         'Please select a highlighted space',
       );
     }
-    this.setState({ redraw: !this.state.redraw });
+    // this.setState({ redraw: !this.state.redraw });
   }
 
   showHumanMoves = () => {
@@ -1558,38 +1590,54 @@ class Game extends Component {
     );
   };
 
-  renderFooter = () => {
-    return (
-      <View style={{ marginBottom: 20, marginTop: 0, flex: 1, flexDirection: 'row' }}>
-        <NavButton onPress={this.handleChangePlayer} text={`human? ${this.state.isHuman}`} />
-        <Picker
-          selectedValue={this.state.echoDirection}
-          style={{ height: 50, width: 100 }}
-          onValueChange={(itemValue, itemIndex) => this.setState({ echoDirection: itemValue })}
-        >
-          <Picker.Item label="radius" value="radius" />
-          <Picker.Item label="north" value="north" />
-          <Picker.Item label="east" value="east" />
-          <Picker.Item label="south" value="south" />
-          <Picker.Item label="west" value="west" />
-        </Picker>
-        <NavButton onPress={this.echoLocate} text="echo-locate" />
-        <NavButton onPress={this.showHumanMoves} text="move human" />
-        <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
-      </View>
+  // renderFooter = () => {
+  //   return (
+  //     <View style={{ marginBottom: 20, marginTop: 0, flex: 1, flexDirection: 'row' }}>
+  //       <NavButton onPress={this.handleChangePlayer} text={`human? ${this.state.isHuman}`} />
+  //       <Picker
+  //         selectedValue={this.state.echoDirection}
+  //         style={{ height: 50, width: 100 }}
+  //         onValueChange={(itemValue, itemIndex) => this.setState({ echoDirection: itemValue })}
+  //       >
+  //         <Picker.Item label="radius" value="radius" />
+  //         <Picker.Item label="north" value="north" />
+  //         <Picker.Item label="east" value="east" />
+  //         <Picker.Item label="south" value="south" />
+  //         <Picker.Item label="west" value="west" />
+  //       </Picker>
+  //       <NavButton onPress={this.echoLocate} text="echo-locate" />
+  //       <NavButton onPress={this.showHumanMoves} text="move human" />
+  //       <NavButton onPress={this.handlePressNavButton} text="go to home screen" />
+  //     </View>
 
-    );
-  };
+  //   );
+  // };
 
-  // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-  // <SideMenu menu={menu}>
-  // const menu = <Menu navigator={navigator}/>;
-  render() {
-    const finished = this.state.boardFinished;
+
+
+
+  callback = () => (
+    this.setState({
+      boardFinished: true,
+    })
+  )
+
+  renderAnimator = () => {
+    if (!this.state.boardFinished) {
+      return(
+        <View style={{ backgroundColor: '#000', flex: 1 }}>
+          <EchoScreen callback={this.callback} />
+        </View>
+      )
+    }
+  }
+
+  renderEngine1 = () => {
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    return (
-      <SideMenu
+    if (this.state.boardFinished) {
+      return (
+        <SideMenu
         menu={menuRight}
         menuPosition='right'
       >
@@ -1604,6 +1652,62 @@ class Game extends Component {
           isHuman={this.state.isHuman}
           playerSpace={this.state.playerSpace}
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
+          echolocate={this.echoLocate}
+          tileWidth={this.state.tileWidth}
+          zoomedInValue={this.zoomedInValue}
+          zoomedOutValue={this.zoomedOutValue}
+        />
+        <Modal
+          isVisible={this.state.modal != 0}
+          onBackdropPress={() => this.setState({ modal: 0 })}
+          animationIn="slideInLeft"
+          animationOut="slideOutRight"
+          onSwipe={() => this.setState({ modal: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
+
+        <Modal
+          isVisible={this.state.modalLeft != 0}
+          onBackdropPress={() => this.setState({ modalLeft: 0 })}
+          animationIn="slideInRight"
+          animationOut="slideOutLeft"
+          onSwipe={() => this.setState({ modalLeft: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
+      </SideMenu>
+      </SideMenu>
+      )
+    }
+  }
+
+  renderEngine2 = () => {
+    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
+    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
+    if (!this.state.boardFinished) {
+      return (
+        <SideMenu 
+        menu={menuRight}
+        menuPosition='right'
+      >
+      <SideMenu
+        menu={menuLeft}
+        menuPosition='left'
+      >
+        <Engine
+          gameBoard={this.elements}
+          tilesInRow={this.cellsInRow}
+          boardFinished={this.state.boardFinished}
+          isHuman={this.state.isHuman}
+          playerSpace={this.state.playerSpace}
+          move={this.state.isHuman ? this.moveHuman : this.moveMonster}
+          echolocate={this.echoLocate}
+          tileWidth={this.state.tileWidth}
+          zoomedInValue={this.zoomedInValue}
+          zoomedOutValue={this.zoomedOutValue}
         />
 
         <Modal
@@ -1630,9 +1734,30 @@ class Game extends Component {
 
       </SideMenu>
       </SideMenu>
-    )
+      )
+    }
   }
-}
+  
+
+  // timer() {
+  //   setTimeout(this.callback, 2000);
+  // }
+  // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
+  // <SideMenu menu={menu}>
+  // const menu = <Menu navigator={navigator}/>;
+  render() {
+    const finished = this.state.boardFinished;
+
+      return (
+        <View style={{flex:1}}>
+ 
+          {this.renderEngine1()}
+          {this.renderEngine2()}
+          {this.renderAnimator()}
+        </View>
+      )
+    }
+  }
 
 export default Game;
 

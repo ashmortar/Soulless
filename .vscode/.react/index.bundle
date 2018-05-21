@@ -62910,7 +62910,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     }
   });
-},509,[510,585,598,669,676],"app\\config\\routes.js");
+},509,[510,585,598,693,700],"app\\config\\routes.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -75538,9 +75538,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _Menu2 = _interopRequireDefault(_Menu);
 
-  var _reactNativeSideMenu = _require(_dependencyMap[11], "react-native-side-menu");
+  var _EchoScreen = _require(_dependencyMap[11], "./EchoScreen");
+
+  var _EchoScreen2 = _interopRequireDefault(_EchoScreen);
+
+  var _reactNativeSideMenu = _require(_dependencyMap[12], "react-native-side-menu");
 
   var _reactNativeSideMenu2 = _interopRequireDefault(_reactNativeSideMenu);
+
+  var _reactNativeModal = _require(_dependencyMap[13], "react-native-modal");
+
+  var _reactNativeModal2 = _interopRequireDefault(_reactNativeModal);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -76152,6 +76160,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.assignHumanStart = function () {
+        if (_this.humanSpace) {
+          _this.humanSpace.isRevealed = false;
+        }
+
         var cell = _this.getRandomCell();
 
         while (cell.value < 1) {
@@ -76175,13 +76187,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         var distance = _this.findShortestPath(cell, _this.humanSpace);
 
-        var counter = 0;
-
-        while (distance < 20) {
-          console.log("counter: " + counter);
+        while (distance < 25) {
+          console.log("assign monster counter: " + _this.assignMonsterCounter);
+          _this.assignMonsterCounter++;
           cell = _this.getRandomCell();
           distance = _this.findShortestPath(cell, _this.humanSpace);
-          counter++;
+
+          if (_this.assignMonsterCounter % 5 === 0) {
+            _this.assignHumanStart();
+          }
         }
 
         cell.hasMonster = true;
@@ -76195,16 +76209,36 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.assignCacheLocations = function () {
+        var cacheArray = [_this.humanSpace, _this.monsterSpace];
+
         for (var _i14 = 0; _i14 <= _this.cacheTotal; _i14++) {
           var cell = _this.getRandomCell();
 
-          while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache) {
+          while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache || _this.compareToCacheArray(cell, cacheArray)) {
             cell = _this.getRandomCell();
           }
 
           cell.hasCache = true;
           cell.isRevealed = true;
+          cacheArray.push(cell);
         }
+      };
+
+      _this.compareToCacheArray = function (cell, cacheArray) {
+        console.log('cache boolean counter: ', _this.assignCacheCounter);
+        _this.assignCacheCounter++;
+
+        if (cacheArray.length > 0) {
+          for (var _i15 = 0; _i15 < cacheArray.length; _i15++) {
+            var distance = _this.findShortestPath(cell, cacheArray[_i15]);
+
+            if (distance < 5) {
+              return true;
+            }
+          }
+        }
+
+        return false;
       };
 
       _this.getNeighboringCells = function (i) {
@@ -76262,8 +76296,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.assignImageKeys = function () {
-        for (var _i15 = 0; _i15 < _this.elements.length; _i15++) {
-          var _this$getNeighboringC2 = _this.getNeighboringCells(_i15),
+        for (var _i16 = 0; _i16 < _this.elements.length; _i16++) {
+          var _this$getNeighboringC2 = _this.getNeighboringCells(_i16),
               topLeft = _this$getNeighboringC2.topLeft,
               top = _this$getNeighboringC2.top,
               topRight = _this$getNeighboringC2.topRight,
@@ -76273,7 +76307,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               bottom = _this$getNeighboringC2.bottom,
               bottomRight = _this$getNeighboringC2.bottomRight;
 
-          var cell = _this.elements[_i15];
+          var cell = _this.elements[_i16];
 
           if (cell.value === 0) {
             cell.imageKey = 9;
@@ -76507,10 +76541,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                       }
           }
         }
-
-        _this.setState({
-          boardFinished: true
-        });
       };
 
       _this.getRandomCell = function () {
@@ -76518,27 +76548,30 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.resetHighlighted = function () {
-        for (var _i16 = 0; _i16 < _this.elements.length; _i16++) {
-          _this.elements[_i16].isHighlighted = false;
+        for (var _i17 = 0; _i17 < _this.elements.length; _i17++) {
+          _this.elements[_i17].isHighlighted = false;
         }
       };
 
-      _this.echoLocate = function () {
-        var direction = "radius";
-        var item = _this.humanSpace;
+      _this.echoLocate = function (direction) {
+        _this.setState({
+          boardFinished: false
+        });
+
+        var index = _this.humanSpace.name;
 
         switch (direction) {
           case 'north':
-            if (item.name - _this.cellsInRow < 0) {
+            if (index - _this.cellsInRow < 0 || _this.elements[index].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate North from here..');
             } else {
-              var cell = _this.elements[item.name - _this.cellsInRow];
+              var cell = _this.elements[index - _this.cellsInRow];
 
               while (cell.value > 0) {
                 cell.isRevealed = true;
 
-                if (cell.name - _this.cellsInRow > 0) {
-                  cell = _this.elements[cell.name - _this.cellsInRow];
+                if (cell - _this.cellsInRow > 0) {
+                  cell = _this.elements[cell - _this.cellsInRow];
                 } else {
                   break;
                 }
@@ -76548,18 +76581,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'east':
-            if (item.name % _this.cellsInRow === _this.cellsInRow - 1) {
+            if (index % _this.cellsInRow === _this.cellsInRow - 1 || _this.elements[index].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate East from here..');
             } else {
-              var _cell = _this.elements[item.name + 1];
+              var _cell = _this.elements[index + 1];
 
               while (_cell.value > 0) {
                 _cell.isRevealed = true;
 
-                if ((_cell.name + 1) % _this.cellsInRow === 0) {
+                if ((_cell + 1) % _this.cellsInRow === 0) {
                   break;
                 } else {
-                  _cell = _this.elements[_cell.name + 1];
+                  _cell = _this.elements[_cell + 1];
                 }
               }
             }
@@ -76567,16 +76600,16 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'south':
-            if (item.name + _this.cellsInRow > _this.cellsTotal) {
+            if (index + _this.cellsInRow > _this.cellsTotal || _this.elements[index].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate South from here..');
             } else {
-              var _cell2 = _this.elements[item.name + _this.cellsInRow];
+              var _cell2 = _this.elements[index + _this.cellsInRow];
 
               while (_cell2.value > 0) {
                 _cell2.isRevealed = true;
 
-                if (_cell2.name + _this.cellsInRow < _this.cellsTotal) {
-                  _cell2 = _this.elements[_cell2.name + _this.cellsInRow];
+                if (_cell2 + _this.cellsInRow < _this.cellsTotal) {
+                  _cell2 = _this.elements[_cell2 + _this.cellsInRow];
                 } else {
                   break;
                 }
@@ -76586,18 +76619,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'west':
-            if (item.name % _this.cellsInRow === 0) {
+            if (index % _this.cellsInRow === 0 || _this.elements[index].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate West from here..');
             } else {
-              var _cell3 = _this.elements[item.name - 1];
+              var _cell3 = _this.elements[index - 1];
 
               while (_cell3.value > 0) {
                 _cell3.isRevealed = true;
 
-                if ((_cell3.name - 1) % _this.cellsInRow === 0) {
+                if ((_cell3 - 1) % _this.cellsInRow === 0) {
                   break;
                 } else {
-                  _cell3 = _this.elements[_cell3.name - 1];
+                  _cell3 = _this.elements[_cell3 - 1];
                 }
               }
             }
@@ -76605,7 +76638,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'radius':
-            var _this$getNeighboringC3 = _this.getNeighboringCells(item.name),
+            var _this$getNeighboringC3 = _this.getNeighboringCells(index),
                 topLeft = _this$getNeighboringC3.topLeft,
                 top = _this$getNeighboringC3.top,
                 topRight = _this$getNeighboringC3.topRight,
@@ -76634,52 +76667,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         });
       };
 
-      _this.listen = function () {
-        var distance = _this.findShortestPath(_this.monsterSpace, _this.humanSpace);
-
-        _reactNative.Alert.alert('You listened.', "Opponent is " + distance + " cells away", [{
-          text: 'OK',
-          onPress: function onPress() {
-            return console.log('OK Pressed');
-          }
-        }], {
-          cancelable: false
-        });
-
-        _this.setState({
-          redraw: !_this.state.redraw
-        });
-      };
-
-      _this.sniff = function (cell1, cell2) {
-        var direction = '';
-
-        if (cell2 / _this.cellsInRow > cell1 / _this.cellsInRow) {
-          direction += 'S';
-        } else if (cell2 / _this.cellsInRow < cell1 / _this.cellsInRow) {
-          direction += 'N';
-        }
-
-        if (cell2 % _this.cellsInRow > cell1 % _this.cellsInRow) {
-          direction += 'E';
-        } else if (cell2 % _this.cellsInRow < cell1 % _this.cellsInRow) {
-          direction += 'W';
-        }
-
-        _reactNative.Alert.alert('You sniffed.', "Opponent is in " + direction + " direction from you.", [{
-          text: 'OK',
-          onPress: function onPress() {
-            return console.log('OK Pressed');
-          }
-        }], {
-          cancelable: false
-        });
-
-        _this.setState({
-          redraw: !_this.state.redraw
-        });
-      };
-
       _this.onItemSelected = function (item) {
         console.log('onItemSelected', item);
 
@@ -76702,44 +76689,491 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             break;
 
           case 'sniff':
-            var cell1 = void 0;
-            var cell2 = void 0;
-
-            if (_this.state.isHuman) {
-              cell1 = _this.humanSpace.name;
-              cell2 = _this.monsterSpace.name;
-            } else {
-              cell1 = _this.monsterSpace.name;
-              cell2 = _this.humanSpace.name;
-            }
-
-            _this.sniff(cell1, cell2);
+            _this.setState({
+              modal: 1
+            });
 
             break;
 
           case 'listen':
-            _this.listen();
+            _this.setState({
+              modal: 2
+            });
 
             break;
 
           case 'echo':
-            _this.echoLocate();
+            _this.setState({
+              modal: 4
+            });
 
             break;
 
           case 'pounce':
+            _this.setState({
+              modal: 3
+            });
+
             break;
 
           case 'home':
+            _this.setState({
+              modalLeft: 2
+            });
+
             break;
 
           case 'zoom':
+            _this.alterZoom();
+
             break;
 
           case 'exit':
+            _this.setState({
+              modalLeft: 1
+            });
+
             break;
 
           default:}
+      };
+
+      _this.alterZoom = function () {
+        if (_this.state.tileWidth === _this.zoomedInValue) {
+          _this.setState({
+            tileWidth: _this.zoomedOutValue,
+            boardFinished: false
+          });
+        } else {
+          _this.setState({
+            tileWidth: _this.zoomedInValue,
+            boardFinished: false
+          });
+        }
+      };
+
+      _this.renderModalContent = function () {
+        if (_this.state.modal === 1) {
+          var cell1 = void 0;
+          var cell2 = void 0;
+
+          if (_this.state.isHuman) {
+            cell1 = _this.humanSpace.name;
+            cell2 = _this.monsterSpace.name;
+          } else {
+            cell1 = _this.monsterSpace.name;
+            cell2 = _this.humanSpace.name;
+          }
+
+          var direction = '';
+
+          if (cell2 / _this.cellsInRow > cell1 / _this.cellsInRow) {
+            direction += 'S';
+          } else if (cell2 / _this.cellsInRow < cell1 / _this.cellsInRow) {
+            direction += 'N';
+          }
+
+          if (cell2 % _this.cellsInRow > cell1 % _this.cellsInRow) {
+            direction += 'E';
+          } else if (cell2 % _this.cellsInRow < cell1 % _this.cellsInRow) {
+            direction += 'W';
+          }
+
+          var text1 = 'You sniffed.';
+          var text2 = "Opponent is in " + direction + " direction from you.";
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              style: {
+                borderWidth: 2,
+                borderColor: "#000",
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 22,
+                backgroundColor: '#212121'
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1299
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1309
+                }
+              },
+              text1
+            ),
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1310
+                }
+              },
+              text2
+            ),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modal: 0
+                });
+              },
+              text: "OK",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1311
+              }
+            })
+          );
+        } else if (_this.state.modal === 2) {
+          var distance = _this.findShortestPath(_this.monsterSpace, _this.humanSpace);
+
+          var _text = 'You listened.';
+
+          var _text2 = "Opponent is " + distance + " cells away";
+
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              style: {
+                borderWidth: 2,
+                borderColor: "#000",
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 22,
+                backgroundColor: '#212121'
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1320
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1330
+                }
+              },
+              _text
+            ),
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1331
+                }
+              },
+              _text2
+            ),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modal: 0
+                });
+              },
+              text: "OK",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1332
+              }
+            })
+          );
+        } else if (_this.state.modal === 3) {
+          var _text3 = void 0;
+
+          var _text4 = void 0;
+
+          if (_this.monsterSpace.hasHuman) {
+            _text3 = 'You pounced.';
+            _text4 = 'And attacked your opponent.';
+          } else if (_this.monsterSpace.hasCache) {
+            _text3 = 'You pounced.';
+            _text4 = 'And found cache.';
+          } else {
+            _text3 = 'You pounced.';
+            _text4 = 'There is nothing here.';
+          }
+
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              style: {
+                borderWidth: 2,
+                borderColor: "#000",
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 22,
+                backgroundColor: '#212121'
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1350
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1360
+                }
+              },
+              _text3
+            ),
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1361
+                }
+              },
+              _text4
+            ),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modal: 0
+                });
+              },
+              text: "OK",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1362
+              }
+            })
+          );
+        } else if (_this.state.modal === 4) {
+          var _text5 = 'Choose echo direction:';
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              style: {
+                borderWidth: 2,
+                borderColor: "#000",
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 22,
+                backgroundColor: '#212121'
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1369
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1379
+                }
+              },
+              _text5
+            ),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modal: 0
+                });
+              },
+              text: "North",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1380
+              }
+            }),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modal: 0
+                });
+              },
+              text: "South",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1381
+              }
+            }),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modal: 0
+                });
+              },
+              text: "East",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1382
+              }
+            }),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modal: 0
+                });
+              },
+              text: "West",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1383
+              }
+            }),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                _this.echoLocate('radius');
+
+                _this.setState({
+                  modal: 0
+                });
+              },
+              text: "Burst",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1384
+              }
+            })
+          );
+        } else if (_this.state.modalLeft === 1) {
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              style: {
+                borderWidth: 2,
+                borderColor: "#000",
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 22,
+                backgroundColor: '#212121'
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1390
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1400
+                }
+              },
+              "Are you sure you want to exit?"
+            ),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _reactNative.BackAndroid.exitApp();
+              },
+              text: "Yes",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1401
+              }
+            }),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modalLeft: 0
+                });
+              },
+              text: "No",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1402
+              }
+            })
+          );
+        } else if (_this.state.modalLeft === 2) {
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              style: {
+                borderWidth: 2,
+                borderColor: "#000",
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 22,
+                backgroundColor: '#212121'
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1409
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: '#fff'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1419
+                }
+              },
+              "Are you sure you want to exit?"
+            ),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                _this.setState({
+                  modalLeft: 0
+                });
+
+                _this.props.navigation.navigate('Home');
+              },
+              text: "Yes",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1420
+              }
+            }),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setState({
+                  modalLeft: 0
+                });
+              },
+              text: "No",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1421
+              }
+            })
+          );
+        }
       };
 
       _this.showMonsterMoves = function () {
@@ -76766,14 +77200,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             playerSpace: item
           });
 
-          _this.resetGrid();
+          _this.resetHighlighted();
         } else {
           _reactNative.Alert.alert('Uh-Oh', 'Please select a highlighted space');
         }
-
-        _this.setState({
-          redraw: !_this.state.redraw
-        });
       };
 
       _this.showHumanMoves = function () {
@@ -76897,7 +77327,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1377
+              lineNumber: 1558
             }
           },
           _react3.default.createElement(
@@ -76905,7 +77335,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1378
+                lineNumber: 1559
               }
             },
             "Game screen"
@@ -76919,7 +77349,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1380
+                lineNumber: 1561
               }
             },
             _react3.default.createElement(
@@ -76935,7 +77365,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1381
+                  lineNumber: 1562
                 }
               },
               _react3.default.createElement(
@@ -76946,7 +77376,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1390
+                    lineNumber: 1571
                   }
                 },
                 "+"
@@ -76962,7 +77392,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1395
+                lineNumber: 1576
               }
             },
             _react3.default.createElement(
@@ -76978,7 +77408,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1396
+                  lineNumber: 1577
                 }
               },
               _react3.default.createElement(
@@ -76989,7 +77419,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1404
+                    lineNumber: 1585
                   }
                 },
                 "-"
@@ -76999,115 +77429,257 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         );
       };
 
-      _this.renderFooter = function () {
-        return _react3.default.createElement(
-          _reactNative.View,
-          {
-            style: {
-              marginBottom: 20,
-              marginTop: 0,
-              flex: 1,
-              flexDirection: 'row'
-            },
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1414
-            }
-          },
-          _react3.default.createElement(_Button.NavButton, {
-            onPress: _this.handleChangePlayer,
-            text: "human? " + _this.state.isHuman,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1415
-            }
-          }),
-          _react3.default.createElement(
-            _reactNative.Picker,
-            {
-              selectedValue: _this.state.echoDirection,
-              style: {
-                height: 50,
-                width: 100
-              },
-              onValueChange: function onValueChange(itemValue, itemIndex) {
-                return _this.setState({
-                  echoDirection: itemValue
-                });
-              },
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1416
-              }
-            },
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "radius",
-              value: "radius",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1421
-              }
-            }),
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "north",
-              value: "north",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1422
-              }
-            }),
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "east",
-              value: "east",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1423
-              }
-            }),
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "south",
-              value: "south",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1424
-              }
-            }),
-            _react3.default.createElement(_reactNative.Picker.Item, {
-              label: "west",
-              value: "west",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1425
-              }
-            })
-          ),
-          _react3.default.createElement(_Button.NavButton, {
-            onPress: _this.echoLocate,
-            text: "echo-locate",
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1427
-            }
-          }),
-          _react3.default.createElement(_Button.NavButton, {
-            onPress: _this.showHumanMoves,
-            text: "move human",
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1428
-            }
-          }),
-          _react3.default.createElement(_Button.NavButton, {
-            onPress: _this.handlePressNavButton,
-            text: "go to home screen",
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 1429
-            }
-          })
-        );
+      _this.callback = function () {
+        return _this.setState({
+          boardFinished: true
+        });
       };
 
+      _this.renderAnimator = function () {
+        if (!_this.state.boardFinished) {
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              style: {
+                backgroundColor: '#000',
+                flex: 1
+              },
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1628
+              }
+            },
+            _react3.default.createElement(_EchoScreen2.default, {
+              callback: _this.callback,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1629
+              }
+            })
+          );
+        }
+      };
+
+      _this.renderEngine1 = function () {
+        var menuRight = _react3.default.createElement(_Menu2.default, {
+          mode: _this.state.isHuman ? 1 : 2,
+          onItemSelected: _this.onItemSelected,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 1636
+          }
+        });
+
+        var menuLeft = _react3.default.createElement(_Menu2.default, {
+          mode: 0,
+          onItemSelected: _this.onItemSelected,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 1637
+          }
+        });
+
+        if (_this.state.boardFinished) {
+          return _react3.default.createElement(
+            _reactNativeSideMenu2.default,
+            {
+              menu: menuRight,
+              menuPosition: "right",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1640
+              }
+            },
+            _react3.default.createElement(
+              _reactNativeSideMenu2.default,
+              {
+                menu: menuLeft,
+                menuPosition: "left",
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1644
+                }
+              },
+              _react3.default.createElement(_Engine2.default, {
+                gameBoard: _this.elements,
+                tilesInRow: _this.cellsInRow,
+                boardFinished: _this.state.boardFinished,
+                isHuman: _this.state.isHuman,
+                playerSpace: _this.state.playerSpace,
+                move: _this.state.isHuman ? _this.moveHuman : _this.moveMonster,
+                echolocate: _this.echoLocate,
+                tileWidth: _this.state.tileWidth,
+                zoomedInValue: _this.zoomedInValue,
+                zoomedOutValue: _this.zoomedOutValue,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1648
+                }
+              }),
+              _react3.default.createElement(
+                _reactNativeModal2.default,
+                {
+                  isVisible: _this.state.modal != 0,
+                  onBackdropPress: function onBackdropPress() {
+                    return _this.setState({
+                      modal: 0
+                    });
+                  },
+                  animationIn: "slideInLeft",
+                  animationOut: "slideOutRight",
+                  onSwipe: function onSwipe() {
+                    return _this.setState({
+                      modal: 0
+                    });
+                  },
+                  swipeDirection: "right",
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 1660
+                  }
+                },
+                _this.renderModalContent()
+              ),
+              _react3.default.createElement(
+                _reactNativeModal2.default,
+                {
+                  isVisible: _this.state.modalLeft != 0,
+                  onBackdropPress: function onBackdropPress() {
+                    return _this.setState({
+                      modalLeft: 0
+                    });
+                  },
+                  animationIn: "slideInRight",
+                  animationOut: "slideOutLeft",
+                  onSwipe: function onSwipe() {
+                    return _this.setState({
+                      modalLeft: 0
+                    });
+                  },
+                  swipeDirection: "right",
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 1671
+                  }
+                },
+                _this.renderModalContent()
+              )
+            )
+          );
+        }
+      };
+
+      _this.renderEngine2 = function () {
+        var menuRight = _react3.default.createElement(_Menu2.default, {
+          mode: _this.state.isHuman ? 1 : 2,
+          onItemSelected: _this.onItemSelected,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 1688
+          }
+        });
+
+        var menuLeft = _react3.default.createElement(_Menu2.default, {
+          mode: 0,
+          onItemSelected: _this.onItemSelected,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 1689
+          }
+        });
+
+        if (!_this.state.boardFinished) {
+          return _react3.default.createElement(
+            _reactNativeSideMenu2.default,
+            {
+              menu: menuRight,
+              menuPosition: "right",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 1692
+              }
+            },
+            _react3.default.createElement(
+              _reactNativeSideMenu2.default,
+              {
+                menu: menuLeft,
+                menuPosition: "left",
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1696
+                }
+              },
+              _react3.default.createElement(_Engine2.default, {
+                gameBoard: _this.elements,
+                tilesInRow: _this.cellsInRow,
+                boardFinished: _this.state.boardFinished,
+                isHuman: _this.state.isHuman,
+                playerSpace: _this.state.playerSpace,
+                move: _this.state.isHuman ? _this.moveHuman : _this.moveMonster,
+                echolocate: _this.echoLocate,
+                tileWidth: _this.state.tileWidth,
+                zoomedInValue: _this.zoomedInValue,
+                zoomedOutValue: _this.zoomedOutValue,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 1700
+                }
+              }),
+              _react3.default.createElement(
+                _reactNativeModal2.default,
+                {
+                  isVisible: _this.state.modal != 0,
+                  onBackdropPress: function onBackdropPress() {
+                    return _this.setState({
+                      modal: 0
+                    });
+                  },
+                  animationIn: "slideInLeft",
+                  animationOut: "slideOutRight",
+                  onSwipe: function onSwipe() {
+                    return _this.setState({
+                      modal: 0
+                    });
+                  },
+                  swipeDirection: "right",
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 1713
+                  }
+                },
+                _this.renderModalContent()
+              ),
+              _react3.default.createElement(
+                _reactNativeModal2.default,
+                {
+                  isVisible: _this.state.modalLeft != 0,
+                  onBackdropPress: function onBackdropPress() {
+                    return _this.setState({
+                      modalLeft: 0
+                    });
+                  },
+                  animationIn: "slideInRight",
+                  animationOut: "slideOutLeft",
+                  onSwipe: function onSwipe() {
+                    return _this.setState({
+                      modalLeft: 0
+                    });
+                  },
+                  swipeDirection: "right",
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 1724
+                  }
+                },
+                _this.renderModalContent()
+              )
+            )
+          );
+        }
+      };
+
+      _this.assignCacheCounter = 0;
+      _this.assignMonsterCounter = 0;
       _this.scale = 0;
       _this.elements = [];
       _this.start = null;
@@ -77118,7 +77690,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.cacheTotal = 13;
       _this.cellsInRow = 40;
       _this.cellsTotal = 1600;
-      _this.cellsPerScreen = 6;
+      _this.cellsPerScreen = 20;
       _this.scrollOffset = Math.floor(_this.cellsPerScreen / 2);
 
       var _Dimensions$get = _reactNative.Dimensions.get("window"),
@@ -77127,19 +77699,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       _this.viewPortWidth = width;
       _this.viewPortHeight = height;
-      _this.zoomedInValue = Math.ceil(_this.viewPortWidth / _this.cellsPerScreen);
-      _this.zoomedOutValue = Math.ceil(_this.viewPortWidth / _this.cellsInRow);
+      _this.zoomedInValue = Math.ceil(_this.viewPortHeight / _this.cellsPerScreen);
+      _this.zoomedOutValue = Math.ceil(_this.viewPortHeight / _this.cellsInRow);
       _this.fullGameDimension = _this.zoomedInValue * _this.cellsInRow;
       _this.zoom = 'close';
       _this.allowedLengthOfWhiteLine = 14;
       _this.state = {
         redraw: false,
         isHuman: true,
-        echoDirection: 'radius',
+        tileWidth: _this.zoomedOutValue,
         playerSpace: {
           name: 0
         },
-        boardFinished: false
+        boardFinished: false,
+        modal: 0,
+        modalLeft: 0
       };
       return _this;
     }
@@ -77154,9 +77728,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         this.assignCacheLocations();
         this.assignImageKeys();
       }
-    }, {
-      key: "componentDidMount",
-      value: function componentDidMount() {}
     }, {
       key: "findShortestPath",
       value: function findShortestPath(start, end) {
@@ -77178,8 +77749,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
           var neighbors = cell.monsterEdges;
 
-          for (var _i17 = 0; _i17 < neighbors.length; _i17++) {
-            var neighbor = neighbors[_i17];
+          for (var _i18 = 0; _i18 < neighbors.length; _i18++) {
+            var neighbor = neighbors[_i18];
 
             if (!visited.includes(neighbor)) {
               neighbor.parent = cell;
@@ -77209,58 +77780,20 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       key: "render",
       value: function render() {
         var finished = this.state.boardFinished;
-
-        var menuRight = _react3.default.createElement(_Menu2.default, {
-          mode: this.state.isHuman ? 1 : 2,
-          onItemSelected: this.onItemSelected,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 1440
-          }
-        });
-
-        var menuLeft = _react3.default.createElement(_Menu2.default, {
-          mode: 0,
-          onItemSelected: this.onItemSelected,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 1441
-          }
-        });
-
         return _react3.default.createElement(
-          _reactNativeSideMenu2.default,
+          _reactNative.View,
           {
-            menu: menuRight,
-            menuPosition: "right",
+            style: {
+              flex: 1
+            },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1443
+              lineNumber: 1752
             }
           },
-          _react3.default.createElement(
-            _reactNativeSideMenu2.default,
-            {
-              menu: menuLeft,
-              menuPosition: "left",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1447
-              }
-            },
-            _react3.default.createElement(_Engine2.default, {
-              gameBoard: this.elements,
-              tilesInRow: this.cellsInRow,
-              boardFinished: this.state.boardFinished,
-              isHuman: this.state.isHuman,
-              playerSpace: this.state.playerSpace,
-              move: this.state.isHuman ? this.moveHuman : this.moveMonster,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 1451
-              }
-            })
-          )
+          this.renderEngine1(),
+          this.renderEngine2(),
+          this.renderAnimator()
         );
       }
     }]);
@@ -77271,7 +77804,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Game;
-},598,[118,179,129,12,586,589,599,607,608,609,666,667],"app\\screens\\Game.js");
+},598,[118,179,129,12,586,589,599,607,608,609,666,702,667,669],"app\\screens\\Game.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -78641,6 +79174,26 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Engine.__proto__ || Object.getPrototypeOf(Engine)).call(this, props));
 
+      _this.getBeginningX = function () {
+        if (_this.cameraX < 0) {
+          return 0;
+        } else if (_this.cameraX > _this.xOffsetMax) {
+          return -_this.xOffsetMax;
+        } else {
+          return -_this.cameraX;
+        }
+      };
+
+      _this.getBeginningY = function () {
+        if (_this.cameraY < 0) {
+          return 0;
+        } else if (_this.cameraY > _this.yOffsetMax) {
+          return -_this.yOffsetMax;
+        } else {
+          return -_this.cameraY;
+        }
+      };
+
       _this.getRangesFromTile = function (tile) {
         var size = tile.size,
             top = tile.top,
@@ -78657,10 +79210,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (_this.state.showHighlighted) {
           return _react3.default.createElement(_native.TileMap, {
             src: _require(_dependencyMap[6], "../data/images/Magenta-square_100px.gif"),
-            tileSize: _this.tileWidth,
+            tileSize: _this.props.tileWidth,
             columns: 40,
             rows: 40,
-            sourceWidth: _this.tileWidth,
+            sourceWidth: _this.props.tileWidth,
             layers: [_this.state.highlightedTileMap],
             renderTile: function renderTile(tile, src, styles) {
               _this.highlightedTileRanges.push(_this.getRangesFromTile(tile));
@@ -78671,25 +79224,25 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   style: [styles],
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 181
+                    lineNumber: 231
                   }
                 },
                 _react3.default.createElement(_reactNative.Image, {
                   resizeMode: "stretch",
                   style: [styles, {
-                    opacity: 0.25
+                    opacity: 0.1
                   }],
                   source: src,
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 182
+                    lineNumber: 232
                   }
                 })
               );
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 171
+              lineNumber: 221
             }
           });
         } else {
@@ -78697,11 +79250,36 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         }
       };
 
+      _this.getSpriteStyle = function () {
+        if (_this.props.tileWidth === _this.props.zoomedInValue) {
+          return {
+            top: _this.state.playerY - _this.props.tileWidth * 4,
+            left: _this.state.playerX - _this.props.tileWidth * 2
+          };
+        } else if (_this.props.tileWidth === _this.props.zoomedOutValue) {
+          return {
+            top: _this.state.playerY - _this.props.tileWidth * 6.3,
+            left: _this.state.playerX - _this.props.tileWidth * 4.3
+          };
+        }
+      };
+
+      _this.handlePlayStateChanged = function (state) {
+        _this.setState({
+          spritePlaying: state ? true : false
+        });
+      };
+
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = Math.ceil(_this.screenDimensions.height / _this.props.tilesInRow);
-      _this.gameBoardWidth = _this.tileWidth * 40;
-      _this.playerX = props.playerSpace.name % 40 * _this.tileWidth;
-      _this.playerY = Math.floor(props.playerSpace.name / 40) * _this.tileWidth;
+      _this.gameBoardWidth = _this.props.tileWidth * 40;
+      _this.xOffsetMax = _this.gameBoardWidth - _this.screenDimensions.width;
+      _this.yOffsetMax = _this.gameBoardWidth - _this.screenDimensions.height;
+      _this.playerX = _this.props.playerSpace.name % 40 * _this.props.tileWidth;
+      _this.playerY = Math.floor(_this.props.playerSpace.name / 40) * _this.props.tileWidth;
+      _this.cameraX = _this.playerX - _this.screenDimensions.width / 2;
+      _this.cameraY = _this.playerY - _this.screenDimensions.height / 2;
+      _this.beginningX = _this.getBeginningX();
+      _this.beginningY = _this.getBeginningY();
       _this.highlightedTileRanges = [];
       _this.state = {
         playerSpace: _this.props.playerSpace,
@@ -78713,8 +79291,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         offsetLeft: 0,
         initialTop: 0,
         initialLeft: 0,
-        top: 0,
-        left: 0,
+        top: _this.beginningY,
+        left: _this.beginningX,
         highlightedTileMap: _this.props.gameBoard.map(function (x) {
           return x.isHighlighted ? 1 : 0;
         }),
@@ -78722,7 +79300,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         fogMap: _this.props.gameBoard.map(function (a) {
           return a.isRevealed ? 0 : 1;
         }),
-        finishedUpdatingFogMap: true
+        spritePlaying: true,
+        spriteScale: _this.props.tileWidth / _this.props.zoomedInValue
       };
       return _this;
     }
@@ -78743,26 +79322,25 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onPanResponderMove: function onPanResponderMove(evt, gestureState) {
             var touches = evt.nativeEvent.touches;
 
-            if (touches.length === 2 && !_this2.state.isZooming) {
+            if (touches.length === 2 && Math.abs(touches[0].pageX - touches[1].pageX) > 5) {
               _this2.processPan(touches[0].pageX, touches[0].pageY);
-            }
-
-            if (_this2.state.showHighlighted && touches.length === 1) {
+            } else if (_this2.state.showHighlighted && touches.length === 1) {
               _this2.processMove(touches[0].pageX, touches[0].pageY);
             }
           },
           onPanResponderRelease: function onPanResponderRelease() {
             _this2.setState({
-              isZooming: false,
               isMoving: false
             });
           }
         });
       }
     }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate() {}
+    }, {
       key: "UNSAFE_componentWillReceiveProps",
       value: function UNSAFE_componentWillReceiveProps(nextProps) {
-        console.log('received props');
         var newHighlightedTileMap = nextProps.gameBoard.map(function (x) {
           return x.isHighlighted ? 1 : 0;
         });
@@ -78772,8 +79350,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         if (this.props.playerSpace !== nextProps.playerSpace) {
           this.setState({
-            playerX: nextProps.playerSpace.name % 40 * this.tileWidth,
-            playerY: Math.floor(nextProps.playerSpace.name / 40) * this.tileWidth
+            playerSpace: nextProps.playerSpace,
+            playerX: nextProps.playerSpace.name % 40 * this.props.tileWidth,
+            playerY: Math.floor(nextProps.playerSpace.name / 40) * this.props.tileWidth
           });
         }
 
@@ -78836,10 +79415,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     }, {
       key: "getTileFromXY",
       value: function getTileFromXY(x, y) {
-        y = Math.floor(y / this.tileWidth);
-        x = Math.floor(x / this.tileWidth);
+        y = Math.floor(y / this.props.tileWidth);
+        x = Math.floor(x / this.props.tileWidth);
         var index = y * 40 + x;
-        console.log(this.state.playerSpace.name, index);
         return this.props.gameBoard[index];
       }
     }, {
@@ -78848,12 +79426,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         return _react3.default.createElement(
           _native.Loop,
           {
-            style: {
-              backgroundColor: "#212121"
-            },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 200
+              lineNumber: 251
             }
           },
           _react3.default.createElement(
@@ -78862,53 +79437,71 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               height: this.screenDimensions.height,
               width: this.screenDimensions.width,
               style: {
-                backgroundColor: "#515151"
+                backgroundColor: "#000"
               },
-              removeClippedSubviews: true,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 201
+                lineNumber: 252
               }
             },
             _react3.default.createElement(
               _reactNative.View,
               _extends({
                 style: {
-                  position: 'absolute',
-                  left: this.state.left,
-                  top: this.state.top,
-                  overflow: 'hidden'
+                  width: this.screenDimensions.width,
+                  height: this.screenDimensions.height,
+                  zIndex: 1
                 }
               }, this._panResponder.panHandlers, {
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 207
+                  lineNumber: 257
                 }
               }),
-              _react3.default.createElement(_Board2.default, {
-                gameBoard: this.props.gameBoard,
-                isHuman: this.props.isHuman,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 208
-                }
-              }),
-              _react3.default.createElement(_reactNative.Image, {
-                style: {
-                  position: 'absolute',
-                  top: this.state.playerY - this.tileWidth,
-                  left: this.state.playerX,
-                  height: this.tileWidth * 2,
-                  width: this.tileWidth,
-                  resizeMode: 'contain'
+              _react3.default.createElement(
+                _reactNative.View,
+                {
+                  style: {
+                    position: 'absolute',
+                    left: this.state.left,
+                    top: this.state.top,
+                    width: this.gameBoardWidth,
+                    height: this.gameBoardWidth
+                  },
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 258
+                  }
                 },
-                source: _require(_dependencyMap[7], "../data/images/human.png"),
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 212
-                }
-              }),
-              this.renderHighlighted()
+                _react3.default.createElement(_Board2.default, {
+                  gameBoard: this.props.gameBoard,
+                  isHuman: this.props.isHuman,
+                  boardFinished: this.props.boardFinished,
+                  tileWidth: this.props.tileWidth,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 259
+                  }
+                }),
+                this.renderHighlighted(),
+                _react3.default.createElement(_native.Sprite, {
+                  offset: [0, 0],
+                  repeat: true,
+                  scale: this.state.spriteScale,
+                  src: _require(_dependencyMap[7], "../data/images/monsterIdle_long.png"),
+                  steps: [15],
+                  state: 0,
+                  onPlayStateChanged: this.handlePlayStateChanged,
+                  tileHeight: 200,
+                  ticksPerFrame: 15,
+                  tileWidth: 200,
+                  style: this.getSpriteStyle(),
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 268
+                  }
+                })
+              )
             )
           )
         );
@@ -78922,7 +79515,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     boardFinished: _propTypes2.default.bool,
     playerSpace: _propTypes2.default.object,
     isHuman: _propTypes2.default.bool,
-    move: _propTypes2.default.func
+    move: _propTypes2.default.func,
+    tileWidth: _propTypes2.default.number
   }, _temp));
 
   exports.default = Engine;
@@ -86704,17 +87298,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
 
-      _this.getCacheMapArray = function (cell) {
-        if (cell.hasCache) {
-          return 1;
-        } else {
-          return 0;
-        }
+      _this.getIndexFromTile = function (tile) {
+        var size = tile.size;
+        var x = tile.left / size;
+        var y = tile.top / size;
+        var index = y * 40 + x;
+        return index;
       };
 
-      _this.fixImageStyle = function (index) {
+      _this.fixImageStyle = function (index, tile) {
         return {
-          left: (index - 1) * _this.tileWidth,
+          left: (index - 1) * _this.props.tileWidth,
           overflow: 'hidden'
         };
       };
@@ -86728,7 +87322,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[5], "../data/images/wall-t-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 76
+                lineNumber: 64
               }
             });
 
@@ -86739,7 +87333,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[6], "../data/images/wall-t-n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 79
+                lineNumber: 67
               }
             });
 
@@ -86750,7 +87344,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[7], "../data/images/wall-t-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 82
+                lineNumber: 70
               }
             });
 
@@ -86761,7 +87355,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[8], "../data/images/wall-t-w.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 85
+                lineNumber: 73
               }
             });
 
@@ -86772,7 +87366,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[9], "../data/images/wall-t-e.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 88
+                lineNumber: 76
               }
             });
 
@@ -86783,7 +87377,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[10], "../data/images/wall-t-sw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 91
+                lineNumber: 79
               }
             });
 
@@ -86794,7 +87388,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[11], "../data/images/wall-t-s.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 94
+                lineNumber: 82
               }
             });
 
@@ -86805,7 +87399,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[12], "../data/images/wall-t-se.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 97
+                lineNumber: 85
               }
             });
 
@@ -86816,7 +87410,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[13], "../data/images/wall-t-c.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 101
+                lineNumber: 89
               }
             });
 
@@ -86827,7 +87421,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[14], "../data/images/wall-f-nw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 104
+                lineNumber: 92
               }
             });
 
@@ -86838,7 +87432,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[15], "../data/images/wall-f-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 107
+                lineNumber: 95
               }
             });
 
@@ -86849,7 +87443,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[16], "../data/images/wall-f-ne-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 110
+                lineNumber: 98
               }
             });
 
@@ -86860,7 +87454,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[17], "../data/images/wall-f-sw-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 113
+                lineNumber: 101
               }
             });
 
@@ -86871,7 +87465,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[18], "../data/images/wall-f-s-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 116
+                lineNumber: 104
               }
             });
 
@@ -86882,7 +87476,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[19], "../data/images/wall-f-se-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 119
+                lineNumber: 107
               }
             });
 
@@ -86893,7 +87487,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[20], "../data/images/wall-f-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 122
+                lineNumber: 110
               }
             });
 
@@ -86904,7 +87498,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[21], "../data/images/floor-nw.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 125
+                lineNumber: 113
               }
             });
 
@@ -86915,7 +87509,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[22], "../data/images/floor-n-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 128
+                lineNumber: 116
               }
             });
 
@@ -86926,7 +87520,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[23], "../data/images/floor-ne.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 131
+                lineNumber: 119
               }
             });
 
@@ -86937,7 +87531,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[24], "../data/images/floor-w-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 134
+                lineNumber: 122
               }
             });
 
@@ -86948,7 +87542,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[25], "../data/images/floor-e-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 137
+                lineNumber: 125
               }
             });
 
@@ -86959,7 +87553,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[26], "../data/images/floor-c-1.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 140
+                lineNumber: 128
               }
             });
 
@@ -86970,7 +87564,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[27], "../data/images/wall-t-n-s.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 143
+                lineNumber: 131
               }
             });
 
@@ -86981,7 +87575,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[28], "../data/images/wall-t-e-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 146
+                lineNumber: 134
               }
             });
 
@@ -86992,7 +87586,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[29], "../data/images/wall-t-n-s-e.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 149
+                lineNumber: 137
               }
             });
 
@@ -87003,7 +87597,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[30], "../data/images/wall-t-n-s-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 152
+                lineNumber: 140
               }
             });
 
@@ -87014,7 +87608,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[31], "../data/images/wall-t-n-e-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 155
+                lineNumber: 143
               }
             });
 
@@ -87025,7 +87619,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[32], "../data/images/wall-t-e-s-w.png"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 158
+                lineNumber: 146
               }
             });
 
@@ -87036,7 +87630,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[33], "../data/images/floor-n-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 161
+                lineNumber: 149
               }
             });
 
@@ -87047,7 +87641,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[34], "../data/images/floor-n-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 164
+                lineNumber: 152
               }
             });
 
@@ -87058,7 +87652,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[35], "../data/images/floor-w-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 167
+                lineNumber: 155
               }
             });
 
@@ -87069,7 +87663,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[36], "../data/images/floor-e-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 170
+                lineNumber: 158
               }
             });
 
@@ -87080,7 +87674,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[37], "../data/images/floor-c-5.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 173
+                lineNumber: 161
               }
             });
 
@@ -87091,7 +87685,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[38], "../data/images/floor-c-6.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 176
+                lineNumber: 164
               }
             });
 
@@ -87102,7 +87696,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[39], "../data/images/floor-c-7.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 179
+                lineNumber: 167
               }
             });
 
@@ -87113,7 +87707,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[40], "../data/images/floor-c-2.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 182
+                lineNumber: 170
               }
             });
 
@@ -87124,7 +87718,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[41], "../data/images/floor-c-3.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 185
+                lineNumber: 173
               }
             });
 
@@ -87135,7 +87729,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[42], "../data/images/floor-c-4.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 188
+                lineNumber: 176
               }
             });
 
@@ -87146,7 +87740,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[43], "../data/images/floor-c-8.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 191
+                lineNumber: 179
               }
             });
 
@@ -87157,7 +87751,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[44], "../data/images/floor-c-9.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 194
+                lineNumber: 182
               }
             });
 
@@ -87168,7 +87762,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[45], "../data/images/floor-e2n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 197
+                lineNumber: 185
               }
             });
 
@@ -87179,7 +87773,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               source: _require(_dependencyMap[46], "../data/images/floor-w2n.gif"),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 200
+                lineNumber: 188
               }
             });
 
@@ -87191,19 +87785,28 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       _this.renderFogMap1 = function () {
         if (_this.state.finishedUpdatingFogMap) {
-          return _react3.default.createElement(_native.TileMap, {
-            src: _require(_dependencyMap[47], "../data/images/Black_square.jpeg"),
-            tileSize: _this.tileWidth,
-            columns: 40,
-            rows: 40,
-            sourceWidth: _this.tileWidth,
-            layers: [_this.state.tileMap],
-            renderTile: _this.renderTile,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 210
-            }
-          });
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 199
+              }
+            },
+            _react3.default.createElement(_native.TileMap, {
+              src: _require(_dependencyMap[47], "../data/images/Black_square.jpeg"),
+              tileSize: _this.props.tileWidth,
+              columns: 40,
+              rows: 40,
+              sourceWidth: _this.props.tileWidth,
+              layers: [_this.state.tileMap],
+              renderTile: _this.renderTile,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 200
+              }
+            })
+          );
         }
       };
 
@@ -87211,26 +87814,26 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         if (!_this.state.finishedUpdatingFogMap) {
           return _react3.default.createElement(_native.TileMap, {
             src: _require(_dependencyMap[47], "../data/images/Black_square.jpeg"),
-            tileSize: _this.tileWidth,
+            tileSize: _this.props.tileWidth,
             columns: 40,
             rows: 40,
-            sourceWidth: _this.tileWidth,
+            sourceWidth: _this.props.tileWidth,
             layers: [_this.state.tileMap],
             renderTile: _this.renderTile,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 226
+              lineNumber: 218
             }
           });
         }
       };
 
+      _this.counter = 0;
       _this.screenDimensions = _reactNative.Dimensions.get("window");
-      _this.tileWidth = Math.ceil(_this.screenDimensions.height / 40);
-      _this.sourceWidth = _this.tileWidth;
-      _this.gameBoardWidth = _this.tileWidth * 40;
+      _this.sourceWidth = _this.props.tileWidth;
+      _this.gameBoardWidth = _this.props.tileWidth * 40;
       _this.tileMapArray = _this.props.gameBoard.map(function (a) {
-        return _this.props.isHuman ? a.isRevealed ? a.imageKey : 9 : a.imageKey;
+        return _this.props.isHuman ? a.isRevealed ? a.imageKey : 0 : a.imageKey;
       });
       _this.tileCashMapArray = _this.props.gameBoard.map(function (x) {
         return x.hasCache && _this.props.isHuman ? 1 : 0;
@@ -87238,48 +87841,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this.tileHighlightedMapArray = _this.props.gameBoard.map(function (x) {
         return x.isHighlighted ? 1 : 0;
       });
-      _this.tileHumanMapArray = _this.props.gameBoard.map(function (x) {
-        return x.hasHuman ? 1 : 0;
-      });
-      _this.tileMonsterMapArray = _this.props.gameBoard.map(function (x) {
-        return x.hasMonster ? 1 : 0;
-      });
       _this.state = {
-        isZooming: false,
-        isMoving: false,
-        initialX: null,
-        offsetLeft: 0,
-        initialTop: 0,
-        initialLeft: 0,
-        top: 0,
-        left: 0,
-        tileSize: 100,
-        finishedUpdatingFogMap: true,
+        finishedUpdatingFogMap: _this.props.boardFinished,
         tileMap: _this.tileMapArray
       };
       return _this;
     }
 
     _createClass(Board, [{
-      key: "UNSAFE_componentWillReceiveProps",
-      value: function UNSAFE_componentWillReceiveProps(nextProps) {
-        var _this2 = this;
-
-        var newFogMap = nextProps.gameBoard.map(function (a) {
-          return _this2.props.isHuman ? a.isRevealed ? a.imageKey : 9 : a.imageKey;
-        });
-
-        if (JSON.stringify(this.state.tileMap) !== JSON.stringify(newFogMap)) {
-          this.setState({
-            finishedUpdatingFogMap: !this.state.finishedUpdatingFogMap,
-            tileMap: newFogMap
-          });
-        }
-      }
-    }, {
       key: "render",
       value: function render() {
-        var _this3 = this;
+        var _this2 = this;
 
         return _react3.default.createElement(
           _reactNative.View,
@@ -87289,36 +87861,36 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 244
+              lineNumber: 237
             }
           },
           this.renderFogMap1(),
           this.renderFogMap2(),
           _react3.default.createElement(_native.TileMap, {
             src: _require(_dependencyMap[48], "../data/images/shrine.png"),
-            tileSize: this.tileWidth,
+            tileSize: this.props.tileWidth,
             columns: 40,
             rows: 40,
-            sourceWidth: this.tileWidth,
+            sourceWidth: this.props.tileWidth,
             layers: [this.tileCashMapArray],
             renderTile: function renderTile(tile, src, styles) {
               return _react3.default.createElement(_reactNative.Image, {
                 resizeMode: "stretch",
                 style: [styles, {
-                  height: _this3.tileWidth * 2,
-                  top: -_this3.tileWidth,
+                  height: _this2.props.tileWidth * 2,
+                  top: -_this2.props.tileWidth,
                   overflow: 'hidden'
                 }],
                 source: src,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 264
+                  lineNumber: 257
                 }
               });
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 256
+              lineNumber: 249
             }
           })
         );
@@ -87330,7 +87902,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     scale: _propTypes2.default.number,
     loop: _propTypes2.default.object
   }, _class.propTypes = {
-    gameBoard: _propTypes2.default.array
+    gameBoard: _propTypes2.default.array,
+    tileWidth: _propTypes2.default.number
   }, _temp));
 
   exports.default = Board;
@@ -87855,10 +88428,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
     "httpServerLocation": "/assets/app/data/images",
-    "width": 500,
-    "height": 1000,
+    "width": 73,
+    "height": 159,
     "scales": [1],
-    "hash": "f3e40940d334891337330acabdfecb38",
+    "hash": "bddf31f53ae663c0b83c96d2a217d8a7",
     "name": "shrine",
     "type": "png"
   });
@@ -87876,17 +88449,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   });
 },664,[164],"app\\data\\images\\Magenta-square_100px.gif");
 __d(function (global, _require, module, exports, _dependencyMap) {
-	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-		"__packager_asset": true,
-		"httpServerLocation": "/assets/app/data/images",
-		"width": 200,
-		"height": 400,
-		"scales": [1],
-		"hash": "19c94f817b935a1c6c0039f26e9d18e0",
-		"name": "human",
-		"type": "png"
-	});
-},665,[164],"app\\data\\images\\human.png");
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/app/data/images",
+    "width": 3200,
+    "height": 200,
+    "scales": [1],
+    "hash": "25eb48ad9e46160b024493c52b07ef21",
+    "name": "monsterIdle_long",
+    "type": "png"
+  });
+},665,[164],"app\\data\\images\\monsterIdle_long.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88172,6 +88745,170 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.default = Menu;
 },666,[118,179,129,12,586,589,592,595],"app\\screens\\Menu.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react2 = _require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = _require(_dependencyMap[1], "./../../node_modules/react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _class,
+      _temp,
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\EchoScreen.js";
+
+  var _propTypes = _require(_dependencyMap[2], "prop-types");
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _reactNative = _require(_dependencyMap[3], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    EchoScreen: {
+      displayName: "EchoScreen"
+    }
+  };
+
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/app/screens/EchoScreen.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var EXISTENCE_TIMER = 2000;
+  var ANIMATION_TIMER = EXISTENCE_TIMER;
+
+  var EchoScreen = _wrapComponent("EchoScreen")((_temp = _class = function (_Component) {
+    _inherits(EchoScreen, _Component);
+
+    function EchoScreen(props) {
+      _classCallCheck(this, EchoScreen);
+
+      var _this = _possibleConstructorReturn(this, (EchoScreen.__proto__ || Object.getPrototypeOf(EchoScreen)).call(this, props));
+
+      _this.startAnimation = function () {
+        var _this$state = _this.state,
+            opacity = _this$state.opacity,
+            size = _this$state.size;
+
+        _reactNative.Animated.parallel([_reactNative.Animated.sequence([_reactNative.Animated.timing(opacity, {
+          toValue: 0.7,
+          duration: ANIMATION_TIMER / 2,
+          useNativeDriver: true
+        }), _reactNative.Animated.timing(opacity, {
+          toValue: 0,
+          duration: ANIMATION_TIMER / 2,
+          useNativeDriver: true
+        })])]).start();
+
+        setTimeout(function () {
+          this.props.callback();
+        }.bind(_this), EXISTENCE_TIMER);
+      };
+
+      _this.animatedOpacity = function () {
+        return {
+          opacity: _this.state.opacity
+        };
+      };
+
+      _this.small = 150;
+      _this.big = 175;
+      _this.state = {
+        opacity: new _reactNative.Animated.Value(0)
+      };
+      return _this;
+    }
+
+    _createClass(EchoScreen, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        this.startAnimation();
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        return _react3.default.createElement(
+          _reactNative.Animated.View,
+          {
+            style: [styles.background, this.animatedOpacity()],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 46
+            }
+          },
+          _react3.default.createElement(_reactNative.Animated.Image, {
+            style: [{
+              width: 150
+            }, this.animatedOpacity()],
+            resizeMode: "contain",
+            source: _require(_dependencyMap[4], "../data/images/echo-hands.png"),
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 47
+            }
+          })
+        );
+      }
+    }]);
+
+    return EchoScreen;
+  }(_react2.Component), _class.propTypes = {
+    callback: _propTypes2.default.func
+  }, _temp));
+
+  exports.default = EchoScreen;
+
+  var styles = _reactNative.StyleSheet.create({
+    background: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#000',
+      flex: 1
+    },
+    text: {
+      color: '#f500f5',
+      opacity: 0.6,
+      fontWeight: 'bold',
+      fontSize: 18,
+      padding: 50
+    }
+  });
+},702,[118,179,129,12,703],"app\\screens\\EchoScreen.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 520,
+		"height": 640,
+		"scales": [1],
+		"hash": "0431bb0333521dadb30c7507f1fc98e3",
+		"name": "echo-hands",
+		"type": "png"
+	});
+},703,[164],"app\\data\\images\\echo-hands.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88595,6 +89332,2555 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  exports.ReactNativeModal = undefined;
+
+  var _react2 = _require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = _require(_dependencyMap[1], "./../../react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _class,
+      _temp,
+      _initialiseProps,
+      _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-modal\\src\\index.js";
+
+  var _reactNative = _require(_dependencyMap[2], "react-native");
+
+  var _propTypes = _require(_dependencyMap[3], "prop-types");
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _reactNativeAnimatable = _require(_dependencyMap[4], "react-native-animatable");
+
+  var _animations = _require(_dependencyMap[5], "./animations");
+
+  var ANIMATION_DEFINITIONS = _interopRequireWildcard(_animations);
+
+  var _indexStyle = _require(_dependencyMap[6], "./index.style.js");
+
+  var _indexStyle2 = _interopRequireDefault(_indexStyle);
+
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    ReactNativeModal: {
+      displayName: "ReactNativeModal"
+    }
+  };
+
+  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-modal/src/index.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _reactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  (0, _reactNativeAnimatable.initializeRegistryWithDefinitions)(ANIMATION_DEFINITIONS);
+
+  var makeAnimation = function makeAnimation(name, obj) {
+    (0, _reactNativeAnimatable.registerAnimation)(name, (0, _reactNativeAnimatable.createAnimation)(obj));
+  };
+
+  var isObject = function isObject(obj) {
+    return obj !== null && typeof obj === "object";
+  };
+
+  var ReactNativeModal = _wrapComponent("ReactNativeModal")((_temp = _class = function (_Component) {
+    _inherits(ReactNativeModal, _Component);
+
+    function ReactNativeModal(props) {
+      _classCallCheck(this, ReactNativeModal);
+
+      var _this = _possibleConstructorReturn(this, (ReactNativeModal.__proto__ || Object.getPrototypeOf(ReactNativeModal)).call(this, props));
+
+      _initialiseProps.call(_this);
+
+      _this.buildAnimations(props);
+
+      if (_this.state.isSwipeable) {
+        _this.state = _extends({}, _this.state, {
+          pan: new _reactNative.Animated.ValueXY()
+        });
+
+        _this.buildPanResponder();
+      }
+
+      if (_this.props.isVisible) {
+        _this.state = _extends({}, _this.state, {
+          isVisible: true,
+          showContent: true
+        });
+      }
+
+      return _this;
+    }
+
+    _createClass(ReactNativeModal, [{
+      key: "componentWillReceiveProps",
+      value: function componentWillReceiveProps(nextProps) {
+        if (!this.state.isVisible && nextProps.isVisible) {
+          this.setState({
+            isVisible: true,
+            showContent: true
+          });
+        }
+
+        if (this.props.animationIn !== nextProps.animationIn || this.props.animationOut !== nextProps.animationOut) {
+          this.buildAnimations(nextProps);
+        }
+
+        if (this.props.backdropOpacity !== nextProps.backdropOpacity && this.backdropRef) {
+          this.backdropRef.transitionTo({
+            opacity: nextProps.backdropOpacity
+          }, this.props.backdropTransitionInTiming);
+        }
+      }
+    }, {
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        if (this.state.isVisible) {
+          this.open();
+        }
+
+        _reactNative.DeviceEventEmitter.addListener("didUpdateDimensions", this.handleDimensionsUpdate);
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        _reactNative.DeviceEventEmitter.removeListener("didUpdateDimensions", this.handleDimensionsUpdate);
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate(prevProps, prevState) {
+        if (this.props.isVisible && !prevProps.isVisible) {
+          this.open();
+        } else if (!this.props.isVisible && prevProps.isVisible) {
+          this._close();
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        var _props = this.props,
+            animationIn = _props.animationIn,
+            animationInTiming = _props.animationInTiming,
+            animationOut = _props.animationOut,
+            animationOutTiming = _props.animationOutTiming,
+            avoidKeyboard = _props.avoidKeyboard,
+            backdropColor = _props.backdropColor,
+            backdropOpacity = _props.backdropOpacity,
+            backdropTransitionInTiming = _props.backdropTransitionInTiming,
+            backdropTransitionOutTiming = _props.backdropTransitionOutTiming,
+            children = _props.children,
+            isVisible = _props.isVisible,
+            onModalShow = _props.onModalShow,
+            onBackdropPress = _props.onBackdropPress,
+            onBackButtonPress = _props.onBackButtonPress,
+            useNativeDriver = _props.useNativeDriver,
+            style = _props.style,
+            otherProps = _objectWithoutProperties(_props, ["animationIn", "animationInTiming", "animationOut", "animationOutTiming", "avoidKeyboard", "backdropColor", "backdropOpacity", "backdropTransitionInTiming", "backdropTransitionOutTiming", "children", "isVisible", "onModalShow", "onBackdropPress", "onBackButtonPress", "useNativeDriver", "style"]);
+
+        var _state = this.state,
+            deviceWidth = _state.deviceWidth,
+            deviceHeight = _state.deviceHeight;
+        var computedStyle = [{
+          margin: deviceWidth * 0.05,
+          transform: [{
+            translateY: 0
+          }]
+        }, _indexStyle2.default.content, style];
+        var panHandlers = {};
+        var panPosition = {};
+
+        if (this.state.isSwipeable) {
+          panHandlers = _extends({}, this.panResponder.panHandlers);
+          panPosition = this.state.pan.getLayout();
+        }
+
+        var _children = this.props.hideModalContentWhileAnimating && this.props.useNativeDriver && !this.state.showContent ? _react3.default.createElement(_reactNativeAnimatable.View, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 422
+          }
+        }) : children;
+
+        var containerView = _react3.default.createElement(
+          _reactNativeAnimatable.View,
+          _extends({}, panHandlers, {
+            ref: function ref(_ref) {
+              return _this2.contentRef = _ref;
+            },
+            style: [panPosition, computedStyle],
+            pointerEvents: "box-none",
+            useNativeDriver: useNativeDriver
+          }, otherProps, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 427
+            }
+          }),
+          _children
+        );
+
+        return _react3.default.createElement(
+          _reactNative.Modal,
+          _extends({
+            transparent: true,
+            animationType: "none",
+            visible: this.state.isVisible,
+            onRequestClose: onBackButtonPress
+          }, otherProps, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 440
+            }
+          }),
+          _react3.default.createElement(
+            _reactNative.TouchableWithoutFeedback,
+            {
+              onPress: onBackdropPress,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 447
+              }
+            },
+            _react3.default.createElement(_reactNativeAnimatable.View, {
+              ref: function ref(_ref2) {
+                return _this2.backdropRef = _ref2;
+              },
+              useNativeDriver: useNativeDriver,
+              style: [_indexStyle2.default.backdrop, {
+                backgroundColor: this.state.showContent ? backdropColor : "transparent",
+                width: deviceWidth,
+                height: deviceHeight
+              }],
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 448
+              }
+            })
+          ),
+          avoidKeyboard && _react3.default.createElement(
+            _reactNative.KeyboardAvoidingView,
+            {
+              behavior: _reactNative.Platform.OS === "ios" ? "padding" : null,
+              pointerEvents: "box-none",
+              style: computedStyle.concat([{
+                margin: 0
+              }]),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 465
+              }
+            },
+            containerView
+          ),
+          !avoidKeyboard && containerView
+        );
+      }
+    }]);
+
+    return ReactNativeModal;
+  }(_react2.Component), _class.propTypes = {
+    animationIn: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.object]),
+    animationInTiming: _propTypes2.default.number,
+    animationOut: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.object]),
+    animationOutTiming: _propTypes2.default.number,
+    avoidKeyboard: _propTypes2.default.bool,
+    backdropColor: _propTypes2.default.string,
+    backdropOpacity: _propTypes2.default.number,
+    backdropTransitionInTiming: _propTypes2.default.number,
+    backdropTransitionOutTiming: _propTypes2.default.number,
+    children: _propTypes2.default.node.isRequired,
+    isVisible: _propTypes2.default.bool.isRequired,
+    hideModalContentWhileAnimating: _propTypes2.default.bool,
+    onModalShow: _propTypes2.default.func,
+    onModalHide: _propTypes2.default.func,
+    onBackButtonPress: _propTypes2.default.func,
+    onBackdropPress: _propTypes2.default.func,
+    onSwipe: _propTypes2.default.func,
+    swipeThreshold: _propTypes2.default.number,
+    swipeDirection: _propTypes2.default.oneOf(["up", "down", "left", "right"]),
+    useNativeDriver: _propTypes2.default.bool,
+    style: _propTypes2.default.any,
+    scrollTo: _propTypes2.default.func,
+    scrollOffset: _propTypes2.default.number,
+    scrollOffsetMax: _propTypes2.default.number
+  }, _class.defaultProps = {
+    animationIn: "slideInUp",
+    animationInTiming: 300,
+    animationOut: "slideOutDown",
+    animationOutTiming: 300,
+    avoidKeyboard: false,
+    backdropColor: "black",
+    backdropOpacity: 0.7,
+    backdropTransitionInTiming: 300,
+    backdropTransitionOutTiming: 300,
+    onModalShow: function onModalShow() {
+      return null;
+    },
+    onModalHide: function onModalHide() {
+      return null;
+    },
+    isVisible: false,
+    hideModalContentWhileAnimating: false,
+    onBackdropPress: function onBackdropPress() {
+      return null;
+    },
+    onBackButtonPress: function onBackButtonPress() {
+      return null;
+    },
+    swipeThreshold: 100,
+    useNativeDriver: false,
+    scrollTo: null,
+    scrollOffset: 0,
+    scrollOffsetMax: 0
+  }, _initialiseProps = function _initialiseProps() {
+    var _this3 = this;
+
+    this.state = {
+      showContent: true,
+      isVisible: false,
+      deviceWidth: _reactNative.Dimensions.get("window").width,
+      deviceHeight: _reactNative.Dimensions.get("window").height,
+      isSwipeable: this.props.swipeDirection ? true : false,
+      pan: null
+    };
+    this.transitionLock = null;
+    this.inSwipeClosingState = false;
+
+    this.buildPanResponder = function () {
+      var animEvt = null;
+
+      if (_this3.props.swipeDirection === "right" || _this3.props.swipeDirection === "left") {
+        animEvt = _reactNative.Animated.event([null, {
+          dx: _this3.state.pan.x
+        }]);
+      } else {
+        animEvt = _reactNative.Animated.event([null, {
+          dy: _this3.state.pan.y
+        }]);
+      }
+
+      _this3.panResponder = _reactNative.PanResponder.create({
+        onStartShouldSetPanResponder: function onStartShouldSetPanResponder() {
+          if (_this3.props.scrollTo) {
+            if (_this3.props.scrollOffset > 0) {
+              return false;
+            }
+          }
+
+          return true;
+        },
+        onPanResponderMove: function onPanResponderMove(evt, gestureState) {
+          var accDistance = _this3.getAccDistancePerDirection(gestureState);
+
+          var newOpacityFactor = 1 - accDistance / _this3.state.deviceWidth;
+
+          if (_this3.isSwipeDirectionAllowed(gestureState)) {
+            _this3.backdropRef && _this3.backdropRef.transitionTo({
+              opacity: _this3.props.backdropOpacity * newOpacityFactor
+            });
+            animEvt(evt, gestureState);
+          } else {
+            if (_this3.props.scrollTo) {
+              var offsetY = -gestureState.dy;
+
+              if (offsetY > _this3.props.scrollOffsetMax) {
+                offsetY -= (offsetY - _this3.props.scrollOffsetMax) / 2;
+              }
+
+              _this3.props.scrollTo({
+                y: offsetY,
+                animated: false
+              });
+            }
+          }
+        },
+        onPanResponderRelease: function onPanResponderRelease(evt, gestureState) {
+          var accDistance = _this3.getAccDistancePerDirection(gestureState);
+
+          if (accDistance > _this3.props.swipeThreshold) {
+            if (_this3.props.onSwipe) {
+              _this3.inSwipeClosingState = true;
+
+              _this3.props.onSwipe();
+
+              return;
+            }
+          }
+
+          if (_this3.backdropRef) {
+            _this3.backdropRef.transitionTo({
+              opacity: _this3.props.backdropOpacity
+            }, _this3.props.backdropTransitionInTiming);
+          }
+
+          _reactNative.Animated.spring(_this3.state.pan, {
+            toValue: {
+              x: 0,
+              y: 0
+            },
+            bounciness: 0
+          }).start();
+
+          if (_this3.props.scrollOffset > _this3.props.scrollOffsetMax) {
+            _this3.props.scrollTo({
+              y: _this3.props.scrollOffsetMax,
+              animated: true
+            });
+          }
+        }
+      });
+    };
+
+    this.getAccDistancePerDirection = function (gestureState) {
+      switch (_this3.props.swipeDirection) {
+        case "up":
+          return -gestureState.dy;
+
+        case "down":
+          return gestureState.dy;
+
+        case "right":
+          return gestureState.dx;
+
+        case "left":
+          return -gestureState.dx;
+
+        default:
+          return 0;
+      }
+    };
+
+    this.isSwipeDirectionAllowed = function (_ref3) {
+      var dy = _ref3.dy,
+          dx = _ref3.dx;
+      var draggedDown = dy > 0;
+      var draggedUp = dy < 0;
+      var draggedLeft = dx < 0;
+      var draggedRight = dx > 0;
+
+      if (_this3.props.swipeDirection === "up" && draggedUp) {
+        return true;
+      } else if (_this3.props.swipeDirection === "down" && draggedDown) {
+        return true;
+      } else if (_this3.props.swipeDirection === "right" && draggedRight) {
+        return true;
+      } else if (_this3.props.swipeDirection === "left" && draggedLeft) {
+        return true;
+      }
+
+      return false;
+    };
+
+    this.buildAnimations = function (props) {
+      var animationIn = props.animationIn;
+      var animationOut = props.animationOut;
+
+      if (isObject(animationIn)) {
+        var animationName = JSON.stringify(animationIn);
+        makeAnimation(animationName, animationIn);
+        animationIn = animationName;
+      }
+
+      if (isObject(animationOut)) {
+        var _animationName = JSON.stringify(animationOut);
+
+        makeAnimation(_animationName, animationOut);
+        animationOut = _animationName;
+      }
+
+      _this3.animationIn = animationIn;
+      _this3.animationOut = animationOut;
+    };
+
+    this.handleDimensionsUpdate = function (dimensionsUpdate) {
+      var deviceWidth = _reactNative.Dimensions.get("window").width;
+
+      var deviceHeight = _reactNative.Dimensions.get("window").height;
+
+      if (deviceWidth !== _this3.state.deviceWidth || deviceHeight !== _this3.state.deviceHeight) {
+        _this3.setState({
+          deviceWidth: deviceWidth,
+          deviceHeight: deviceHeight
+        });
+      }
+    };
+
+    this.open = function () {
+      if (_this3.transitionLock) return;
+      _this3.transitionLock = true;
+
+      if (_this3.backdropRef) {
+        _this3.backdropRef.transitionTo({
+          opacity: _this3.props.backdropOpacity
+        }, _this3.props.backdropTransitionInTiming);
+      }
+
+      if (_this3.state.isSwipeable) {
+        _this3.state.pan.setValue({
+          x: 0,
+          y: 0
+        });
+      }
+
+      if (_this3.contentRef) {
+        _this3.contentRef[_this3.animationIn](_this3.props.animationInTiming).then(function () {
+          _this3.transitionLock = false;
+
+          if (!_this3.props.isVisible) {
+            _this3._close();
+          } else {
+            _this3.props.onModalShow();
+          }
+        });
+      }
+    };
+
+    this._close = function () {
+      if (_this3.transitionLock) return;
+      _this3.transitionLock = true;
+
+      if (_this3.backdropRef) {
+        _this3.backdropRef.transitionTo({
+          opacity: 0
+        }, _this3.props.backdropTransitionOutTiming);
+      }
+
+      var animationOut = _this3.animationOut;
+
+      if (_this3.inSwipeClosingState) {
+        _this3.inSwipeClosingState = false;
+
+        if (_this3.props.swipeDirection === "up") {
+          animationOut = "slideOutUp";
+        } else if (_this3.props.swipeDirection === "down") {
+          animationOut = "slideOutDown";
+        } else if (_this3.props.swipeDirection === "right") {
+          animationOut = "slideOutRight";
+        } else if (_this3.props.swipeDirection === "left") {
+          animationOut = "slideOutLeft";
+        }
+      }
+
+      if (_this3.contentRef) {
+        _this3.contentRef[animationOut](_this3.props.animationOutTiming).then(function () {
+          _this3.transitionLock = false;
+
+          if (_this3.props.isVisible) {
+            _this3.open();
+          } else {
+            _this3.setState({
+              showContent: false
+            }, function () {
+              _this3.setState({
+                isVisible: false
+              });
+            });
+
+            _this3.props.onModalHide();
+          }
+        });
+      }
+    };
+  }, _temp));
+
+  exports.ReactNativeModal = ReactNativeModal;
+  exports.default = ReactNativeModal;
+},669,[118,179,12,129,670,691,692],"node_modules\\react-native-modal\\src\\index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.initializeRegistryWithDefinitions = exports.registerAnimation = exports.createAnimation = exports.Image = exports.Text = exports.View = exports.createAnimatableComponent = undefined;
+
+  var _createAnimation = _require(_dependencyMap[0], "./createAnimation");
+
+  Object.defineProperty(exports, "createAnimation", {
+    enumerable: true,
+    get: function get() {
+      return _interopRequireDefault(_createAnimation).default;
+    }
+  });
+
+  var _registry = _require(_dependencyMap[1], "./registry");
+
+  Object.defineProperty(exports, "registerAnimation", {
+    enumerable: true,
+    get: function get() {
+      return _registry.registerAnimation;
+    }
+  });
+  Object.defineProperty(exports, "initializeRegistryWithDefinitions", {
+    enumerable: true,
+    get: function get() {
+      return _registry.initializeRegistryWithDefinitions;
+    }
+  });
+
+  var _reactNative = _require(_dependencyMap[2], "react-native");
+
+  var _createAnimatableComponent = _require(_dependencyMap[3], "./createAnimatableComponent");
+
+  var _createAnimatableComponent2 = _interopRequireDefault(_createAnimatableComponent);
+
+  var _definitions = _require(_dependencyMap[4], "./definitions");
+
+  var ANIMATION_DEFINITIONS = _interopRequireWildcard(_definitions);
+
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  (0, _registry.initializeRegistryWithDefinitions)(ANIMATION_DEFINITIONS);
+  var createAnimatableComponent = exports.createAnimatableComponent = _createAnimatableComponent2.default;
+  var View = exports.View = (0, _createAnimatableComponent2.default)(_reactNative.View);
+  var Text = exports.Text = (0, _createAnimatableComponent2.default)(_reactNative.Text);
+  var Image = exports.Image = (0, _createAnimatableComponent2.default)(_reactNative.Image);
+},670,[671,673,12,674,679],"node_modules\\react-native-animatable\\index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = createAnimation;
+
+  var _flattenStyle = _require(_dependencyMap[0], "./flattenStyle");
+
+  var _flattenStyle2 = _interopRequireDefault(_flattenStyle);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function compareNumbers(a, b) {
+    return a - b;
+  }
+
+  function notNull(value) {
+    return value !== null;
+  }
+
+  function parsePosition(value) {
+    if (value === 'from') {
+      return 0;
+    } else if (value === 'to') {
+      return 1;
+    }
+
+    var parsed = parseFloat(value, 10);
+
+    if (isNaN(parsed) || parsed < 0 || parsed > 1) {
+      return null;
+    }
+
+    return parsed;
+  }
+
+  var cache = {};
+
+  function createAnimation(definition) {
+    var cacheKey = JSON.stringify(definition);
+
+    if (cache[cacheKey]) {
+      return cache[cacheKey];
+    }
+
+    var positions = Object.keys(definition).map(parsePosition).filter(notNull);
+    positions.sort(compareNumbers);
+
+    if (positions.length < 2) {
+      throw new Error('Animation definitions must have at least two values.');
+    }
+
+    var compiled = {};
+
+    if (definition.easing) {
+      compiled.easing = definition.easing;
+    }
+
+    if (definition.style) {
+      compiled.style = definition.style;
+    }
+
+    var _loop = function _loop(i) {
+      var position = positions[i];
+      var keyframe = definition[position];
+
+      if (!keyframe) {
+        if (position === 0) {
+          keyframe = definition.from;
+        } else if (position === 1) {
+          keyframe = definition.to;
+        }
+      }
+
+      if (!keyframe) {
+        throw new Error('Missing animation keyframe, this should not happen');
+      }
+
+      keyframe = (0, _flattenStyle2.default)(keyframe);
+      Object.keys(keyframe).forEach(function (key) {
+        if (!(key in compiled)) {
+          compiled[key] = {
+            inputRange: [],
+            outputRange: []
+          };
+        }
+
+        compiled[key].inputRange.push(position);
+        compiled[key].outputRange.push(keyframe[key]);
+      });
+    };
+
+    for (var i = 0; i < positions.length; i += 1) {
+      _loop(i);
+    }
+
+    cache[cacheKey] = compiled;
+    return compiled;
+  }
+},671,[672],"node_modules\\react-native-animatable\\createAnimation.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  exports.default = flattenStyle;
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  function flattenStyle(style) {
+    var flatStyle = _extends({}, _reactNative.StyleSheet.flatten(style));
+
+    if (flatStyle.transform) {
+      flatStyle.transform.forEach(function (transform) {
+        var key = Object.keys(transform)[0];
+        flatStyle[key] = transform[key];
+      });
+      delete flatStyle.transform;
+    }
+
+    return flatStyle;
+  }
+},672,[12],"node_modules\\react-native-animatable\\flattenStyle.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.registerAnimation = registerAnimation;
+  exports.getAnimationByName = getAnimationByName;
+  exports.getAnimationNames = getAnimationNames;
+  exports.initializeRegistryWithDefinitions = initializeRegistryWithDefinitions;
+
+  var _createAnimation = _require(_dependencyMap[0], "./createAnimation");
+
+  var _createAnimation2 = _interopRequireDefault(_createAnimation);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  var animationRegistry = {};
+
+  function registerAnimation(animationName, animation) {
+    animationRegistry[animationName] = animation;
+  }
+
+  function getAnimationByName(animationName) {
+    return animationRegistry[animationName];
+  }
+
+  function getAnimationNames() {
+    return Object.keys(animationRegistry);
+  }
+
+  function initializeRegistryWithDefinitions(definitions) {
+    Object.keys(definitions).forEach(function (animationName) {
+      registerAnimation(animationName, (0, _createAnimation2.default)(definitions[animationName]));
+    });
+  }
+},673,[671],"node_modules\\react-native-animatable\\registry.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react2 = _require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = _require(_dependencyMap[1], "./../react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\node_modules\\react-native-animatable\\createAnimatableComponent.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  exports.default = createAnimatableComponent;
+
+  var _propTypes = _require(_dependencyMap[2], "prop-types");
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _reactNative = _require(_dependencyMap[3], "react-native");
+
+  var _wrapStyleTransforms = _require(_dependencyMap[4], "./wrapStyleTransforms");
+
+  var _wrapStyleTransforms2 = _interopRequireDefault(_wrapStyleTransforms);
+
+  var _getStyleValues = _require(_dependencyMap[5], "./getStyleValues");
+
+  var _getStyleValues2 = _interopRequireDefault(_getStyleValues);
+
+  var _flattenStyle = _require(_dependencyMap[6], "./flattenStyle");
+
+  var _flattenStyle2 = _interopRequireDefault(_flattenStyle);
+
+  var _createAnimation = _require(_dependencyMap[7], "./createAnimation");
+
+  var _createAnimation2 = _interopRequireDefault(_createAnimation);
+
+  var _registry = _require(_dependencyMap[8], "./registry");
+
+  var _easing = _require(_dependencyMap[9], "./easing");
+
+  var _easing2 = _interopRequireDefault(_easing);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    AnimatableComponent: {
+      displayName: "AnimatableComponent",
+      isInFunction: true
+    }
+  };
+
+  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "c:/Users/ashmo/Desktop/ProjectEyeCue/node_modules/react-native-animatable/createAnimatableComponent.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _reactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var INTERPOLATION_STYLE_PROPERTIES = ['rotate', 'rotateX', 'rotateY', 'rotateZ', 'skewX', 'skewY', 'transformMatrix', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor', 'shadowColor', 'color', 'textDecorationColor', 'tintColor'];
+  var ZERO_CLAMPED_STYLE_PROPERTIES = ['width', 'height'];
+
+  function omit(keys, source) {
+    var filtered = {};
+    Object.keys(source).forEach(function (key) {
+      if (keys.indexOf(key) === -1) {
+        filtered[key] = source[key];
+      }
+    });
+    return filtered;
+  }
+
+  function deepEquals(a, b) {
+    return a === b || JSON.stringify(a) === JSON.stringify(b);
+  }
+
+  function getAnimationTarget(iteration, direction) {
+    switch (direction) {
+      case 'reverse':
+        return 0;
+
+      case 'alternate':
+        return iteration % 2 ? 0 : 1;
+
+      case 'alternate-reverse':
+        return iteration % 2 ? 1 : 0;
+
+      case 'normal':
+      default:
+        return 1;
+    }
+  }
+
+  function getAnimationOrigin(iteration, direction) {
+    return getAnimationTarget(iteration, direction) ? 0 : 1;
+  }
+
+  function getCompiledAnimation(animation) {
+    if (typeof animation === 'string') {
+      var compiledAnimation = (0, _registry.getAnimationByName)(animation);
+
+      if (!compiledAnimation) {
+        throw new Error("No animation registred by the name of " + animation);
+      }
+
+      return compiledAnimation;
+    }
+
+    return (0, _createAnimation2.default)(animation);
+  }
+
+  function makeInterpolatedStyle(compiledAnimation, animationValue) {
+    var style = {};
+    Object.keys(compiledAnimation).forEach(function (key) {
+      if (key === 'style') {
+        _extends(style, compiledAnimation.style);
+      } else if (key !== 'easing') {
+        style[key] = animationValue.interpolate(compiledAnimation[key]);
+      }
+    });
+    return (0, _wrapStyleTransforms2.default)(style);
+  }
+
+  function transitionToValue(transitionValue, toValue, duration, easing) {
+    var useNativeDriver = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var delay = arguments[5];
+
+    if (duration || easing || delay) {
+      _reactNative.Animated.timing(transitionValue, {
+        toValue: toValue,
+        delay: delay,
+        duration: duration || 1000,
+        easing: typeof easing === 'function' ? easing : _easing2.default[easing || 'ease'],
+        useNativeDriver: useNativeDriver
+      }).start();
+    } else {
+      _reactNative.Animated.spring(transitionValue, {
+        toValue: toValue,
+        useNativeDriver: useNativeDriver
+      }).start();
+    }
+  }
+
+  function createAnimatableComponent(WrappedComponent) {
+    var _class, _temp, _initialiseProps;
+
+    var wrappedComponentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
+
+    var Animatable = _reactNative.Animated.createAnimatedComponent(WrappedComponent);
+
+    return _wrapComponent("AnimatableComponent")((_temp = _class = function (_Component) {
+      _inherits(AnimatableComponent, _Component);
+
+      function AnimatableComponent(props) {
+        _classCallCheck(this, AnimatableComponent);
+
+        var _this = _possibleConstructorReturn(this, (AnimatableComponent.__proto__ || Object.getPrototypeOf(AnimatableComponent)).call(this, props));
+
+        _initialiseProps.call(_this);
+
+        var animationValue = new _reactNative.Animated.Value(getAnimationOrigin(0, _this.props.direction));
+        var animationStyle = {};
+        var compiledAnimation = {};
+
+        if (props.animation) {
+          compiledAnimation = getCompiledAnimation(props.animation);
+          animationStyle = makeInterpolatedStyle(compiledAnimation, animationValue);
+        }
+
+        _this.state = {
+          animationValue: animationValue,
+          animationStyle: animationStyle,
+          compiledAnimation: compiledAnimation,
+          transitionStyle: {},
+          transitionValues: {},
+          currentTransitionValues: {}
+        };
+
+        if (props.transition) {
+          _this.state = _extends({}, _this.state, _this.initializeTransitionState(props.transition));
+        }
+
+        _this.delayTimer = null;
+        (0, _registry.getAnimationNames)().forEach(function (animationName) {
+          if (!(animationName in _this)) {
+            _this[animationName] = _this.animate.bind(_this, animationName);
+          }
+        });
+        return _this;
+      }
+
+      _createClass(AnimatableComponent, [{
+        key: "initializeTransitionState",
+        value: function initializeTransitionState(transitionKeys) {
+          var transitionValues = {};
+          var styleValues = {};
+          var currentTransitionValues = (0, _getStyleValues2.default)(transitionKeys, this.props.style);
+          Object.keys(currentTransitionValues).forEach(function (key) {
+            var value = currentTransitionValues[key];
+
+            if (INTERPOLATION_STYLE_PROPERTIES.indexOf(key) !== -1) {
+              transitionValues[key] = new _reactNative.Animated.Value(0);
+              styleValues[key] = value;
+            } else {
+              var animationValue = new _reactNative.Animated.Value(value);
+              transitionValues[key] = animationValue;
+              styleValues[key] = animationValue;
+            }
+          });
+          return {
+            currentTransitionValues: currentTransitionValues,
+            transitionStyle: styleValues,
+            transitionValues: transitionValues
+          };
+        }
+      }, {
+        key: "getTransitionState",
+        value: function getTransitionState(keys) {
+          var _this2 = this;
+
+          var transitionKeys = typeof keys === 'string' ? [keys] : keys;
+          var _state = this.state,
+              transitionValues = _state.transitionValues,
+              currentTransitionValues = _state.currentTransitionValues,
+              transitionStyle = _state.transitionStyle;
+          var missingKeys = transitionKeys.filter(function (key) {
+            return !_this2.state.transitionValues[key];
+          });
+
+          if (missingKeys.length) {
+            var transitionState = this.initializeTransitionState(missingKeys);
+            transitionValues = _extends({}, transitionValues, transitionState.transitionValues);
+            currentTransitionValues = _extends({}, currentTransitionValues, transitionState.currentTransitionValues);
+            transitionStyle = _extends({}, transitionStyle, transitionState.transitionStyle);
+          }
+
+          return {
+            transitionValues: transitionValues,
+            currentTransitionValues: currentTransitionValues,
+            transitionStyle: transitionStyle
+          };
+        }
+      }, {
+        key: "setNativeProps",
+        value: function setNativeProps(nativeProps) {
+          if (this.ref) {
+            this.ref.setNativeProps(nativeProps);
+          }
+        }
+      }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+          var _this3 = this;
+
+          var _props = this.props,
+              animation = _props.animation,
+              duration = _props.duration,
+              delay = _props.delay,
+              onAnimationBegin = _props.onAnimationBegin,
+              onAnimationEnd = _props.onAnimationEnd;
+
+          if (animation) {
+            var startAnimation = function startAnimation() {
+              onAnimationBegin();
+
+              _this3.startAnimation(duration, 0, onAnimationEnd);
+
+              _this3.delayTimer = null;
+            };
+
+            if (delay) {
+              this.delayTimer = setTimeout(startAnimation, delay);
+            } else {
+              startAnimation();
+            }
+          }
+        }
+      }, {
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(props) {
+          var animation = props.animation,
+              delay = props.delay,
+              duration = props.duration,
+              easing = props.easing,
+              transition = props.transition,
+              onAnimationBegin = props.onAnimationBegin,
+              onAnimationEnd = props.onAnimationEnd;
+
+          if (transition) {
+            var values = (0, _getStyleValues2.default)(transition, props.style);
+            this.transitionTo(values, duration, easing, delay);
+          } else if (!deepEquals(animation, this.props.animation)) {
+            if (animation) {
+              if (this.delayTimer) {
+                this.setAnimation(animation);
+              } else {
+                onAnimationBegin();
+                this.animate(animation, duration).then(onAnimationEnd);
+              }
+            } else {
+              this.stopAnimation();
+            }
+          }
+        }
+      }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+          if (this.delayTimer) {
+            clearTimeout(this.delayTimer);
+          }
+        }
+      }, {
+        key: "setAnimation",
+        value: function setAnimation(animation, callback) {
+          var compiledAnimation = getCompiledAnimation(animation);
+          var animationStyle = makeInterpolatedStyle(compiledAnimation, this.state.animationValue);
+          this.setState({
+            animationStyle: animationStyle,
+            compiledAnimation: compiledAnimation
+          }, callback);
+        }
+      }, {
+        key: "animate",
+        value: function animate(animation, duration) {
+          var _this4 = this;
+
+          return new Promise(function (resolve) {
+            _this4.setAnimation(animation, function () {
+              _this4.startAnimation(duration, 0, resolve);
+            });
+          });
+        }
+      }, {
+        key: "stopAnimation",
+        value: function stopAnimation() {
+          this.setState({
+            scheduledAnimation: false,
+            animationStyle: {}
+          });
+          this.state.animationValue.stopAnimation();
+
+          if (this.delayTimer) {
+            clearTimeout(this.delayTimer);
+            this.delayTimer = null;
+          }
+        }
+      }, {
+        key: "startAnimation",
+        value: function startAnimation(duration, iteration, callback) {
+          var _this5 = this;
+
+          var _state2 = this.state,
+              animationValue = _state2.animationValue,
+              compiledAnimation = _state2.compiledAnimation;
+          var _props2 = this.props,
+              direction = _props2.direction,
+              iterationCount = _props2.iterationCount,
+              useNativeDriver = _props2.useNativeDriver;
+          var easing = this.props.easing || compiledAnimation.easing || 'ease';
+          var currentIteration = iteration || 0;
+          var fromValue = getAnimationOrigin(currentIteration, direction);
+          var toValue = getAnimationTarget(currentIteration, direction);
+          animationValue.setValue(fromValue);
+
+          if (typeof easing === 'string') {
+            easing = _easing2.default[easing];
+          }
+
+          var reversed = direction === 'reverse' || direction === 'alternate' && !toValue || direction === 'alternate-reverse' && !toValue;
+
+          if (reversed) {
+            easing = _reactNative.Easing.out(easing);
+          }
+
+          _reactNative.Animated.timing(animationValue, {
+            toValue: toValue,
+            easing: easing,
+            isInteraction: iterationCount <= 1,
+            duration: duration || this.props.duration || 1000,
+            useNativeDriver: useNativeDriver
+          }).start(function (endState) {
+            currentIteration += 1;
+
+            if (endState.finished && _this5.props.animation && (iterationCount === 'infinite' || currentIteration < iterationCount)) {
+              _this5.startAnimation(duration, currentIteration, callback);
+            } else if (callback) {
+              callback(endState);
+            }
+          });
+        }
+      }, {
+        key: "transition",
+        value: function transition(fromValues, toValues, duration, easing) {
+          var _this6 = this;
+
+          var fromValuesFlat = (0, _flattenStyle2.default)(fromValues);
+          var toValuesFlat = (0, _flattenStyle2.default)(toValues);
+          var transitionKeys = Object.keys(toValuesFlat);
+
+          var _getTransitionState = this.getTransitionState(transitionKeys),
+              transitionValues = _getTransitionState.transitionValues,
+              currentTransitionValues = _getTransitionState.currentTransitionValues,
+              transitionStyle = _getTransitionState.transitionStyle;
+
+          transitionKeys.forEach(function (property) {
+            var fromValue = fromValuesFlat[property];
+            var toValue = toValuesFlat[property];
+            var transitionValue = transitionValues[property];
+
+            if (!transitionValue) {
+              transitionValue = new _reactNative.Animated.Value(0);
+            }
+
+            var needsInterpolation = INTERPOLATION_STYLE_PROPERTIES.indexOf(property) !== -1;
+            var needsZeroClamping = ZERO_CLAMPED_STYLE_PROPERTIES.indexOf(property) !== -1;
+
+            if (needsInterpolation) {
+              transitionValue.setValue(0);
+              transitionStyle[property] = transitionValue.interpolate({
+                inputRange: [0, 1],
+                outputRange: [fromValue, toValue]
+              });
+              currentTransitionValues[property] = toValue;
+              toValuesFlat[property] = 1;
+            } else {
+              if (needsZeroClamping) {
+                transitionStyle[property] = transitionValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 1],
+                  extrapolateLeft: 'clamp'
+                });
+                currentTransitionValues[property] = toValue;
+              } else {
+                transitionStyle[property] = transitionValue;
+              }
+
+              transitionValue.setValue(fromValue);
+            }
+          });
+          this.setState({
+            transitionValues: transitionValues,
+            transitionStyle: transitionStyle,
+            currentTransitionValues: currentTransitionValues
+          }, function () {
+            _this6.transitionToValues(toValuesFlat, duration || _this6.props.duration, easing, _this6.props.delay);
+          });
+        }
+      }, {
+        key: "transitionTo",
+        value: function transitionTo(toValues, duration, easing, delay) {
+          var _this7 = this;
+
+          var currentTransitionValues = this.state.currentTransitionValues;
+          var toValuesFlat = (0, _flattenStyle2.default)(toValues);
+          var transitions = {
+            from: {},
+            to: {}
+          };
+          Object.keys(toValuesFlat).forEach(function (property) {
+            var toValue = toValuesFlat[property];
+            var needsInterpolation = INTERPOLATION_STYLE_PROPERTIES.indexOf(property) !== -1;
+            var needsZeroClamping = ZERO_CLAMPED_STYLE_PROPERTIES.indexOf(property) !== -1;
+            var transitionStyle = _this7.state.transitionStyle[property];
+            var transitionValue = _this7.state.transitionValues[property];
+
+            if (!needsInterpolation && !needsZeroClamping && transitionStyle && transitionStyle === transitionValue) {
+              transitionToValue(transitionValue, toValue, duration, easing, _this7.props.useNativeDriver, delay);
+            } else {
+              var currentTransitionValue = currentTransitionValues[property];
+
+              if (typeof currentTransitionValue === 'undefined' && _this7.props.style) {
+                var style = (0, _getStyleValues2.default)(property, _this7.props.style);
+                currentTransitionValue = style[property];
+              }
+
+              transitions.from[property] = currentTransitionValue;
+              transitions.to[property] = toValue;
+            }
+          });
+
+          if (Object.keys(transitions.from).length) {
+            this.transition(transitions.from, transitions.to, duration, easing);
+          }
+        }
+      }, {
+        key: "transitionToValues",
+        value: function transitionToValues(toValues, duration, easing, delay) {
+          var _this8 = this;
+
+          Object.keys(toValues).forEach(function (property) {
+            var transitionValue = _this8.state.transitionValues[property];
+            var toValue = toValues[property];
+            transitionToValue(transitionValue, toValue, duration, easing, _this8.props.useNativeDriver, delay);
+          });
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          var _props3 = this.props,
+              style = _props3.style,
+              animation = _props3.animation,
+              transition = _props3.transition;
+
+          if (animation && transition) {
+            throw new Error('You cannot combine animation and transition props');
+          }
+
+          var restProps = omit(Object.keys(AnimatableComponent.propTypes), this.props);
+          return _react3.default.createElement(Animatable, _extends({
+            ref: this.handleRef,
+            style: [style, this.state.animationStyle, (0, _wrapStyleTransforms2.default)(this.state.transitionStyle)]
+          }, restProps, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 544
+            }
+          }));
+        }
+      }]);
+
+      return AnimatableComponent;
+    }(_react2.Component), _class.displayName = "withAnimatable(" + wrappedComponentName + ")", _class.propTypes = {
+      animation: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.object]),
+      duration: _propTypes2.default.number,
+      direction: _propTypes2.default.oneOf(['normal', 'reverse', 'alternate', 'alternate-reverse']),
+      delay: _propTypes2.default.number,
+      easing: _propTypes2.default.oneOfType([_propTypes2.default.oneOf(Object.keys(_easing2.default)), _propTypes2.default.func]),
+      iterationCount: function iterationCount(props, propName) {
+        var val = props[propName];
+
+        if (val !== 'infinite' && !(typeof val === 'number' && val >= 1)) {
+          return new Error('iterationCount must be a positive number or "infinite"');
+        }
+
+        return null;
+      },
+      onAnimationBegin: _propTypes2.default.func,
+      onAnimationEnd: _propTypes2.default.func,
+      style: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.array, _propTypes2.default.object]),
+      transition: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.arrayOf(_propTypes2.default.string)]),
+      useNativeDriver: _propTypes2.default.bool
+    }, _class.defaultProps = {
+      animation: undefined,
+      delay: 0,
+      direction: 'normal',
+      duration: undefined,
+      easing: undefined,
+      iterationCount: 1,
+      onAnimationBegin: function onAnimationBegin() {},
+      onAnimationEnd: function onAnimationEnd() {},
+      style: undefined,
+      transition: undefined,
+      useNativeDriver: false
+    }, _initialiseProps = function _initialiseProps() {
+      var _this9 = this;
+
+      this.ref = null;
+
+      this.handleRef = function (ref) {
+        _this9.ref = ref;
+      };
+    }, _temp));
+  }
+},674,[118,179,129,12,675,676,672,671,673,678],"node_modules\\react-native-animatable\\createAnimatableComponent.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = wrapStyleTransforms;
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  var TRANSFORM_STYLE_PROPERTIES = ['perspective', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'skewX', 'skewY', 'translateX', 'translateY'];
+
+  function wrapStyleTransforms(style) {
+    var wrapped = {};
+    Object.keys(style).forEach(function (key) {
+      if (TRANSFORM_STYLE_PROPERTIES.indexOf(key) !== -1) {
+        if (!wrapped.transform) {
+          wrapped.transform = [];
+        }
+
+        wrapped.transform.push(_defineProperty({}, key, style[key]));
+      } else {
+        wrapped[key] = style[key];
+      }
+    });
+    return wrapped;
+  }
+},675,[],"node_modules\\react-native-animatable\\wrapStyleTransforms.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = getStyleValues;
+
+  var _flattenStyle = _require(_dependencyMap[0], "./flattenStyle");
+
+  var _flattenStyle2 = _interopRequireDefault(_flattenStyle);
+
+  var _getDefaultStyleValue = _require(_dependencyMap[1], "./getDefaultStyleValue");
+
+  var _getDefaultStyleValue2 = _interopRequireDefault(_getDefaultStyleValue);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function getStyleValues(keys, style) {
+    var values = {};
+    var flatStyle = (0, _flattenStyle2.default)(style);
+    (typeof keys === 'string' ? [keys] : keys).forEach(function (key) {
+      values[key] = key in flatStyle ? flatStyle[key] : (0, _getDefaultStyleValue2.default)(key, flatStyle);
+    });
+    return values;
+  }
+},676,[672,677],"node_modules\\react-native-animatable\\getStyleValues.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = getDefaultStyleValue;
+  var DIRECTIONAL_FALLBACKS = {
+    Top: ['Vertical', ''],
+    Bottom: ['Vertical', ''],
+    Vertical: [''],
+    Left: ['Horizontal', ''],
+    Right: ['Horizontal', ''],
+    Horizontal: ['']
+  };
+  var DIRECTIONAL_SUFFICES = Object.keys(DIRECTIONAL_FALLBACKS);
+
+  function getDefaultStyleValue(key, flatStyle) {
+    if (key === 'backgroundColor') {
+      return 'rgba(0,0,0,0)';
+    }
+
+    if (key === 'color' || key.indexOf('Color') !== -1) {
+      return 'rgba(0,0,0,1)';
+    }
+
+    if (key.indexOf('rotate') === 0 || key.indexOf('skew') === 0) {
+      return '0deg';
+    }
+
+    if (key === 'opacity' || key.indexOf('scale') === 0) {
+      return 1;
+    }
+
+    if (key === 'fontSize') {
+      return 14;
+    }
+
+    if (key.indexOf('margin') === 0 || key.indexOf('padding') === 0) {
+      for (var suffix, i = 0; i < DIRECTIONAL_SUFFICES.length; i++) {
+        suffix = DIRECTIONAL_SUFFICES[i];
+
+        if (key.substr(-suffix.length) === suffix) {
+          var prefix = key.substr(0, key.length - suffix.length);
+          var fallbacks = DIRECTIONAL_FALLBACKS[suffix];
+
+          for (var fallback, j = 0; j < fallbacks.length; j++) {
+            fallback = prefix + fallbacks[j];
+
+            if (fallback in flatStyle) {
+              return flatStyle[fallback];
+            }
+          }
+
+          break;
+        }
+      }
+    }
+
+    return 0;
+  }
+},677,[],"node_modules\\react-native-animatable\\getDefaultStyleValue.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  var EASING_FUNCTIONS = {
+    linear: _reactNative.Easing.linear,
+    ease: _reactNative.Easing.bezier(0.25, 0.1, 0.25, 1),
+    'ease-in': _reactNative.Easing.bezier(0.42, 0, 1, 1),
+    'ease-out': _reactNative.Easing.bezier(0, 0, 0.58, 1),
+    'ease-in-out': _reactNative.Easing.bezier(0.42, 0, 0.58, 1),
+    'ease-in-cubic': _reactNative.Easing.bezier(0.55, 0.055, 0.675, 0.19),
+    'ease-out-cubic': _reactNative.Easing.bezier(0.215, 0.61, 0.355, 1.0),
+    'ease-in-out-cubic': _reactNative.Easing.bezier(0.645, 0.045, 0.355, 1.0),
+    'ease-in-circ': _reactNative.Easing.bezier(0.6, 0.04, 0.98, 0.335),
+    'ease-out-circ': _reactNative.Easing.bezier(0.075, 0.82, 0.165, 1.0),
+    'ease-in-out-circ': _reactNative.Easing.bezier(0.785, 0.135, 0.15, 0.86),
+    'ease-in-expo': _reactNative.Easing.bezier(0.95, 0.05, 0.795, 0.035),
+    'ease-out-expo': _reactNative.Easing.bezier(0.19, 1.0, 0.22, 1.0),
+    'ease-in-out-expo': _reactNative.Easing.bezier(1.0, 0.0, 0.0, 1.0),
+    'ease-in-quad': _reactNative.Easing.bezier(0.55, 0.085, 0.68, 0.53),
+    'ease-out-quad': _reactNative.Easing.bezier(0.25, 0.46, 0.45, 0.94),
+    'ease-in-out-quad': _reactNative.Easing.bezier(0.455, 0.03, 0.515, 0.955),
+    'ease-in-quart': _reactNative.Easing.bezier(0.895, 0.03, 0.685, 0.22),
+    'ease-out-quart': _reactNative.Easing.bezier(0.165, 0.84, 0.44, 1.0),
+    'ease-in-out-quart': _reactNative.Easing.bezier(0.77, 0.0, 0.175, 1.0),
+    'ease-in-quint': _reactNative.Easing.bezier(0.755, 0.05, 0.855, 0.06),
+    'ease-out-quint': _reactNative.Easing.bezier(0.23, 1.0, 0.32, 1.0),
+    'ease-in-out-quint': _reactNative.Easing.bezier(0.86, 0.0, 0.07, 1.0),
+    'ease-in-sine': _reactNative.Easing.bezier(0.47, 0.0, 0.745, 0.715),
+    'ease-out-sine': _reactNative.Easing.bezier(0.39, 0.575, 0.565, 1.0),
+    'ease-in-out-sine': _reactNative.Easing.bezier(0.445, 0.05, 0.55, 0.95),
+    'ease-in-back': _reactNative.Easing.bezier(0.6, -0.28, 0.735, 0.045),
+    'ease-out-back': _reactNative.Easing.bezier(0.175, 0.885, 0.32, 1.275),
+    'ease-in-out-back': _reactNative.Easing.bezier(0.68, -0.55, 0.265, 1.55)
+  };
+  exports.default = EASING_FUNCTIONS;
+},678,[12],"node_modules\\react-native-animatable\\easing.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _attentionSeekers = _require(_dependencyMap[0], "./attention-seekers");
+
+  Object.keys(_attentionSeekers).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _attentionSeekers[key];
+      }
+    });
+  });
+
+  var _bouncingEntrances = _require(_dependencyMap[1], "./bouncing-entrances");
+
+  Object.keys(_bouncingEntrances).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _bouncingEntrances[key];
+      }
+    });
+  });
+
+  var _bouncingExits = _require(_dependencyMap[2], "./bouncing-exits");
+
+  Object.keys(_bouncingExits).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _bouncingExits[key];
+      }
+    });
+  });
+
+  var _fadingEntrances = _require(_dependencyMap[3], "./fading-entrances");
+
+  Object.keys(_fadingEntrances).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _fadingEntrances[key];
+      }
+    });
+  });
+
+  var _fadingExits = _require(_dependencyMap[4], "./fading-exits");
+
+  Object.keys(_fadingExits).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _fadingExits[key];
+      }
+    });
+  });
+
+  var _flippers = _require(_dependencyMap[5], "./flippers");
+
+  Object.keys(_flippers).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _flippers[key];
+      }
+    });
+  });
+
+  var _lightspeed = _require(_dependencyMap[6], "./lightspeed");
+
+  Object.keys(_lightspeed).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _lightspeed[key];
+      }
+    });
+  });
+
+  var _slidingEntrances = _require(_dependencyMap[7], "./sliding-entrances");
+
+  Object.keys(_slidingEntrances).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _slidingEntrances[key];
+      }
+    });
+  });
+
+  var _slidingExits = _require(_dependencyMap[8], "./sliding-exits");
+
+  Object.keys(_slidingExits).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _slidingExits[key];
+      }
+    });
+  });
+
+  var _zoomingEntrances = _require(_dependencyMap[9], "./zooming-entrances");
+
+  Object.keys(_zoomingEntrances).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _zoomingEntrances[key];
+      }
+    });
+  });
+
+  var _zoomingExits = _require(_dependencyMap[10], "./zooming-exits");
+
+  Object.keys(_zoomingExits).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _zoomingExits[key];
+      }
+    });
+  });
+},679,[680,681,682,683,684,685,686,687,688,689,690],"node_modules\\react-native-animatable\\definitions\\index.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var bounce = exports.bounce = {
+    0: {
+      translateY: 0
+    },
+    0.2: {
+      translateY: 0
+    },
+    0.4: {
+      translateY: -30
+    },
+    0.43: {
+      translateY: -30
+    },
+    0.53: {
+      translateY: 0
+    },
+    0.7: {
+      translateY: -15
+    },
+    0.8: {
+      translateY: 0
+    },
+    0.9: {
+      translateY: -4
+    },
+    1: {
+      translateY: 0
+    }
+  };
+  var flash = exports.flash = {
+    0: {
+      opacity: 1
+    },
+    0.25: {
+      opacity: 0
+    },
+    0.5: {
+      opacity: 1
+    },
+    0.75: {
+      opacity: 0
+    },
+    1: {
+      opacity: 1
+    }
+  };
+  var jello = exports.jello = {
+    0: {
+      skewX: '0deg',
+      skewY: '0deg'
+    },
+    0.111: {
+      skewX: '0deg',
+      skewY: '0deg'
+    },
+    0.222: {
+      skewX: '-12.5deg',
+      skewY: '-12.5deg'
+    },
+    0.333: {
+      skewX: '6.25deg',
+      skewY: '6.25deg'
+    },
+    0.444: {
+      skewX: '-3.125deg',
+      skewY: '-3.125deg'
+    },
+    0.555: {
+      skewX: '1.5625deg',
+      skewY: '1.5625deg'
+    },
+    0.666: {
+      skewX: '-0.78125deg',
+      skewY: '-0.78125deg'
+    },
+    0.777: {
+      skewX: '0.390625deg',
+      skewY: '0.390625deg'
+    },
+    0.888: {
+      skewX: '-0.1953125deg',
+      skewY: '-0.1953125deg'
+    },
+    1: {
+      skewX: '0deg',
+      skewY: '0deg'
+    }
+  };
+  var pulse = exports.pulse = {
+    0: {
+      scale: 1
+    },
+    0.5: {
+      scale: 1.05
+    },
+    1: {
+      scale: 1
+    }
+  };
+  var rotate = exports.rotate = {
+    0: {
+      rotate: '0deg'
+    },
+    0.25: {
+      rotate: '90deg'
+    },
+    0.5: {
+      rotate: '180deg'
+    },
+    0.75: {
+      rotate: '270deg'
+    },
+    1: {
+      rotate: '360deg'
+    }
+  };
+  var shake = exports.shake = {
+    0: {
+      translateX: 0
+    },
+    0.1: {
+      translateX: -10
+    },
+    0.2: {
+      translateX: 10
+    },
+    0.3: {
+      translateX: -10
+    },
+    0.4: {
+      translateX: 10
+    },
+    0.5: {
+      translateX: -10
+    },
+    0.6: {
+      translateX: 10
+    },
+    0.7: {
+      translateX: -10
+    },
+    0.8: {
+      translateX: 10
+    },
+    0.9: {
+      translateX: -10
+    },
+    1: {
+      translateX: 0
+    }
+  };
+  var swing = exports.swing = {
+    0: {
+      rotate: '0deg'
+    },
+    0.2: {
+      rotate: '15deg'
+    },
+    0.4: {
+      rotate: '-10deg'
+    },
+    0.6: {
+      rotate: '5deg'
+    },
+    0.8: {
+      rotate: '-5deg'
+    },
+    1: {
+      rotate: '0deg'
+    }
+  };
+  var rubberBand = exports.rubberBand = {
+    0: {
+      scaleX: 1,
+      scaleY: 1
+    },
+    0.3: {
+      scaleX: 1.25,
+      scaleY: 0.75
+    },
+    0.4: {
+      scaleX: 0.75,
+      scaleY: 1.25
+    },
+    0.5: {
+      scaleX: 1.15,
+      scaleY: 0.85
+    },
+    0.65: {
+      scaleX: 0.95,
+      scaleY: 1.05
+    },
+    0.75: {
+      scaleX: 1.05,
+      scaleY: 0.95
+    },
+    1: {
+      scaleX: 1,
+      scaleY: 1
+    }
+  };
+  var tada = exports.tada = {
+    0: {
+      scale: 1,
+      rotate: '0deg'
+    },
+    0.1: {
+      scale: 0.9,
+      rotate: '-3deg'
+    },
+    0.2: {
+      scale: 0.9,
+      rotate: '-3deg'
+    },
+    0.3: {
+      scale: 1.1,
+      rotate: '-3deg'
+    },
+    0.4: {
+      rotate: '3deg'
+    },
+    0.5: {
+      rotate: '-3deg'
+    },
+    0.6: {
+      rotate: '3deg'
+    },
+    0.7: {
+      rotate: '-3deg'
+    },
+    0.8: {
+      rotate: '3deg'
+    },
+    0.9: {
+      scale: 1.1,
+      rotate: '3deg'
+    },
+    1: {
+      scale: 1,
+      rotate: '0deg'
+    }
+  };
+  var wobble = exports.wobble = {
+    0: {
+      translateX: 0,
+      rotate: '0deg'
+    },
+    0.15: {
+      translateX: -25,
+      rotate: '-5deg'
+    },
+    0.3: {
+      translateX: 20,
+      rotate: '3deg'
+    },
+    0.45: {
+      translateX: -15,
+      rotate: '-3deg'
+    },
+    0.6: {
+      translateX: 10,
+      rotate: '2deg'
+    },
+    0.75: {
+      translateX: -5,
+      rotate: '-1deg'
+    },
+    1: {
+      translateX: 0,
+      rotate: '0deg'
+    }
+  };
+},680,[],"node_modules\\react-native-animatable\\definitions\\attention-seekers.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var bounceIn = exports.bounceIn = {
+    0: {
+      opacity: 0,
+      scale: 0.3
+    },
+    0.2: {
+      scale: 1.1
+    },
+    0.4: {
+      scale: 0.9
+    },
+    0.6: {
+      opacity: 1,
+      scale: 1.03
+    },
+    0.8: {
+      scale: 0.97
+    },
+    1: {
+      opacity: 1,
+      scale: 1
+    }
+  };
+  var bounceInUp = exports.bounceInUp = {
+    0: {
+      opacity: 0,
+      translateY: 800
+    },
+    0.6: {
+      opacity: 1,
+      translateY: -25
+    },
+    0.75: {
+      translateY: 10
+    },
+    0.9: {
+      translateY: -5
+    },
+    1: {
+      translateY: 0
+    }
+  };
+  var bounceInDown = exports.bounceInDown = {
+    0: {
+      opacity: 0,
+      translateY: -800
+    },
+    0.6: {
+      opacity: 1,
+      translateY: 25
+    },
+    0.75: {
+      translateY: -10
+    },
+    0.9: {
+      translateY: 5
+    },
+    1: {
+      translateY: 0
+    }
+  };
+  var bounceInRight = exports.bounceInRight = {
+    0: {
+      opacity: 0,
+      translateX: 600
+    },
+    0.6: {
+      opacity: 1,
+      translateX: -20
+    },
+    0.75: {
+      translateX: 8
+    },
+    0.9: {
+      translateX: -4
+    },
+    1: {
+      translateX: 0
+    }
+  };
+  var bounceInLeft = exports.bounceInLeft = {
+    0: {
+      opacity: 0,
+      translateX: -600
+    },
+    0.6: {
+      opacity: 1,
+      translateX: 20
+    },
+    0.75: {
+      translateX: -8
+    },
+    0.9: {
+      translateX: 4
+    },
+    1: {
+      translateX: 0
+    }
+  };
+},681,[],"node_modules\\react-native-animatable\\definitions\\bouncing-entrances.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var bounceOut = exports.bounceOut = {
+    0: {
+      opacity: 1,
+      scale: 1
+    },
+    0.2: {
+      scale: 0.9
+    },
+    0.5: {
+      opacity: 1,
+      scale: 1.11
+    },
+    0.55: {
+      scale: 1.11
+    },
+    1: {
+      opacity: 0,
+      scale: 0.3
+    }
+  };
+  var bounceOutUp = exports.bounceOutUp = {
+    0: {
+      opacity: 1,
+      translateY: 0
+    },
+    0.2: {
+      opacity: 1,
+      translateY: -10
+    },
+    0.4: {
+      translateY: 20
+    },
+    0.45: {
+      translateY: 20
+    },
+    0.55: {
+      opacity: 1
+    },
+    1: {
+      opacity: 0,
+      translateY: -800
+    }
+  };
+  var bounceOutDown = exports.bounceOutDown = {
+    0: {
+      opacity: 1,
+      translateY: 0
+    },
+    0.2: {
+      opacity: 1,
+      translateY: 10
+    },
+    0.4: {
+      translateY: -20
+    },
+    0.45: {
+      translateY: -20
+    },
+    0.55: {
+      opacity: 1
+    },
+    1: {
+      opacity: 0,
+      translateY: 800
+    }
+  };
+  var bounceOutRight = exports.bounceOutRight = {
+    0: {
+      opacity: 1,
+      translateX: 0
+    },
+    0.2: {
+      opacity: 1,
+      translateX: 10
+    },
+    0.4: {
+      translateX: -20
+    },
+    0.45: {
+      translateX: -20
+    },
+    0.55: {
+      opacity: 1
+    },
+    1: {
+      opacity: 0,
+      translateX: 600
+    }
+  };
+  var bounceOutLeft = exports.bounceOutLeft = {
+    0: {
+      opacity: 1,
+      translateX: 0
+    },
+    0.2: {
+      opacity: 1,
+      translateX: -10
+    },
+    0.4: {
+      translateX: 20
+    },
+    0.45: {
+      translateX: 20
+    },
+    0.55: {
+      opacity: 1
+    },
+    1: {
+      opacity: 0,
+      translateX: -600
+    }
+  };
+},682,[],"node_modules\\react-native-animatable\\definitions\\bouncing-exits.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  function makeFadeInTranslation(translationType, fromValue) {
+    return {
+      from: _defineProperty({
+        opacity: 0
+      }, translationType, fromValue),
+      to: _defineProperty({
+        opacity: 1
+      }, translationType, 0)
+    };
+  }
+
+  var fadeIn = exports.fadeIn = {
+    from: {
+      opacity: 0
+    },
+    to: {
+      opacity: 1
+    }
+  };
+  var fadeInDown = exports.fadeInDown = makeFadeInTranslation('translateY', -100);
+  var fadeInUp = exports.fadeInUp = makeFadeInTranslation('translateY', 100);
+  var fadeInLeft = exports.fadeInLeft = makeFadeInTranslation('translateX', -100);
+  var fadeInRight = exports.fadeInRight = makeFadeInTranslation('translateX', 100);
+  var fadeInDownBig = exports.fadeInDownBig = makeFadeInTranslation('translateY', -500);
+  var fadeInUpBig = exports.fadeInUpBig = makeFadeInTranslation('translateY', 500);
+  var fadeInLeftBig = exports.fadeInLeftBig = makeFadeInTranslation('translateX', -500);
+  var fadeInRightBig = exports.fadeInRightBig = makeFadeInTranslation('translateX', 500);
+},683,[],"node_modules\\react-native-animatable\\definitions\\fading-entrances.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  function makeFadeOutTranslation(translationType, toValue) {
+    return {
+      from: _defineProperty({
+        opacity: 1
+      }, translationType, 0),
+      to: _defineProperty({
+        opacity: 0
+      }, translationType, toValue)
+    };
+  }
+
+  var fadeOut = exports.fadeOut = {
+    from: {
+      opacity: 1
+    },
+    to: {
+      opacity: 0
+    }
+  };
+  var fadeOutDown = exports.fadeOutDown = makeFadeOutTranslation('translateY', 100);
+  var fadeOutUp = exports.fadeOutUp = makeFadeOutTranslation('translateY', -100);
+  var fadeOutLeft = exports.fadeOutLeft = makeFadeOutTranslation('translateX', -100);
+  var fadeOutRight = exports.fadeOutRight = makeFadeOutTranslation('translateX', 100);
+  var fadeOutDownBig = exports.fadeOutDownBig = makeFadeOutTranslation('translateY', 500);
+  var fadeOutUpBig = exports.fadeOutUpBig = makeFadeOutTranslation('translateY', -500);
+  var fadeOutLeftBig = exports.fadeOutLeftBig = makeFadeOutTranslation('translateX', -500);
+  var fadeOutRightBig = exports.fadeOutRightBig = makeFadeOutTranslation('translateX', 500);
+},684,[],"node_modules\\react-native-animatable\\definitions\\fading-exits.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var flipInX = exports.flipInX = {
+    easing: 'ease-in',
+    style: {
+      backfaceVisibility: 'visible',
+      perspective: 400
+    },
+    0: {
+      opacity: 0,
+      rotateX: '90deg'
+    },
+    0.4: {
+      rotateX: '-20deg'
+    },
+    0.6: {
+      opacity: 1,
+      rotateX: '10deg'
+    },
+    0.8: {
+      rotateX: '-5deg'
+    },
+    1: {
+      opacity: 1,
+      rotateX: '0deg'
+    }
+  };
+  var flipInY = exports.flipInY = {
+    easing: 'ease-in',
+    style: {
+      backfaceVisibility: 'visible',
+      perspective: 400
+    },
+    0: {
+      opacity: 0,
+      rotateY: '90deg'
+    },
+    0.4: {
+      rotateY: '-20deg'
+    },
+    0.6: {
+      opacity: 1,
+      rotateY: '10deg'
+    },
+    0.8: {
+      rotateY: '-5deg'
+    },
+    1: {
+      opacity: 1,
+      rotateY: '0deg'
+    }
+  };
+  var flipOutX = exports.flipOutX = {
+    style: {
+      backfaceVisibility: 'visible',
+      perspective: 400
+    },
+    0: {
+      opacity: 1,
+      rotateX: '0deg'
+    },
+    0.3: {
+      opacity: 1,
+      rotateX: '-20deg'
+    },
+    1: {
+      opacity: 0,
+      rotateX: '90deg'
+    }
+  };
+  var flipOutY = exports.flipOutY = {
+    style: {
+      backfaceVisibility: 'visible',
+      perspective: 400
+    },
+    0: {
+      opacity: 1,
+      rotateY: '0deg'
+    },
+    0.3: {
+      opacity: 1,
+      rotateY: '-20deg'
+    },
+    1: {
+      opacity: 0,
+      rotateY: '90deg'
+    }
+  };
+},685,[],"node_modules\\react-native-animatable\\definitions\\flippers.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var lightSpeedIn = exports.lightSpeedIn = {
+    easing: 'ease-out',
+    0: {
+      opacity: 0,
+      translateX: 200,
+      skewX: '-30deg'
+    },
+    0.6: {
+      opacity: 1,
+      translateX: 0,
+      skewX: '20deg'
+    },
+    0.8: {
+      skewX: '-5deg'
+    },
+    1: {
+      opacity: 1,
+      translateX: 0,
+      skewX: '0deg'
+    }
+  };
+  var lightSpeedOut = exports.lightSpeedOut = {
+    easing: 'ease-in',
+    0: {
+      opacity: 1,
+      translateX: 0,
+      skewX: '0deg'
+    },
+    1: {
+      opacity: 0,
+      translateX: 200,
+      skewX: '30deg'
+    }
+  };
+},686,[],"node_modules\\react-native-animatable\\definitions\\lightspeed.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  function makeSlideInTranslation(translationType, fromValue) {
+    return {
+      from: _defineProperty({}, translationType, fromValue),
+      to: _defineProperty({}, translationType, 0)
+    };
+  }
+
+  var slideInDown = exports.slideInDown = makeSlideInTranslation('translateY', -100);
+  var slideInUp = exports.slideInUp = makeSlideInTranslation('translateY', 100);
+  var slideInLeft = exports.slideInLeft = makeSlideInTranslation('translateX', -100);
+  var slideInRight = exports.slideInRight = makeSlideInTranslation('translateX', 100);
+},687,[],"node_modules\\react-native-animatable\\definitions\\sliding-entrances.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  function makeSlideOutTranslation(translationType, fromValue) {
+    return {
+      from: _defineProperty({}, translationType, 0),
+      to: _defineProperty({}, translationType, fromValue)
+    };
+  }
+
+  var slideOutDown = exports.slideOutDown = makeSlideOutTranslation('translateY', 100);
+  var slideOutUp = exports.slideOutUp = makeSlideOutTranslation('translateY', -100);
+  var slideOutLeft = exports.slideOutLeft = makeSlideOutTranslation('translateX', -100);
+  var slideOutRight = exports.slideOutRight = makeSlideOutTranslation('translateX', 100);
+},688,[],"node_modules\\react-native-animatable\\definitions\\sliding-exits.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.zoomInRight = exports.zoomInLeft = exports.zoomInUp = exports.zoomInDown = exports.zoomIn = undefined;
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  function makeZoomInTranslation(translationType, pivotPoint) {
+    var modifier = Math.min(1, Math.max(-1, pivotPoint));
+    return {
+      easing: _reactNative.Easing.bezier(0.175, 0.885, 0.32, 1),
+      0: _defineProperty({
+        opacity: 0,
+        scale: 0.1
+      }, translationType, modifier * -1000),
+      0.6: _defineProperty({
+        opacity: 1,
+        scale: 0.457
+      }, translationType, pivotPoint),
+      1: _defineProperty({
+        scale: 1
+      }, translationType, 0)
+    };
+  }
+
+  var zoomIn = exports.zoomIn = {
+    from: {
+      opacity: 0,
+      scale: 0.3
+    },
+    0.5: {
+      opacity: 1
+    },
+    to: {
+      opacity: 1,
+      scale: 1
+    }
+  };
+  var zoomInDown = exports.zoomInDown = makeZoomInTranslation('translateY', 60);
+  var zoomInUp = exports.zoomInUp = makeZoomInTranslation('translateY', -60);
+  var zoomInLeft = exports.zoomInLeft = makeZoomInTranslation('translateX', 10);
+  var zoomInRight = exports.zoomInRight = makeZoomInTranslation('translateX', -10);
+},689,[12],"node_modules\\react-native-animatable\\definitions\\zooming-entrances.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.zoomOutRight = exports.zoomOutLeft = exports.zoomOutUp = exports.zoomOutDown = exports.zoomOut = undefined;
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  function makeZoomOutTranslation(translationType, pivotPoint) {
+    var modifier = Math.min(1, Math.max(-1, pivotPoint));
+    return {
+      easing: _reactNative.Easing.bezier(0.175, 0.885, 0.32, 1),
+      0: _defineProperty({
+        opacity: 1,
+        scale: 1
+      }, translationType, 0),
+      0.4: _defineProperty({
+        opacity: 1,
+        scale: 0.457
+      }, translationType, pivotPoint),
+      1: _defineProperty({
+        opacity: 0,
+        scale: 0.1
+      }, translationType, modifier * -1000)
+    };
+  }
+
+  var zoomOut = exports.zoomOut = {
+    from: {
+      opacity: 1,
+      scale: 1
+    },
+    0.5: {
+      opacity: 1,
+      scale: 0.3
+    },
+    to: {
+      opacity: 0,
+      scale: 0
+    }
+  };
+  var zoomOutDown = exports.zoomOutDown = makeZoomOutTranslation('translateY', 60);
+  var zoomOutUp = exports.zoomOutUp = makeZoomOutTranslation('translateY', -60);
+  var zoomOutLeft = exports.zoomOutLeft = makeZoomOutTranslation('translateX', 10);
+  var zoomOutRight = exports.zoomOutRight = makeZoomOutTranslation('translateX', -10);
+},690,[12],"node_modules\\react-native-animatable\\definitions\\zooming-exits.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.slideOutRight = exports.slideOutLeft = exports.slideOutUp = exports.slideOutDown = exports.slideInRight = exports.slideInLeft = exports.slideInUp = exports.slideInDown = undefined;
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  var _Dimensions$get = _reactNative.Dimensions.get("window"),
+      height = _Dimensions$get.height,
+      width = _Dimensions$get.width;
+
+  var makeSlideTranslation = function makeSlideTranslation(translationType, fromValue, toValue) {
+    return {
+      from: _defineProperty({}, translationType, fromValue),
+      to: _defineProperty({}, translationType, toValue)
+    };
+  };
+
+  var slideInDown = exports.slideInDown = makeSlideTranslation("translateY", -height, 0);
+  var slideInUp = exports.slideInUp = makeSlideTranslation("translateY", height, 0);
+  var slideInLeft = exports.slideInLeft = makeSlideTranslation("translateX", -width, 0);
+  var slideInRight = exports.slideInRight = makeSlideTranslation("translateX", width, 0);
+  var slideOutDown = exports.slideOutDown = makeSlideTranslation("translateY", 0, height);
+  var slideOutUp = exports.slideOutUp = makeSlideTranslation("translateY", 0, -height);
+  var slideOutLeft = exports.slideOutLeft = makeSlideTranslation("translateX", 0, -width);
+  var slideOutRight = exports.slideOutRight = makeSlideTranslation("translateX", 0, width);
+},691,[12],"node_modules\\react-native-modal\\src\\animations.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  exports.default = _reactNative.StyleSheet.create({
+    backdrop: {
+      position: "absolute",
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      opacity: 0,
+      backgroundColor: "black"
+    },
+    content: {
+      flex: 1,
+      justifyContent: "center"
+    }
+  });
+},692,[12],"node_modules\\react-native-modal\\src\\index.style.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
   var _react2 = _require(_dependencyMap[0], "react");
 
@@ -88716,7 +92002,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Connect;
-},669,[118,179,129,586,589,592,670,675],"app\\screens\\Connect.js");
+},693,[118,179,129,586,589,592,694,699],"app\\screens\\Connect.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88735,7 +92021,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.GameList = _GameList2.default;
   exports.styles = _styles2.default;
-},670,[671,672],"app\\components\\GameList\\index.js");
+},694,[695,696],"app\\components\\GameList\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88805,7 +92091,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = GameList;
-},671,[118,12,129,672,673,674],"app\\components\\GameList\\GameList.js");
+},695,[118,12,129,696,697,698],"app\\components\\GameList\\GameList.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88843,7 +92129,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       alignItems: 'center'
     }
   });
-},672,[493,12],"app\\components\\GameList\\styles.js");
+},696,[493,12],"app\\components\\GameList\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88908,7 +92194,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = ListItem;
-},673,[129,118,12,672],"app\\components\\GameList\\ListItem.js");
+},697,[129,118,12,696],"app\\components\\GameList\\ListItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88938,7 +92224,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = Separator;
-},674,[118,12,672],"app\\components\\GameList\\Separator.js");
+},698,[118,12,696],"app\\components\\GameList\\Separator.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88956,7 +92242,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     key: '3',
     name: 'game the third'
   }];
-},675,[],"app\\data\\testGames.js");
+},699,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -89077,7 +92363,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Waiting;
-},676,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+},700,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
 require(44);
 require(11);
 //# sourceMappingURL=index.map
