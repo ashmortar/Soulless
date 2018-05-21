@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Dimensions, Image, View, PanResponder, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import { Loop, Stage, TileMap } from "react-game-kit/native";
+import { Loop, Stage, TileMap, Sprite } from "react-game-kit/native";
 
 import Board from "./Board";
 
@@ -63,8 +63,8 @@ export default class Engine extends Component {
       highlightedTileMap: this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0),
       showHighlighted: false,
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
-      finishedUpdatingFogMap: true,
-
+      spritePlaying: true,
+      spriteScale: this.props.tileWidth / this.props.zoomedInValue,
     };
   }
 
@@ -231,7 +231,7 @@ export default class Engine extends Component {
               <TouchableOpacity style={[styles]}>
                 <Image
                   resizeMode="stretch"
-                  style={[styles, { opacity: 0.25 }]}
+                  style={[styles, { opacity: 0.1 }]}
                   source={src}
                 />
               </TouchableOpacity>
@@ -263,9 +263,21 @@ export default class Engine extends Component {
                 tileWidth={this.props.tileWidth}
               />
 
-              <Image style={{ position: 'absolute', top: (this.state.playerY - this.props.tileWidth), left: this.state.playerX, height: (this.props.tileWidth * 2), width: this.props.tileWidth, resizeMode: 'contain' }} source={require("../data/images/human.png")} />
-
+              {/* <Image style={{ position: 'absolute', top: (this.state.playerY - this.props.tileWidth), left: this.state.playerX, height: (this.props.tileWidth * 6), width: (this.props.tileWidth * 3), resizeMode: 'contain' }} source={require("../data/images/monsterIdle.gif")} /> */}
               {this.renderHighlighted()}
+              <Sprite
+                offset={[0,0]}
+                repeat={true}
+                scale={this.state.spriteScale}
+                src={require("../data/images/monsterIdle_long.png")}
+                steps={[15]}
+                state={0}
+                onPlayStateChanged={this.handlePlayStateChanged}
+                tileHeight={200}
+                ticksPerFrame={15}
+                tileWidth={200}
+                style={this.getSpriteStyle()}
+              />
               
             </View>
           </View>
@@ -273,4 +285,19 @@ export default class Engine extends Component {
       </Loop>
     );
   }
+
+  getSpriteStyle = () => {
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return ({ top: (this.state.playerY - (this.props.tileWidth*4)), left: (this.state.playerX - (this.props.tileWidth*2)) });
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return ({ top: this.state.playerY - this.props.tileWidth*6.3, left: this.state.playerX - this.props.tileWidth*4.3 });
+    }
+  }
+
+  handlePlayStateChanged = (state) => {
+    this.setState({
+      spritePlaying: state ? true : false,
+    });
+  }
+
 }

@@ -33,7 +33,7 @@ class Game extends Component {
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
     // offset should be so that edge walls correspond to scroll bounce
-    this.cellsPerScreen = 13;
+    this.cellsPerScreen = 20;
     this.scrollOffset = Math.floor(this.cellsPerScreen / 2);
     let { width, height } = Dimensions.get("window");
     this.viewPortWidth = width;
@@ -46,7 +46,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: true,
+      isHuman: false,
       tileWidth: this.zoomedOutValue,
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -1503,8 +1503,8 @@ class Game extends Component {
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
           echolocate={this.echoLocate}
           tileWidth={this.state.tileWidth}
-          // debug
-          monsterMoves={this.showMonsterMoves}
+          zoomedInValue={this.zoomedInValue}
+          zoomedOutValue={this.zoomedOutValue}
         />
       </SideMenu>
       </SideMenu>
@@ -1534,8 +1534,8 @@ class Game extends Component {
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
           echolocate={this.echoLocate}
           tileWidth={this.state.tileWidth}
-          // debug
-          monsterMoves={this.showMonsterMoves}
+          zoomedInValue={this.zoomedInValue}
+          zoomedOutValue={this.zoomedOutValue}
         />
       </SideMenu>
       </SideMenu>
