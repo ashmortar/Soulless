@@ -14,6 +14,7 @@ export default class Engine extends Component {
     isHuman: PropTypes.bool,
     move: PropTypes.func,
     tileWidth: PropTypes.number,
+    incrementTurnCounter: PropTypes.func,
   };
 
   constructor(props) {
@@ -46,7 +47,7 @@ export default class Engine extends Component {
     this.beginningY = this.getBeginningY();
 
 
-    // this.getBeginningY(); 
+    // this.getBeginningY();
     this.highlightedTileRanges = [];
     this.state = {
       playerSpace: this.props.playerSpace,
@@ -97,7 +98,7 @@ export default class Engine extends Component {
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
       onPanResponderGrant: (evt, gestureState) => {
-        
+
       },
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
@@ -198,6 +199,7 @@ export default class Engine extends Component {
       ) {
         let newPlayerTile = this.getTileFromXY(x, y);
         this.props.move(newPlayerTile);
+        this.props.incrementTurnCounter();
       }
     }
   }
@@ -278,7 +280,7 @@ export default class Engine extends Component {
                 tileWidth={200}
                 style={this.getSpriteStyle()}
               />
-              
+
             </View>
           </View>
         </Stage>
