@@ -270,7 +270,7 @@ export default class Engine extends Component {
               <Sprite
                 offset={[0,0]}
                 repeat={true}
-                scale={this.state.spriteScale}
+                scale={this.state.spriteScale*0.8}
                 src={require("../data/images/monsterIdle_long.png")}
                 steps={[15]}
                 state={0}
@@ -290,9 +290,9 @@ export default class Engine extends Component {
 
   getSpriteStyle = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ top: (this.state.playerY - (this.props.tileWidth*4)), left: (this.state.playerX - (this.props.tileWidth*2)) });
+      return ({ top: (this.state.playerY - (this.props.tileWidth*3.5)), left: (this.state.playerX - (this.props.tileWidth*2)) });
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({ top: this.state.playerY - this.props.tileWidth*6.3, left: this.state.playerX - this.props.tileWidth*4.3 });
+      return ({ top: this.state.playerY - this.props.tileWidth*6, left: this.state.playerX - this.props.tileWidth*4.3 });
     }
   }
 

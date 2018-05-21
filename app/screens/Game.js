@@ -68,7 +68,7 @@ class Game extends Component {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
-    // this.echoLocate();
+    this.echoLocate('radius');
     // this.showHumanMoves();
     this.assignImageKeys();
   }
@@ -1089,11 +1089,11 @@ class Game extends Component {
     // console.log('echolocate');
     // TODO fix all cases to reveal wall tiles but not beyond them
     // TODO fix restrictions to check for wall instead of edge
-    // direction = "radius";
+    // direction = "north";
     const index = this.humanSpace.name;
     switch (direction) {
       case 'north':
-        if (index - this.cellsInRow < 0 || this.elements[index].value < 1) {
+        if (index - this.cellsInRow < 0 || this.elements[index - this.cellsInRow].value < 1) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate North from here..',
@@ -1102,8 +1102,8 @@ class Game extends Component {
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value > 0) {
             cell.isRevealed = true;
-            if (cell - this.cellsInRow > 0) {
-              cell = this.elements[cell - this.cellsInRow];
+            if (cell.name - this.cellsInRow > 0) {
+              cell = this.elements[cell.name - this.cellsInRow];
             } else {
               break;
             }
@@ -1121,10 +1121,10 @@ class Game extends Component {
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
-            if ((cell + 1) % this.cellsInRow === 0) {
+            if ((cell.name + 1) % this.cellsInRow === 0) {
               break;
             } else {
-              cell = this.elements[cell + 1];
+              cell = this.elements[cell.name + 1];
             }
           }
         }
@@ -1140,8 +1140,8 @@ class Game extends Component {
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value > 0) {
             cell.isRevealed = true;
-            if (cell + this.cellsInRow < this.cellsTotal) {
-              cell = this.elements[cell + this.cellsInRow];
+            if (cell.name + this.cellsInRow < this.cellsTotal) {
+              cell = this.elements[cell.name + this.cellsInRow];
             } else {
               break;
             }
@@ -1159,10 +1159,10 @@ class Game extends Component {
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
-            if ((cell - 1) % this.cellsInRow === 0) {
+            if ((cell.name - 1) % this.cellsInRow === 0) {
               break;
             } else {
-              cell = this.elements[cell - 1];
+              cell = this.elements[cell.name - 1];
             }
           }
         }
@@ -1354,10 +1354,10 @@ class Game extends Component {
           backgroundColor: '#212121',
         }}>
           <Text style={{color:'#fff'}}>{text1}</Text>
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='North' />
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='South' />
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='East' />
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='West' />
+          <NavButton onPress={() => {this.echoLocate('north'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='North' />
+          <NavButton onPress={() => {this.echoLocate('south'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='South' />
+          <NavButton onPress={() => {this.echoLocate('east'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='East' />
+          <NavButton onPress={() => {this.echoLocate('west'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='West' />
           <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='Burst' />
         </View>
       );

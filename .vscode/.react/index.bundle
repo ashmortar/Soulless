@@ -62910,7 +62910,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     }
   });
-},509,[510,585,598,693,700],"app\\config\\routes.js");
+},509,[510,585,598,695,702],"app\\config\\routes.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -76562,7 +76562,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         switch (direction) {
           case 'north':
-            if (index - _this.cellsInRow < 0 || _this.elements[index].value < 1) {
+            if (index - _this.cellsInRow < 0 || _this.elements[index - _this.cellsInRow].value < 1) {
               _reactNative.Alert.alert('Uh-Oh', 'Cannot Echo-locate North from here..');
             } else {
               var cell = _this.elements[index - _this.cellsInRow];
@@ -76570,8 +76570,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               while (cell.value > 0) {
                 cell.isRevealed = true;
 
-                if (cell - _this.cellsInRow > 0) {
-                  cell = _this.elements[cell - _this.cellsInRow];
+                if (cell.name - _this.cellsInRow > 0) {
+                  cell = _this.elements[cell.name - _this.cellsInRow];
                 } else {
                   break;
                 }
@@ -76589,10 +76589,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               while (_cell.value > 0) {
                 _cell.isRevealed = true;
 
-                if ((_cell + 1) % _this.cellsInRow === 0) {
+                if ((_cell.name + 1) % _this.cellsInRow === 0) {
                   break;
                 } else {
-                  _cell = _this.elements[_cell + 1];
+                  _cell = _this.elements[_cell.name + 1];
                 }
               }
             }
@@ -76608,8 +76608,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               while (_cell2.value > 0) {
                 _cell2.isRevealed = true;
 
-                if (_cell2 + _this.cellsInRow < _this.cellsTotal) {
-                  _cell2 = _this.elements[_cell2 + _this.cellsInRow];
+                if (_cell2.name + _this.cellsInRow < _this.cellsTotal) {
+                  _cell2 = _this.elements[_cell2.name + _this.cellsInRow];
                 } else {
                   break;
                 }
@@ -76627,10 +76627,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               while (_cell3.value > 0) {
                 _cell3.isRevealed = true;
 
-                if ((_cell3 - 1) % _this.cellsInRow === 0) {
+                if ((_cell3.name - 1) % _this.cellsInRow === 0) {
                   break;
                 } else {
-                  _cell3 = _this.elements[_cell3 - 1];
+                  _cell3 = _this.elements[_cell3.name - 1];
                 }
               }
             }
@@ -77002,7 +77002,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             ),
             _react3.default.createElement(_Button.NavButton, {
               onPress: function onPress() {
-                return _this.setState({
+                _this.echoLocate('north');
+
+                _this.setState({
                   modal: 0
                 });
               },
@@ -77014,7 +77016,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             }),
             _react3.default.createElement(_Button.NavButton, {
               onPress: function onPress() {
-                return _this.setState({
+                _this.echoLocate('south');
+
+                _this.setState({
                   modal: 0
                 });
               },
@@ -77026,7 +77030,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             }),
             _react3.default.createElement(_Button.NavButton, {
               onPress: function onPress() {
-                return _this.setState({
+                _this.echoLocate('east');
+
+                _this.setState({
                   modal: 0
                 });
               },
@@ -77038,7 +77044,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             }),
             _react3.default.createElement(_Button.NavButton, {
               onPress: function onPress() {
-                return _this.setState({
+                _this.echoLocate('west');
+
+                _this.setState({
                   modal: 0
                 });
               },
@@ -77726,6 +77734,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         this.assignHumanStart();
         this.assignMonsterStart();
         this.assignCacheLocations();
+        this.echoLocate();
         this.assignImageKeys();
       }
     }, {
@@ -77804,7 +77813,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Game;
-},598,[118,179,129,12,586,589,599,607,608,609,666,702,667,669],"app\\screens\\Game.js");
+},598,[118,179,129,12,586,589,599,607,608,609,666,667,669,671],"app\\screens\\Game.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -88896,7 +88905,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       padding: 50
     }
   });
-},702,[118,179,129,12,703],"app\\screens\\EchoScreen.js");
+},667,[118,179,129,12,668],"app\\screens\\EchoScreen.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
 	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
 		"__packager_asset": true,
@@ -88908,7 +88917,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		"name": "echo-hands",
 		"type": "png"
 	});
-},703,[164],"app\\data\\images\\echo-hands.png");
+},668,[164],"app\\data\\images\\echo-hands.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -89281,7 +89290,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     bounceBackOnOverdraw: true,
     autoClosing: true
   };
-},667,[118,12,129,668],"node_modules\\react-native-side-menu\\build\\index.js");
+},669,[118,12,129,670],"node_modules\\react-native-side-menu\\build\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -89327,7 +89336,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       backgroundColor: 'transparent'
     })
   });
-},668,[12],"node_modules\\react-native-side-menu\\build\\styles.js");
+},670,[12],"node_modules\\react-native-side-menu\\build\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -89913,7 +89922,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.ReactNativeModal = ReactNativeModal;
   exports.default = ReactNativeModal;
-},669,[118,179,12,129,670,691,692],"node_modules\\react-native-modal\\src\\index.js");
+},671,[118,179,12,129,672,693,694],"node_modules\\react-native-modal\\src\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -89963,7 +89972,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var View = exports.View = (0, _createAnimatableComponent2.default)(_reactNative.View);
   var Text = exports.Text = (0, _createAnimatableComponent2.default)(_reactNative.Text);
   var Image = exports.Image = (0, _createAnimatableComponent2.default)(_reactNative.Image);
-},670,[671,673,12,674,679],"node_modules\\react-native-animatable\\index.js");
+},672,[673,675,12,676,681],"node_modules\\react-native-animatable\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90063,7 +90072,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     cache[cacheKey] = compiled;
     return compiled;
   }
-},671,[672],"node_modules\\react-native-animatable\\createAnimation.js");
+},673,[674],"node_modules\\react-native-animatable\\createAnimation.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90088,7 +90097,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
     return flatStyle;
   }
-},672,[12],"node_modules\\react-native-animatable\\flattenStyle.js");
+},674,[12],"node_modules\\react-native-animatable\\flattenStyle.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90123,7 +90132,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       registerAnimation(animationName, (0, _createAnimation2.default)(definitions[animationName]));
     });
   }
-},673,[671],"node_modules\\react-native-animatable\\registry.js");
+},675,[673],"node_modules\\react-native-animatable\\registry.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90705,7 +90714,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
     }, _temp));
   }
-},674,[118,179,129,12,675,676,672,671,673,678],"node_modules\\react-native-animatable\\createAnimatableComponent.js");
+},676,[118,179,129,12,677,678,674,673,675,680],"node_modules\\react-native-animatable\\createAnimatableComponent.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90731,7 +90740,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     });
     return wrapped;
   }
-},675,[],"node_modules\\react-native-animatable\\wrapStyleTransforms.js");
+},677,[],"node_modules\\react-native-animatable\\wrapStyleTransforms.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90756,7 +90765,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     });
     return values;
   }
-},676,[672,677],"node_modules\\react-native-animatable\\getStyleValues.js");
+},678,[674,679],"node_modules\\react-native-animatable\\getStyleValues.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90816,7 +90825,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
     return 0;
   }
-},677,[],"node_modules\\react-native-animatable\\getDefaultStyleValue.js");
+},679,[],"node_modules\\react-native-animatable\\getDefaultStyleValue.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90856,7 +90865,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     'ease-in-out-back': _reactNative.Easing.bezier(0.68, -0.55, 0.265, 1.55)
   };
   exports.default = EASING_FUNCTIONS;
-},678,[12],"node_modules\\react-native-animatable\\easing.js");
+},680,[12],"node_modules\\react-native-animatable\\easing.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -90993,7 +91002,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     });
   });
-},679,[680,681,682,683,684,685,686,687,688,689,690],"node_modules\\react-native-animatable\\definitions\\index.js");
+},681,[682,683,684,685,686,687,688,689,690,691,692],"node_modules\\react-native-animatable\\definitions\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91270,7 +91279,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       rotate: '0deg'
     }
   };
-},680,[],"node_modules\\react-native-animatable\\definitions\\attention-seekers.js");
+},682,[],"node_modules\\react-native-animatable\\definitions\\attention-seekers.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91374,7 +91383,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       translateX: 0
     }
   };
-},681,[],"node_modules\\react-native-animatable\\definitions\\bouncing-entrances.js");
+},683,[],"node_modules\\react-native-animatable\\definitions\\bouncing-entrances.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91491,7 +91500,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       translateX: -600
     }
   };
-},682,[],"node_modules\\react-native-animatable\\definitions\\bouncing-exits.js");
+},684,[],"node_modules\\react-native-animatable\\definitions\\bouncing-exits.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91526,7 +91535,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var fadeInUpBig = exports.fadeInUpBig = makeFadeInTranslation('translateY', 500);
   var fadeInLeftBig = exports.fadeInLeftBig = makeFadeInTranslation('translateX', -500);
   var fadeInRightBig = exports.fadeInRightBig = makeFadeInTranslation('translateX', 500);
-},683,[],"node_modules\\react-native-animatable\\definitions\\fading-entrances.js");
+},685,[],"node_modules\\react-native-animatable\\definitions\\fading-entrances.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91561,7 +91570,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var fadeOutUpBig = exports.fadeOutUpBig = makeFadeOutTranslation('translateY', -500);
   var fadeOutLeftBig = exports.fadeOutLeftBig = makeFadeOutTranslation('translateX', -500);
   var fadeOutRightBig = exports.fadeOutRightBig = makeFadeOutTranslation('translateX', 500);
-},684,[],"node_modules\\react-native-animatable\\definitions\\fading-exits.js");
+},686,[],"node_modules\\react-native-animatable\\definitions\\fading-exits.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91652,7 +91661,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       rotateY: '90deg'
     }
   };
-},685,[],"node_modules\\react-native-animatable\\definitions\\flippers.js");
+},687,[],"node_modules\\react-native-animatable\\definitions\\flippers.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91691,7 +91700,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       skewX: '30deg'
     }
   };
-},686,[],"node_modules\\react-native-animatable\\definitions\\lightspeed.js");
+},688,[],"node_modules\\react-native-animatable\\definitions\\lightspeed.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91710,7 +91719,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var slideInUp = exports.slideInUp = makeSlideInTranslation('translateY', 100);
   var slideInLeft = exports.slideInLeft = makeSlideInTranslation('translateX', -100);
   var slideInRight = exports.slideInRight = makeSlideInTranslation('translateX', 100);
-},687,[],"node_modules\\react-native-animatable\\definitions\\sliding-entrances.js");
+},689,[],"node_modules\\react-native-animatable\\definitions\\sliding-entrances.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91729,7 +91738,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var slideOutUp = exports.slideOutUp = makeSlideOutTranslation('translateY', -100);
   var slideOutLeft = exports.slideOutLeft = makeSlideOutTranslation('translateX', -100);
   var slideOutRight = exports.slideOutRight = makeSlideOutTranslation('translateX', 100);
-},688,[],"node_modules\\react-native-animatable\\definitions\\sliding-exits.js");
+},690,[],"node_modules\\react-native-animatable\\definitions\\sliding-exits.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91775,7 +91784,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var zoomInUp = exports.zoomInUp = makeZoomInTranslation('translateY', -60);
   var zoomInLeft = exports.zoomInLeft = makeZoomInTranslation('translateX', 10);
   var zoomInRight = exports.zoomInRight = makeZoomInTranslation('translateX', -10);
-},689,[12],"node_modules\\react-native-animatable\\definitions\\zooming-entrances.js");
+},691,[12],"node_modules\\react-native-animatable\\definitions\\zooming-entrances.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91823,7 +91832,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var zoomOutUp = exports.zoomOutUp = makeZoomOutTranslation('translateY', -60);
   var zoomOutLeft = exports.zoomOutLeft = makeZoomOutTranslation('translateX', 10);
   var zoomOutRight = exports.zoomOutRight = makeZoomOutTranslation('translateX', -10);
-},690,[12],"node_modules\\react-native-animatable\\definitions\\zooming-exits.js");
+},692,[12],"node_modules\\react-native-animatable\\definitions\\zooming-exits.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91853,7 +91862,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var slideOutUp = exports.slideOutUp = makeSlideTranslation("translateY", 0, -height);
   var slideOutLeft = exports.slideOutLeft = makeSlideTranslation("translateX", 0, -width);
   var slideOutRight = exports.slideOutRight = makeSlideTranslation("translateX", 0, width);
-},691,[12],"node_modules\\react-native-modal\\src\\animations.js");
+},693,[12],"node_modules\\react-native-modal\\src\\animations.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -91876,7 +91885,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       justifyContent: "center"
     }
   });
-},692,[12],"node_modules\\react-native-modal\\src\\index.style.js");
+},694,[12],"node_modules\\react-native-modal\\src\\index.style.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -92002,7 +92011,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Connect;
-},693,[118,179,129,586,589,592,694,699],"app\\screens\\Connect.js");
+},695,[118,179,129,586,589,592,696,701],"app\\screens\\Connect.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -92021,7 +92030,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.GameList = _GameList2.default;
   exports.styles = _styles2.default;
-},694,[695,696],"app\\components\\GameList\\index.js");
+},696,[697,698],"app\\components\\GameList\\index.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -92091,7 +92100,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = GameList;
-},695,[118,12,129,696,697,698],"app\\components\\GameList\\GameList.js");
+},697,[118,12,129,698,699,700],"app\\components\\GameList\\GameList.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -92129,7 +92138,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       alignItems: 'center'
     }
   });
-},696,[493,12],"app\\components\\GameList\\styles.js");
+},698,[493,12],"app\\components\\GameList\\styles.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -92194,7 +92203,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     onPress: _propTypes2.default.func
   };
   exports.default = ListItem;
-},697,[129,118,12,696],"app\\components\\GameList\\ListItem.js");
+},699,[129,118,12,698],"app\\components\\GameList\\ListItem.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -92224,7 +92233,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   };
 
   exports.default = Separator;
-},698,[118,12,696],"app\\components\\GameList\\Separator.js");
+},700,[118,12,698],"app\\components\\GameList\\Separator.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -92242,7 +92251,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     key: '3',
     name: 'game the third'
   }];
-},699,[],"app\\data\\testGames.js");
+},701,[],"app\\data\\testGames.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -92363,7 +92372,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp2));
 
   exports.default = Waiting;
-},700,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
+},702,[118,179,129,586,589,592,595],"app\\screens\\Waiting.js");
 require(44);
 require(11);
 //# sourceMappingURL=index.map
