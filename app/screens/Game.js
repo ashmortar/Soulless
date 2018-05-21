@@ -48,10 +48,11 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: true,
-      tileWidth: this.zoomedOutValue,
+      isHuman: false,
+      tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
+      animationVisible: true,
       modal: 0,
       modalLeft: 0,
     };
@@ -1076,6 +1077,7 @@ class Game extends Component {
   echoLocate = (direction) => {
     this.setState({
       boardFinished: false,
+      animationVisible: true,
     })
     // console.log('echolocate');
     // TODO fix all cases to reveal wall tiles but not beyond them
@@ -1259,11 +1261,13 @@ class Game extends Component {
       this.setState({
         tileWidth: this.zoomedOutValue,
         boardFinished: false,
+        animationVisible: true,
       })
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
         boardFinished: false,
+        animationVisible: true,
       })
     }
   }
@@ -1616,17 +1620,23 @@ class Game extends Component {
 
 
 
-  callback = () => (
+  boardFinishedCallback = () => (
     this.setState({
-      boardFinished: true,
+      boardFinished: !this.state.boardFinished,
+    })
+  )
+
+  showAnimationCallback = () => (
+    this.setState({
+      animationVisible: false,
     })
   )
 
   renderAnimator = () => {
-    if (!this.state.boardFinished) {
+    if (this.state.animationVisible) {
       return(
         <View style={{ backgroundColor: '#000', flex: 1 }}>
-          <EchoScreen callback={this.callback} />
+          <EchoScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} />
         </View>
       )
     }
