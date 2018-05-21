@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Picker, View, Animated, TouchableOpacity, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { Text, Picker, View, Animated, TouchableOpacity, Alert, Dimensions, ActivityIndicator, BackAndroid } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid, AnimatedGrid } from '../components/Grid';
@@ -47,6 +47,7 @@ class Game extends Component {
       playerSpace: { name: 0 },
       boardFinished: false,
       modal: 0,
+      modalLeft: 0,
     };
   }
 
@@ -1222,13 +1223,13 @@ class Game extends Component {
         this.setState({ modal: 3 });
         break;
       case 'home':
-        this.props.navigation.navigate('Home');
+        this.setState({ modalLeft: 2 });
         break;
       case 'zoom':
         //
         break;
       case 'exit':
-        //
+        this.setState({ modalLeft: 1 });
         break;
       default:
         // console.log('');
@@ -1349,6 +1350,44 @@ class Game extends Component {
           <NavButton onPress={() => this.setState({ modal: 0 })} text='East' />
           <NavButton onPress={() => this.setState({ modal: 0 })} text='West' />
           <NavButton onPress={() => {this.echoLocate(); this.setState({ modal: 0 });}} text='Burst' />
+        </View>
+      );
+    }
+    else if (this.state.modalLeft === 1) {//EXIT
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>Are you sure you want to exit?</Text>
+          <NavButton onPress={() => BackAndroid.exitApp()} text='Yes' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+
+        </View>
+      );
+    }
+    else if (this.state.modalLeft === 2) {//HOME
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>Are you sure you want to exit?</Text>
+          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+
         </View>
       );
     }
@@ -1577,6 +1616,18 @@ class Game extends Component {
         >
           {this.renderModalContent()}
         </Modal>
+
+        <Modal
+          isVisible={this.state.modalLeft != 0}
+          onBackdropPress={() => this.setState({ modalLeft: 0 })}
+          animationIn="slideInRight"
+          animationOut="slideOutLeft"
+          onSwipe={() => this.setState({ modalLeft: 0 })}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
+
       </SideMenu>
       </SideMenu>
     )
