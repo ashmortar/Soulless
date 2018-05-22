@@ -1713,7 +1713,7 @@ class Game extends Component {
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected}/>;
+    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected} shrineAmount={this.state.isHuman ? this.state.shrinesHumanClaimed : this.state.shrinesMonsterClaimed}/>;
     if (this.state.boardFinished) {
       return (
         <SideMenu
@@ -1787,7 +1787,7 @@ class Game extends Component {
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected}/>;
+    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected} shrineAmount={this.state.isHuman ? this.state.shrinesHumanClaimed : this.state.shrinesMonsterClaimed}/>;
     if (!this.state.boardFinished) {
       return (
         <SideMenu
