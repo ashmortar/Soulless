@@ -14,6 +14,7 @@ class Bar extends Component {
     outOfMoves: PropTypes.bool,
     onItemSelected: PropTypes.func,
     shrineAmount: PropTypes.number,
+    shrinesUnclaimed: PropTypes.number
   }
 
 
@@ -32,7 +33,7 @@ class Bar extends Component {
             borderColor: '#D57A66',
             borderWidth: 2,
             backgroundColor: '#343434',
-            marginLeft: Dimensions.get("window").width / 3 + 20,
+            marginLeft: Dimensions.get("window").width / 3 + 10,
           }}>
             <Text style={{ color: '#fff' }}>✓</Text>
           </View>
@@ -50,6 +51,8 @@ class Bar extends Component {
       text1 = 'Evil';
     }
     let shrineAmount = this.props.shrineAmount;
+    let shrinesUnclaimed = this.props.shrinesUnclaimed;
+
 
     // let src={require("../data/images/shrine.png")}
     return(
@@ -58,11 +61,11 @@ class Bar extends Component {
         <Text style={{color: '#fff'}}>{text1}</Text>
 
         <Image
-          style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 }}
+          style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 - 20}}
           source={require("../data/images/shrine.png")}
         />
 
-        <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}</Text>
+        <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrinesUnclaimed}</Text>
 
         {this.renderButton()}
 

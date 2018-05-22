@@ -59,6 +59,7 @@ class Game extends Component {
       modal: 0,
       modalLeft: 0,
       modalDialogOnly: 0,
+      modalPounce: 0,
       turnCounter: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
@@ -518,7 +519,7 @@ class Game extends Component {
       // bottom: i+20
       if (this.elements[i].value > 0) {
         let adjacent = 0;
-        let cellsAround = this.getIndexesOfAvailableCellsAround(i, this.cellsInRow, this.cellsTotal);
+        let cellsAround = this.getIndexesOfAvailableCellsAround(i, this.cellsInRow, this.cellsTotal, false);
 
         for (let j = 0; j < cellsAround.length; j++) {
           if (this.elements[cellsAround[j]].value > 0) {
@@ -733,10 +734,18 @@ class Game extends Component {
       cell.isRevealed = true;
       cacheArray.push(cell);
     }
+    //debug:
+    this.elements[this.monsterSpace.name + 1].hasCache = true;
+    this.elements[this.monsterSpace.name + 1].isRevealed = true;
+    cacheArray.push(this.elements[this.monsterSpace.name + 1]);
+
+    this.elements[this.humanSpace.name + 1].hasCache = true;
+    this.elements[this.humanSpace.name + 1].isRevealed = true;
+    cacheArray.push(this.elements[this.humanSpace.name + 1]);
   }
 
   compareToCacheArray = (cell, cacheArray) => {
-    console.log('cache boolean counter: ', this.assignCacheCounter);
+    // console.log('cache boolean counter: ', this.assignCacheCounter);
     this.assignCacheCounter++;
     if (cacheArray.length > 0 ) {
       for (let i = 0; i < cacheArray.length; i++) {
@@ -1077,12 +1086,12 @@ class Game extends Component {
         }
       }
     }
-    
+
   }
-  
-  
+
+
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
-  
+
   resetHighlighted = () => {
     for (let i = 0; i < this.elements.length; i++) {
       this.elements[i].isHighlighted = false;
@@ -1100,9 +1109,9 @@ class Game extends Component {
       this.elements[i].wasEchoed = false;
     }
   }
-  
+
   echoLocate = (direction) => {
-    
+
     // console.log('echolocate');
     // TODO fix all cases to reveal wall tiles but not beyond them
     // TODO fix restrictions to check for wall instead of edge
@@ -1280,11 +1289,13 @@ class Game extends Component {
         this.setState({ modal: 1 });
         break;
       case 'pounce':
+        // this.setState({ modalPounce: 1 });
         this.resetHighlighted();
-        this.setState({ modal: 2 });
+        this.monsterProcessPounce();
+        // this.setState({ modalPounce: 0 });
         break;
       case 'home':
-        this.resetHighlighted();  
+        this.resetHighlighted();
         this.setState({ modalLeft: 2 });
         break;
       case 'zoom':
@@ -1292,7 +1303,7 @@ class Game extends Component {
         this.alterZoom();
         break;
       case 'exit':
-        this.resetHighlighted();  
+        this.resetHighlighted();
         this.setState({ modalLeft: 1 });
         break;
       default:
@@ -1402,19 +1413,31 @@ class Game extends Component {
         </View>
       );
     }
-    else if (this.state.modal === 2) {//POUNCE
+    else if (this.state.modalPounce === 1) {//POUNCE
       let text1;
       let text2;
-      if (this.monsterSpace.hasHuman) {
-        text1 = 'You pounced.';
-        text2 = 'And attacked your opponent.';
-      } else if (this.monsterSpace.hasCache) {
-        text1 = 'You pounced.';
-        text2 = 'And found cache.';
-      } else {
+
+      // cellsAround.forEach((i) => {
+      //   if (this.elements[i].hasHuman) {
+      //     human = true;
+      //     // break;
+      //   }
+      //   else if (this.elements[i].hasCache) {
+      //     shrine = true;
+      //   }
+      // });
+      // if (human) {
+      //   text1 = 'You pounced.';
+      //   text2 = 'And attacked your opponent.';
+      //   //end game
+      // } else if (shrine) {
+      //   text1 = 'You pounced.';
+      //   text2 = 'And found a shrine.';
+      //
+      // } else {
         text1 = 'You pounced.';
         text2 = 'There is nothing here.';
-      }
+      // }
       return (
         <View style={{
 
@@ -1428,7 +1451,9 @@ class Game extends Component {
         }}>
           <Text style={{color:'#fff'}}>{text1}</Text>
           <Text style={{color:'#fff'}}>{text2}</Text>
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
+          <NavButton onPress={() => {
+            this.setState({ modalPounce: 0 });
+          }} text='OK' />
         </View>
       );
     }
@@ -1474,10 +1499,7 @@ class Game extends Component {
       );
     }
     else if (this.state.modal === 4) {//listen
-      if (this.state.isHuman) {
-
-      }
-      else {
+      if (!this.state.isHuman) {
         let text1 = 'Listen:';
         return (
           <View style={{
@@ -1535,6 +1557,49 @@ class Game extends Component {
         </View>
       );
     }
+  }
+
+  monsterProcessPounce = () => {
+    // let text1;
+    // let text2;
+    let cellsAround = this.getIndexesOfAvailableCellsAround(this.monsterSpace.name, this.cellsInRow, this.cellsTotal, true);
+    let human = false;
+    let shrine = false;
+    let index = this.monsterSpace.name;
+    cellsAround.forEach((i) => {
+      if (this.elements[i].hasHuman) {
+        human = true;
+        // break;
+      }
+      else if (this.elements[i].hasCache) {
+        shrine = true;
+        index = i;
+      }
+    });
+    if (human) {
+      //end game
+    } else if (shrine) {
+      this.collectShrine(this.elements[index]);
+    } else {
+      this.setState({ modalPounce: 1 });
+    }
+
+    this.incrementTurnCounter();
+
+  }
+
+  collectShrine = (item) => {
+    if (this.state.isHuman) {
+      this.setState({ shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1 });
+      this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
+    }
+    else {
+      this.setState({ shrinesMonsterClaimed: this.state.shrinesMonsterClaimed + 1 });
+      this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
+    }
+    item.hasCache = false;
+    this.showSplashScreen('shrine', false);
+
   }
 
 
@@ -1631,12 +1696,13 @@ class Game extends Component {
       // check if the space has a cache
       if (item.hasCache) {
         //take the cache
-        item.hasCache = false;
-        this.setState({
-          shrinesUnclaimed: this.state.shrinesUnclaimed - 1,
-          shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1,
-        });
-        this.showSplashScreen('shrine', false);
+        // item.hasCache = false;
+        // this.setState({
+        //   shrinesUnclaimed: this.state.shrinesUnclaimed - 1,
+        //   shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1,
+        // });
+        this.collectShrine(item);
+        // this.showSplashScreen('shrine', false);
         console.log('shrine collected: ', this.state.shrinesHumanClaimed, this.state.shrinesMonsterClaimed, this.state.shrinesUnclaimed);
       }
       this.humanSpace = item;
@@ -1801,7 +1867,13 @@ class Game extends Component {
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected} shrineAmount={this.state.isHuman ? this.state.shrinesHumanClaimed : this.state.shrinesMonsterClaimed}/>;
+    const bar = <Bar
+      outOfMoves={this.state.outOfMoves}
+      isHuman={this.state.isHuman}
+      onItemSelected={this.onItemSelected}
+      shrineAmount={this.state.isHuman ? this.state.shrinesHumanClaimed : this.state.shrinesMonsterClaimed}
+      shrinesUnclaimed={this.state.shrinesUnclaimed}
+    />;
     if (this.state.boardFinished) {
       return (
         <SideMenu
@@ -1843,6 +1915,15 @@ class Game extends Component {
           animationIn="slideInLeft"
           animationOut="slideOutRight"
           onSwipe={() => this.closeModalDialogOnly()}
+          swipeDirection="right"
+        >
+          {this.renderModalContent()}
+        </Modal>
+
+        <Modal
+          isVisible={this.state.modalPounce != 0}
+          animationIn="slideInLeft"
+          animationOut="slideOutRight"
           swipeDirection="right"
         >
           {this.renderModalContent()}
