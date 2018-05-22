@@ -1237,10 +1237,16 @@ class Game extends Component {
         }
         break;
       case 'sniff':
-        this.setState({ modalDialogOnly: 1 });
+        // this.setState({ modalDialogOnly: 1 });
+        this.setState({ modal: 3 });
         break;
       case 'listen':
-        this.setState({ modalDialogOnly: 2 });
+        if (this.state.isHuman) {
+          this.setState({ modalDialogOnly: 3 });
+        }
+        else {
+          this.setState({ modal: 4 });
+        }
         break;
       case 'echo':
         this.setState({ modal: 1 });
@@ -1301,7 +1307,7 @@ class Game extends Component {
 
 
   renderModalContent = () => {
-    if (this.state.modalDialogOnly === 1) {//SNIFF
+    if (this.state.modalDialogOnly === 1) {//SNIFF FOR HUMAN
       let cell1;
       let cell2;
       if (this.state.isHuman) {
@@ -1344,7 +1350,7 @@ class Game extends Component {
       )
     }
     // <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
-    else if (this.state.modalDialogOnly === 2) {//LISTEN
+    else if (this.state.modalDialogOnly === 3) {//LISTEN FOR HUMAN
       let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
       let text1 = 'You listened.';
       let text2 = `Opponent is ${distance} cells away`;
@@ -1416,6 +1422,49 @@ class Game extends Component {
           <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='Burst' />
         </View>
       );
+    }
+    else if (this.state.modal === 3) {//sniff
+      let text1 = 'Sniff:';
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 1 }); }} text='player' />
+          <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 2 }); }} text='shrine' />
+        </View>
+      );
+    }
+    else if (this.state.modal === 4) {//listen
+      if (this.state.isHuman) {
+
+      }
+      else {
+        let text1 = 'Listen:';
+        return (
+          <View style={{
+
+            borderWidth: 2,
+            borderColor: "#000",
+
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 22,
+            backgroundColor: '#212121',
+          }}>
+            <Text style={{color:'#fff'}}>{text1}</Text>
+            <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 3 }); }} text='player' />
+            <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 4 }); }} text='shrine' />
+          </View>
+        );
+      }
     }
     else if (this.state.modalLeft === 1) {//EXIT
       return (
@@ -1571,9 +1620,9 @@ class Game extends Component {
     }
   }
 
-  handlePressNavButton = () => {
-    this.props.navigation.navigate('Home');
-  };
+  // handlePressNavButton = () => {
+  //   this.props.navigation.navigate('Home');
+  // };
 
   handlePressGridItem = (item) => {
     if (this.counter === 0) {
@@ -1602,42 +1651,42 @@ class Game extends Component {
     this.setState({ outOfMoves: false });
   }
 
-  renderHeader = () => {
-    return (
-      <View style={{ marginBottom: 20, marginTop: 40 }}>
-        <Text>Game screen</Text>
-
-        <TouchableOpacity onPress={this.onPressZoomIn} style={{ width: 20 }}>
-          <View style={{
-            backgroundColor: '#fff',
-            alignItems: 'center',
-            marginTop: 15,
-            borderRadius: 10,
-            borderColor: '#000',
-            borderWidth: 1,
-            }}
-          >
-            <Text style={{ fontWeight: 'bold' }}>+</Text>
-          </View>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity onPress={this.onPressZoomOut} style={{ width: 20 }}>
-          <View style={{
-            backgroundColor: '#fff',
-            alignItems: 'center',
-            marginTop: 5,
-            borderRadius: 10,
-            borderColor: '#000',
-            borderWidth: 1,
-          }}>
-            <Text style={{ fontWeight: 'bold' }}>-</Text>
-          </View>
-        </TouchableOpacity>
-
-      </View>
-    );
-  };
+  // renderHeader = () => {
+  //   return (
+  //     <View style={{ marginBottom: 20, marginTop: 40 }}>
+  //       <Text>Game screen</Text>
+  //
+  //       <TouchableOpacity onPress={this.onPressZoomIn} style={{ width: 20 }}>
+  //         <View style={{
+  //           backgroundColor: '#fff',
+  //           alignItems: 'center',
+  //           marginTop: 15,
+  //           borderRadius: 10,
+  //           borderColor: '#000',
+  //           borderWidth: 1,
+  //           }}
+  //         >
+  //           <Text style={{ fontWeight: 'bold' }}>+</Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //
+  //
+  //       <TouchableOpacity onPress={this.onPressZoomOut} style={{ width: 20 }}>
+  //         <View style={{
+  //           backgroundColor: '#fff',
+  //           alignItems: 'center',
+  //           marginTop: 5,
+  //           borderRadius: 10,
+  //           borderColor: '#000',
+  //           borderWidth: 1,
+  //         }}>
+  //           <Text style={{ fontWeight: 'bold' }}>-</Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //
+  //     </View>
+  //   );
+  // };
 
   // renderFooter = () => {
   //   return (
@@ -1760,6 +1809,7 @@ class Game extends Component {
           {this.renderModalContent()}
         </Modal>
 
+
         <Modal
           isVisible={this.state.modalLeft != 0}
           onBackdropPress={() => this.setState({ modalLeft: 0 })}
@@ -1777,6 +1827,16 @@ class Game extends Component {
       )
     }
   }
+  // <Modal
+  //   isVisible={this.state.modalToOpenAnotherModal != 0}
+  //   onBackdropPress={() => this.setState({ modal: 0 })}
+  //   animationIn="slideInLeft"
+  //   animationOut="slideOutRight"
+  //   onSwipe={() => this.setState({ modal: 0 })}
+  //   swipeDirection="right"
+  // >
+  //   {this.renderModalContent()}
+  // </Modal>
 
   // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
   // <SideMenu menu={menu}>
@@ -1833,7 +1893,9 @@ class Game extends Component {
           swipeDirection="right"
         >
           {this.renderModalContent()}
+
         </Modal>
+
 
         <Modal
           isVisible={this.state.modalLeft != 0}
@@ -1852,6 +1914,16 @@ class Game extends Component {
       )
     }
   }
+  //   <Modal
+  //     isVisible={thiToOpenAnotherModaldalDialogOnly != 0}
+  //     animationIn="slideInLeft"
+  //     animationIn="slideInLeft"
+  //     animationOut="slideOutRight"
+  //     swipeDirection="right"
+  //     swipeDirection="right"
+  //   >
+  //     {this.renderModalContent()}
+  // </Modal>
 
 
   // timer() {

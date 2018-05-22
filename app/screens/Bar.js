@@ -53,12 +53,12 @@ class Bar extends Component {
 
     // let src={require("../data/images/shrine.png")}
     return(
-      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'row', alignItems: 'center', height: 40}}>
 
         <Text style={{color: '#fff'}}>{text1}</Text>
 
         <Image
-          style={{ height: 30, width: 15, marginLeft: Dimensions.get("window").width / 3 }}
+          style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 }}
           source={require("../data/images/shrine.png")}
         />
 
