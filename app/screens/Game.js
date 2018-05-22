@@ -12,7 +12,6 @@ import Bar from './Bar';
 import EchoScreen from './EchoScreen';
 import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
-import SlidingUpPanel from 'rn-sliding-up-panel';
 
 class Game extends Component {
   static propTypes = {
