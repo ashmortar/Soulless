@@ -75,7 +75,7 @@ class Game extends Component {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
-    this.echoLocate('radius');
+    this.echoLocate('initial');
     // this.showHumanMoves();
     this.assignImageKeys();
   }
@@ -1077,33 +1077,45 @@ class Game extends Component {
         }
       }
     }
-
+    
   }
-
-
+  
+  
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
-
+  
   resetHighlighted = () => {
     for (let i = 0; i < this.elements.length; i++) {
       this.elements[i].isHighlighted = false;
     }
   }
-
+  
   echoLocate = (direction) => {
-
+    
     // console.log('echolocate');
     // TODO fix all cases to reveal wall tiles but not beyond them
     // TODO fix restrictions to check for wall instead of edge
     // direction = "north";
     const index = this.humanSpace.name;
+    let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
     switch (direction) {
+      case 'initial' :
+        topLeft.isRevealed = true;
+        top.isRevealed = true;
+        topRight.isRevealed = true;
+        left.isRevealed = true;
+        right.isRevealed = true;
+        bottomLeft.isRevealed = true;
+        bottom.isRevealed = true;
+        bottomRight.isRevealed = true;
+        break;
       case 'north':
-        if (index - this.cellsInRow < 0) {
+        if (index - this.cellsInRow < 0 || this.elements[index - this.cellsInRow].value < 1) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate North from here..',
           );
         } else {
+          this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
@@ -1119,12 +1131,13 @@ class Game extends Component {
         break;
 
       case 'east':
-        if (index % this.cellsInRow === (this.cellsInRow - 1)) {
+        if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate East from here..',
           );
         } else {
+          this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
@@ -1140,12 +1153,13 @@ class Game extends Component {
         break;
 
       case 'south':
-        if (index + this.cellsInRow > this.cellsTotal) {
+        if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate South from here..',
           );
         } else {
+          this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
@@ -1161,12 +1175,13 @@ class Game extends Component {
         break;
 
       case 'west':
-        if (index % this.cellsInRow === 0) {
+        if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
           Alert.alert(
             'Uh-Oh',
             'Cannot Echo-locate West from here..',
           );
         } else {
+          this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
@@ -1182,17 +1197,24 @@ class Game extends Component {
         break;
 
       case 'radius':
-      this.showSplashScreen('hands', false);
-        let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
-        topLeft.isRevealed = true;
-        top.isRevealed = true;
-        topRight.isRevealed = true;
-        left.isRevealed = true;
-        right.isRevealed = true;
-        bottomLeft.isRevealed = true;
-        bottom.isRevealed = true;
-        bottomRight.isRevealed = true;
-        break;
+        if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
+          Alert.alert(
+            'Uh-Oh',
+            'nothing to reveal',
+          );
+        } else {
+          this.incrementTurnCounter();
+          this.showSplashScreen('hands', false);
+          topLeft.isRevealed = true;
+          top.isRevealed = true;
+          topRight.isRevealed = true;
+          left.isRevealed = true;
+          right.isRevealed = true;
+          bottomLeft.isRevealed = true;
+          bottom.isRevealed = true;
+          bottomRight.isRevealed = true;
+          break;
+        }
 
       default:
         break;
@@ -1205,6 +1227,7 @@ class Game extends Component {
     switch (item) {
       case 'endTurn':
         if (this.state.outOfMoves) {
+          this.resetHighlighted();
           this.changePlayerMode();
         }
         break;
@@ -1218,24 +1241,31 @@ class Game extends Component {
         }
         break;
       case 'sniff':
+        this.resetHighlighted();
         this.setState({ modalDialogOnly: 1 });
         break;
       case 'listen':
+        this.resetHighlighted();
         this.setState({ modalDialogOnly: 2 });
         break;
       case 'echo':
+        this.resetHighlighted();
         this.setState({ modal: 1 });
         break;
       case 'pounce':
+        this.resetHighlighted();
         this.setState({ modal: 2 });
         break;
       case 'home':
+        this.resetHighlighted();  
         this.setState({ modalLeft: 2 });
         break;
       case 'zoom':
+        this.resetHighlighted();
         this.alterZoom();
         break;
       case 'exit':
+        this.resetHighlighted();  
         this.setState({ modalLeft: 1 });
         break;
       default:
@@ -1263,6 +1293,13 @@ class Game extends Component {
     console.log(this.state.turnCounter);
     if (this.state.turnCounter >= 1) {
       this.setState({ outOfMoves: true });
+    }
+  }
+
+  decrementTurnCounter = () => {
+    this.setState({ turnCounter: this.state.turnCounter - 1});
+    if (this.state.turnCounter < 1) {
+      this.setState({ outOfMoves: false });
     }
   }
 
@@ -1382,11 +1419,11 @@ class Game extends Component {
           backgroundColor: '#212121',
         }}>
           <Text style={{color:'#fff'}}>{text1}</Text>
-          <NavButton onPress={() => {this.echoLocate('north'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='North' />
-          <NavButton onPress={() => {this.echoLocate('south'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='South' />
-          <NavButton onPress={() => {this.echoLocate('east'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='East' />
-          <NavButton onPress={() => {this.echoLocate('west'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='West' />
-          <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='Burst' />
+          <NavButton onPress={() => {this.echoLocate('north'); this.setState({ modal: 0 });}} text='North' />
+          <NavButton onPress={() => {this.echoLocate('south'); this.setState({ modal: 0 });}} text='South' />
+          <NavButton onPress={() => {this.echoLocate('east'); this.setState({ modal: 0 });}} text='East' />
+          <NavButton onPress={() => {this.echoLocate('west'); this.setState({ modal: 0 });}} text='West' />
+          <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 });}} text='Burst' />
         </View>
       );
     }
