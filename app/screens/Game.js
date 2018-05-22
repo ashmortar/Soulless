@@ -12,6 +12,7 @@ import Bar from './Bar';
 import EchoScreen from './EchoScreen';
 import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
+import SlidingUpPanel from 'rn-sliding-up-panel';
 
 class Game extends Component {
   static propTypes = {
@@ -1663,7 +1664,7 @@ class Game extends Component {
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    const bar = <Bar/>;
+    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected}/>;
     if (this.state.boardFinished) {
       return (
         <SideMenu
@@ -1731,13 +1732,13 @@ class Game extends Component {
   // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
   // <SideMenu menu={menu}>
   // const menu = <Menu navigator={navigator}/>;
+
   renderEngine2 = () => {
-  // render() {
     // const finished = this.state.boardFinished;
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    const bar = <Bar/>;
+    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected}/>;
     if (!this.state.boardFinished) {
       return (
         <SideMenu
