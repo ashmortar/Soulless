@@ -18,7 +18,7 @@ export default class AnimatedSplashScreen extends Component {
       opacity: new Animated.Value(0),
     };
   }
-  
+
   animateIn = () => {
     const { opacity } = this.state;
     Animated.timing(opacity, { toValue: 1, duration: ANIMATION_TIMER/2, useNativeDriver: true }).start();
@@ -31,7 +31,7 @@ export default class AnimatedSplashScreen extends Component {
       this.props.showAnimationCallback()
     }.bind(this), ANIMATION_TIMER);
   }
-  
+
   componentDidMount() {
     this.props.boardFinishedCallback();
     this.animateIn();
