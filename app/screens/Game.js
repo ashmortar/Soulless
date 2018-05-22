@@ -1779,7 +1779,7 @@ class Game extends Component {
 
   boardFinishedCallback = () => (
     this.setState({
-      boardFinished: !this.state.boardFinished,
+      boardFinished: true,
     })
   )
 
@@ -1794,15 +1794,15 @@ class Game extends Component {
       animationType: image,
       animationTouchable: touchable,
       animationVisible: true,
-      boardFinished: !this.state.boardFinished,
+      boardFinished: false,
     })
   }
 
   renderAnimator = () => {
     if (this.state.animationVisible) {
       return(
-        <View style={{ backgroundColor: '#000', flex: 1 }}>
-          <AnimatedSplashScreen style={{zindex: 2}} boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} />
+        <View style={{ backgroundColor: '#000', flex: 1, zIndex: 2 }}>
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} />
         </View>
       )
     }
@@ -1882,120 +1882,15 @@ class Game extends Component {
       )
     }
   }
-  // <Modal
-  //   isVisible={this.state.modalToOpenAnotherModal != 0}
-  //   onBackdropPress={() => this.setState({ modal: 0 })}
-  //   animationIn="slideInLeft"
-  //   animationOut="slideOutRight"
-  //   onSwipe={() => this.setState({ modal: 0 })}
-  //   swipeDirection="right"
-  // >
-  //   {this.renderModalContent()}
-  // </Modal>
 
-  // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-  // <SideMenu menu={menu}>
-  // const menu = <Menu navigator={navigator}/>;
-
-  renderEngine2 = () => {
-    // const finished = this.state.boardFinished;
-    let disableGestures = this.state.outOfMoves;
-    const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
-    const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected} shrineAmount={this.state.isHuman ? this.state.shrinesHumanClaimed : this.state.shrinesMonsterClaimed}/>;
-    if (!this.state.boardFinished) {
-      return (
-        <SideMenu
-        menu={menuRight}
-        menuPosition='right'
-        disableGestures={disableGestures}
-      >
-      <SideMenu
-        menu={menuLeft}
-        menuPosition='left'
-      >
-        <Engine
-          gameBoard={this.elements}
-          tilesInRow={this.cellsInRow}
-          boardFinished={this.state.boardFinished}
-          isHuman={this.state.isHuman}
-          playerSpace={this.state.playerSpace}
-          move={this.state.isHuman ? this.moveHuman : this.moveMonster}
-          echolocate={this.echoLocate}
-          tileWidth={this.state.tileWidth}
-          zoomedInValue={this.zoomedInValue}
-          zoomedOutValue={this.zoomedOutValue}
-          incrementTurnCounter={this.incrementTurnCounter}
-        />
-
-        <Modal
-          isVisible={this.state.modal != 0}
-          onBackdropPress={() => this.setState({ modal: 0 })}
-          animationIn="slideInLeft"
-          animationOut="slideOutRight"
-          onSwipe={() => this.setState({ modal: 0 })}
-          swipeDirection="right"
-        >
-          {this.renderModalContent()}
-        </Modal>
-
-        <Modal
-          isVisible={this.state.modalDialogOnly != 0}
-          onBackdropPress={() => this.closeModalDialogOnly()}
-          animationIn="slideInLeft"
-          animationOut="slideOutRight"
-          onSwipe={() => this.closeModalDialogOnly()}
-          swipeDirection="right"
-        >
-          {this.renderModalContent()}
-
-        </Modal>
-
-
-        <Modal
-          isVisible={this.state.modalLeft != 0}
-          onBackdropPress={() => this.setState({ modalLeft: 0 })}
-          animationIn="slideInRight"
-          animationOut="slideOutLeft"
-          onSwipe={() => this.setState({ modalLeft: 0 })}
-          swipeDirection="right"
-        >
-          {this.renderModalContent()}
-        </Modal>
-
-        {bar}
-      </SideMenu>
-      </SideMenu>
-      )
-    }
-  }
-  //   <Modal
-  //     isVisible={thiToOpenAnotherModaldalDialogOnly != 0}
-  //     animationIn="slideInLeft"
-  //     animationIn="slideInLeft"
-  //     animationOut="slideOutRight"
-  //     swipeDirection="right"
-  //     swipeDirection="right"
-  //   >
-  //     {this.renderModalContent()}
-  // </Modal>
-
-
-  // timer() {
-  //   setTimeout(this.callback, 2000);
-  // }
-  // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-  // <SideMenu menu={menu}>
-  // const menu = <Menu navigator={navigator}/>;
   render() {
     const finished = this.state.boardFinished;
 
       return (
         <View style={{flex:1}}>
 
-          {this.renderEngine1()}
-          {this.renderEngine2()}
           {this.renderAnimator()}
+          {this.renderEngine1()}
         </View>
       )
     }
