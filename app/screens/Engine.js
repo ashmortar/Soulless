@@ -65,7 +65,7 @@ export default class Engine extends Component {
       showHighlighted: false,
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
       spritePlaying: true,
-      spriteScale: (this.props.tileWidth * 3) / 150,
+      spriteScale: this.props.tileWidth / this.props.zoomedInValue,
     };
   }
 
