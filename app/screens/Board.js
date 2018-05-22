@@ -24,7 +24,7 @@ export default class Board extends Component {
     this.gameBoardWidth = this.props.tileWidth * 40;
     this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 0) : a.imageKey);
     // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
-    this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache && this.props.isHuman ? 1 : 0);
+    this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
     this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     this.state = {
       finishedUpdatingFogMap: this.props.boardFinished,
@@ -228,24 +228,9 @@ export default class Board extends Component {
     }
   }
 
-  render() {
-    // console.log('board rendered');
-    // Math.floor((this.props.tileWidth / this.state.zoom)/16)
-    // Math.floor(100*this.state.zoom);
-    // let scale = this.state.tileSize;
-    return (
-      <View style={{ overflow: 'hidden' }}>
-        {/* <TileMap
-          src={require("../data/images/Black_square.jpeg")}
-          tileSize={this.props.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.props.tileWidth}
-          layers={[this.tileMapArray]}
-          renderTile={tboard renderedle}
-        /> */}
-        {this.renderFogMap1()}
-        {this.renderFogMap2()}
+  renderShrines = () => {
+    if (this.props.isHuman) {
+      return (
         <TileMap
           src={require("../data/images/shrine.png")}
           tileSize={this.props.tileWidth}
@@ -261,6 +246,19 @@ export default class Board extends Component {
             />
           )}
         />
+      )
+    }
+  }
+
+  render() {
+
+    return (
+      <View style={{ overflow: 'hidden' }}>
+
+        {this.renderFogMap1()}
+        {this.renderFogMap2()}
+        {this.renderShrines()}
+
       </View>
     );
   }

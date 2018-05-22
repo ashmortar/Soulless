@@ -1088,6 +1088,18 @@ class Game extends Component {
       this.elements[i].isHighlighted = false;
     }
   }
+
+  resetWasPounced = () => {
+    for (let i = 0; i < this.elements.length; i++) {
+      this.elements[i].wasPounced = false;
+    }
+  }
+
+  resetWasEchoed = () => {
+    for (let i = 0; i < this.elements.length; i++) {
+      this.elements[i].wasEchoed = false;
+    }
+  }
   
   echoLocate = (direction) => {
     
@@ -1115,11 +1127,13 @@ class Game extends Component {
             'Cannot Echo-locate North from here..',
           );
         } else {
+          this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
+            cell.wasEchoed = true;
             if (cell.name - this.cellsInRow > 0) {
               cell = this.elements[cell.name - this.cellsInRow];
             } else {
@@ -1127,6 +1141,7 @@ class Game extends Component {
             }
           }
           cell.isRevealed = true;
+          cell.wasEchoed = true;
         }
         break;
 
@@ -1137,11 +1152,13 @@ class Game extends Component {
             'Cannot Echo-locate East from here..',
           );
         } else {
+          this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
+            cell.wasEchoed = true;
             if ((cell.name + 1) % this.cellsInRow === 0) {
               break;
             } else {
@@ -1149,6 +1166,7 @@ class Game extends Component {
             }
           }
           cell.isRevealed = true;
+          cell.wasEchoed = true;
         }
         break;
 
@@ -1159,11 +1177,13 @@ class Game extends Component {
             'Cannot Echo-locate South from here..',
           );
         } else {
+          this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
+            cell.wasEchoed = true;
             if (cell.name + this.cellsInRow < this.cellsTotal) {
               cell = this.elements[cell.name + this.cellsInRow];
             } else {
@@ -1171,6 +1191,7 @@ class Game extends Component {
             }
           }
           cell.isRevealed = true;
+          cell.wasEchoed = true;
         }
         break;
 
@@ -1181,11 +1202,13 @@ class Game extends Component {
             'Cannot Echo-locate West from here..',
           );
         } else {
+          this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
+            cell.wasEchoed = true;
             if ((cell.name - 1) % this.cellsInRow === 0) {
               break;
             } else {
@@ -1193,6 +1216,7 @@ class Game extends Component {
             }
           }
           cell.isRevealed = true;
+          cell.wasEchoed = true;
         }
         break;
 
@@ -1203,16 +1227,25 @@ class Game extends Component {
             'nothing to reveal',
           );
         } else {
+          this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
           this.showSplashScreen('hands', false);
           topLeft.isRevealed = true;
+          topLeft.wasEchoed = true;
           top.isRevealed = true;
+          top.wasEchoed = true;
           topRight.isRevealed = true;
+          topRight.wasEchoed = true;
           left.isRevealed = true;
+          left.wasEchoed = true;
           right.isRevealed = true;
+          right.wasEchoed = true;
           bottomLeft.isRevealed = true;
+          bottomLeft.wasEchoed = true;
           bottom.isRevealed = true;
+          bottom.wasEchoed = true;
           bottomRight.isRevealed = true;
+          bottomRight.wasEchoed = true;
           break;
         }
 
@@ -1227,6 +1260,11 @@ class Game extends Component {
     switch (item) {
       case 'endTurn':
         if (this.state.outOfMoves) {
+          if (this.state.isHuman) {
+            this.resetWasPounced();
+          } else {
+            this.resetWasEchoed();
+          }
           this.resetHighlighted();
           this.changePlayerMode();
         }

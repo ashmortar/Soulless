@@ -28,26 +28,8 @@ export default class Engine extends Component {
     this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.props.tileWidth;
     this.cameraX = this.playerX - this.screenDimensions.width/2;
     this.cameraY = this.playerY - this.screenDimensions.height/2;
-
-  //   left:
-  //   left > 0 ?
-  //   0 :
-  //     left < (-this.gameBoardWidth + this.screenDimensions.width) ?
-  //       (-this.gameBoardWidth + this.screenDimensions.width) :
-  //       left,
-  // top:
-  //   top > 0 ?
-  //   0 :
-  //     top < (-this.gameBoardWidth + this.screenDimensions.height) ?
-  //       (-this.gameBoardWidth + this.screenDimensions.height) :
-  //       top,
-
     this.beginningX = this.getBeginningX();
-
     this.beginningY = this.getBeginningY();
-
-
-    // this.getBeginningY();
     this.highlightedTileRanges = [];
     this.state = {
       playerSpace: this.props.playerSpace,
@@ -66,6 +48,8 @@ export default class Engine extends Component {
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
       spritePlaying: true,
       spriteScale: this.props.tileWidth / this.props.zoomedInValue,
+      wasPouncedTileMap: this.props.gameBoard.map(a => a.wasPounced ? 1 : 0),
+      wasEchoedTileMap: this.props.gameBoard.map(a => a.wasEchoed ? 1 : 0),
     };
   }
 
@@ -247,8 +231,57 @@ export default class Engine extends Component {
     }
   };
 
+  renderLastTurn = () => {
+    if (this.props.isHuman) {
+      return (
+        <TileMap
+          src={require("../data/images/greensquare.jpg")}
+          tileSize={this.props.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.props.tileWidth}
+          layers={[this.state.wasPouncedTileMap]}
+          renderTile={(tile, src, styles) => {
+            return (
+              <TouchableOpacity style={[styles]}>
+                <Image
+                  resizeMode="stretch"
+                  style={[styles, { opacity: 0.1 }]}
+                  source={src}
+                />
+              </TouchableOpacity>
+            );
+            }
+          }
+        />
+      );
+    } else if (!this.props.isHuman) {
+      return (
+        <TileMap
+          src={require("../data/images/greensquare.jpg")}
+          tileSize={this.props.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.props.tileWidth}
+          layers={[this.state.wasEchoedTileMap]}
+          renderTile={(tile, src, styles) => {
+            return (
+              <TouchableOpacity style={[styles]}>
+                <Image
+                  resizeMode="stretch"
+                  style={[styles, { opacity: 0.1 }]}
+                  source={src}
+                />
+              </TouchableOpacity>
+            );
+            }
+          }
+        />
+      );
+    }
+  }
+
   render() {
-    // console.log('engine', this.props.tileWidth)
     return (
       <Loop>
         <Stage
@@ -267,10 +300,10 @@ export default class Engine extends Component {
 
               {/* <Image style={{ position: 'absolute', top: (this.state.playerY - this.props.tileWidth), left: this.state.playerX, height: (this.props.tileWidth * 6), width: (this.props.tileWidth * 3), resizeMode: 'contain' }} source={require("../data/images/monsterIdle.gif")} /> */}
               {this.renderHighlighted()}
+              {this.renderLastTurn()}
               <Sprite
                 offset={[0,0]}
                 repeat={true}
-                // scale={this.state.spriteScale}
                 src={require("../data/images/monsterMoveIdle.png")}
                 steps={[11, 11, 11, 11]}
                 state={0}
@@ -289,12 +322,9 @@ export default class Engine extends Component {
   }
 
   getSpriteStyle = () => {
-    // zoomed in : tileWidth = 62, spriteScale = 1.24, potential sprite width = 186,  playerX = 1984 sprite x = 1944.95 /// playerY = 1116 spriteY = 1007
-    // zoomed out : tileWidth = 20 spriteScale = 0.4 potential sprite width = 60, playerX = 100, spritex = 87.4 /// playerY = 640 spriteY = 605
     if (this.props.tileWidth === this.props.zoomedInValue) {
       return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), transform: [{scale: this.state.spriteScale}] });
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      console.log('sprite scale: ', this.state.spriteScale);
       return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)/(this.state.spriteScale/1.6)), top: this.state.playerY - (this.props.tileWidth*4.3), transform: [{scale: this.state.spriteScale}] });
     }
   }

@@ -12,5 +12,7 @@ export default class Cell {
     this.hasHuman = false;
     this.hasMonster = false;
     this.hasCache = false;
+    this.wasPounced = false;
+    this.wasEchoed = false;
   }
 }
