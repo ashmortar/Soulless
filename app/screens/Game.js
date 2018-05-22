@@ -35,12 +35,12 @@ class Game extends Component {
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
     // offset should be so that edge walls correspond to scroll bounce
-    this.cellsPerScreen = 20;
+    this.cellsPerScreen = 15;
     this.scrollOffset = Math.floor(this.cellsPerScreen / 2);
     let { width, height } = Dimensions.get("window");
     this.viewPortWidth = width;
     this.viewPortHeight = height;
-    this.zoomedInValue = Math.ceil(this.viewPortHeight / this.cellsPerScreen);
+    this.zoomedInValue = 50;
     this.zoomedOutValue = Math.ceil(this.viewPortHeight / this.cellsInRow);
     this.fullGameDimension = this.zoomedInValue * this.cellsInRow;
     this.zoom = 'close';
@@ -49,7 +49,7 @@ class Game extends Component {
     this.state = {
       redraw: false,
       isHuman: true,
-      tileWidth: this.zoomedInValue,
+      tileWidth: this.zoomedOutValue,
       playerSpace: { name: 0 },
       boardFinished: false,
       animationType: 'hands',
@@ -693,8 +693,8 @@ class Game extends Component {
     }
     cell.hasHuman = true;
     this.humanSpace = cell;
+    cell.isRevealed = true;
     if (this.state.isHuman) {
-      cell.isRevealed = true;
       this.setState({ playerSpace: cell });
     }
   }

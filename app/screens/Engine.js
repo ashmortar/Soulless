@@ -65,7 +65,7 @@ export default class Engine extends Component {
       showHighlighted: false,
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
       spritePlaying: true,
-      spriteScale: this.props.tileWidth / this.props.zoomedInValue,
+      spriteScale: (this.props.tileWidth * 3) / 150,
     };
   }
 
@@ -270,14 +270,14 @@ export default class Engine extends Component {
               <Sprite
                 offset={[0,0]}
                 repeat={true}
-                scale={this.state.spriteScale*0.8}
-                src={require("../data/images/monsterIdle_long.png")}
-                steps={[15]}
+                // scale={this.state.spriteScale}
+                src={require("../data/images/monsterMoveIdle.png")}
+                steps={[11, 11, 11, 11]}
                 state={0}
                 onPlayStateChanged={this.handlePlayStateChanged}
-                tileHeight={200}
-                ticksPerFrame={15}
-                tileWidth={200}
+                tileHeight={150}
+                ticksPerFrame={10}
+                tileWidth={150}
                 style={this.getSpriteStyle()}
               />
 
@@ -289,10 +289,13 @@ export default class Engine extends Component {
   }
 
   getSpriteStyle = () => {
+    // zoomed in : tileWidth = 62, spriteScale = 1.24, potential sprite width = 186,  playerX = 1984 sprite x = 1944.95 /// playerY = 1116 spriteY = 1007
+    // zoomed out : tileWidth = 20 spriteScale = 0.4 potential sprite width = 60, playerX = 100, spritex = 87.4 /// playerY = 640 spriteY = 605
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ top: (this.state.playerY - (this.props.tileWidth*3.5)), left: (this.state.playerX - (this.props.tileWidth*2)) });
+      return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), transform: [{scale: this.state.spriteScale}] });
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({ top: this.state.playerY - this.props.tileWidth*6, left: this.state.playerX - this.props.tileWidth*4.3 });
+      console.log('sprite scale: ', this.state.spriteScale);
+      return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)/(this.state.spriteScale/1.6)), top: this.state.playerY - (this.props.tileWidth*4.3), transform: [{scale: this.state.spriteScale}] });
     }
   }
 
