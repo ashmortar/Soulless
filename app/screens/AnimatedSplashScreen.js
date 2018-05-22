@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, StyleSheet, TouchableOpacity } from 'react-native';
 
-const ANIMATION_TIMER = 2000;
+const ANIMATION_TIMER = 1000;
 
 export default class AnimatedSplashScreen extends Component {
   static propTypes = {
     showAnimationCallback: PropTypes.func,
     boardFinishedCallback: PropTypes.func,
     animationType: PropTypes.string,
+    touchable: PropTypes.bool,
   }
 
   constructor(props) {
@@ -34,7 +35,7 @@ export default class AnimatedSplashScreen extends Component {
   componentDidMount() {
     this.props.boardFinishedCallback();
     this.animateIn();
-    if (this.props.animationType === "shrine") {
+    if (!this.props.touchable) {
       setTimeout(function() {
         this.animateOut();
       }.bind(this), ANIMATION_TIMER);
@@ -43,20 +44,28 @@ export default class AnimatedSplashScreen extends Component {
 
   animatedOpacity = () => ({ opacity: this.state.opacity })
 
+  renderImage = () => {
+    if (this.props.animationType === 'shrine') {
+      return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/shrine.png")} />);
+    } else if (this.props.animationType === 'hands') {
+      return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/echo-hands.png")} />);
+    }
+  }
+
 // animatedSize = () => ({ width: this.state.size })
 
   render() {
-    if (this.props.animationType === "shrine") {
+    if (!this.props.touchable) {
       return (
         <Animated.View style={[styles.background, this.animatedOpacity()]}>
-          <Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/shrine.png")} />
+          {this.renderImage()}
         </Animated.View>
       );
     } else {
       return (
         <Animated.View style={[styles.background, this.animatedOpacity()]}>
           <TouchableOpacity onPress={this.animateOut}>
-            <Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/echo-hands.png")} />
+            {this.renderImage()}
           </TouchableOpacity>
         </Animated.View>
       );

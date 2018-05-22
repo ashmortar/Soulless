@@ -54,6 +54,7 @@ class Game extends Component {
       playerSpace: { name: 0 },
       boardFinished: false,
       animationType: 'hands',
+      animationTouchable: true,
       animationVisible: true,
       modal: 0,
       modalLeft: 0,
@@ -1103,11 +1104,7 @@ class Game extends Component {
             'Cannot Echo-locate North from here..',
           );
         } else {
-          this.setState({
-            boardFinished: !this.state.boardFinished,
-            animationType: 'hands',
-            animationVisible: true,
-          })
+          this.showSplashScreen('hands', false);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1128,11 +1125,7 @@ class Game extends Component {
             'Cannot Echo-locate East from here..',
           );
         } else {
-          this.setState({
-            boardFinished: !this.state.boardFinished,
-            animationType: 'hands',
-            animationVisible: true,
-          })
+          this.showSplashScreen('hands', false);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -1153,11 +1146,7 @@ class Game extends Component {
             'Cannot Echo-locate South from here..',
           );
         } else {
-          this.setState({
-            boardFinished: !this.state.boardFinished,
-            animationType: 'hands',
-            animationVisible: true,
-          })
+          this.showSplashScreen('hands', false);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1178,11 +1167,7 @@ class Game extends Component {
             'Cannot Echo-locate West from here..',
           );
         } else {
-          this.setState({
-            boardFinished: !this.state.boardFinished,
-            animationType: 'hands',
-            animationVisible: true,
-          })
+          this.showSplashScreen('hands', false);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -1197,11 +1182,7 @@ class Game extends Component {
         break;
 
       case 'radius':
-        this.setState({
-          boardFinished: !this.state.boardFinished,
-          animationType: 'hands',
-          animationVisible: true,
-        })
+      this.showSplashScreen('hands', false);
         let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
         topLeft.isRevealed = true;
         top.isRevealed = true;
@@ -1266,17 +1247,13 @@ class Game extends Component {
     if(this.state.tileWidth === this.zoomedInValue) {
       this.setState({
         tileWidth: this.zoomedOutValue,
-        boardFinished: this.state.boardFinished,
-        animationType: 'hands',
-        animationVisible: true,
       })
+      this.showSplashScreen('hands', false);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
-        boardFinished: !this.state.boardFinished,
-        animationType: 'hands',
-        animationVisible: true,
       })
+      this.showSplashScreen('hands', false);
     }
   }
 
@@ -1290,11 +1267,7 @@ class Game extends Component {
   }
 
   changePlayerMode = () => {
-    this.setState({
-      animationType: 'hands',
-      animationVisible: true,
-      boardFinished: !this.state.boardFinished
-     });
+    this.showSplashScreen('hands', true);
     this.handleChangePlayer();
     // this.setState({ boardFinished: !this.state.boardFinished });
   }
@@ -1555,9 +1528,8 @@ class Game extends Component {
         this.setState({
           shrinesUnclaimed: this.state.shrinesUnclaimed - 1,
           shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1,
-          animationType: 'shrine',
-          animationVisible: true,
-        })
+        });
+        this.showSplashScreen('shrine', false);
         console.log('shrine collected: ', this.state.shrinesHumanClaimed, this.state.shrinesMonsterClaimed, this.state.shrinesUnclaimed);
       }
       this.humanSpace = item;
@@ -1694,11 +1666,20 @@ class Game extends Component {
     })
   )
 
+  showSplashScreen = (image, touchable) => {
+    this.setState({
+      animationType: image,
+      animationTouchable: touchable,
+      animationVisible: true,
+      boardFinished: !this.state.boardFinished,
+    })
+  }
+
   renderAnimator = () => {
     if (this.state.animationVisible) {
       return(
         <View style={{ backgroundColor: '#000', flex: 1 }}>
-          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} />
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} />
         </View>
       )
     }
