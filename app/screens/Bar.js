@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity, View, StyleSheet, Dimensions } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet, Dimensions, Image } from 'react-native';
 
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
@@ -10,9 +10,10 @@ import { Blurb } from '../components/Blurb';
 
 class Bar extends Component {
   static propTypes = {
-    isHuman: PropTypes.bool,//1 - human, 2 - monster
+    isHuman: PropTypes.bool,
     outOfMoves: PropTypes.bool,
     onItemSelected: PropTypes.func,
+    shrineAmount: PropTypes.number,
   }
 
 
@@ -31,6 +32,7 @@ class Bar extends Component {
             borderColor: '#D57A66',
             borderWidth: 2,
             backgroundColor: '#343434',
+            marginLeft: Dimensions.get("window").width / 3 + 20,
           }}>
             <Text style={{ color: '#fff' }}>✓</Text>
           </View>
@@ -47,10 +49,20 @@ class Bar extends Component {
     } else {
       text1 = 'Evil';
     }
+    let shrineAmount = this.props.shrineAmount;
+
+    // let src={require("../data/images/shrine.png")}
     return(
-      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'row', alignItems: 'center', height: 40}}>
 
         <Text style={{color: '#fff'}}>{text1}</Text>
+
+        <Image
+          style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 }}
+          source={require("../data/images/shrine.png")}
+        />
+
+        <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}</Text>
 
         {this.renderButton()}
 
