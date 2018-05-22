@@ -100,8 +100,8 @@ class Menu extends Component {
         }}>Settings</Text>
 
         <NavButton
-          onPress={() => this.props.onItemSelected('endTurn')}
-          text={'end turn'}
+          onPress={() => this.props.onItemSelected('toolBar')}
+          text={'show toolbar'}
         />
 
         <NavButton

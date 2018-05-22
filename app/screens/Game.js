@@ -9,6 +9,7 @@ import Cell from '../data/Cell';
 import Engine from './Engine';
 import Menu from './Menu';
 import AnimatedSplashScreen from './AnimatedSplashScreen';
+import Bar from './Bar';
 import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
 
@@ -1289,10 +1290,10 @@ class Game extends Component {
   }
 
   changePlayerMode = () => {
-    this.setState({ 
+    this.setState({
       animationType: 'hands',
       animationVisible: true,
-      boardFinished: !this.state.boardFinished 
+      boardFinished: !this.state.boardFinished
      });
     this.handleChangePlayer();
     // this.setState({ boardFinished: !this.state.boardFinished });
@@ -1661,7 +1662,24 @@ class Game extends Component {
   //   );
   // };
 
+  renderBar = () => {
+    return(
+      <View style={{backgroundColor:'#555', padding: 10}}>
+        <Text style={{alignItems: 'flex-end'}}>HEY</Text>
 
+        <TouchableOpacity style={{alignItems: 'flex-end'}} onPress={()=>{console.log('pressed');}}>
+          <View style={{    padding: 10,
+              borderRadius: 15,
+              borderColor: '#d94400',
+              borderWidth: 2,
+              backgroundColor: '#000' }}>
+            <Text style={{ color: '#fff' }}>hey</Text>
+          </View>
+        </TouchableOpacity>
+
+      </View>
+    );
+  }
 
 
   boardFinishedCallback = () => (
@@ -1695,6 +1713,7 @@ class Game extends Component {
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
+    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected}/>;
     if (this.state.boardFinished) {
       return (
         <SideMenu
@@ -1751,6 +1770,8 @@ class Game extends Component {
         >
           {this.renderModalContent()}
         </Modal>
+
+        {bar}
       </SideMenu>
       </SideMenu>
       )
@@ -1760,12 +1781,13 @@ class Game extends Component {
   // const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
   // <SideMenu menu={menu}>
   // const menu = <Menu navigator={navigator}/>;
+
   renderEngine2 = () => {
-  // render() {
     // const finished = this.state.boardFinished;
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
+    const bar = <Bar outOfMoves={this.state.outOfMoves} isHuman={this.state.isHuman} onItemSelected={this.onItemSelected}/>;
     if (!this.state.boardFinished) {
       return (
         <SideMenu
@@ -1824,6 +1846,7 @@ class Game extends Component {
           {this.renderModalContent()}
         </Modal>
 
+        {bar}
       </SideMenu>
       </SideMenu>
       )
