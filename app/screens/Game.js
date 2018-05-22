@@ -1679,7 +1679,7 @@ class Game extends Component {
     if (this.state.animationVisible) {
       return(
         <View style={{ backgroundColor: '#000', flex: 1 }}>
-          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} />
+          <AnimatedSplashScreen style={{zindex: 2}} boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} />
         </View>
       )
     }

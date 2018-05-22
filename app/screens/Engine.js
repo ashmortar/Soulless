@@ -257,7 +257,7 @@ export default class Engine extends Component {
           style={{ backgroundColor: "#000" }}
         >
           <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1}} {...this._panResponder.panHandlers}>
-            <View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.gameBoardWidth, height: this.gameBoardWidth }}  >
+            <View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.gameBoardWidth, height: this.gameBoardWidth }} >
               <Board
                 gameBoard={this.props.gameBoard}
                 isHuman={this.props.isHuman}
