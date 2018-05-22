@@ -33,7 +33,9 @@ export default class AnimatedSplashScreen extends Component {
   }
   
   componentDidMount() {
-    this.props.boardFinishedCallback();
+    setTimeout(function() {
+      this.props.boardFinishedCallback()
+    }.bind(this), ANIMATION_TIMER)
     this.animateIn();
     if (!this.props.touchable) {
       setTimeout(function() {
