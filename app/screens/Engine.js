@@ -363,12 +363,12 @@ export default class Engine extends Component {
         <Sprite
           offset={[0,0]}
           repeat={true}
-          src={require("../data/images/Priest-static.png")}
-          steps={[0]}
+          src={require("../data/images/priestIdle.png")}
+          steps={[17]}
           state={0}
           onPlayStateChanged={this.handlePlayStateChanged}
-          tileHeight={150}
-          tileWidth={55}
+          tileHeight={128}
+          tileWidth={64}
           style={this.getSpriteStyle()}
         />
       );
@@ -422,10 +422,10 @@ export default class Engine extends Component {
     if (this.props.isHuman) {
       if (this.props.tileWidth === this.props.zoomedInValue) {
         // return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), transform: [{scale: this.state.spriteScale}] });
-        return ({ left: this.state.playerX, top: this.state.playerY - this.props.tileWidth*1.75, transform: [{scale: this.state.spriteScale*0.7}] });
+        return ({ left: this.state.playerX - this.props.tileWidth*0.1, top: this.state.playerY - this.props.tileWidth*1.6, transform: [{scale: this.state.spriteScale}] });
 
       } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return ({ left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*4, transform: [{scale: this.state.spriteScale*0.7}] });
+        return ({ left: this.state.playerX - this.props.tileWidth*1.1, top: this.state.playerY - this.props.tileWidth*3.5, transform: [{scale: this.state.spriteScale}] });
       }
     } else {
       if (this.props.tileWidth === this.props.zoomedInValue) {
