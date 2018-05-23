@@ -171,7 +171,7 @@ export default class Engine extends Component {
     setTimeout(function() {Animated.parallel([
       Animated.timing(left, { toValue: -newX, duration: 2000}),
       Animated.timing(top, { toValue: -newY, duration: 2000}),
-    ]).start();}.bind(this), 1000);
+    ]).start();}.bind(this), 2000);
   }
 
   componentDidUpdate() {
