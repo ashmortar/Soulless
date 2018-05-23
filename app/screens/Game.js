@@ -34,6 +34,9 @@ class Game extends Component {
     this.zoomedInValue = 50;
     this.zoomedOutValue = Math.ceil(this.viewPortHeight / this.cellsInRow);
     this.allowedLengthOfWhiteLine = 14; // density
+    this.userWon = null;
+    this.humanShrinesToWin = 9;
+    this.monsterShrinesToWin = 4;
 
     this.state = {
       redraw: false,
@@ -72,9 +75,13 @@ class Game extends Component {
   // }
 
   componentWillUnmount() {
-    this.setState({ modal: 0 });
-    this.setState({ modalLeft: 0 });
-    this.setState({ modalDialogOnly: 0 });
+    this.setState({
+      modal: 0,
+      modalLeft: 0,
+      modalDialogOnly: 0,
+      modalPounce: 0,
+      modalAlert: 0,
+    });
   }
 
   createMap = () => {
@@ -679,17 +686,26 @@ class Game extends Component {
   }
 
   assignMonsterStart = () => {
-    let cell = this.getRandomCell();
-    let distance = this.findShortestPath(cell, this.humanSpace);
-    while (distance < 25) {
-      console.log(`assign monster counter: ${this.assignMonsterCounter}`);
-      this.assignMonsterCounter++;
-      cell = this.getRandomCell();
-      distance = this.findShortestPath(cell, this.humanSpace);
-      if (this.assignMonsterCounter % 5 === 0) {
-        this.assignHumanStart();
-      }
-    }
+    // let cell = this.getRandomCell();
+    // let distance = this.findShortestPath(cell, this.humanSpace);
+    // while (distance < 25) {
+    //   console.log(`assign monster counter: ${this.assignMonsterCounter}`);
+    //   this.assignMonsterCounter++;
+    //   cell = this.getRandomCell();
+    //   distance = this.findShortestPath(cell, this.humanSpace);
+    //   if (this.assignMonsterCounter % 5 === 0) {
+    //     this.assignHumanStart();
+    //   }
+    // }
+    // cell.hasMonster = true;
+    // this.monsterSpace = cell;
+    // if (!this.state.isHuman) {
+    //   this.setState({ playerSpace: cell });
+    // }
+
+
+    // DEBUG:
+    let cell = this.humanSpace;
     cell.hasMonster = true;
     this.monsterSpace = cell;
     if (!this.state.isHuman) {
@@ -1609,25 +1625,50 @@ class Game extends Component {
     });
     if (human) {
       //end game
+      this.userWon = 'monster';
+      this.gameOver();
     } else if (shrine) {
       this.collectShrine(this.elements[index]);
     } else {
       this.setState({ modalPounce: 1 });
     }
-
     this.incrementTurnCounter();
+  }
 
+  // sleep = (milliseconds) => {
+  //   var start = new Date().getTime();
+  //   for (var i = 0; i < 1e7; i++) {
+  //     if ((new Date().getTime() - start) > milliseconds){
+  //       break;
+  //     }
+  //   }
+  // }
+
+
+  gameOver = () => {
+    this.showSplashScreen('hands', true, 2000);
+    // this.sleep(2000);
+    // this.props.navigation.navigate('Home');
   }
 
   collectShrine = (item) => {
     if (this.state.isHuman) {
       this.setState({ shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
+      if (this.state.shrinesHumanClaimed >= this.humanShrinesToWin) {
+        this.userWon = 'human';
+        this.gameOver();
+      }
     }
     else {
       this.setState({ shrinesMonsterClaimed: this.state.shrinesMonsterClaimed + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
+      if (this.state.shrinesMonsterClaimed >= this.monsterShrinesToWin) {
+        this.userWon = 'monster';
+        this.gameOver();
+      }
     }
+
     item.hasCache = false;
     this.showSplashScreen('shrine', false, 2000);
 
@@ -1784,6 +1825,7 @@ class Game extends Component {
     this.setState({
       animationVisible: false,
     })
+    console.log('animation callback');
   )
 
   showSplashScreen = (image, touchable, duration) => {
