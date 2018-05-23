@@ -15,7 +15,6 @@ export default class Board extends Component {
 
   constructor(props) {
     super(props);
-    this.counter = 0;
     this.screenDimensions = Dimensions.get("window");
     this.sourceWidth = this.props.tileWidth;
     this.gameBoardWidth = this.props.tileWidth * 40;
@@ -177,7 +176,7 @@ export default class Board extends Component {
     }
   };
 
-  renderFogMap1 = () => {
+  renderBasement = () => {
     if (this.state.finishedUpdatingFogMap) {
       return (
         <View>
@@ -191,22 +190,6 @@ export default class Board extends Component {
             renderTile={this.renderTile}
           />
         </View>
-      );
-    }
-  }
-  
-  renderFogMap2 = () => {
-    if (!this.state.finishedUpdatingFogMap) {
-      return (
-        <TileMap
-          src={require("../data/images/Black_square.jpeg")}
-          tileSize={this.props.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.props.tileWidth}
-          layers={[this.state.tileMap]}
-          renderTile={this.renderTile}
-        />
       );
     }
   }
@@ -237,8 +220,7 @@ export default class Board extends Component {
     return (
       <View style={{ overflow: 'hidden' }}>
 
-        {this.renderFogMap1()}
-        {this.renderFogMap2()}
+        {this.renderBasement()}
         {this.renderShrines()}
 
       </View>

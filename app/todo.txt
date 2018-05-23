@@ -28,7 +28,6 @@ but when swipe up it would have the controls? /shrug
 ~~~~~~~~~~~~~~~~~~~~~~~~
 --experiment with moving boardFinished boolean into Engine for echo
   re-renders
---remove fog map 1/2 in place of switch off of boardFinished boolean
 --shrine being 2 tall can obfuscate wall top tiles above them, maybe
   change image
 
