@@ -1622,6 +1622,7 @@ class Game extends Component {
     // let text1;
     // let text2;
     let cellsAround = this.getIndexesOfAvailableCellsAround(this.monsterSpace.name, this.cellsInRow, this.cellsTotal, true);
+    cellsAround.push(this.monsterSpace.name);
     let human = false;
     let shrine = false;
     let index = this.monsterSpace.name;
