@@ -61,7 +61,7 @@ export default class Engine extends Component {
         let feedbackSquare;
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
-            feedbackSquare = this.props.gameBoard[i];
+            feedbackSquare = this.props.gameBoard[i + 41];
             return ((Math.floor(feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
           }
         }
@@ -87,7 +87,7 @@ export default class Engine extends Component {
         let feedbackSquare;
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
-            feedbackSquare = this.props.gameBoard[i];
+            feedbackSquare = this.props.gameBoard[i + 41];
             return (((feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
           }
         }
