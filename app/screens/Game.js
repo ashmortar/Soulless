@@ -36,7 +36,8 @@ class Game extends Component {
     this.allowedLengthOfWhiteLine = 14; // density
     this.userWon = null;
     this.humanShrinesToWin = 9;
-    this.monsterShrinesToWin = 4;
+    this.monsterShrinesToWin = 5;
+    this.animationCallback = this.showAnimationCallback;
 
     this.state = {
       redraw: false,
@@ -56,7 +57,7 @@ class Game extends Component {
       turnCounter: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
-      shrinesHumanClaimed: 0,
+      shrinesHumanClaimed: 8,
       shrinesMonsterClaimed: 0,
     };
   }
@@ -715,7 +716,7 @@ class Game extends Component {
 
   assignCacheLocations = () => {
     let cacheArray = [this.humanSpace, this.monsterSpace];
-    for (let i = 0; i <= this.cacheTotal; i++) {
+    for (let i = 1; i <= this.cacheTotal; i++) {
       let cell = this.getRandomCell();
       while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache || this.compareToCacheArray(cell, cacheArray)) {
         cell = this.getRandomCell();
@@ -1635,42 +1636,41 @@ class Game extends Component {
     this.incrementTurnCounter();
   }
 
-  // sleep = (milliseconds) => {
-  //   var start = new Date().getTime();
-  //   for (var i = 0; i < 1e7; i++) {
-  //     if ((new Date().getTime() - start) > milliseconds){
-  //       break;
-  //     }
-  //   }
-  // }
-
 
   gameOver = () => {
-    this.showSplashScreen('hands', true, 2000);
-    // this.sleep(2000);
-    // this.props.navigation.navigate('Home');
+    this.animationCallback = () => {
+      this.props.navigation.navigate('GameOver');
+    }
+    if (this.userWon === 'human') {
+      this.showSplashScreen('priestWon', false, 2000);
+    }
+    else if (this.userWon === 'monster') {
+      this.showSplashScreen('evilWon', false, 2000);
+    }
   }
 
   collectShrine = (item) => {
     if (this.state.isHuman) {
-      this.setState({ shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1 });
-      this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
-      if (this.state.shrinesHumanClaimed >= this.humanShrinesToWin) {
+      if (this.state.shrinesHumanClaimed + 1 >= this.humanShrinesToWin) {
         this.userWon = 'human';
         this.gameOver();
       }
+      this.setState({ shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1 });
+      this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
     }
     else {
-      this.setState({ shrinesMonsterClaimed: this.state.shrinesMonsterClaimed + 1 });
-      this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
-      if (this.state.shrinesMonsterClaimed >= this.monsterShrinesToWin) {
+      if (this.state.shrinesMonsterClaimed + 1 >= this.monsterShrinesToWin) {
         this.userWon = 'monster';
         this.gameOver();
       }
+      this.setState({ shrinesMonsterClaimed: this.state.shrinesMonsterClaimed + 1 });
+      this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
     }
 
-    item.hasCache = false;
-    this.showSplashScreen('shrine', false, 2000);
+    if (!this.userWon) {
+      item.hasCache = false;
+      this.showSplashScreen('shrine', false, 2000);
+    }
 
   }
 
@@ -1822,10 +1822,10 @@ class Game extends Component {
   )
 
   showAnimationCallback = () => (
+    console.log('animation callback'),
     this.setState({
       animationVisible: false,
     })
-    console.log('animation callback');
   )
 
   showSplashScreen = (image, touchable, duration) => {
@@ -1842,7 +1842,7 @@ class Game extends Component {
     if (this.state.animationVisible) {
       return(
         <View style={{ backgroundColor: '#000', flex: 1, zIndex: 2 }}>
-          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.animationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
         </View>
       )
     }
