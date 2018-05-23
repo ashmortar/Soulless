@@ -24,25 +24,15 @@ class Game extends Component {
     this.assignCacheCounter = 0;
     this.assignMonsterCounter = 0;
 
-    this.scale = 0;
     this.elements = [];
-    this.start = null;
-    this.end = null;
-    this.counter = 0;
     this.humanSpace = null;
     this.monsterSpace = null;
     this.cacheTotal = 13;
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
-    this.cellsPerScreen = 15;
-    this.scrollOffset = Math.floor(this.cellsPerScreen / 2);
-    let { width, height } = Dimensions.get("window");
-    this.viewPortWidth = width;
-    this.viewPortHeight = height;
+    this.viewPortHeight = Dimensions.get("window").height;
     this.zoomedInValue = 50;
     this.zoomedOutValue = Math.ceil(this.viewPortHeight / this.cellsInRow);
-    this.fullGameDimension = this.zoomedInValue * this.cellsInRow;
-    this.zoom = 'close';
     this.allowedLengthOfWhiteLine = 14; // density
 
     this.state = {
@@ -74,7 +64,6 @@ class Game extends Component {
     this.assignMonsterStart();
     this.assignCacheLocations();
     this.echoLocate('initial');
-    // this.showHumanMoves();
     this.assignImageKeys();
   }
 
@@ -1310,19 +1299,17 @@ class Game extends Component {
 
   incrementTurnCounter = () => {
     this.setState({ turnCounter: this.state.turnCounter + 1 });
-    console.log('--------------------------');
-    console.log(this.state.turnCounter);
     if (this.state.turnCounter >= 1) {
       this.setState({ outOfMoves: true });
     }
   }
 
-  decrementTurnCounter = () => {
-    this.setState({ turnCounter: this.state.turnCounter - 1});
-    if (this.state.turnCounter < 1) {
-      this.setState({ outOfMoves: false });
-    }
-  }
+  // decrementTurnCounter = () => {
+  //   this.setState({ turnCounter: this.state.turnCounter - 1});
+  //   if (this.state.turnCounter < 1) {
+  //     this.setState({ outOfMoves: false });
+  //   }
+  // }
 
   changePlayerMode = () => {
     this.showSplashScreen('hands', true);
@@ -1394,42 +1381,42 @@ class Game extends Component {
       )
     }
 
-  else if (this.state.modalDialogOnly === 2) {//SNIFF FOR CLOSEST SHRINE
-    let monsterIndex = this.monsterSpace.name;
-    let { shrine } = this.findClosestShrine();
-    let shrineIndex = shrine.name;
-    let direction = '';
-    if (Math.floor(shrineIndex / this.cellsInRow) > Math.floor(monsterIndex / this.cellsInRow)) {
-      direction += 'S';
-    } else if (Math.floor(shrineIndex / this.cellsInRow) < Math.floor(monsterIndex / this.cellsInRow)) {
-      direction += 'N';
+    else if (this.state.modalDialogOnly === 2) {//SNIFF FOR CLOSEST SHRINE
+      let monsterIndex = this.monsterSpace.name;
+      let { shrine } = this.findClosestShrine();
+      let shrineIndex = shrine.name;
+      let direction = '';
+      if (Math.floor(shrineIndex / this.cellsInRow) > Math.floor(monsterIndex / this.cellsInRow)) {
+        direction += 'S';
+      } else if (Math.floor(shrineIndex / this.cellsInRow) < Math.floor(monsterIndex / this.cellsInRow)) {
+        direction += 'N';
+      }
+      if (shrineIndex % this.cellsInRow > monsterIndex % this.cellsInRow) {
+        direction += 'E';
+      } else if (shrineIndex % this.cellsInRow < monsterIndex % this.cellsInRow) {
+        direction += 'W';
+      }
+
+      let text1 = 'You sniffed.';
+      let text2 = `Shrine is in ${direction} direction from you.`;
+
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff'}}>{text2}</Text>
+          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+        </View>
+      )
     }
-    if (shrineIndex % this.cellsInRow > monsterIndex % this.cellsInRow) {
-      direction += 'E';
-    } else if (shrineIndex % this.cellsInRow < monsterIndex % this.cellsInRow) {
-      direction += 'W';
-    }
-
-    let text1 = 'You sniffed.';
-    let text2 = `Shrine is in ${direction} direction from you.`;
-
-    return (
-      <View style={{
-
-        borderWidth: 2,
-        borderColor: "#000",
-
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 22,
-        backgroundColor: '#212121',
-      }}>
-        <Text style={{color:'#fff'}}>{text1}</Text>
-        <Text style={{color:'#fff'}}>{text2}</Text>
-        <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
-      </View>
-    )
-  }
     // <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
     else if (this.state.modalDialogOnly === 3) {//LISTEN FOR HUMAN
       let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
@@ -1558,26 +1545,6 @@ class Game extends Component {
         );
       }
     }
-    // else if (this.state.modal === 2) {//uh-oh
-    //   if (this.state.isHuman) {
-    //     let text1 = "You can't echo in that direction";
-    //     return (
-    //       <View style={{
-    //
-    //         borderWidth: 2,
-    //         borderColor: "#000",
-    //
-    //         alignItems: 'center',
-    //         justifyContent: 'center',
-    //         padding: 22,
-    //         backgroundColor: '#212121',
-    //       }}>
-    //         <Text style={{color:'#fff'}}>{text1}</Text>
-    //         <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 3 }); }} text='OK' />
-    //       </View>
-    //     );
-    //   }
-    // }
     else if (this.state.modalLeft === 1) {//EXIT
       return (
         <View style={{
@@ -1768,17 +1735,6 @@ class Game extends Component {
       );
     }
   }
-
-  handlePressGridItem = (item) => {
-    if (this.counter === 0) {
-      this.start = item;
-      this.counter = 1;
-    } else if (this.counter === 1) {
-      this.end = item;
-      this.findShortestPath(this.start, this.end);
-      this.counter = 0;
-    }
-  };
 
   handleChangePlayer = () => {
     if (this.state.isHuman) {

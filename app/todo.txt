@@ -53,7 +53,6 @@ TODO
 ---------Game-----------
 ~~~~~~~~~~~~~~~~~~~~~~~~
 --echo modal into directional arrows??
---remove unused constructor fields
 --put all props into proptypes
 --try make board generation async so that "loading" screen will come up
   on component render and become touchable when board is complete
