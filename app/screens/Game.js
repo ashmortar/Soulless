@@ -57,7 +57,7 @@ class Game extends Component {
       turnCounter: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
-      shrinesHumanClaimed: 8,
+      shrinesHumanClaimed: 0,
       shrinesMonsterClaimed: 0,
     };
   }
@@ -687,31 +687,31 @@ class Game extends Component {
   }
 
   assignMonsterStart = () => {
-    // let cell = this.getRandomCell();
-    // let distance = this.findShortestPath(cell, this.humanSpace);
-    // while (distance < 25) {
-    //   console.log(`assign monster counter: ${this.assignMonsterCounter}`);
-    //   this.assignMonsterCounter++;
-    //   cell = this.getRandomCell();
-    //   distance = this.findShortestPath(cell, this.humanSpace);
-    //   if (this.assignMonsterCounter % 5 === 0) {
-    //     this.assignHumanStart();
-    //   }
-    // }
-    // cell.hasMonster = true;
-    // this.monsterSpace = cell;
-    // if (!this.state.isHuman) {
-    //   this.setState({ playerSpace: cell });
-    // }
-
-
-    // DEBUG:
-    let cell = this.humanSpace;
+    let cell = this.getRandomCell();
+    let distance = this.findShortestPath(cell, this.humanSpace);
+    while (distance < 25) {
+      console.log(`assign monster counter: ${this.assignMonsterCounter}`);
+      this.assignMonsterCounter++;
+      cell = this.getRandomCell();
+      distance = this.findShortestPath(cell, this.humanSpace);
+      if (this.assignMonsterCounter % 5 === 0) {
+        this.assignHumanStart();
+      }
+    }
     cell.hasMonster = true;
     this.monsterSpace = cell;
     if (!this.state.isHuman) {
       this.setState({ playerSpace: cell });
     }
+
+
+    // // DEBUG:
+    // let cell = this.humanSpace;
+    // cell.hasMonster = true;
+    // this.monsterSpace = cell;
+    // if (!this.state.isHuman) {
+    //   this.setState({ playerSpace: cell });
+    // }
   }
 
   assignCacheLocations = () => {
