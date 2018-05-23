@@ -18,7 +18,15 @@ class Bar extends Component {
   }
 
 
+
   renderButton = () => {
+    let marginLeft;
+    if (this.props.isHuman) {
+      marginLeft = Dimensions.get("window").width / 3 + 25;
+    }
+    else {
+      marginLeft = Dimensions.get("window").width / 3 + 35;
+    }
     if (this.props.outOfMoves) {
       return(
         <TouchableOpacity
@@ -33,7 +41,7 @@ class Bar extends Component {
             borderColor: '#D57A66',
             borderWidth: 2,
             backgroundColor: '#343434',
-            marginLeft: Dimensions.get("window").width / 3 + 10,
+            marginLeft: marginLeft,
           }}>
             <Text style={{ color: '#fff' }}>✓</Text>
           </View>
