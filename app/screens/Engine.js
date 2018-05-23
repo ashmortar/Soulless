@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Dimensions, Image, View, PanResponder, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Dimensions, Image, View, PanResponder, TouchableOpacity } from "react-native";
 import { Loop, Stage, TileMap, Sprite } from "react-game-kit/native";
 
 import Board from "./Board";
@@ -19,7 +19,6 @@ export default class Engine extends Component {
 
   constructor(props) {
     super(props);
-    // console.log("Engine");
     this.screenDimensions = Dimensions.get("window");
     this.gameBoardWidth = this.props.tileWidth * 40;
     this.xOffsetMax = this.gameBoardWidth - this.screenDimensions.width;

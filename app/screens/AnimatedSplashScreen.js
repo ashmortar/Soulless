@@ -54,8 +54,6 @@ export default class AnimatedSplashScreen extends Component {
     }
   }
 
-// animatedSize = () => ({ width: this.state.size })
-
   render() {
     if (!this.props.touchable) {
       return (

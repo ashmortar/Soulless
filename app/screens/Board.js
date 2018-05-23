@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { View, Dimensions, PanResponder, Image, Text } from "react-native";
 import PropTypes from "prop-types";
 import { TileMap } from "react-game-kit/native";
-// import Menu from './Menu';
-
-// const SideMenu = require('react-native-side-menu');
 
 export default class Board extends Component {
   static contextTypes = {
@@ -23,6 +20,7 @@ export default class Board extends Component {
     this.sourceWidth = this.props.tileWidth;
     this.gameBoardWidth = this.props.tileWidth * 40;
     this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 0) : a.imageKey);
+    // debug:
     // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
     this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
@@ -33,7 +31,7 @@ export default class Board extends Component {
   }
 
   getIndexFromTile = (tile) => {
-    let size = tile.size;
+    let { size } = tile;
     let x = tile.left / size;
     let y = tile.top / size;
     let index = (y * 40) + x;
@@ -43,19 +41,6 @@ export default class Board extends Component {
   fixImageStyle = (index, tile) => {
     return ({ left: ((index - 1) * this.props.tileWidth), overflow: 'hidden' });
   }
-
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   console.log('board received props');
-  //   let newFogMap = nextProps.gameBoard.map(a => this.props.isHuman ? (a.isRevealed ? a.imageKey : 9) : a.imageKey);
-  //   // console.log('received props');
-  //   if (JSON.stringify(this.state.tileMap) !== JSON.stringify(newFogMap)) {
-  //     this.setState({
-  //       finishedUpdatingFogMap: !this.state.finishedUpdatingFogMap,
-  //       tileMap: newFogMap,
-  //     });
-  //   }
-  // }
-  // { opacity: this.props.gameBoard[this.getIndexFromTile(tile)].isRevealed ? 1 : 0 }
 
   renderTile = (tile, src, styles) => {
     switch (tile.index) {
@@ -194,7 +179,6 @@ export default class Board extends Component {
 
   renderFogMap1 = () => {
     if (this.state.finishedUpdatingFogMap) {
-      // console.log('render fog map 1');
       return (
         <View>
           <TileMap
@@ -213,7 +197,6 @@ export default class Board extends Component {
   
   renderFogMap2 = () => {
     if (!this.state.finishedUpdatingFogMap) {
-      // console.log('render fog map 2');
       return (
         <TileMap
           src={require("../data/images/Black_square.jpeg")}
@@ -251,7 +234,6 @@ export default class Board extends Component {
   }
 
   render() {
-
     return (
       <View style={{ overflow: 'hidden' }}>
 
