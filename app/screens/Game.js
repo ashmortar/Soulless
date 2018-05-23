@@ -735,13 +735,13 @@ class Game extends Component {
       cacheArray.push(cell);
     }
     //debug:
-    this.elements[this.monsterSpace.name + 1].hasCache = true;
-    this.elements[this.monsterSpace.name + 1].isRevealed = true;
-    cacheArray.push(this.elements[this.monsterSpace.name + 1]);
+    // this.elements[this.monsterSpace.name + 1].hasCache = true;
+    // this.elements[this.monsterSpace.name + 1].isRevealed = true;
+    // cacheArray.push(this.elements[this.monsterSpace.name + 1]);
 
-    this.elements[this.humanSpace.name + 1].hasCache = true;
-    this.elements[this.humanSpace.name + 1].isRevealed = true;
-    cacheArray.push(this.elements[this.humanSpace.name + 1]);
+    // this.elements[this.humanSpace.name + 1].hasCache = true;
+    // this.elements[this.humanSpace.name + 1].isRevealed = true;
+    // cacheArray.push(this.elements[this.humanSpace.name + 1]);
   }
 
   compareToCacheArray = (cell, cacheArray) => {
@@ -1272,6 +1272,7 @@ class Game extends Component {
         }
         break;
       case 'sniff':
+        this.resetHighlighted();
         // this.setState({ modalDialogOnly: 1 });
         this.setState({ modal: 3 });
         break;
@@ -1347,6 +1348,25 @@ class Game extends Component {
     // this.setState({ boardFinished: !this.state.boardFinished });
   }
 
+  findClosestShrine = () => {
+    let shrines = [];
+    let distance = 400;
+    let closest = null;
+    for (let i = 0; i < this.elements.length; i++) {
+      if(this.elements[i].hasCache) {
+        shrines.push(this.elements[i]);
+      }
+    }
+    for (let j = 0; j < shrines.length; j++) {
+      let dist = this.findShortestPath(this.monsterSpace, shrines[j]);
+      if (dist < distance) {
+        distance = dist;
+        closest = shrines[j];
+      }
+    }
+    return {shrine: closest, distance: distance};
+  }
+
 
   renderModalContent = () => {
     if (this.state.modalDialogOnly === 1) {//SNIFF FOR HUMAN
@@ -1360,9 +1380,9 @@ class Game extends Component {
         cell2 = this.humanSpace.name;
       }
       let direction = '';
-      if (cell2 / this.cellsInRow > cell1 / this.cellsInRow) {
+      if (Math.floor(cell2 / this.cellsInRow) > Math.floor(cell1 / this.cellsInRow)) {
         direction += 'S';
-      } else if (cell2 / this.cellsInRow < cell1 / this.cellsInRow) {
+      } else if (Math.floor(cell2 / this.cellsInRow) < Math.floor(cell1 / this.cellsInRow)) {
         direction += 'N';
       }
       if (cell2 % this.cellsInRow > cell1 % this.cellsInRow) {
@@ -1391,11 +1411,68 @@ class Game extends Component {
         </View>
       )
     }
+
+  else if (this.state.modalDialogOnly === 2) {//SNIFF FOR CLOSEST SHRINE
+    let monsterIndex = this.monsterSpace.name;
+    let { shrine } = this.findClosestShrine();
+    let shrineIndex = shrine.name;
+    let direction = '';
+    if (Math.floor(shrineIndex / this.cellsInRow) > Math.floor(monsterIndex / this.cellsInRow)) {
+      direction += 'S';
+    } else if (Math.floor(shrineIndex / this.cellsInRow) < Math.floor(monsterIndex / this.cellsInRow)) {
+      direction += 'N';
+    }
+    if (shrineIndex % this.cellsInRow > monsterIndex % this.cellsInRow) {
+      direction += 'E';
+    } else if (shrineIndex % this.cellsInRow < monsterIndex % this.cellsInRow) {
+      direction += 'W';
+    }
+
+    let text1 = 'You sniffed.';
+    let text2 = `Shrine is in ${direction} direction from you.`;
+
+    return (
+      <View style={{
+
+        borderWidth: 2,
+        borderColor: "#000",
+
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 22,
+        backgroundColor: '#212121',
+      }}>
+        <Text style={{color:'#fff'}}>{text1}</Text>
+        <Text style={{color:'#fff'}}>{text2}</Text>
+        <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+      </View>
+    )
+  }
     // <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
     else if (this.state.modalDialogOnly === 3) {//LISTEN FOR HUMAN
       let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
       let text1 = 'You listened.';
       let text2 = `Opponent is ${distance} cells away`;
+      return (
+        <View style={{
+
+          borderWidth: 2,
+          borderColor: "#000",
+
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 22,
+          backgroundColor: '#212121',
+        }}>
+          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff'}}>{text2}</Text>
+          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+        </View>
+      );
+    } else if (this.state.modalDialogOnly === 4) {// LISTEN FOR SHRINE
+      let { distance } = this.findClosestShrine();
+      let text1 = 'You listened.';
+      let text2 = `Shrine is ${distance} cells away`;
       return (
         <View style={{
 
@@ -1566,7 +1643,9 @@ class Game extends Component {
     let human = false;
     let shrine = false;
     let index = this.monsterSpace.name;
+    this.monsterSpace.wasPounced = true;
     cellsAround.forEach((i) => {
+      this.elements[i].wasPounced = true;
       if (this.elements[i].hasHuman) {
         human = true;
         // break;
