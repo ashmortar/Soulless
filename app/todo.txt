@@ -3,10 +3,17 @@ TODO
 
 ~!~ all things server ~!~
 
+regarding the bar at the bottom being slide-able : what if it was always 
+at the bottom, but you slid it up to reveal all the options.. like move,
+pounce, sniff, listen, echo, etc.  But also change zoom, exit game, etc. 
+When it was "small" (size it is now) it would have just basic info like now,
+but when swipe up it would have the controls? /shrug
+
+pounce misses monster square? 
+
 ~~~~~~~~~~~~~~~~~~~~~~~~
 -Animated Splash Screen-
 ~~~~~~~~~~~~~~~~~~~~~~~~
---make animation timer a prop w/ default value to change if wanted
 --add other types of animations/images
 ----winning/losing screen
 ----something other than hands for echo?
@@ -23,7 +30,6 @@ TODO
 ~~~~~~~~~~~~~~~~~~~~~~~~
 --experiment with moving boardFinished boolean into Engine for echo
   re-renders
---move all instances of wall center tile to be index 0 i.e. not rendered
 --remove fog map 1/2 in place of switch off of boardFinished boolean
 --shrine being 2 tall can obfuscate wall top tiles above them, maybe
   change image

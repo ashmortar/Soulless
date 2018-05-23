@@ -44,6 +44,7 @@ class Game extends Component {
       animationType: 'hands',
       animationTouchable: true,
       animationVisible: true,
+      animationTimer: 1000,
       modal: 0,
       modalLeft: 0,
       modalDialogOnly: 0,
@@ -769,7 +770,7 @@ class Game extends Component {
       let cell = this.elements[i];
       // wall top tiles
       if (cell.value === 0) {
-        cell.imageKey = 9;
+        cell.imageKey = 0;
         // non edge cases
         if (left && top && right && bottom) {
           // wall top northwest
@@ -1073,6 +1074,7 @@ class Game extends Component {
   }
 
   echoLocate = (direction) => {
+    const splashScreenTimer = 500;
     const index = this.humanSpace.name;
     let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
     switch (direction) {
@@ -1096,7 +1098,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false);
+          this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1117,7 +1119,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false);
+          this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -1138,7 +1140,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false);
+          this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1159,7 +1161,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false);
+          this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -1180,7 +1182,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false);
+          this.showSplashScreen('hands', false, splashScreenTimer);
           topLeft.isRevealed = true;
           top.isRevealed = true;
           topRight.isRevealed = true;
@@ -1288,12 +1290,12 @@ class Game extends Component {
       this.setState({
         tileWidth: this.zoomedOutValue,
       })
-      this.showSplashScreen('hands', false);
+      this.showSplashScreen('hands', false, 600);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
       })
-      this.showSplashScreen('hands', false);
+      this.showSplashScreen('hands', false, 600);
     }
   }
 
@@ -1312,7 +1314,7 @@ class Game extends Component {
   // }
 
   changePlayerMode = () => {
-    this.showSplashScreen('hands', true);
+    this.showSplashScreen('hands', true, 1000);
     this.handleChangePlayer();
   }
 
@@ -1627,7 +1629,7 @@ class Game extends Component {
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
     }
     item.hasCache = false;
-    this.showSplashScreen('shrine', false);
+    this.showSplashScreen('shrine', false, 2000);
 
   }
 
@@ -1784,12 +1786,13 @@ class Game extends Component {
     })
   )
 
-  showSplashScreen = (image, touchable) => {
+  showSplashScreen = (image, touchable, duration) => {
     this.setState({
       animationType: image,
       animationTouchable: touchable,
       animationVisible: true,
       boardFinished: false,
+      animationTimer: duration,
     })
   }
 
@@ -1797,7 +1800,7 @@ class Game extends Component {
     if (this.state.animationVisible) {
       return(
         <View style={{ backgroundColor: '#000', flex: 1, zIndex: 2 }}>
-          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} />
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
         </View>
       )
     }
