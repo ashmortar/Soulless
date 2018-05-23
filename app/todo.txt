@@ -9,8 +9,6 @@ pounce, sniff, listen, echo, etc.  But also change zoom, exit game, etc.
 When it was "small" (size it is now) it would have just basic info like now,
 but when swipe up it would have the controls? /shrug
 
-pounce misses monster square? 
-
 ~~~~~~~~~~~~~~~~~~~~~~~~
 -Animated Splash Screen-
 ~~~~~~~~~~~~~~~~~~~~~~~~

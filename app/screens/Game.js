@@ -41,7 +41,7 @@ class Game extends Component {
     this.state = {
       redraw: false,
       isHuman: true,
-      tileWidth: this.zoomedOutValue,
+      tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
       animationType: 'hands',
@@ -1887,6 +1887,7 @@ class Game extends Component {
           zoomedInValue={this.zoomedInValue}
           zoomedOutValue={this.zoomedOutValue}
           incrementTurnCounter={this.incrementTurnCounter}
+          turnCounter={this.state.turnCounter}
         />
         <Modal
           isVisible={this.state.modal != 0}

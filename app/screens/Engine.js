@@ -15,21 +15,24 @@ export default class Engine extends Component {
     move: PropTypes.func,
     tileWidth: PropTypes.number,
     incrementTurnCounter: PropTypes.func,
+    turnCounter: PropTypes.number,
   };
 
   constructor(props) {
     super(props);
     this.screenDimensions = Dimensions.get("window");
     this.gameBoardWidth = this.props.tileWidth * 40;
+    this.wasPouncedTileMap = this.props.gameBoard.map(a => a.wasPounced ? 1 : 0);
+    this.wasEchoedTileMap = this.props.gameBoard.map(a => a.wasEchoed ? 1 : 0);
+    this.highlightedTileRanges = [];
     this.xOffsetMax = this.gameBoardWidth - this.screenDimensions.width;
     this.yOffsetMax = this.gameBoardWidth - this.screenDimensions.height;
     this.playerX = (this.props.playerSpace.name % 40) * this.props.tileWidth;
     this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.props.tileWidth;
-    this.cameraX = this.playerX - this.screenDimensions.width/2;
-    this.cameraY = this.playerY - this.screenDimensions.height/2;
+    this.cameraX = this.getCameraX();
+    this.cameraY = this.getCameraY();
     this.beginningX = this.getBeginningX();
     this.beginningY = this.getBeginningY();
-    this.highlightedTileRanges = [];
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
@@ -47,9 +50,61 @@ export default class Engine extends Component {
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
       spritePlaying: true,
       spriteScale: this.props.tileWidth / this.props.zoomedInValue,
-      wasPouncedTileMap: this.props.gameBoard.map(a => a.wasPounced ? 1 : 0),
-      wasEchoedTileMap: this.props.gameBoard.map(a => a.wasEchoed ? 1 : 0),
+      wasPouncedTileMap: this.wasPouncedTileMap,
+      wasEchoedTileMap: this.wasEchoedTileMap,
     };
+  }
+// tilemap undefined first time around
+  getCameraY = () => {
+    if (this.props.isHuman) {
+      if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
+        let feedbackSquare;
+        for (let i = 0; i < this.props.gameBoard.length; i++) {
+          if (this.props.gameBoard[i].wasPounced) {
+            feedbackSquare = this.props.gameBoard[i + 41];
+            return ((Math.floor(feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
+          }
+        }
+      } else {
+        return (this.playerY - (this.screenDimensions.height / 2));
+      }
+    } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
+        let feedbackSquare;
+        for (let i = 0; i < this.props.gameBoard.length; i++) {
+          if (this.props.gameBoard[i].wasEchoed) {
+            feedbackSquare = this.props.gameBoard[i];
+            return ((Math.floor(feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
+          }
+        }
+    } else {
+      return (this.playerY - (this.screenDimensions.height / 2));
+    }
+  }
+
+  getCameraX = () => {
+    if (this.props.isHuman) {
+      if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
+        let feedbackSquare;
+        for (let i = 0; i < this.props.gameBoard.length; i++) {
+          if (this.props.gameBoard[i].wasPounced) {
+            feedbackSquare = this.props.gameBoard[i + 41];
+            return (((feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
+          }
+        }
+      } else {
+        return (this.playerX - (this.screenDimensions.width / 2));
+      }
+    } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
+        let feedbackSquare;
+        for (let i = 0; i < this.props.gameBoard.length; i++) {
+          if (this.props.gameBoard[i].wasEchoed) {
+            feedbackSquare = this.props.gameBoard[i];
+            return (((feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
+          }
+        }
+    } else {
+      return (this.playerX - (this.screenDimensions.width / 2));
+    }
   }
 
   getBeginningX = () => {
@@ -280,6 +335,39 @@ export default class Engine extends Component {
     }
   }
 
+  renderSprite = () => {
+    if (this.props.isHuman) {
+      return (
+        <Sprite
+          offset={[0,0]}
+          repeat={true}
+          src={require("../data/images/Priest-static.png")}
+          steps={[0]}
+          state={0}
+          onPlayStateChanged={this.handlePlayStateChanged}
+          tileHeight={150}
+          tileWidth={55}
+          style={this.getSpriteStyle()}
+        />
+      );
+    } else {
+      return (
+        <Sprite
+          offset={[0,0]}
+          repeat={true}
+          src={require("../data/images/monsterMoveIdle.png")}
+          steps={[11, 11, 11, 11]}
+          state={0}
+          onPlayStateChanged={this.handlePlayStateChanged}
+          tileHeight={150}
+          ticksPerFrame={10}
+          tileWidth={150}
+          style={this.getSpriteStyle()}
+        />
+      );
+    }
+  }
+
   render() {
     return (
       <Loop>
@@ -300,18 +388,7 @@ export default class Engine extends Component {
               {/* <Image style={{ position: 'absolute', top: (this.state.playerY - this.props.tileWidth), left: this.state.playerX, height: (this.props.tileWidth * 6), width: (this.props.tileWidth * 3), resizeMode: 'contain' }} source={require("../data/images/monsterIdle.gif")} /> */}
               {this.renderHighlighted()}
               {this.renderLastTurn()}
-              <Sprite
-                offset={[0,0]}
-                repeat={true}
-                src={require("../data/images/monsterMoveIdle.png")}
-                steps={[11, 11, 11, 11]}
-                state={0}
-                onPlayStateChanged={this.handlePlayStateChanged}
-                tileHeight={150}
-                ticksPerFrame={10}
-                tileWidth={150}
-                style={this.getSpriteStyle()}
-              />
+              {this.renderSprite()}
 
             </View>
           </View>
@@ -321,10 +398,20 @@ export default class Engine extends Component {
   }
 
   getSpriteStyle = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), transform: [{scale: this.state.spriteScale}] });
-    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)/(this.state.spriteScale/1.6)), top: this.state.playerY - (this.props.tileWidth*4.3), transform: [{scale: this.state.spriteScale}] });
+    if (this.props.isHuman) {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        // return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), transform: [{scale: this.state.spriteScale}] });
+        return ({ left: this.state.playerX, top: this.state.playerY - this.props.tileWidth*1.75, transform: [{scale: this.state.spriteScale*0.7}] });
+
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return ({ left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*4, transform: [{scale: this.state.spriteScale*0.7}] });
+      }
+    } else {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), transform: [{scale: this.state.spriteScale}] });
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)/(this.state.spriteScale/1.6)), top: this.state.playerY - (this.props.tileWidth*4.3), transform: [{scale: this.state.spriteScale}] });
+      }
     }
   }
 
