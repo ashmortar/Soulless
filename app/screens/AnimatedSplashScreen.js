@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, StyleSheet, TouchableOpacity } from 'react-native';
 
-const ANIMATION_TIMER = 1000;
-
 export default class AnimatedSplashScreen extends Component {
   static propTypes = {
     showAnimationCallback: PropTypes.func,
     boardFinishedCallback: PropTypes.func,
     animationType: PropTypes.string,
     touchable: PropTypes.bool,
+    animationTimer: PropTypes.number,
   }
 
   constructor(props) {
@@ -21,26 +20,26 @@ export default class AnimatedSplashScreen extends Component {
 
   animateIn = () => {
     const { opacity } = this.state;
-    Animated.timing(opacity, { toValue: 1, duration: ANIMATION_TIMER/2, useNativeDriver: true }).start();
+    Animated.timing(opacity, { toValue: 1, duration: this.props.animationTimer/2, useNativeDriver: true }).start();
   }
 
   animateOut = () => {
     const {opacity } = this.state;
-    Animated.timing(opacity, { toValue: 0, duration: ANIMATION_TIMER/2, useNativeDriver: true }).start();
+    Animated.timing(opacity, { toValue: 0, duration: this.props.animationTimer/2, useNativeDriver: true }).start();
     setTimeout(function() {
       this.props.showAnimationCallback()
-    }.bind(this), ANIMATION_TIMER);
+    }.bind(this), this.props.animationTimer);
   }
 
   componentDidMount() {
     setTimeout(function() {
       this.props.boardFinishedCallback()
-    }.bind(this), ANIMATION_TIMER)
+    }.bind(this), this.props.animationTimer)
     this.animateIn();
     if (!this.props.touchable) {
       setTimeout(function() {
         this.animateOut();
-      }.bind(this), ANIMATION_TIMER);
+      }.bind(this), this.props.animationTimer);
     }
   }
 
