@@ -1,7 +1,7 @@
 TODO
 ----------------------------------
 
-everything server
+~!~ all things server ~!~ 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~
 -Animated Splash Screen-
