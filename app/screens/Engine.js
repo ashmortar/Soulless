@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Dimensions, Image, View, PanResponder, TouchableOpacity } from "react-native";
+import { Dimensions, Image, View, PanResponder, TouchableOpacity, Animated } from "react-native";
 import { Loop, Stage, TileMap, Sprite } from "react-game-kit/native";
 
 import Board from "./Board";
@@ -16,6 +16,7 @@ export default class Engine extends Component {
     tileWidth: PropTypes.number,
     incrementTurnCounter: PropTypes.func,
     turnCounter: PropTypes.number,
+    animationVisible: PropTypes.bool,
   };
 
   constructor(props) {
@@ -33,6 +34,7 @@ export default class Engine extends Component {
     this.cameraY = this.getCameraY();
     this.beginningX = this.getBeginningX();
     this.beginningY = this.getBeginningY();
+    this.feedbackSquare = null;
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
@@ -43,8 +45,8 @@ export default class Engine extends Component {
       offsetLeft: 0,
       initialTop: 0,
       initialLeft: 0,
-      top: this.beginningY,
-      left: this.beginningX,
+      top: new Animated.Value(this.beginningY),
+      left: new Animated.Value(this.beginningX),
       highlightedTileMap: this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0),
       showHighlighted: false,
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
@@ -54,26 +56,24 @@ export default class Engine extends Component {
       wasEchoedTileMap: this.wasEchoedTileMap,
     };
   }
-// tilemap undefined first time around
+
   getCameraY = () => {
     if (this.props.isHuman) {
       if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
-        let feedbackSquare;
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
-            feedbackSquare = this.props.gameBoard[i + 41];
-            return ((Math.floor(feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
+            this.feedbackSquare = this.props.gameBoard[i + 41];
+            return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
           }
         }
       } else {
         return (this.playerY - (this.screenDimensions.height / 2));
       }
     } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
-        let feedbackSquare;
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasEchoed) {
-            feedbackSquare = this.props.gameBoard[i];
-            return ((Math.floor(feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
+            this.feedbackSquare = this.props.gameBoard[i];
+            return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
           }
         }
     } else {
@@ -84,22 +84,20 @@ export default class Engine extends Component {
   getCameraX = () => {
     if (this.props.isHuman) {
       if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
-        let feedbackSquare;
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
-            feedbackSquare = this.props.gameBoard[i + 41];
-            return (((feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
+            this.feedbackSquare = this.props.gameBoard[i + 41];
+            return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
           }
         }
       } else {
         return (this.playerX - (this.screenDimensions.width / 2));
       }
     } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
-        let feedbackSquare;
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasEchoed) {
-            feedbackSquare = this.props.gameBoard[i];
-            return (((feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
+            this.feedbackSquare = this.props.gameBoard[i];
+            return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
           }
         }
     } else {
@@ -156,8 +154,32 @@ export default class Engine extends Component {
     });
   }
 
+  animateCamera = () => {
+    const { left, top } = this.state;
+    let newX = (this.state.playerX - this.screenDimensions.width/2);
+    if (newX < 0) {
+      newX = 0;
+    } else if (newX > this.xOffsetMax) {
+      newX = this.xOffsetMax;
+    }
+    let newY = (this.state.playerY - this.screenDimensions.height/2);
+    if (newY < 0) {
+      newY = 0;
+    } else if (newY > this.yOffsetMax) {
+      newY = this.yOffsetMax;
+    }
+    setTimeout(function() {Animated.parallel([
+      Animated.timing(left, { toValue: -newX, duration: 2000}),
+      Animated.timing(top, { toValue: -newY, duration: 2000}),
+    ]).start();}.bind(this), 1000);
+  }
+
   componentDidUpdate() {
-    // console.log(this.state.left, this.state.top);
+    console.log('update', this.props.animationVisible);
+    if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
+      console.log('animate camera');
+      this.animateCamera();
+    }
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -204,29 +226,29 @@ export default class Engine extends Component {
         initialLeft: this.state.left,
       });
     } else {
-      let left = this.state.initialLeft + x - this.state.initialX;
-      let top = this.state.initialTop + y - this.state.initialY;
+      let left = this.state.initialLeft._value + x - this.state.initialX;
+      let top = this.state.initialTop._value + y - this.state.initialY;
       // console.log(left, this.gameBoardWidth);
       this.setState({
           left:
-            left > 0 ?
-            0 :
-              left < (-this.gameBoardWidth + this.screenDimensions.width) ?
+            left._value > 0 ?
+            new Animated.Value(0) :
+              left._value < (-this.gameBoardWidth + this.screenDimensions.width) ?
                 (-this.gameBoardWidth + this.screenDimensions.width) :
-                left,
+                new Animated.Value(left),
           top:
-            top > 0 ?
-            0 :
-              top < (-this.gameBoardWidth + this.screenDimensions.height) ?
+            top._value > 0 ?
+            new Animated.Value(0) :
+              top._value < (-this.gameBoardWidth + this.screenDimensions.height) ?
                 (-this.gameBoardWidth + this.screenDimensions.height) :
-                top,
+                new Animated.Value(top),
         });
     }
   }
 
   processMove(touchX, touchY) {
-    let x = touchX - this.state.left;
-    let y = touchY - this.state.top;
+    let x = touchX - this.state.left._value;
+    let y = touchY - this.state.top._value;
     // console.log("process move", this.highlightedTileRanges, touchX, touchY, x, y, this.state.left, this.state.top);
     for (let i = 0; i < this.highlightedTileRanges.length; i++) {
       if (
@@ -377,7 +399,7 @@ export default class Engine extends Component {
           style={{ backgroundColor: "#000" }}
         >
           <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1}} {...this._panResponder.panHandlers}>
-            <View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.gameBoardWidth, height: this.gameBoardWidth }} >
+            <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.gameBoardWidth, height: this.gameBoardWidth }} >
               <Board
                 gameBoard={this.props.gameBoard}
                 isHuman={this.props.isHuman}
@@ -385,12 +407,11 @@ export default class Engine extends Component {
                 tileWidth={this.props.tileWidth}
               />
 
-              {/* <Image style={{ position: 'absolute', top: (this.state.playerY - this.props.tileWidth), left: this.state.playerX, height: (this.props.tileWidth * 6), width: (this.props.tileWidth * 3), resizeMode: 'contain' }} source={require("../data/images/monsterIdle.gif")} /> */}
               {this.renderHighlighted()}
               {this.renderLastTurn()}
               {this.renderSprite()}
 
-            </View>
+            </Animated.View>
           </View>
         </Stage>
       </Loop>

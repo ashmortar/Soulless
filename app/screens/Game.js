@@ -1783,6 +1783,7 @@ class Game extends Component {
   showAnimationCallback = () => (
     this.setState({
       animationVisible: false,
+      animateCamera: true,
     })
   )
 
@@ -1846,6 +1847,7 @@ class Game extends Component {
           zoomedOutValue={this.zoomedOutValue}
           incrementTurnCounter={this.incrementTurnCounter}
           turnCounter={this.state.turnCounter}
+          animationVisible={this.state.animationVisible}
         />
         <Modal
           isVisible={this.state.modal != 0}
