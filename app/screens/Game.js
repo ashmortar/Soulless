@@ -60,6 +60,7 @@ class Game extends Component {
       modalLeft: 0,
       modalDialogOnly: 0,
       modalPounce: 0,
+      modalAlert: 0,
       turnCounter: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
@@ -1131,10 +1132,11 @@ class Game extends Component {
         break;
       case 'north':
         if (index - this.cellsInRow < 0 || this.elements[index - this.cellsInRow].value < 1) {
-          Alert.alert(
-            'Uh-Oh',
-            'Cannot Echo-locate North from here..',
-          );
+          this.setState({ modalAlert: 1 });
+          // Alert.alert(
+          //   'Uh-Oh',
+          //   'Cannot Echo-locate North from here..',
+          // );
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
@@ -1156,10 +1158,11 @@ class Game extends Component {
 
       case 'east':
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
-          Alert.alert(
-            'Uh-Oh',
-            'Cannot Echo-locate East from here..',
-          );
+          this.setState({ modalAlert: 1 });
+          // Alert.alert(
+          //   'Uh-Oh',
+          //   'Cannot Echo-locate East from here..',
+          // );
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
@@ -1181,10 +1184,11 @@ class Game extends Component {
 
       case 'south':
         if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
-          Alert.alert(
-            'Uh-Oh',
-            'Cannot Echo-locate South from here..',
-          );
+          this.setState({ modalAlert: 1 });
+          // Alert.alert(
+          //   'Uh-Oh',
+          //   'Cannot Echo-locate South from here..',
+          // );
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
@@ -1206,10 +1210,11 @@ class Game extends Component {
 
       case 'west':
         if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
-          Alert.alert(
-            'Uh-Oh',
-            'Cannot Echo-locate West from here..',
-          );
+          this.setState({ modalAlert: 1 });
+          // Alert.alert(
+          //   'Uh-Oh',
+          //   'Cannot Echo-locate West from here..',
+          // );
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
@@ -1231,10 +1236,11 @@ class Game extends Component {
 
       case 'radius':
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
-          Alert.alert(
-            'Uh-Oh',
-            'nothing to reveal',
-          );
+          this.setState({ modalAlert: 1 });
+          // Alert.alert(
+          //   'Uh-Oh',
+          //   'nothing to reveal',
+          // );
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
@@ -1262,6 +1268,27 @@ class Game extends Component {
         break;
     }
     this.setState({ redraw: !this.state.redraw });
+  }
+
+  generateCustomAlert = () => {
+    let text1 = "Uh-oh."
+    let text2 = "Can't echo locate in that direction."
+    return (
+      <View style={{
+
+        borderWidth: 2,
+        borderColor: "#000",
+
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 22,
+        backgroundColor: '#212121',
+      }}>
+        <Text style={{color:'#fff'}}>{text1}</Text>
+        <Text style={{color:'#fff'}}>{text2}</Text>
+        <NavButton onPress={() => {this.setState({ modalAlert: 0 }); }} text='OK' />
+      </View>
+    );
   }
 
   onItemSelected = (item) => {
@@ -1432,28 +1459,8 @@ class Game extends Component {
     else if (this.state.modalPounce === 1) {//POUNCE
       let text1;
       let text2;
-
-      // cellsAround.forEach((i) => {
-      //   if (this.elements[i].hasHuman) {
-      //     human = true;
-      //     // break;
-      //   }
-      //   else if (this.elements[i].hasCache) {
-      //     shrine = true;
-      //   }
-      // });
-      // if (human) {
-      //   text1 = 'You pounced.';
-      //   text2 = 'And attacked your opponent.';
-      //   //end game
-      // } else if (shrine) {
-      //   text1 = 'You pounced.';
-      //   text2 = 'And found a shrine.';
-      //
-      // } else {
-        text1 = 'You pounced.';
-        text2 = 'There is nothing here.';
-      // }
+      text1 = 'You pounced.';
+      text2 = 'There is nothing here.';
       return (
         <View style={{
 
@@ -1535,6 +1542,26 @@ class Game extends Component {
         );
       }
     }
+    // else if (this.state.modal === 2) {//uh-oh
+    //   if (this.state.isHuman) {
+    //     let text1 = "You can't echo in that direction";
+    //     return (
+    //       <View style={{
+    //
+    //         borderWidth: 2,
+    //         borderColor: "#000",
+    //
+    //         alignItems: 'center',
+    //         justifyContent: 'center',
+    //         padding: 22,
+    //         backgroundColor: '#212121',
+    //       }}>
+    //         <Text style={{color:'#fff'}}>{text1}</Text>
+    //         <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 3 }); }} text='OK' />
+    //       </View>
+    //     );
+    //   }
+    // }
     else if (this.state.modalLeft === 1) {//EXIT
       return (
         <View style={{
@@ -1923,6 +1950,17 @@ class Game extends Component {
           swipeDirection="right"
         >
           {this.renderModalContent()}
+        </Modal>
+
+        <Modal
+          isVisible={this.state.modalAlert != 0}
+          onBackdropPress={() => this.setState({ modalAlert: 0 })}
+          animationIn="slideInLeft"
+          animationOut="slideOutRight"
+          onSwipe={() => this.setState({ modalAlert: 0 })}
+          swipeDirection="right"
+        >
+          {this.generateCustomAlert()}
         </Modal>
 
         <Modal
