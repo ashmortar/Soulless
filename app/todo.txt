@@ -1,0 +1,11 @@
+TODO
+----------------------------------
+try to make single finger scrolling work
+resize game screen
+winning/losing screen
+player move animation logic?
+echo modal into directional arrows??
+remove showToolbar button
+make the bar slidable/make the screen smaller?
+
+everything server
