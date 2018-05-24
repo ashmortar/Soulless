@@ -1,6 +1,8 @@
 TODO
 ----------------------------------
 
+// maybe instead of touchable opacity we use touchable without feedback and "pop" in the modals?
+
 ~!~ all things server ~!~
 
 regarding the bar at the bottom being slide-able : what if it was always 

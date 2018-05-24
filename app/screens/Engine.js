@@ -54,6 +54,8 @@ export default class Engine extends Component {
       spriteScale: this.props.tileWidth / this.props.zoomedInValue,
       wasPouncedTileMap: this.wasPouncedTileMap,
       wasEchoedTileMap: this.wasEchoedTileMap,
+      controlsVisible: true,
+      echoControlsVisible: false,
     };
   }
 
@@ -129,16 +131,28 @@ export default class Engine extends Component {
     // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponder: (evt, gestureState) => {
+        let {touches} = evt.nativeEvent;
+        if (touches.length === 2) {
+          return true;
+        } else {
+          return false;
+        }
+      },
       // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        let {touches} = evt.nativeEvent;
+        if (touches.length === 2) {
+          return true;
+        } else {
+          return false;
+        }
+      },
       // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
       onPanResponderGrant: (evt, gestureState) => {
-
       },
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
-        // let { touches } = evt.nativeEvent;
         if (touches.length === 2 && (Math.abs(touches[0].pageX - touches[1].pageX) > 5)) {
           this.processPan(touches[0].pageX, touches[0].pageY);
         } else if (this.state.showHighlighted && touches.length === 1) {
@@ -146,11 +160,11 @@ export default class Engine extends Component {
         }
       },
       onPanResponderRelease: () => {
-        // console.log("on pan responder release");
+        console.log("on pan responder release");
         this.setState({
           isMoving: false,
         });
-      }
+      },
     });
   }
 
@@ -175,9 +189,9 @@ export default class Engine extends Component {
   }
 
   componentDidUpdate() {
-    console.log('update', this.props.animationVisible);
+    // console.log('update', this.props.animationVisible);
     if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
-      console.log('animate camera');
+      // console.log('animate camera');
       this.animateCamera();
     }
   }
@@ -357,11 +371,18 @@ export default class Engine extends Component {
     }
   }
 
+  controlSwitch = () => {
+    console.log('control switch')
+    this.setState({
+      controlsVisible: !this.state.controlsVisible,
+    })
+  }
+
 
   renderSprite = () => {
     if (this.props.isHuman) {
       return (
-        <TouchableOpacity style={this.getPriestStyle()}>
+        <TouchableOpacity onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
           <Sprite
             offset={[0, 0]}
             repeat={true}
@@ -377,7 +398,7 @@ export default class Engine extends Component {
       );
     } else {
       return (
-        <TouchableOpacity style={this.getSpriteStyle()}>
+        <TouchableOpacity style={this.getSpriteStyle()} onPress={this.controlSwitch}>
           <Sprite
             offset={[0, 0]}
             repeat={true}
@@ -394,6 +415,31 @@ export default class Engine extends Component {
     }
   }
 
+  renderControls = () => {
+    if (this.state.controlsVisible) {
+      if (this.props.isHuman) {
+        if (!this.state.echoControlsVisible) {
+          return (
+            <View>
+              <TouchableOpacity style={this.getTopLeftControlStyle()}>
+                <Image source={require('../data/images/move.png')} resizeMode={'contain'} />
+              </TouchableOpacity>
+              <TouchableOpacity style={{height: this.props.tileWidth, width: this.props.tileWidth, left: this.state.playerX + this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*6, backgroundColor: '#fff'}}>
+                <Image source={require('../data/images/echoIcon.png')} resizeMode={'contain'}/>
+              </TouchableOpacity>
+            </View>
+          );
+        }
+      }
+    }
+  }
+
+  getTopLeftControlStyle = () => {
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return ({height: this.props.tileWidth, width: this.props.tileWidth, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*5, backgroundColor: '#fff'});
+    }
+  }
+
   render() {
     return (
       <Loop>
@@ -402,7 +448,7 @@ export default class Engine extends Component {
           width={this.screenDimensions.width}
           style={{ backgroundColor: "#000" }}
         >
-          <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1}} {...this._panResponder.panHandlers}>
+          <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height }} {...this._panResponder.panHandlers}>
             <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.gameBoardWidth, height: this.gameBoardWidth }} >
               <Board
                 gameBoard={this.props.gameBoard}
@@ -414,6 +460,7 @@ export default class Engine extends Component {
               {this.renderHighlighted()}
               {this.renderLastTurn()}
               {this.renderSprite()}
+              {this.renderControls()}
 
             </Animated.View>
           </View>
@@ -424,18 +471,18 @@ export default class Engine extends Component {
 
   getSpriteStyle = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), width: this.props.tileWidth*3, transform: [{scale: this.state.spriteScale}] });
+      return ({ zIndex: 1, left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), width: this.props.tileWidth*3, transform: [{scale: this.state.spriteScale}] });
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({ left: this.state.playerX - this.props.tileWidth*3, top: this.state.playerY - (this.props.tileWidth*4.3), width: this.props.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
+      return ({ zIndex: 1, left: this.state.playerX - this.props.tileWidth*3, top: this.state.playerY - (this.props.tileWidth*4.3), width: this.props.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
     }
     
   }
 
   getPriestStyle = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.playerX - this.props.tileWidth*0.1, top: this.state.playerY - this.props.tileWidth*1.5 });
+      return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.playerX - this.props.tileWidth*0.1, top: this.state.playerY - this.props.tileWidth*1.5 });
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({ left: this.state.playerX - this.props.tileWidth*0.8, top: this.state.playerY - this.props.tileWidth*3.5, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
+      return ({zIndex: 1, left: this.state.playerX - this.props.tileWidth*0.8, top: this.state.playerY - this.props.tileWidth*3.5, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
     }
   }
 
