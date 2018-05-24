@@ -22,12 +22,14 @@ export default class Board extends Component {
     // debug:
     // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
+    this.tileDecorMapArray = this.props.gameBoard.map(x => (!this.props.isHuman) ? x.imageDecorKey : 0);
     this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     this.state = {
       finishedUpdatingFogMap: this.props.boardFinished,
       tileMap: this.tileMapArray,
     };
   }
+
 
   getIndexFromTile = (tile) => {
     let { size } = tile;
@@ -176,6 +178,20 @@ export default class Board extends Component {
     }
   };
 
+  renderDecorTile = (tile, src, styles) => {
+    switch (tile.index) {
+      case 1:
+        return <Image resizeMode="stretch" style={[styles, { height: (this.props.tileWidth * 1.8), top: -this.props.tileWidth * 0.6, overflow: 'hidden' }]} source={require("../data/images/tube1.png")} />;
+        break;
+      case 2:
+        return <Image resizeMode="stretch" style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth * 0.7, overflow: 'hidden' }, this.fixImageStyle()]} source={require("../data/images/tube2.png")} />;
+        break;
+      default:
+        console.log('the imageKey for this tile was not assigned correctly', tile);
+        break;
+    }
+  };
+
   renderBasement = () => {
     if (this.state.finishedUpdatingFogMap) {
       return (
@@ -216,12 +232,28 @@ export default class Board extends Component {
     }
   }
 
+
+  renderDecorations = () => {
+    return (
+      <TileMap
+        // src={require("../data/images/tube1.png")}
+        tileSize={this.props.tileWidth}
+        columns={40}
+        rows={40}
+        sourceWidth={this.props.tileWidth}
+        layers={[this.tileDecorMapArray]}
+        renderTile={this.renderDecorTile}
+      />
+    );
+  }
+
   render() {
     return (
       <View style={{ overflow: 'hidden' }}>
 
         {this.renderBasement()}
         {this.renderShrines()}
+        {this.renderDecorations()}
 
       </View>
     );
