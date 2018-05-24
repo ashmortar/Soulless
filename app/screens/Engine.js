@@ -357,35 +357,39 @@ export default class Engine extends Component {
     }
   }
 
+
   renderSprite = () => {
     if (this.props.isHuman) {
       return (
-        <Sprite
-          offset={[0,0]}
-          repeat={true}
-          src={require("../data/images/priestIdle.png")}
-          steps={[17]}
-          state={0}
-          onPlayStateChanged={this.handlePlayStateChanged}
-          tileHeight={128}
-          tileWidth={64}
-          style={this.getSpriteStyle()}
-        />
+        <TouchableOpacity style={this.getPriestStyle()}>
+          <Sprite
+            offset={[0, 0]}
+            repeat={true}
+            src={require("../data/images/priestIdle.png")}
+            steps={[17]}
+            state={0}
+            onPlayStateChanged={this.handlePlayStateChanged}
+            tileHeight={128}
+            ticksPerFrame={10}
+            tileWidth={64}
+          />
+        </TouchableOpacity>
       );
     } else {
       return (
-        <Sprite
-          offset={[0,0]}
-          repeat={true}
-          src={require("../data/images/monsterMoveIdle.png")}
-          steps={[11, 11, 11, 11]}
-          state={0}
-          onPlayStateChanged={this.handlePlayStateChanged}
-          tileHeight={150}
-          ticksPerFrame={10}
-          tileWidth={150}
-          style={this.getSpriteStyle()}
-        />
+        <TouchableOpacity style={this.getSpriteStyle()}>
+          <Sprite
+            offset={[0, 0]}
+            repeat={true}
+            src={require("../data/images/monsterMoveIdle.png")}
+            steps={[11, 11, 11, 11]}
+            state={0}
+            onPlayStateChanged={this.handlePlayStateChanged}
+            tileHeight={150}
+            ticksPerFrame={10}
+            tileWidth={150}
+          />
+        </TouchableOpacity>
       );
     }
   }
@@ -419,20 +423,19 @@ export default class Engine extends Component {
   }
 
   getSpriteStyle = () => {
-    if (this.props.isHuman) {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        // return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), transform: [{scale: this.state.spriteScale}] });
-        return ({ left: this.state.playerX - this.props.tileWidth*0.1, top: this.state.playerY - this.props.tileWidth*1.6, transform: [{scale: this.state.spriteScale}] });
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), width: this.props.tileWidth*3, transform: [{scale: this.state.spriteScale}] });
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return ({ left: this.state.playerX - this.props.tileWidth*3, top: this.state.playerY - (this.props.tileWidth*4.3), width: this.props.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
+    }
+    
+  }
 
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return ({ left: this.state.playerX - this.props.tileWidth*1.1, top: this.state.playerY - this.props.tileWidth*3.5, transform: [{scale: this.state.spriteScale}] });
-      }
-    } else {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), transform: [{scale: this.state.spriteScale}] });
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return ({ left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)/(this.state.spriteScale/1.6)), top: this.state.playerY - (this.props.tileWidth*4.3), transform: [{scale: this.state.spriteScale}] });
-      }
+  getPriestStyle = () => {
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return ({height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.playerX - this.props.tileWidth*0.1, top: this.state.playerY - this.props.tileWidth*1.5 });
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return ({ left: this.state.playerX - this.props.tileWidth*0.8, top: this.state.playerY - this.props.tileWidth*3.5, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
     }
   }
 
@@ -441,5 +444,4 @@ export default class Engine extends Component {
       spritePlaying: state ? true : false,
     });
   }
-
 }
