@@ -2,6 +2,7 @@ import { StackNavigator } from 'react-navigation';
 
 import Home from '../screens/Home';
 import Game from '../screens/Game';
+import GameOver from '../screens/GameOver';
 import Connect from '../screens/Connect';
 import Waiting from '../screens/Waiting';
 
@@ -30,4 +31,10 @@ export default StackNavigator({
       header: () => null,
     },
   },
+  GameOver: {
+    screen: GameOver,
+    navigationOptions: {
+      header: () => null,
+    },
+  }
 });

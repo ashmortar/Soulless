@@ -34,6 +34,10 @@ class Game extends Component {
     this.zoomedInValue = 50;
     this.zoomedOutValue = Math.ceil(this.viewPortHeight / this.cellsInRow);
     this.allowedLengthOfWhiteLine = 14; // density
+    this.userWon = null;
+    this.humanShrinesToWin = 9;
+    this.monsterShrinesToWin = 5;
+    this.animationCallback = this.showAnimationCallback;
 
     this.state = {
       redraw: false,
@@ -72,9 +76,13 @@ class Game extends Component {
   // }
 
   componentWillUnmount() {
-    this.setState({ modal: 0 });
-    this.setState({ modalLeft: 0 });
-    this.setState({ modalDialogOnly: 0 });
+    this.setState({
+      modal: 0,
+      modalLeft: 0,
+      modalDialogOnly: 0,
+      modalPounce: 0,
+      modalAlert: 0,
+    });
   }
 
   createMap = () => {
@@ -695,11 +703,20 @@ class Game extends Component {
     if (!this.state.isHuman) {
       this.setState({ playerSpace: cell });
     }
+
+
+    // // DEBUG:
+    // let cell = this.humanSpace;
+    // cell.hasMonster = true;
+    // this.monsterSpace = cell;
+    // if (!this.state.isHuman) {
+    //   this.setState({ playerSpace: cell });
+    // }
   }
 
   assignCacheLocations = () => {
     let cacheArray = [this.humanSpace, this.monsterSpace];
-    for (let i = 0; i <= this.cacheTotal; i++) {
+    for (let i = 1; i <= this.cacheTotal; i++) {
       let cell = this.getRandomCell();
       while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache || this.compareToCacheArray(cell, cacheArray)) {
         cell = this.getRandomCell();
@@ -1609,27 +1626,51 @@ class Game extends Component {
     });
     if (human) {
       //end game
+      this.userWon = 'monster';
+      this.gameOver();
     } else if (shrine) {
       this.collectShrine(this.elements[index]);
     } else {
       this.setState({ modalPounce: 1 });
     }
-
     this.incrementTurnCounter();
+  }
 
+
+  gameOver = () => {
+    this.animationCallback = () => {
+      this.props.navigation.navigate('GameOver');
+    }
+    if (this.userWon === 'human') {
+      this.showSplashScreen('priestWon', false, 2000);
+    }
+    else if (this.userWon === 'monster') {
+      this.showSplashScreen('evilWon', false, 2000);
+    }
   }
 
   collectShrine = (item) => {
     if (this.state.isHuman) {
+      if (this.state.shrinesHumanClaimed + 1 >= this.humanShrinesToWin) {
+        this.userWon = 'human';
+        this.gameOver();
+      }
       this.setState({ shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
     }
     else {
+      if (this.state.shrinesMonsterClaimed + 1 >= this.monsterShrinesToWin) {
+        this.userWon = 'monster';
+        this.gameOver();
+      }
       this.setState({ shrinesMonsterClaimed: this.state.shrinesMonsterClaimed + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
     }
-    item.hasCache = false;
-    this.showSplashScreen('shrine', false, 2000);
+
+    if (!this.userWon) {
+      item.hasCache = false;
+      this.showSplashScreen('shrine', false, 2000);
+    }
 
   }
 
@@ -1781,6 +1822,7 @@ class Game extends Component {
   )
 
   showAnimationCallback = () => (
+    console.log('animation callback'),
     this.setState({
       animationVisible: false,
       animateCamera: true,
@@ -1801,7 +1843,7 @@ class Game extends Component {
     if (this.state.animationVisible) {
       return(
         <View style={{ backgroundColor: '#000', flex: 1, zIndex: 2 }}>
-          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.showAnimationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.animationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
         </View>
       )
     }
