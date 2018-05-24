@@ -3,6 +3,7 @@ export default class Cell {
     this.name = name;
     this.value = 5;
     this.imageKey = 0;
+    this.imageDecorKey = 0;
     this.humanEdges = [];
     this.monsterEdges = [];
     this.searched = false;
