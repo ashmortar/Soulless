@@ -70,6 +70,7 @@ class Game extends Component {
     this.assignCacheLocations();
     this.echoLocate('initial');
     this.assignImageKeys();
+    this.assignImageDecorKeys();
   }
 
   // componentDidMount() {
@@ -508,10 +509,6 @@ class Game extends Component {
   addValuesToCells = () => {
     // adding values to white cells
     for (let i = 0; i < this.cellsTotal; i++) {
-      // left: i+1
-      // right: i-1
-      // top: i-20
-      // bottom: i+20
       if (this.elements[i].value > 0) {
         let adjacent = 0;
         let cellsAround = this.getIndexesOfAvailableCellsAround(i, this.cellsInRow, this.cellsTotal, false);
@@ -1069,6 +1066,42 @@ class Game extends Component {
 
   }
 
+  assignImageDecorKeys = () => {
+    let greyBottomWalls = [];
+    for (let i = 0; i < this.elements.length; i++) {
+      if (i < this.cellsTotal - 3 * this.cellsInRow) {
+        if (this.elements[i].value === -1) {
+          if ((i - this.cellsInRow > 0) && (i - 1 >= 0) && (i + 1 < this.cellsTotal)) {
+            if ((this.elements[i - this.cellsInRow].value === -1) && (this.elements[i - 1].value === -1) && (this.elements[i + 1].value === -1)) {
+              greyBottomWalls.push(i);
+              // this.elements[i].isHighlighted = true;
+            }
+          }
+        }
+      }
+    }
+    let numberOfTubes1 = 3;
+    let numberOfTubes2 = 4;
+    for (let i = 0; i < numberOfTubes1; i++) {
+      this.elements[greyBottomWalls[Math.floor(Math.random() * greyBottomWalls.length)]].imageDecorKey = 1;
+    }
+
+    for (let i = 0; i < numberOfTubes2 / 2; i++) {
+      let rand = Math.floor(Math.random() * (greyBottomWalls.length / 2));
+      while ((this.elements[greyBottomWalls[rand]].imageDecorKey != 0) || (this.elements[greyBottomWalls[rand] + 1].imageDecorKey != 0) || (this.elements[greyBottomWalls[rand] - 1].imageDecorKey != 0)) {
+        rand = Math.floor(Math.random() * (greyBottomWalls.length / 2));
+      }
+      this.elements[greyBottomWalls[rand]].imageDecorKey = 2;
+    }
+
+    for (let i = numberOfTubes2 / 2; i < numberOfTubes2; i++) {
+      let rand = Math.floor(Math.random() * (greyBottomWalls.length / 2)) + Math.floor(greyBottomWalls.length / 2);
+      while ((this.elements[greyBottomWalls[rand]].imageDecorKey != 0) || (this.elements[greyBottomWalls[rand] + 1].imageDecorKey != 0) || (this.elements[greyBottomWalls[rand] - 1].imageDecorKey != 0)) {
+        rand = Math.floor(Math.random() * (greyBottomWalls.length / 2)) + Math.floor(greyBottomWalls.length / 2);
+      }
+      this.elements[greyBottomWalls[rand]].imageDecorKey = 2;
+    }
+  }
 
   getRandomCell = () => (this.elements[Math.floor(Math.random() * this.cellsTotal)])
 
