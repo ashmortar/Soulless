@@ -131,18 +131,11 @@ export default class Engine extends Component {
     // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => {
-        let {touches} = evt.nativeEvent;
-        if (touches.length === 2) {
-          return true;
-        } else {
-          return false;
-        }
-      },
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
       // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => {
         let {touches} = evt.nativeEvent;
-        if (touches.length === 2) {
+        if (touches.length === 2 || this.state.showHighlighted) {
           return true;
         } else {
           return false;
@@ -157,6 +150,10 @@ export default class Engine extends Component {
           this.processPan(touches[0].pageX, touches[0].pageY);
         } else if (this.state.showHighlighted && touches.length === 1) {
           this.processMove(touches[0].pageX, touches[0].pageY);
+          this.setState({
+            controlsVisible: false,
+            echoControlsVisible: false,
+          })
         }
       },
       onPanResponderRelease: () => {
@@ -372,10 +369,15 @@ export default class Engine extends Component {
   }
 
   controlSwitch = () => {
-    console.log('control switch')
-    this.setState({
-      controlsVisible: !this.state.controlsVisible,
-    })
+    if (this.state.controlsVisible) {
+      this.setState({
+        controlsVisible: false,
+      })
+    } else {
+      this.setState({
+        controlsVisible: true,
+      })
+    }
   }
 
 
@@ -415,18 +417,77 @@ export default class Engine extends Component {
     }
   }
 
+  echoControlSwitch = () => {
+    if (this.state.echoControlsVisible) {
+      this.setState({
+        controlsVisible: false,
+        echoControlsVisible: false,
+      })
+    } else {
+      this.setState({
+        echoControlsVisible: true,
+      });
+    }
+  }
+
+  echoNorth = () => {
+    this.props.echolocate('north');
+  }
+  echoEast = () => {
+    this.props.echolocate('east');
+  }
+  echoBurst = () => {
+    this.props.echolocate('radius');
+  }
+
+  echoWest = () => {
+    this.props.echolocate('west');
+  }
+  echoSouth = () => {
+    this.props.echolocate('south');
+  }
+
   renderControls = () => {
     if (this.state.controlsVisible) {
       if (this.props.isHuman) {
         if (!this.state.echoControlsVisible) {
           return (
-            <View>
-              <TouchableOpacity style={this.getTopLeftControlStyle()}>
-                <Image source={require('../data/images/move.png')} resizeMode={'contain'} />
+            <View style={[this.getPriestControlStyles(), {height: this.props.tileWidth, width: this.props.tileWidth * 3 }]}>
+              <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.props.showHumanMoves}>
+                <Image source={require('../data/images/Cyan-square.png')} resizeMode="contain" />
               </TouchableOpacity>
-              <TouchableOpacity style={{height: this.props.tileWidth, width: this.props.tileWidth, left: this.state.playerX + this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*6, backgroundColor: '#fff'}}>
-                <Image source={require('../data/images/echoIcon.png')} resizeMode={'contain'}/>
+              <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.echoControlSwitch}>
+                <Image source={require("../data/images/Cyan-square.png")} resizeMode="contain" />
               </TouchableOpacity>
+            </View>
+          );
+        } else {
+          return (
+            <View style={this.getEchoControlStyles()} >
+              <View style={{flexDirection: 'row', flex: 1}}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoControlSwitch}>
+                  <Image source={require("../data/images/Cyan-square.png")} resizeMode="contain" />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoNorth} >
+                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                </TouchableOpacity>
+              </View>
+              <View style={{flexDirection: 'row', flex: 1}}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoWest}>
+                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoBurst}>
+                  <View style={{flex: 1, backgroundColor: 'purple'}} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoEast}>
+                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                </TouchableOpacity>
+              </View>
+              <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center'}}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoSouth}>
+                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                </TouchableOpacity>
+              </View>
             </View>
           );
         }
@@ -434,9 +495,18 @@ export default class Engine extends Component {
     }
   }
 
-  getTopLeftControlStyle = () => {
+  getPriestControlStyles = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({height: this.props.tileWidth, width: this.props.tileWidth, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*5, backgroundColor: '#fff'});
+      return ({ height: this.props.tileWidth, width: this.props.tileWidth * 3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*5, flexDirection: 'row', justifyContent: 'space-between' });
+    } else {
+      return ({height: this.props.tileWidth, width: this.props.tileWidth * 3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*9, flexDirection: 'row', justifyContent: 'space-between' });
+    }
+  }
+  getEchoControlStyles = () => {
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return ({ zIndex: 2, height: this.props.tileWidth * 3, width: this.props.tileWidth * 3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*5, flexDirection: 'column' });
+    } else {
+      return ({ zIndex: 2, height: this.props.tileWidth * 3, width: this.props.tileWidth * 3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*9, flexDirection: 'column' });
     }
   }
 
@@ -448,7 +518,7 @@ export default class Engine extends Component {
           width={this.screenDimensions.width}
           style={{ backgroundColor: "#000" }}
         >
-          <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height }} {...this._panResponder.panHandlers}>
+          <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1 }} {...this._panResponder.panHandlers}>
             <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.gameBoardWidth, height: this.gameBoardWidth }} >
               <Board
                 gameBoard={this.props.gameBoard}
