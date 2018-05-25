@@ -1071,97 +1071,113 @@ class Game extends Component {
     // console.log('isACacheIsland');
     let cellsAround = this.getIndexesOfAvailableCellsAround(element.name, this.cellsInRow, this.cellsTotal, true);
     if ((element.isRevealed) && (element.hasCache)) {
-      cellsAround.forEach((i) => {
+      // console.log('(element.isRevealed) && (element.hasCache)');
+      // console.log(element);
+      // cellsAround.forEach((i) => {
+      for (let i = 0; i < cellsAround.length; i++) {
         if (this.elements[i].isRevealed) {
+          // console.log('-----------------------------------------------------------------');
           // console.log('false');
-          return false;
+          return (false);
         }
-      });
+      }
+      // });
       // console.log('true');
-      return true;
+      return (true);
     }
     else {
       // console.log('false');
-      return false;
+      return (false);
     }
   }
 
   assignImageFogKeys = () => {
     for (let i = 0; i < this.elements.length; i++) {
       if ((this.elements[i].isRevealed) && (!this.isACacheIsland(this.elements[i]))) {
+        if (this.elements[i].hasCache) { console.log('hasCache');}
 
 
         if (this.elements[i].imageFogKey) { this.elements[i].imageFogKey = 0; }
 
 
 
-        if ((i - 1 >= 0) && (i - this.cellsInRow >= 0)) {
+        if ((i % this.cellsInRow > 0) && (i - this.cellsInRow >= 0)) {
           if ((!this.elements[i - 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
             this.elements[i - this.cellsInRow - 1].imageFogKey = 1;//nw
+            // this.elements[i - this.cellsInRow - 1].isRevealed = true;
           }
           if ((this.elements[i - 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i - 1 - this.cellsInRow].isRevealed)) {
             this.elements[i - 1 - this.cellsInRow].imageFogKey = 9;
+            // this.elements[i - 1 - this.cellsInRow].isRevealed = true;
           }
-
         }
 
-        if ((i + 1 < this.cellsTotal) && (i - this.cellsInRow >= 0)) {
+        if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0) && (i - this.cellsInRow >= 0)) {
           if ((!this.elements[i + 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
             this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
+            // this.elements[i - this.cellsInRow + 1].isRevealed = true;
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i + 1 - this.cellsInRow].isRevealed)) {
             this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
+            // this.elements[i + 1 - this.cellsInRow].isRevealed = true;
           }
-
         }
 
-        if ((i - 1 >= 0) && (i + this.cellsInRow < this.cellsTotal)) {
+        if ((i % this.cellsInRow > 0) && (i + this.cellsInRow < this.cellsTotal)) {
           if ((!this.elements[i - 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
             this.elements[i + this.cellsInRow - 1].imageFogKey = 7;//sw
+            // this.elements[i + this.cellsInRow - 1].isRevealed = true;
           }
           if ((this.elements[i - 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i - 1 + this.cellsInRow].isRevealed)) {
             this.elements[i - 1 + this.cellsInRow].imageFogKey = 9;
+            // this.elements[i - 1 + this.cellsInRow].isRevealed = true;
           }
-
         }
 
-        if ((i + 1 < this.cellsTotal) && (i + this.cellsInRow < this.cellsTotal)) {
+        if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0) && (i + this.cellsInRow < this.cellsTotal)) {
           if ((!this.elements[i + 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
             this.elements[i + this.cellsInRow + 1].imageFogKey = 5;//se
+            // this.elements[i + this.cellsInRow + 1].isRevealed = true;
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i + 1 + this.cellsInRow].isRevealed)) {
             this.elements[i + 1 + this.cellsInRow].imageFogKey = 9;
+            // this.elements[i + 1 + this.cellsInRow].isRevealed = true;
           }
-
         }
 
 
 
-        if (i - 1 >= 0) {
+        if (i % this.cellsInRow > 0) {
           if ((!this.elements[i - 1].isRevealed) && (this.elements[i - 1].imageFogKey != 9)) {//w
             this.elements[i - 1].imageFogKey = 8;
+            // this.elements[i - 1].isRevealed = true;
           }
-
         }
-        if (i + 1 < this.cellsTotal) {
+        if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0)) {
           if ((!this.elements[i + 1].isRevealed) && (this.elements[i + 1].imageFogKey != 9)) {//e
             this.elements[i + 1].imageFogKey = 4;
+            // this.elements[i + 1].isRevealed = true;
           }
-
         }
         if (i - this.cellsInRow >= 0) {
           if ((!this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i - this.cellsInRow].imageFogKey != 9)) {//n
             this.elements[i - this.cellsInRow].imageFogKey = 2;
+            // this.elements[i - this.cellsInRow].isRevealed = true;
           }
-
         }
         if (i + this.cellsInRow < this.cellsTotal) {
           if ((!this.elements[i + this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].imageFogKey != 9)) {//s
             this.elements[i + this.cellsInRow].imageFogKey = 6;
+            // this.elements[i + this.cellsInRow].isRevealed = true;
           }
-
         }
 
+      }
+    }
+
+    for (let i = 0; i < this.cellsTotal; i++) {
+      if (this.elements[i].imageFogKey > 0) {
+        this.elements[i].isSemiRevealed = true;
       }
     }
   }

@@ -344,37 +344,37 @@ export default class Engine extends Component {
     // console.log('renderFogTile');
     switch (tile.index) {
       case 1://nw
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-nw2.gif")} />;
+        return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-nw.gif")} />;
         break;
       case 2://n
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-n2.gif")} />;
+        return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-n.gif")} />;
         break;
       case 3://ne
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-ne2.gif")} />;
+        return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-ne.gif")} />;
         break;
       case 4://e
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-e2.gif")} />;
+        return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-e.gif")} />;
         break;
       case 5://se
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-se2.gif")} />;
+        return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-se.gif")} />;
         break;
       case 6://s
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-s2.gif")} />;
+        return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-s.gif")} />;
         break;
       case 7://sw
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-sw2.gif")} />;
+        return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-sw.gif")} />;
         break;
       case 8://w
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-w2.gif")} />;
+        return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-w.gif")} />;
         break;
       case 9://full
-        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-full.gif")} />;
         break;
       default:
         console.log('the imageKey for this tile was not assigned correctly', tile);
         break;
     }
   }
+  // return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-full.gif")} />;
 
   renderLastTurn = () => {
     if (this.props.isHuman) {
