@@ -11,6 +11,7 @@ export default class Cell {
     this.parent = null;
     this.isHighlighted = false;
     this.isRevealed = false;
+    this.isSemiRevealed = false;
     this.hasHuman = false;
     this.hasMonster = false;
     this.hasCache = false;
