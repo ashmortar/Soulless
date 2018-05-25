@@ -72,6 +72,7 @@ class Game extends Component {
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
+    this.adjustFog();
   }
 
   // componentDidMount() {
@@ -1086,87 +1087,81 @@ class Game extends Component {
   }
 
   assignImageFogKeys = () => {
-    console.log('assignImageFogKeys-----------------------------------------------------------------------------------------');
-    for (let i = 0; i < this.elements.length; i++) {
-      if ((this.elements[i].isRevealed) && (!this.isACacheIsland(this.elements[i]))) {
-        if (this.elements[i].hasCache) { console.log('hasCache');}
 
+    let newRevealed = [];
+    for (let i = 0; i < this.elements.length; i++) {
+      if ((this.elements[i].isRevealed)) {
 
         if (this.elements[i].imageFogKey) { this.elements[i].imageFogKey = 0; }
 
-
-
         if ((i % this.cellsInRow > 0) && (i - this.cellsInRow >= 0)) {
           if ((!this.elements[i - 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
-            this.elements[i - this.cellsInRow - 1].imageFogKey = 1;//nw
-            // this.elements[i - this.cellsInRow - 1].isRevealed = true;
+              newRevealed.push(i - this.cellsInRow - 1);
+              this.elements[i - this.cellsInRow - 1].imageFogKey = 1;//nw
           }
           if ((this.elements[i - 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i - 1 - this.cellsInRow].isRevealed)) {
-            this.elements[i - 1 - this.cellsInRow].imageFogKey = 9;
-            // this.elements[i - 1 - this.cellsInRow].isRevealed = true;
+              newRevealed.push(i - 1 - this.cellsInRow);
+              this.elements[i - 1 - this.cellsInRow].imageFogKey = 9;
           }
         }
 
         if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0) && (i - this.cellsInRow >= 0)) {
           if ((!this.elements[i + 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
-            this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
-            // this.elements[i - this.cellsInRow + 1].isRevealed = true;
+              newRevealed.push(i - this.cellsInRow + 1);
+              this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i + 1 - this.cellsInRow].isRevealed)) {
-            this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
-            // this.elements[i + 1 - this.cellsInRow].isRevealed = true;
+              newRevealed.push(i + 1 - this.cellsInRow);
+              this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
           }
         }
 
         if ((i % this.cellsInRow > 0) && (i + this.cellsInRow < this.cellsTotal)) {
           if ((!this.elements[i - 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
-            this.elements[i + this.cellsInRow - 1].imageFogKey = 7;//sw
-            // this.elements[i + this.cellsInRow - 1].isRevealed = true;
+              newRevealed.push(i + this.cellsInRow - 1);
+              this.elements[i + this.cellsInRow - 1].imageFogKey = 7;//sw
           }
           if ((this.elements[i - 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i - 1 + this.cellsInRow].isRevealed)) {
-            this.elements[i - 1 + this.cellsInRow].imageFogKey = 9;
-            // this.elements[i - 1 + this.cellsInRow].isRevealed = true;
+              newRevealed.push(i - 1 + this.cellsInRow);
+              this.elements[i - 1 + this.cellsInRow].imageFogKey = 9;
           }
         }
 
         if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0) && (i + this.cellsInRow < this.cellsTotal)) {
           if ((!this.elements[i + 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
-            this.elements[i + this.cellsInRow + 1].imageFogKey = 5;//se
-            // this.elements[i + this.cellsInRow + 1].isRevealed = true;
+              newRevealed.push(i + this.cellsInRow + 1);
+              this.elements[i + this.cellsInRow + 1].imageFogKey = 5;//se
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i + 1 + this.cellsInRow].isRevealed)) {
-            this.elements[i + 1 + this.cellsInRow].imageFogKey = 9;
-            // this.elements[i + 1 + this.cellsInRow].isRevealed = true;
+              newRevealed.push(i + 1 + this.cellsInRow);
+              this.elements[i + 1 + this.cellsInRow].imageFogKey = 9;
           }
         }
 
-
-
         if (i % this.cellsInRow > 0) {
           if ((!this.elements[i - 1].isRevealed) && (this.elements[i - 1].imageFogKey != 9)) {//w
-            this.elements[i - 1].imageFogKey = 8;
-            // this.elements[i - 1].isRevealed = true;
+              newRevealed.push(i - 1);
+              this.elements[i - 1].imageFogKey = 8;
           }
         }
         if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0)) {
           if ((!this.elements[i + 1].isRevealed) && (this.elements[i + 1].imageFogKey != 9)) {//e
-            this.elements[i + 1].imageFogKey = 4;
-            // this.elements[i + 1].isRevealed = true;
+              newRevealed.push(i + 1);
+              this.elements[i + 1].imageFogKey = 4;
           }
         }
         if (i - this.cellsInRow >= 0) {
           if ((!this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i - this.cellsInRow].imageFogKey != 9)) {//n
-            this.elements[i - this.cellsInRow].imageFogKey = 2;
-            // this.elements[i - this.cellsInRow].isRevealed = true;
+              newRevealed.push(i - this.cellsInRow);
+              this.elements[i - this.cellsInRow].imageFogKey = 2;
           }
         }
         if (i + this.cellsInRow < this.cellsTotal) {
           if ((!this.elements[i + this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].imageFogKey != 9)) {//s
-            this.elements[i + this.cellsInRow].imageFogKey = 6;
-            // this.elements[i + this.cellsInRow].isRevealed = true;
+              newRevealed.push(i + this.cellsInRow);
+              this.elements[i + this.cellsInRow].imageFogKey = 6;
           }
         }
-
       }
     }
 
@@ -1175,6 +1170,27 @@ class Game extends Component {
         this.elements[i].isSemiRevealed = true;
       }
     }
+  }
+
+  adjustFog = () => {
+    let cellsAround;
+    let toReveal = false;
+    for (let i = 0; i < this.cellsTotal; i++) {
+      toReveal = true;
+      if (this.elements[i].imageFogKey > 0) {
+        cellsAround = this.getIndexesOfAvailableCellsAround(i, this.cellsInRow, this.cellsTotal, false);
+        for (let j = 0; j < cellsAround.length; j++) {
+          if ((!this.elements[cellsAround[j]].isRevealed) && (!this.elements[cellsAround[j]].isSemiRevealed)) {
+            toReveal = false;
+            break;
+          }
+        }
+        if (toReveal) {
+          this.elements[i].isRevealed = true;
+        }
+      }
+    }
+    this.assignImageFogKeys();
   }
 
   assignImageDecorKeys = () => {
@@ -1359,6 +1375,7 @@ class Game extends Component {
         break;
     }
     this.assignImageFogKeys();
+    this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 
