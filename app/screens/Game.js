@@ -59,6 +59,7 @@ class Game extends Component {
       shrinesUnclaimed: this.cacheTotal,
       shrinesHumanClaimed: 0,
       shrinesMonsterClaimed: 0,
+      monsterSanityLevel: 100,
     };
   }
 
@@ -72,7 +73,7 @@ class Game extends Component {
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
   }
 
   // componentDidMount() {
@@ -1088,7 +1089,6 @@ class Game extends Component {
 
   assignImageFogKeys = () => {
 
-    let newRevealed = [];
     for (let i = 0; i < this.elements.length; i++) {
       if ((this.elements[i].isRevealed)) {
 
@@ -1096,69 +1096,57 @@ class Game extends Component {
 
         if ((i % this.cellsInRow > 0) && (i - this.cellsInRow >= 0)) {
           if ((!this.elements[i - 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
-              newRevealed.push(i - this.cellsInRow - 1);
               this.elements[i - this.cellsInRow - 1].imageFogKey = 1;//nw
           }
           if ((this.elements[i - 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i - 1 - this.cellsInRow].isRevealed)) {
-              newRevealed.push(i - 1 - this.cellsInRow);
               this.elements[i - 1 - this.cellsInRow].imageFogKey = 9;
           }
         }
 
         if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0) && (i - this.cellsInRow >= 0)) {
           if ((!this.elements[i + 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
-              newRevealed.push(i - this.cellsInRow + 1);
               this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i + 1 - this.cellsInRow].isRevealed)) {
-              newRevealed.push(i + 1 - this.cellsInRow);
               this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
           }
         }
 
         if ((i % this.cellsInRow > 0) && (i + this.cellsInRow < this.cellsTotal)) {
           if ((!this.elements[i - 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
-              newRevealed.push(i + this.cellsInRow - 1);
               this.elements[i + this.cellsInRow - 1].imageFogKey = 7;//sw
           }
           if ((this.elements[i - 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i - 1 + this.cellsInRow].isRevealed)) {
-              newRevealed.push(i - 1 + this.cellsInRow);
               this.elements[i - 1 + this.cellsInRow].imageFogKey = 9;
           }
         }
 
         if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0) && (i + this.cellsInRow < this.cellsTotal)) {
           if ((!this.elements[i + 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
-              newRevealed.push(i + this.cellsInRow + 1);
               this.elements[i + this.cellsInRow + 1].imageFogKey = 5;//se
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i + 1 + this.cellsInRow].isRevealed)) {
-              newRevealed.push(i + 1 + this.cellsInRow);
               this.elements[i + 1 + this.cellsInRow].imageFogKey = 9;
           }
         }
 
         if (i % this.cellsInRow > 0) {
           if ((!this.elements[i - 1].isRevealed) && (this.elements[i - 1].imageFogKey != 9)) {//w
-              newRevealed.push(i - 1);
               this.elements[i - 1].imageFogKey = 8;
           }
         }
         if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0)) {
           if ((!this.elements[i + 1].isRevealed) && (this.elements[i + 1].imageFogKey != 9)) {//e
-              newRevealed.push(i + 1);
               this.elements[i + 1].imageFogKey = 4;
           }
         }
         if (i - this.cellsInRow >= 0) {
           if ((!this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i - this.cellsInRow].imageFogKey != 9)) {//n
-              newRevealed.push(i - this.cellsInRow);
               this.elements[i - this.cellsInRow].imageFogKey = 2;
           }
         }
         if (i + this.cellsInRow < this.cellsTotal) {
           if ((!this.elements[i + this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].imageFogKey != 9)) {//s
-              newRevealed.push(i + this.cellsInRow);
               this.elements[i + this.cellsInRow].imageFogKey = 6;
           }
         }
@@ -1375,7 +1363,7 @@ class Game extends Component {
         break;
     }
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 
@@ -1793,8 +1781,6 @@ class Game extends Component {
   }
 
   monsterProcessPounce = () => {
-    // let text1;
-    // let text2;
     this.resetHighlighted();
     let cellsAround = this.getIndexesOfAvailableCellsAround(this.monsterSpace.name, this.cellsInRow, this.cellsTotal, true);
     cellsAround.push(this.monsterSpace.name);

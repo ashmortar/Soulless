@@ -9,6 +9,9 @@ import { Blurb } from '../components/Blurb';
 
 
 class Bar extends Component {
+
+
+
   static propTypes = {
     isHuman: PropTypes.bool,
     outOfMoves: PropTypes.bool,
@@ -17,6 +20,10 @@ class Bar extends Component {
     shrinesUnclaimed: PropTypes.number
   }
 
+  constructor() {
+    super();
+    this.barHeight = 40;
+  }
 
 
   renderButton = () => {
@@ -64,7 +71,7 @@ class Bar extends Component {
 
     // let src={require("../data/images/shrine.png")}
     return(
-      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'row', alignItems: 'center', height: 40}}>
+      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'row', alignItems: 'center', height: this.barHeight}}>
 
         <Text style={{color: '#fff'}}>{text1}</Text>
 
