@@ -59,6 +59,7 @@ class Game extends Component {
       shrinesUnclaimed: this.cacheTotal,
       shrinesHumanClaimed: 0,
       shrinesMonsterClaimed: 0,
+      monsterSanityLevel: 100,
     };
   }
 
@@ -1780,8 +1781,6 @@ class Game extends Component {
   }
 
   monsterProcessPounce = () => {
-    // let text1;
-    // let text2;
     this.resetHighlighted();
     let cellsAround = this.getIndexesOfAvailableCellsAround(this.monsterSpace.name, this.cellsInRow, this.cellsTotal, true);
     cellsAround.push(this.monsterSpace.name);
