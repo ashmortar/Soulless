@@ -184,9 +184,9 @@ export default class Engine extends Component {
       newY = this.yOffsetMax;
     }
     setTimeout(function() {Animated.parallel([
-      Animated.timing(left, { toValue: -newX, duration: 2000}),
-      Animated.timing(top, { toValue: -newY, duration: 2000}),
-    ]).start();}.bind(this), 2000);
+      Animated.timing(left, { toValue: -newX, duration: 1000}),
+      Animated.timing(top, { toValue: -newY, duration: 1000}),
+    ]).start();}.bind(this), 2500);
   }
 
   componentDidUpdate() {
@@ -571,10 +571,10 @@ export default class Engine extends Component {
           return (
             <View style={[this.getPriestControlStyles(), {height: this.props.tileWidth, width: this.props.tileWidth * 3 }]}>
               <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.props.showHumanMoves}>
-                <Image source={require('../data/images/Cyan-square.png')} resizeMode="contain" />
+                <Image source={require('../data/images/move.png')} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.5 }} />
               </TouchableOpacity>
               <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.echoControlSwitch}>
-                <Image source={require("../data/images/Cyan-square.png")} resizeMode="contain" />
+                <Image source={require("../data/images/echoIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.5 }} />
               </TouchableOpacity>
             </View>
           );
@@ -583,26 +583,26 @@ export default class Engine extends Component {
             <View style={this.getEchoControlStyles()} >
               <View style={{flexDirection: 'row', flex: 1}}>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoControlSwitch}>
-                  <Image source={require("../data/images/Cyan-square.png")} resizeMode="contain" />
+                  <Image source={require("../data/images/cancel.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, opacity: 0.1 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoNorth} >
-                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '90deg'}] }} />
                 </TouchableOpacity>
               </View>
               <View style={{flexDirection: 'row', flex: 1}}>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoWest}>
-                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoBurst}>
-                  <View style={{flex: 1, backgroundColor: 'purple'}} />
+                  <Image source={require("../data/images/echoBurst.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoEast}>
-                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '180deg'}] }} />
                 </TouchableOpacity>
               </View>
               <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center'}}>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoSouth}>
-                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '-90deg'}] }} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -614,18 +614,18 @@ export default class Engine extends Component {
             <View style={this.getMonsterControlStyles()} >
               <View style={{zIndex: 1, height: this.props.tileWidth*5, width: this.props.tileWidth, flexDirection: 'column', justifyContent: 'space-between'}}>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.monsterMove}>
-                  <View style={{ flex: 1, backgroundColor: 'magenta' }} />
+                  <Image source={require("../data/images/move.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.props.monsterProcessPounce}>
-                  <View style={{ flex: 1, backgroundColor: 'red' }} />
+                  <Image source={require("../data/images/pounceIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
               </View>
               <View style={{height: this.props.tileWidth*5, width: this.props.tileWidth, flexDirection: 'column', justifyContent: 'space-between'}}>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.sniffTargetPicker}>
-                  <View style={{ flex: 1, backgroundColor: 'green' }} />
+                  <Image source={require("../data/images/sniffIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.listenTargetPicker}>
-                  <View style={{ flex: 1, backgroundColor: 'blue' }} />
+                  <Image source={require("../data/images/listenIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -634,10 +634,10 @@ export default class Engine extends Component {
           return (
             <View style={this.getMonsterControlStyles()} >
               <TouchableOpacity style={{ height: this.props.tileWidth*2, width:this.props.tileWidth}} onPress={this.shrinePicked}>
-                <Image source={require('../data/images/shrine.png')} style={{width: this.props.tileWidth, height: this.props.tileWidth*2}} />
+                <Image source={require('../data/images/shrine.png')} style={{width: this.props.tileWidth, height: this.props.tileWidth*2, backgroundColor: "#fff", opacity: 0.3}} />
               </TouchableOpacity>
               <TouchableOpacity style={{ height: this.props.tileWidth*2, width: this.props.tileWidth}} onPress={this.humanPicked}>
-                <Image source={require('../data/images/Priest-static.png')} style={{width: this.props.tileWidth, height: this.props.tileWidth*2}} resizeMode='stretch'/>
+                <Image source={require('../data/images/Priest-static.png')} style={{width: this.props.tileWidth, height: this.props.tileWidth*2, backgroundColor: "#fff", opacity: 0.3}} resizeMode='stretch'/>
               </TouchableOpacity>
             </View>
           )

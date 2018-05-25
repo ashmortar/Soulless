@@ -41,8 +41,8 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: false,
-      tileWidth: this.zoomedOutValue,
+      isHuman: true,
+      tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
       animationType: 'hands',
