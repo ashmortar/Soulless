@@ -1068,30 +1068,25 @@ class Game extends Component {
   }
 
   isACacheIsland = (element) => {
-    // console.log('isACacheIsland');
+    let res = false;
     let cellsAround = this.getIndexesOfAvailableCellsAround(element.name, this.cellsInRow, this.cellsTotal, true);
     if ((element.isRevealed) && (element.hasCache)) {
-      // console.log('(element.isRevealed) && (element.hasCache)');
-      // console.log(element);
-      // cellsAround.forEach((i) => {
+      res = true;
       for (let i = 0; i < cellsAround.length; i++) {
-        if (this.elements[i].isRevealed) {
-          // console.log('-----------------------------------------------------------------');
-          // console.log('false');
-          return (false);
+        if (this.elements[cellsAround[i]].isRevealed) {
+          res = false;
+          break;
         }
       }
-      // });
-      // console.log('true');
-      return (true);
+      return res;
     }
     else {
-      // console.log('false');
-      return (false);
+      return res;
     }
   }
 
   assignImageFogKeys = () => {
+    console.log('assignImageFogKeys-----------------------------------------------------------------------------------------');
     for (let i = 0; i < this.elements.length; i++) {
       if ((this.elements[i].isRevealed) && (!this.isACacheIsland(this.elements[i]))) {
         if (this.elements[i].hasCache) { console.log('hasCache');}
