@@ -71,6 +71,7 @@ class Game extends Component {
     this.echoLocate('initial');
     this.assignImageKeys();
     this.assignImageDecorKeys();
+    this.assignImageFogKeys();
   }
 
   // componentDidMount() {
@@ -687,7 +688,7 @@ class Game extends Component {
     let cell = this.getRandomCell();
     let distance = this.findShortestPath(cell, this.humanSpace);
     while (distance < 25) {
-      console.log(`assign monster counter: ${this.assignMonsterCounter}`);
+      // console.log(`assign monster counter: ${this.assignMonsterCounter}`);
       this.assignMonsterCounter++;
       cell = this.getRandomCell();
       distance = this.findShortestPath(cell, this.humanSpace);
@@ -1066,6 +1067,105 @@ class Game extends Component {
 
   }
 
+  isACacheIsland = (element) => {
+    // console.log('isACacheIsland');
+    let cellsAround = this.getIndexesOfAvailableCellsAround(element.name, this.cellsInRow, this.cellsTotal, true);
+    if ((element.isRevealed) && (element.hasCache)) {
+      cellsAround.forEach((i) => {
+        if (this.elements[i].isRevealed) {
+          // console.log('false');
+          return false;
+        }
+      });
+      // console.log('true');
+      return true;
+    }
+    else {
+      // console.log('false');
+      return false;
+    }
+  }
+
+  assignImageFogKeys = () => {
+    for (let i = 0; i < this.elements.length; i++) {
+      if ((this.elements[i].isRevealed) && (!this.isACacheIsland(this.elements[i]))) {
+
+
+        if (this.elements[i].imageFogKey) { this.elements[i].imageFogKey = 0; }
+
+
+
+        if ((i - 1 >= 0) && (i - this.cellsInRow >= 0)) {
+          if ((!this.elements[i - 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
+            this.elements[i - this.cellsInRow - 1].imageFogKey = 1;//nw
+          }
+          if ((this.elements[i - 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i - 1 - this.cellsInRow].isRevealed)) {
+            this.elements[i - 1 - this.cellsInRow].imageFogKey = 9;
+          }
+
+        }
+
+        if ((i + 1 < this.cellsTotal) && (i - this.cellsInRow >= 0)) {
+          if ((!this.elements[i + 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
+            this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
+          }
+          if ((this.elements[i + 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i + 1 - this.cellsInRow].isRevealed)) {
+            this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
+          }
+
+        }
+
+        if ((i - 1 >= 0) && (i + this.cellsInRow < this.cellsTotal)) {
+          if ((!this.elements[i - 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
+            this.elements[i + this.cellsInRow - 1].imageFogKey = 7;//sw
+          }
+          if ((this.elements[i - 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i - 1 + this.cellsInRow].isRevealed)) {
+            this.elements[i - 1 + this.cellsInRow].imageFogKey = 9;
+          }
+
+        }
+
+        if ((i + 1 < this.cellsTotal) && (i + this.cellsInRow < this.cellsTotal)) {
+          if ((!this.elements[i + 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
+            this.elements[i + this.cellsInRow + 1].imageFogKey = 5;//se
+          }
+          if ((this.elements[i + 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i + 1 + this.cellsInRow].isRevealed)) {
+            this.elements[i + 1 + this.cellsInRow].imageFogKey = 9;
+          }
+
+        }
+
+
+
+        if (i - 1 >= 0) {
+          if ((!this.elements[i - 1].isRevealed) && (this.elements[i - 1].imageFogKey != 9)) {//w
+            this.elements[i - 1].imageFogKey = 8;
+          }
+
+        }
+        if (i + 1 < this.cellsTotal) {
+          if ((!this.elements[i + 1].isRevealed) && (this.elements[i + 1].imageFogKey != 9)) {//e
+            this.elements[i + 1].imageFogKey = 4;
+          }
+
+        }
+        if (i - this.cellsInRow >= 0) {
+          if ((!this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i - this.cellsInRow].imageFogKey != 9)) {//n
+            this.elements[i - this.cellsInRow].imageFogKey = 2;
+          }
+
+        }
+        if (i + this.cellsInRow < this.cellsTotal) {
+          if ((!this.elements[i + this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].imageFogKey != 9)) {//s
+            this.elements[i + this.cellsInRow].imageFogKey = 6;
+          }
+
+        }
+
+      }
+    }
+  }
+
   assignImageDecorKeys = () => {
     let greyBottomWalls = [];
     for (let i = 0; i < this.elements.length; i++) {
@@ -1247,6 +1347,7 @@ class Game extends Component {
       default:
         break;
     }
+    this.assignImageFogKeys();
     this.setState({ redraw: !this.state.redraw });
   }
 
@@ -1272,7 +1373,7 @@ class Game extends Component {
   }
 
   onItemSelected = (item) => {
-    console.log('onItemSelected', item);
+    // console.log('onItemSelected', item);
     switch (item) {
       case 'endTurn':
         if (this.state.outOfMoves) {
@@ -1828,7 +1929,7 @@ class Game extends Component {
         //take the cache
         this.collectShrine(item);
         // this.showSplashScreen('shrine', false);
-        console.log('shrine collected: ', this.state.shrinesHumanClaimed, this.state.shrinesMonsterClaimed, this.state.shrinesUnclaimed);
+        // console.log('shrine collected: ', this.state.shrinesHumanClaimed, this.state.shrinesMonsterClaimed, this.state.shrinesUnclaimed);
       }
       this.humanSpace = item;
       this.resetHighlighted();
@@ -1857,24 +1958,24 @@ class Game extends Component {
     this.setState({ outOfMoves: false });
   }
 
-  renderBar = () => {
-    return(
-      <View style={{backgroundColor:'#555', padding: 10}}>
-        <Text style={{alignItems: 'flex-end'}}>HEY</Text>
-
-        <TouchableOpacity style={{alignItems: 'flex-end'}} onPress={()=>{console.log('pressed');}}>
-          <View style={{    padding: 10,
-              borderRadius: 15,
-              borderColor: '#d94400',
-              borderWidth: 2,
-              backgroundColor: '#000' }}>
-            <Text style={{ color: '#fff' }}>hey</Text>
-          </View>
-        </TouchableOpacity>
-
-      </View>
-    );
-  }
+  // renderBar = () => {
+  //   return(
+  //     <View style={{backgroundColor:'#555', padding: 10}}>
+  //       <Text style={{alignItems: 'flex-end'}}>HEY</Text>
+  //
+  //       <TouchableOpacity style={{alignItems: 'flex-end'}} onPress={()=>{console.log('pressed');}}>
+  //         <View style={{    padding: 10,
+  //             borderRadius: 15,
+  //             borderColor: '#d94400',
+  //             borderWidth: 2,
+  //             backgroundColor: '#000' }}>
+  //           <Text style={{ color: '#fff' }}>hey</Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //
+  //     </View>
+  //   );
+  // }
 
 
   boardFinishedCallback = () => (
@@ -1884,7 +1985,6 @@ class Game extends Component {
   )
 
   showAnimationCallback = () => (
-    console.log('animation callback'),
     this.setState({
       animationVisible: false,
       animateCamera: true,
@@ -1957,6 +2057,7 @@ class Game extends Component {
           monsterProcessPounce={this.monsterProcessPounce}
           sniff={this.sniff}
           listen={this.listen}
+          assignImageFogKeys={this.assignImageFogKeys}
         />
         <Modal
           isVisible={this.state.modal != 0}

@@ -4,6 +4,7 @@ export default class Cell {
     this.value = 5;
     this.imageKey = 0;
     this.imageDecorKey = 0;
+    this.imageFogKey = 0;
     this.humanEdges = [];
     this.monsterEdges = [];
     this.searched = false;

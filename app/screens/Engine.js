@@ -17,6 +17,7 @@ export default class Engine extends Component {
     incrementTurnCounter: PropTypes.func,
     turnCounter: PropTypes.number,
     animationVisible: PropTypes.bool,
+    assignImageFogKeys: PropTypes.func,
   };
 
   constructor(props) {
@@ -50,6 +51,7 @@ export default class Engine extends Component {
       highlightedTileMap: this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0),
       showHighlighted: false,
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
+      tileFogMapArray: this.props.gameBoard.map(x => (this.props.isHuman) ? x.imageFogKey : 0),
       spritePlaying: true,
       spriteScale: this.props.tileWidth / this.props.zoomedInValue,
       wasPouncedTileMap: this.wasPouncedTileMap,
@@ -319,6 +321,62 @@ export default class Engine extends Component {
       this.highlightedTileRanges = [];
     }
   };
+
+  renderFog = () => {
+    if (this.props.isHuman) {
+      return (
+        <TileMap
+        src={require("../data/images/fog-nw.gif")}
+        tileSize={this.props.tileWidth}
+        columns={40}
+        rows={40}
+        sourceWidth={this.props.tileWidth}
+        layers={[this.state.tileFogMapArray]}
+        renderTile={this.renderFogTile}
+        />
+      );
+    }
+  }
+
+  fixImageStyle = (index, tile) => {
+    return ({ left: ((index - 1) * this.props.tileWidth), overflow: 'hidden' });
+  }
+
+  renderFogTile = (tile, src, styles) => {
+    // console.log('renderFogTile');
+    switch (tile.index) {
+      case 1://nw
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-nw2.gif")} />;
+        break;
+      case 2://n
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-n2.gif")} />;
+        break;
+      case 3://ne
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-ne2.gif")} />;
+        break;
+      case 4://e
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-e2.gif")} />;
+        break;
+      case 5://se
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-se2.gif")} />;
+        break;
+      case 6://s
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-s2.gif")} />;
+        break;
+      case 7://sw
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-sw2.gif")} />;
+        break;
+      case 8://w
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-w2.gif")} />;
+        break;
+      case 9://full
+        return <Image resizeMode="stretch" style={[styles, { opacity: 0.1 }, this.fixImageStyle()]} source={require("../data/images/fog-full.gif")} />;
+        break;
+      default:
+        console.log('the imageKey for this tile was not assigned correctly', tile);
+        break;
+    }
+  }
 
   renderLastTurn = () => {
     if (this.props.isHuman) {
@@ -629,6 +687,7 @@ export default class Engine extends Component {
               />
 
               {this.renderHighlighted()}
+              {this.renderFog()}
               {this.renderLastTurn()}
               {this.renderSprite()}
               {this.renderControls()}
@@ -646,7 +705,7 @@ export default class Engine extends Component {
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
       return ({ zIndex: 1, left: this.state.playerX - this.props.tileWidth*3, top: this.state.playerY - (this.props.tileWidth*4.3), width: this.props.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
     }
-    
+
   }
 
   getPriestStyle = () => {
