@@ -56,6 +56,8 @@ export default class Engine extends Component {
       wasEchoedTileMap: this.wasEchoedTileMap,
       controlsVisible: true,
       echoControlsVisible: false,
+      targetPickerVisible: false,
+      targetPicker: null,
     };
   }
 
@@ -372,6 +374,8 @@ export default class Engine extends Component {
     if (this.state.controlsVisible) {
       this.setState({
         controlsVisible: false,
+        echoControlsVisible: false,
+        targetPickerVisible: false,
       })
     } else {
       this.setState({
@@ -447,6 +451,61 @@ export default class Engine extends Component {
     this.props.echolocate('south');
   }
 
+  monsterMove = () => {
+    this.controlSwitch();
+    this.props.showMonsterMoves();
+  }
+
+  sniffTargetPicker = () => {
+    this.setState({
+      targetPicker: 'sniff',
+      targetPickerVisible: true,
+    });
+  }
+
+  listenTargetPicker = () => {
+    this.setState({
+      targetPicker: 'listen',
+      targetPickerVisible: true,
+    });
+  }
+
+  shrinePicked = () => {
+    if (this.state.targetPicker === 'sniff') {
+      this.props.sniff('shrine');
+      this.setState({
+        targetPicker: null,
+        targetPickerVisible: false,
+        controlsVisible: false,
+      })
+    } else if (this.state.targetPicker === 'listen') {
+      this.props.listen('shrine');
+      this.setState({
+        targetPicker: null,
+        targetPickerVisible: false,
+        controlsVisible: false,
+      })
+    }
+  }
+
+  humanPicked = () => {
+    if (this.state.targetPicker === 'sniff') {
+      this.props.sniff('human');
+      this.setState({
+        targetPicker: null,
+        targetPickerVisible: false,
+        controlsVisible: false,
+      });
+    } else if (this.state.targetPicker === 'listen') {
+      this.props.listen('human');
+      this.setState({
+        targetPicker: null,
+        targetPickerVisible: false,
+        controlsVisible: false,
+      });
+    }
+  }
+
   renderControls = () => {
     if (this.state.controlsVisible) {
       if (this.props.isHuman) {
@@ -491,7 +550,49 @@ export default class Engine extends Component {
             </View>
           );
         }
+      } else {
+        if (!this.state.targetPickerVisible) {
+          return (
+            <View style={this.getMonsterControlStyles()} >
+              <View style={{zIndex: 1, height: this.props.tileWidth*5, width: this.props.tileWidth, flexDirection: 'column', justifyContent: 'space-between'}}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.monsterMove}>
+                  <View style={{ flex: 1, backgroundColor: 'magenta' }} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.props.monsterProcessPounce}>
+                  <View style={{ flex: 1, backgroundColor: 'red' }} />
+                </TouchableOpacity>
+              </View>
+              <View style={{height: this.props.tileWidth*5, width: this.props.tileWidth, flexDirection: 'column', justifyContent: 'space-between'}}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.sniffTargetPicker}>
+                  <View style={{ flex: 1, backgroundColor: 'green' }} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.listenTargetPicker}>
+                  <View style={{ flex: 1, backgroundColor: 'blue' }} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )
+        } else {
+          return (
+            <View style={this.getMonsterControlStyles()} >
+              <TouchableOpacity style={{ height: this.props.tileWidth*2, width:this.props.tileWidth}} onPress={this.shrinePicked}>
+                <Image source={require('../data/images/shrine.png')} style={{width: this.props.tileWidth, height: this.props.tileWidth*2}} />
+              </TouchableOpacity>
+              <TouchableOpacity style={{ height: this.props.tileWidth*2, width: this.props.tileWidth}} onPress={this.humanPicked}>
+                <Image source={require('../data/images/Priest-static.png')} style={{width: this.props.tileWidth, height: this.props.tileWidth*2}} resizeMode='stretch'/>
+              </TouchableOpacity>
+            </View>
+          )
+        }
       }
+    }
+  }
+
+  getMonsterControlStyles = () => {
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return ({ height: this.props.tileWidth*5, width: this.props.tileWidth*5, left: this.state.playerX - this.props.tileWidth*2, top: this.state.playerY - this.props.tileWidth*5.5, flexDirection: "row", justifyContent: 'space-between' });
+    } else {
+      return ({ height: this.props.tileWidth*5, width: this.props.tileWidth*5, left: this.state.playerX - this.props.tileWidth*2, top: this.state.playerY - this.props.tileWidth*10, flexDirection: "row", justifyContent: 'space-between' });
     }
   }
 

@@ -41,7 +41,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: true,
+      isHuman: false,
       tileWidth: this.zoomedOutValue,
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -1291,7 +1291,7 @@ class Game extends Component {
           this.setState({ redraw: !this.state.redraw });
         } else {
           this.showMonsterMoves();
-          this.setState({ redraw: !this.state.redraw });
+          // this.setState({ redraw: !this.state.redraw });
         }
         break;
       case 'sniff':
@@ -1386,6 +1386,32 @@ class Game extends Component {
       }
     }
     return {shrine: closest, distance: distance};
+  }
+
+  sniff = (target) => {
+    this.resetHighlighted();
+    if (target === "human") {
+      this.setState({
+        modalDialogOnly: 1,
+      });
+    } else {
+      this.setState({
+        modalDialogOnly: 2,
+      });
+    }
+  }
+
+  listen = (target) => {
+    this.resetHighlighted();
+    if(target === 'human') {
+      this.setState({
+        modalDialogOnly: 3,
+      });
+    } else {
+      this.setState({
+        modalDialogOnly: 4,
+      })
+    }
   }
 
 
@@ -1640,6 +1666,7 @@ class Game extends Component {
   monsterProcessPounce = () => {
     // let text1;
     // let text2;
+    this.resetHighlighted();
     let cellsAround = this.getIndexesOfAvailableCellsAround(this.monsterSpace.name, this.cellsInRow, this.cellsTotal, true);
     cellsAround.push(this.monsterSpace.name);
     let human = false;
@@ -1718,6 +1745,7 @@ class Game extends Component {
         this.elements[i].isHighlighted = true;
       }
     });
+    this.setState({ redraw: !this.state.redraw })
   }
 
   moveMonster = (item) => {
@@ -1925,6 +1953,10 @@ class Game extends Component {
           turnCounter={this.state.turnCounter}
           animationVisible={this.state.animationVisible}
           showHumanMoves={this.showHumanMoves}
+          showMonsterMoves={this.showMonsterMoves}
+          monsterProcessPounce={this.monsterProcessPounce}
+          sniff={this.sniff}
+          listen={this.listen}
         />
         <Modal
           isVisible={this.state.modal != 0}
