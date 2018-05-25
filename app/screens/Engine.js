@@ -199,21 +199,28 @@ export default class Engine extends Component {
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => {
-        let {touches} = evt.nativeEvent;
-        if (touches.length === 2 || this.state.showHighlighted) {
+        // console.log('evt', evt, 'gestureState', gestureState);
+        if (this.state.showHighlighted || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           return true;
         } else {
           return false;
         }
       },
-      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
       onPanResponderGrant: (evt, gestureState) => {
+        let { touches } = evt.nativeEvent;
+        console.log('grant', touches)
+        if (touches.length > 1) {
+          if ((touches[1].timestamp - touches[0].timestamp) < 100) {
+            this.props.alterZoom();
+          }
+        }
       },
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
-        if (touches.length === 2 && (Math.abs(touches[0].pageX - touches[1].pageX) > 5)) {
+        if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
-        } else if (this.state.showHighlighted && touches.length === 1) {
+        } else if (this.state.showHighlighted) {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
       },
@@ -243,7 +250,7 @@ export default class Engine extends Component {
     setTimeout(function() {Animated.parallel([
       Animated.timing(left, { toValue: -newX, duration: 1000}),
       Animated.timing(top, { toValue: -newY, duration: 1000}),
-    ]).start();}.bind(this), 2500);
+    ]).start()}.bind(this), 2500);
   }
 
   animateSpritePosition = () => {
@@ -335,30 +342,36 @@ export default class Engine extends Component {
   }
 
   processMove(touchX, touchY) {
-    let x = touchX - this.state.left._value;
-    let y = touchY - this.state.top._value;
-    console.log("process move", this.highlightedTileRanges, x, y);
-    for (let i = 0; i < this.highlightedTileRanges.length; i++) {
-      if (
-        x > this.highlightedTileRanges[i].xMin &&
-        x < this.highlightedTileRanges[i].xMax &&
-        y > this.highlightedTileRanges[i].yMin &&
-        y < this.highlightedTileRanges[i].yMax
-      ) {
-        this.setState({
-          controlsVisible: false,
-          echoControlsVisible: false,
-          targetPickerVisible: false,
-        });
-        let newPlayerTile = this.getTileFromXY(x, y);
-        this.props.move(newPlayerTile);
-        this.props.incrementTurnCounter();
-      }
-      else {
-        this.setState({
-          showHighlighted: false,
-        });
-        this.props.resetHighlighted();
+    if (!this.state.isMoving) {
+      let x = touchX - this.state.left._value;
+      let y = touchY - this.state.top._value;
+      console.log("process move", this.highlightedTileRanges, x, y);
+      for (let i = 0; i < this.highlightedTileRanges.length; i++) {
+        if (
+          x > this.highlightedTileRanges[i].xMin &&
+          x < this.highlightedTileRanges[i].xMax &&
+          y > this.highlightedTileRanges[i].yMin &&
+          y < this.highlightedTileRanges[i].yMax
+        ) {
+          this.setState({
+            controlsVisible: false,
+            echoControlsVisible: false,
+            targetPickerVisible: false,
+          });
+          let newPlayerTile = this.getTileFromXY(x, y);
+          this.props.move(newPlayerTile);
+          this.props.incrementTurnCounter();
+        } else {
+          console.log('else');
+          setTimeout(function() {
+            if (!this.state.isMoving) {
+              this.setState({
+                showHighlighted: false,
+              });
+              this.props.resetHighlighted();
+            }
+          }.bind(this), 200);
+        }
       }
     }
   }
@@ -596,11 +609,6 @@ export default class Engine extends Component {
     this.props.echolocate('south');
   }
 
-  monsterMove = () => {
-    this.controlSwitch();
-    this.props.showMonsterMoves();
-  }
-
   sniffTargetPicker = () => {
     this.setState({
       targetPicker: 'sniff',
@@ -651,13 +659,22 @@ export default class Engine extends Component {
     }
   }
 
+  movementSwitch = () => {
+    this.controlSwitch();
+    if (this.props.isHuman) {
+      this.props.showHumanMoves();
+    } else {
+      this.props.showMonsterMoves();
+    }
+  }
+
   renderControls = () => {
     if (this.state.controlsVisible) {
       if (this.props.isHuman) {
         if (!this.state.echoControlsVisible) {
           return (
             <View style={[this.getPriestControlStyles(), {height: this.props.tileWidth, width: this.props.tileWidth * 3 }]}>
-              <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.props.showHumanMoves}>
+              <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.movementSwitch}>
                 <Image source={require('../data/images/move.png')} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.5 }} />
               </TouchableOpacity>
               <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.echoControlSwitch}>
@@ -700,7 +717,7 @@ export default class Engine extends Component {
           return (
             <View style={this.getMonsterControlStyles()} >
               <View style={{zIndex: 1, height: this.props.tileWidth*5, width: this.props.tileWidth, flexDirection: 'column', justifyContent: 'space-between'}}>
-                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.monsterMove}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.movementSwitch}>
                   <Image source={require("../data/images/move.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.props.monsterProcessPounce}>
