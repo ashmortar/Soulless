@@ -1850,18 +1850,11 @@ class Game extends Component {
   }
 
   moveMonster = (item) => {
-    if (item.isHighlighted) {
-      this.elements[this.monsterSpace.name].hasMonster = false;
-      item.hasMonster = true;
-      this.monsterSpace = item;
-      this.setState({ playerSpace: item });
-      this.resetHighlighted();
-    } else {
-      Alert.alert(
-        'Uh-Oh',
-        'Please select a highlighted space',
-      );
-    }
+    this.elements[this.monsterSpace.name].hasMonster = false;
+    item.hasMonster = true;
+    this.monsterSpace = item;
+    this.setState({ playerSpace: item });
+    this.resetHighlighted();
   }
 
   showHumanMoves = () => {
@@ -1918,28 +1911,21 @@ class Game extends Component {
   }
 
   moveHuman = (item) => {
-    if (item.isHighlighted) {
-      // player moves to the space
-      // clear previous cell
-      this.elements[this.humanSpace.name].hasHuman = false;
-      // put human in new cell,
-      item.hasHuman = true;
-      // check if the space has a cache
-      if (item.hasCache) {
-        //take the cache
-        this.collectShrine(item);
-        // this.showSplashScreen('shrine', false);
-        // console.log('shrine collected: ', this.state.shrinesHumanClaimed, this.state.shrinesMonsterClaimed, this.state.shrinesUnclaimed);
-      }
-      this.humanSpace = item;
-      this.resetHighlighted();
-      this.setState({ playerSpace: item });
-    } else {
-      Alert.alert(
-        'Uh-Oh',
-        'Please select a highlighted space',
-      );
+    // player moves to the space
+    // clear previous cell
+    this.elements[this.humanSpace.name].hasHuman = false;
+    // put human in new cell,
+    item.hasHuman = true;
+    // check if the space has a cache
+    if (item.hasCache) {
+      //take the cache
+      this.collectShrine(item);
+      // this.showSplashScreen('shrine', false);
+      // console.log('shrine collected: ', this.state.shrinesHumanClaimed, this.state.shrinesMonsterClaimed, this.state.shrinesUnclaimed);
     }
+    this.humanSpace = item;
+    this.resetHighlighted();
+    this.setState({ playerSpace: item });
   }
 
   handleChangePlayer = () => {
@@ -2058,6 +2044,7 @@ class Game extends Component {
           sniff={this.sniff}
           listen={this.listen}
           assignImageFogKeys={this.assignImageFogKeys}
+          resetHighlighted={this.resetHighlighted}
         />
         <Modal
           isVisible={this.state.modal != 0}
