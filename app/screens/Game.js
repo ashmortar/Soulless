@@ -2029,12 +2029,12 @@ class Game extends Component {
     />;
     if (this.state.boardFinished) {
       return (
-        <SideMenu
-        menu={menuRight}
-        menuPosition='right'
-        disableGestures={disableGestures}
-      >
-      <SideMenu
+      <SideMenu        
+      menu={menuRight}
+      menuPosition='right'
+      disableGestures={disableGestures}
+    >
+    <SideMenu
         menu={menuLeft}
         menuPosition='left'
       >
@@ -2118,7 +2118,7 @@ class Game extends Component {
         {bar}
       </SideMenu>
       </SideMenu>
-      )
+    )
     }
   }
 
