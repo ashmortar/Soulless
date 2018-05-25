@@ -58,6 +58,8 @@ export default class Engine extends Component {
       wasEchoedTileMap: this.wasEchoedTileMap,
       controlsVisible: true,
       echoControlsVisible: false,
+      targetPickerVisible: false,
+      targetPicker: null,
     };
   }
 
@@ -182,9 +184,9 @@ export default class Engine extends Component {
       newY = this.yOffsetMax;
     }
     setTimeout(function() {Animated.parallel([
-      Animated.timing(left, { toValue: -newX, duration: 2000}),
-      Animated.timing(top, { toValue: -newY, duration: 2000}),
-    ]).start();}.bind(this), 2000);
+      Animated.timing(left, { toValue: -newX, duration: 1000}),
+      Animated.timing(top, { toValue: -newY, duration: 1000}),
+    ]).start();}.bind(this), 2500);
   }
 
   componentDidUpdate() {
@@ -430,6 +432,8 @@ export default class Engine extends Component {
     if (this.state.controlsVisible) {
       this.setState({
         controlsVisible: false,
+        echoControlsVisible: false,
+        targetPickerVisible: false,
       })
     } else {
       this.setState({
@@ -505,6 +509,61 @@ export default class Engine extends Component {
     this.props.echolocate('south');
   }
 
+  monsterMove = () => {
+    this.controlSwitch();
+    this.props.showMonsterMoves();
+  }
+
+  sniffTargetPicker = () => {
+    this.setState({
+      targetPicker: 'sniff',
+      targetPickerVisible: true,
+    });
+  }
+
+  listenTargetPicker = () => {
+    this.setState({
+      targetPicker: 'listen',
+      targetPickerVisible: true,
+    });
+  }
+
+  shrinePicked = () => {
+    if (this.state.targetPicker === 'sniff') {
+      this.props.sniff('shrine');
+      this.setState({
+        targetPicker: null,
+        targetPickerVisible: false,
+        controlsVisible: false,
+      })
+    } else if (this.state.targetPicker === 'listen') {
+      this.props.listen('shrine');
+      this.setState({
+        targetPicker: null,
+        targetPickerVisible: false,
+        controlsVisible: false,
+      })
+    }
+  }
+
+  humanPicked = () => {
+    if (this.state.targetPicker === 'sniff') {
+      this.props.sniff('human');
+      this.setState({
+        targetPicker: null,
+        targetPickerVisible: false,
+        controlsVisible: false,
+      });
+    } else if (this.state.targetPicker === 'listen') {
+      this.props.listen('human');
+      this.setState({
+        targetPicker: null,
+        targetPickerVisible: false,
+        controlsVisible: false,
+      });
+    }
+  }
+
   renderControls = () => {
     if (this.state.controlsVisible) {
       if (this.props.isHuman) {
@@ -512,10 +571,10 @@ export default class Engine extends Component {
           return (
             <View style={[this.getPriestControlStyles(), {height: this.props.tileWidth, width: this.props.tileWidth * 3 }]}>
               <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.props.showHumanMoves}>
-                <Image source={require('../data/images/Cyan-square.png')} resizeMode="contain" />
+                <Image source={require('../data/images/move.png')} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.5 }} />
               </TouchableOpacity>
               <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.echoControlSwitch}>
-                <Image source={require("../data/images/Cyan-square.png")} resizeMode="contain" />
+                <Image source={require("../data/images/echoIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.5 }} />
               </TouchableOpacity>
             </View>
           );
@@ -524,32 +583,74 @@ export default class Engine extends Component {
             <View style={this.getEchoControlStyles()} >
               <View style={{flexDirection: 'row', flex: 1}}>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoControlSwitch}>
-                  <Image source={require("../data/images/Cyan-square.png")} resizeMode="contain" />
+                  <Image source={require("../data/images/cancel.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, opacity: 0.1 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoNorth} >
-                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '90deg'}] }} />
                 </TouchableOpacity>
               </View>
               <View style={{flexDirection: 'row', flex: 1}}>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoWest}>
-                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoBurst}>
-                  <View style={{flex: 1, backgroundColor: 'purple'}} />
+                  <Image source={require("../data/images/echoBurst.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoEast}>
-                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '180deg'}] }} />
                 </TouchableOpacity>
               </View>
               <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center'}}>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoSouth}>
-                  <View style={{flex: 1, backgroundColor: 'green'}} />
+                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '-90deg'}] }} />
                 </TouchableOpacity>
               </View>
             </View>
           );
         }
+      } else {
+        if (!this.state.targetPickerVisible) {
+          return (
+            <View style={this.getMonsterControlStyles()} >
+              <View style={{zIndex: 1, height: this.props.tileWidth*5, width: this.props.tileWidth, flexDirection: 'column', justifyContent: 'space-between'}}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.monsterMove}>
+                  <Image source={require("../data/images/move.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.props.monsterProcessPounce}>
+                  <Image source={require("../data/images/pounceIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
+                </TouchableOpacity>
+              </View>
+              <View style={{height: this.props.tileWidth*5, width: this.props.tileWidth, flexDirection: 'column', justifyContent: 'space-between'}}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.sniffTargetPicker}>
+                  <Image source={require("../data/images/sniffIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.listenTargetPicker}>
+                  <Image source={require("../data/images/listenIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )
+        } else {
+          return (
+            <View style={this.getMonsterControlStyles()} >
+              <TouchableOpacity style={{ height: this.props.tileWidth*2, width:this.props.tileWidth}} onPress={this.shrinePicked}>
+                <Image source={require('../data/images/shrine.png')} style={{width: this.props.tileWidth, height: this.props.tileWidth*2, backgroundColor: "#fff", opacity: 0.3}} />
+              </TouchableOpacity>
+              <TouchableOpacity style={{ height: this.props.tileWidth*2, width: this.props.tileWidth}} onPress={this.humanPicked}>
+                <Image source={require('../data/images/Priest-static.png')} style={{width: this.props.tileWidth, height: this.props.tileWidth*2, backgroundColor: "#fff", opacity: 0.3}} resizeMode='stretch'/>
+              </TouchableOpacity>
+            </View>
+          )
+        }
       }
+    }
+  }
+
+  getMonsterControlStyles = () => {
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return ({ height: this.props.tileWidth*5, width: this.props.tileWidth*5, left: this.state.playerX - this.props.tileWidth*2, top: this.state.playerY - this.props.tileWidth*5.5, flexDirection: "row", justifyContent: 'space-between' });
+    } else {
+      return ({ height: this.props.tileWidth*5, width: this.props.tileWidth*5, left: this.state.playerX - this.props.tileWidth*2, top: this.state.playerY - this.props.tileWidth*10, flexDirection: "row", justifyContent: 'space-between' });
     }
   }
 
