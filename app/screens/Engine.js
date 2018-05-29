@@ -38,6 +38,7 @@ export default class Engine extends Component {
     this.beginningX = this.getBeginningX();
     this.beginningY = this.getBeginningY();
     this.feedbackSquare = null;
+    this.previousTouchTimestamp = 0;
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
@@ -209,12 +210,10 @@ export default class Engine extends Component {
       // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
       onPanResponderGrant: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
-        console.log('grant', touches)
-        if (touches.length > 1) {
-          if ((touches[1].timestamp - touches[0].timestamp) < 100) {
-            this.props.alterZoom();
-          }
+        if (touches[0].timestamp - this.previousTouchTimestamp < 200) {
+          this.props.alterZoom();
         }
+        this.previousTouchTimestamp = touches[0].timestamp;
       },
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;

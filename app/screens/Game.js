@@ -60,6 +60,7 @@ class Game extends Component {
       shrinesHumanClaimed: 0,
       shrinesMonsterClaimed: 0,
       monsterSanityLevel: 100,
+      heartBeatTimer: 8,
     };
   }
 
@@ -74,10 +75,23 @@ class Game extends Component {
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
     // this.adjustFog();
+    this.setHeartRate();
   }
 
   // componentDidMount() {
   // }
+
+  setHeartRate = () => {
+    const distanceMin = 0;
+    const distanceMax = 40;
+    const heartRateMin = 0;
+    const heartRateMax = 8;
+    let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
+    let heartRate = heartRateMin + (((heartRateMax - heartRateMin) * (distance - distanceMin)) / (distanceMax-distanceMin)); 
+    this.setState({
+      heartBeatTimer: Math.floor(heartRate),
+    });
+  }
 
   componentWillUnmount() {
     this.setState({
@@ -1869,6 +1883,7 @@ class Game extends Component {
     this.monsterSpace = item;
     this.setState({ playerSpace: item });
     this.resetHighlighted();
+    this.setHeartRate();
   }
 
   showHumanMoves = () => {
@@ -1940,6 +1955,7 @@ class Game extends Component {
     this.humanSpace = item;
     this.resetHighlighted();
     this.setState({ playerSpace: item });
+    this.setHeartRate();
   }
 
   handleChangePlayer = () => {
@@ -2026,6 +2042,7 @@ class Game extends Component {
       onItemSelected={this.onItemSelected}
       shrineAmount={this.state.isHuman ? this.state.shrinesHumanClaimed : this.state.shrinesMonsterClaimed}
       shrinesUnclaimed={this.state.shrinesUnclaimed}
+      heartBeatTimer={this.state.heartBeatTimer}
     />;
     if (this.state.boardFinished) {
       return (

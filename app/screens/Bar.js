@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, View, StyleSheet, Dimensions, Image } from 'react-native';
+import { Loop, Sprite } from 'react-game-kit/native';
 
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
@@ -17,14 +18,35 @@ class Bar extends Component {
     outOfMoves: PropTypes.bool,
     onItemSelected: PropTypes.func,
     shrineAmount: PropTypes.number,
-    shrinesUnclaimed: PropTypes.number
+    shrinesUnclaimed: PropTypes.number,
+    heartBeatTimer: PropTypes.number,
   }
 
   constructor() {
     super();
     this.barHeight = 40;
+    this.heartBeatSize = 200;
+    this.heartBeatScale = this.barHeight/this.heartBeatSize;
+    
   }
 
+  renderHeartBeat = () => {
+      return (
+        <Loop>
+          <Sprite
+            offset={[0, 0]}
+            repeat={true}
+            src={require("../data/images/heartBeatTwo.png")}
+            steps={[9]}
+            state={0}
+            tileHeight={this.heartBeatSize}
+            ticksPerFrame={(this.props.heartBeatTimer)}
+            tileWidth={this.heartBeatSize}
+            scale={this.heartBeatScale}
+          />
+        </Loop>
+      );
+  }
 
   renderButton = () => {
     let marginLeft;
@@ -82,6 +104,8 @@ class Bar extends Component {
 
         <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrinesUnclaimed}</Text>
 
+        {this.renderHeartBeat()}
+
         {this.renderButton()}
 
       </View>
@@ -91,6 +115,7 @@ class Bar extends Component {
 
 
   render() {
+    console.log('heartbeat', this.props.heartBeatTimer)
     const bar = this.getBar();
     return (
       <View>
