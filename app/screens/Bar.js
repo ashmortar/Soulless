@@ -8,6 +8,10 @@ import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 
+import ProgressBarAnimated from 'react-native-progress-bar-animated';
+// import ProgressBarClassic from 'react-native-progress-bar-classic';
+// var ProgressBar = require('react-native-progress-bar');
+
 
 class Bar extends Component {
 
@@ -28,7 +32,7 @@ class Bar extends Component {
   constructor() {
     super();
     this.barSectionHeight = 40;
-    this.barHeight = this.barSectionHeight * 2;
+    this.barHeight = this.barSectionHeight * 3;
     this.heartBeatSize = 200;
     this.heartBeatScale = 0.2;
 
@@ -87,6 +91,7 @@ class Bar extends Component {
   getBar = () => {
     let text1;
     let shrines;
+    let progress = 0.5;
     if (this.props.isHuman) {
       text1 = 'Priest';
       shrines = this.props.humanShrinesToWin;
@@ -98,6 +103,13 @@ class Bar extends Component {
     // let shrinesUnclaimed = this.props.shrinesUnclaimed;
 
     // let src={require("../data/images/shrine.png")}
+
+    const progressCustomStyles = {
+      backgroundColor: '#a30000',
+      borderRadius: 0,
+      borderColor: '#000',
+    };
+
     return(
       <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'column', height: this.barHeight}}>
         <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight}}>
@@ -116,11 +128,17 @@ class Bar extends Component {
           {this.renderButton()}
 
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{color: '#fff'}}>{this.props.monsterSanityLevel}</Text>
+        <View style={{flexDirection: 'column'}}>
+          <Text style={{color: '#fff', paddingVertical: 10}}>{`Possessed priest's sanity level:`}</Text>
+          <ProgressBarAnimated
+            {...progressCustomStyles}
+            width={Dimensions.get("window").width - 20}
+            value={this.props.monsterSanityLevel}
+          />
         </View>
       </View>
     )
+    // <View style={{flexDirection: 'row'}}>
   }
 
 
