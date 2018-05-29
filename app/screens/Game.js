@@ -2080,6 +2080,8 @@ class Game extends Component {
           sniff={this.sniff}
           listen={this.listen}
           assignImageFogKeys={this.assignImageFogKeys}
+          resetHighlighted={this.resetHighlighted}
+          alterZoom={this.alterZoom}
         />
         <Modal
           isVisible={this.state.modal != 0}

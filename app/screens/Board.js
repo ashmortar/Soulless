@@ -234,50 +234,50 @@ export default class Board extends Component {
     }
   }
 
-  renderBlessedShrines = () => {
-    if (this.props.isHuman) {
-      return (
-        <TileMap
-          src={require("../data/images/shrine_blessed.png")}
-          tileSize={this.props.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.props.tileWidth}
-          layers={[this.tileBlessedCashMapArray]}
-          renderTile={(tile, src, styles) => (
-            <Image
-              resizeMode="stretch"
-              style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
-              source={src}
-            />
-          )}
-        />
-      );
+    renderBlessedShrines = () => {
+      if (this.props.isHuman) {
+        return (
+          <TileMap
+            src={require("../data/images/shrine_blessed.png")}
+            tileSize={this.props.tileWidth}
+            columns={40}
+            rows={40}
+            sourceWidth={this.props.tileWidth}
+            layers={[this.tileBlessedCashMapArray]}
+            renderTile={(tile, src, styles) => (
+              <Image
+                resizeMode="stretch"
+                style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
+                source={src}
+              />
+            )}
+          />
+        );
+      }
     }
-  }
 
 
-  renderDesecratedShrines = () => {
-    if (this.props.isHuman) {
-      return (
-        <TileMap
-          src={require("../data/images/shrine_desecrated.png")}
-          tileSize={this.props.tileWidth}
-          columns={40}
-          rows={40}
-          sourceWidth={this.props.tileWidth}
-          layers={[this.tileDesecratedCashMapArray]}
-          renderTile={(tile, src, styles) => (
-            <Image
-              resizeMode="stretch"
-              style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
-              source={src}
-            />
-          )}
-        />
-      );
+    renderDesecratedShrines = () => {
+      if (this.props.isHuman) {
+        return (
+          <TileMap
+            src={require("../data/images/shrine_desecrated.png")}
+            tileSize={this.props.tileWidth}
+            columns={40}
+            rows={40}
+            sourceWidth={this.props.tileWidth}
+            layers={[this.tileDesecratedCashMapArray]}
+            renderTile={(tile, src, styles) => (
+              <Image
+                resizeMode="stretch"
+                style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
+                source={src}
+              />
+            )}
+          />
+        );
+      }
     }
-  }
 
 
   renderDecorations = () => {

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Dimensions, Image, View, PanResponder, TouchableOpacity, Animated } from "react-native";
 import { Loop, Stage, TileMap, Sprite } from "react-game-kit/native";
 
+const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
+
 import Board from "./Board";
 
 export default class Engine extends Component {
@@ -39,7 +41,9 @@ export default class Engine extends Component {
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
+      spriteX: new Animated.Value(this.getInitialSpriteX()),
       playerY: this.playerY,
+      spriteY: new Animated.Value(this.getInitialSpriteY()),
       isZooming: false,
       isMoving: false,
       initialX: null,
@@ -61,6 +65,63 @@ export default class Engine extends Component {
       targetPickerVisible: false,
       targetPicker: null,
     };
+  }
+
+  getInitialSpriteX = () => {
+    if (this.props.isHuman) {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return (this.playerX - this.props.tileWidth*0.1);
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return (this.playerX - this.props.tileWidth*0.8);
+      }
+    } else if (this.props.tileWidth === this.props.zoomedInValue) {
+        return (this.playerX - Math.ceil((this.props.tileWidth - 4)));
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return (this.playerX - this.props.tileWidth*3);
+    }
+  }
+
+  getNewSpriteX = () => {
+    if (this.props.isHuman) {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return (this.state.playerX - this.props.tileWidth*0.1);
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return (this.state.playerX - this.props.tileWidth*0.8);
+      }
+    } else if (this.props.tileWidth === this.props.zoomedInValue) {
+        return (this.state.playerX - Math.ceil((this.props.tileWidth - 4)));
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return (this.state.playerX - this.props.tileWidth*3);
+    }
+  }
+
+
+  getInitialSpriteY = () => {
+    if (this.props.isHuman) {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return (this.playerY - this.props.tileWidth*1.5);
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return (this.playerY - this.props.tileWidth*3.5);
+      }
+    } else if (this.props.tileWidth === this.props.zoomedInValue) {
+      return (this.playerY - ((this.props.tileWidth*2 + 4)));
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return (this.playerY - (this.props.tileWidth*4.3));
+    }
+  }
+
+  getNewSpriteY = () => {
+    if (this.props.isHuman) {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return (this.state.playerY - this.props.tileWidth*1.5);
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return (this.state.playerY - this.props.tileWidth*3.5);
+      }
+    } else if (this.props.tileWidth === this.props.zoomedInValue) {
+      return (this.state.playerY - ((this.props.tileWidth*2 + 4)));
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return (this.state.playerY - (this.props.tileWidth*4.3));
+    }
   }
 
   getCameraY = () => {
@@ -138,30 +199,33 @@ export default class Engine extends Component {
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => {
-        let {touches} = evt.nativeEvent;
-        if (touches.length === 2 || this.state.showHighlighted) {
+        // console.log('evt', evt, 'gestureState', gestureState);
+        if (this.state.showHighlighted || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           return true;
         } else {
           return false;
         }
       },
-      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
       onPanResponderGrant: (evt, gestureState) => {
+        let { touches } = evt.nativeEvent;
+        console.log('grant', touches)
+        if (touches.length > 1) {
+          if ((touches[1].timestamp - touches[0].timestamp) < 100) {
+            this.props.alterZoom();
+          }
+        }
       },
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
-        if (touches.length === 2 && (Math.abs(touches[0].pageX - touches[1].pageX) > 5)) {
+        if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
-        } else if (this.state.showHighlighted && touches.length === 1) {
+        } else if (this.state.showHighlighted) {
           this.processMove(touches[0].pageX, touches[0].pageY);
-          this.setState({
-            controlsVisible: false,
-            echoControlsVisible: false,
-          })
         }
       },
       onPanResponderRelease: () => {
-        console.log("on pan responder release");
+        // console.log("on pan responder release");
         this.setState({
           isMoving: false,
         });
@@ -186,14 +250,30 @@ export default class Engine extends Component {
     setTimeout(function() {Animated.parallel([
       Animated.timing(left, { toValue: -newX, duration: 1000}),
       Animated.timing(top, { toValue: -newY, duration: 1000}),
-    ]).start();}.bind(this), 2500);
+    ]).start()}.bind(this), 2500);
+  }
+
+  animateSpritePosition = () => {
+    const { spriteX, spriteY } = this.state;
+    Animated.parallel([
+      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1000 }),
+      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1000 }),
+    ]).start();
+  }
+
+  animateSpriteYPosition = () => {
+    const {spriteY } = this.state;
+    Animated.timing(spriteY, { toValue: (this.getSpriteY()), duration: 1000 }).start();
   }
 
   componentDidUpdate() {
-    // console.log('update', this.props.animationVisible);
+    // console.log('update', this.state.spriteX._value, this.getInitialSpriteX(), this.getNewSpriteX());
     if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
-      // console.log('animate camera');
       this.animateCamera();
+    }
+    if (this.props.boardFinished && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
+      console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
+      this.animateSpritePosition();
     }
   }
 
@@ -262,19 +342,36 @@ export default class Engine extends Component {
   }
 
   processMove(touchX, touchY) {
-    let x = touchX - this.state.left._value;
-    let y = touchY - this.state.top._value;
-    // console.log("process move", this.highlightedTileRanges, touchX, touchY, x, y, this.state.left, this.state.top);
-    for (let i = 0; i < this.highlightedTileRanges.length; i++) {
-      if (
-        x > this.highlightedTileRanges[i].xMin &&
-        x < this.highlightedTileRanges[i].xMax &&
-        y > this.highlightedTileRanges[i].yMin &&
-        y < this.highlightedTileRanges[i].yMax
-      ) {
-        let newPlayerTile = this.getTileFromXY(x, y);
-        this.props.move(newPlayerTile);
-        this.props.incrementTurnCounter();
+    if (!this.state.isMoving) {
+      let x = touchX - this.state.left._value;
+      let y = touchY - this.state.top._value;
+      console.log("process move", this.highlightedTileRanges, x, y);
+      for (let i = 0; i < this.highlightedTileRanges.length; i++) {
+        if (
+          x > this.highlightedTileRanges[i].xMin &&
+          x < this.highlightedTileRanges[i].xMax &&
+          y > this.highlightedTileRanges[i].yMin &&
+          y < this.highlightedTileRanges[i].yMax
+        ) {
+          this.setState({
+            controlsVisible: false,
+            echoControlsVisible: false,
+            targetPickerVisible: false,
+          });
+          let newPlayerTile = this.getTileFromXY(x, y);
+          this.props.move(newPlayerTile);
+          this.props.incrementTurnCounter();
+        } else {
+          console.log('else');
+          setTimeout(function() {
+            if (!this.state.isMoving) {
+              this.setState({
+                showHighlighted: false,
+              });
+              this.props.resetHighlighted();
+            }
+          }.bind(this), 200);
+        }
       }
     }
   }
@@ -429,12 +526,15 @@ export default class Engine extends Component {
   }
 
   controlSwitch = () => {
+    console.log('switch')
     if (this.state.controlsVisible) {
       this.setState({
         controlsVisible: false,
         echoControlsVisible: false,
         targetPickerVisible: false,
-      })
+      });
+
+
     } else {
       this.setState({
         controlsVisible: true,
@@ -446,7 +546,7 @@ export default class Engine extends Component {
   renderSprite = () => {
     if (this.props.isHuman) {
       return (
-        <TouchableOpacity onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+        <TouchableSprite onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
           <Sprite
             offset={[0, 0]}
             repeat={true}
@@ -458,11 +558,11 @@ export default class Engine extends Component {
             ticksPerFrame={10}
             tileWidth={64}
           />
-        </TouchableOpacity>
+        </TouchableSprite>
       );
     } else {
       return (
-        <TouchableOpacity style={this.getSpriteStyle()} onPress={this.controlSwitch}>
+        <TouchableSprite style={this.getSpriteStyle()} onPress={this.controlSwitch}>
           <Sprite
             offset={[0, 0]}
             repeat={true}
@@ -474,7 +574,7 @@ export default class Engine extends Component {
             ticksPerFrame={10}
             tileWidth={150}
           />
-        </TouchableOpacity>
+        </TouchableSprite>
       );
     }
   }
@@ -507,11 +607,6 @@ export default class Engine extends Component {
   }
   echoSouth = () => {
     this.props.echolocate('south');
-  }
-
-  monsterMove = () => {
-    this.controlSwitch();
-    this.props.showMonsterMoves();
   }
 
   sniffTargetPicker = () => {
@@ -564,13 +659,22 @@ export default class Engine extends Component {
     }
   }
 
+  movementSwitch = () => {
+    this.controlSwitch();
+    if (this.props.isHuman) {
+      this.props.showHumanMoves();
+    } else {
+      this.props.showMonsterMoves();
+    }
+  }
+
   renderControls = () => {
     if (this.state.controlsVisible) {
       if (this.props.isHuman) {
         if (!this.state.echoControlsVisible) {
           return (
             <View style={[this.getPriestControlStyles(), {height: this.props.tileWidth, width: this.props.tileWidth * 3 }]}>
-              <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.props.showHumanMoves}>
+              <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.movementSwitch}>
                 <Image source={require('../data/images/move.png')} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.5 }} />
               </TouchableOpacity>
               <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.echoControlSwitch}>
@@ -613,7 +717,7 @@ export default class Engine extends Component {
           return (
             <View style={this.getMonsterControlStyles()} >
               <View style={{zIndex: 1, height: this.props.tileWidth*5, width: this.props.tileWidth, flexDirection: 'column', justifyContent: 'space-between'}}>
-                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.monsterMove}>
+                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.movementSwitch}>
                   <Image source={require("../data/images/move.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth}} onPress={this.props.monsterProcessPounce}>
@@ -701,18 +805,18 @@ export default class Engine extends Component {
 
   getSpriteStyle = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ zIndex: 1, left: this.state.playerX - Math.ceil((this.props.tileWidth - 4)), top: this.state.playerY - ((this.props.tileWidth*2 + 4)), width: this.props.tileWidth*3, transform: [{scale: this.state.spriteScale}] });
+      return ({ zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth*3, transform: [{scale: this.state.spriteScale}] });
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({ zIndex: 1, left: this.state.playerX - this.props.tileWidth*3, top: this.state.playerY - (this.props.tileWidth*4.3), width: this.props.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
+      return ({ zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
     }
 
   }
 
   getPriestStyle = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.playerX - this.props.tileWidth*0.1, top: this.state.playerY - this.props.tileWidth*1.5 });
+      return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({zIndex: 1, left: this.state.playerX - this.props.tileWidth*0.8, top: this.state.playerY - this.props.tileWidth*3.5, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
+      return ({zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
     }
   }
 
