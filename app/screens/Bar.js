@@ -20,14 +20,18 @@ class Bar extends Component {
     shrineAmount: PropTypes.number,
     shrinesUnclaimed: PropTypes.number,
     heartBeatTimer: PropTypes.number,
+    humanShrinesToWin: PropTypes.number,
+    monsterShrinesToWin: PropTypes.number,
+    monsterSanityLevel: PropTypes.number,
   }
 
   constructor() {
     super();
-    this.barHeight = 40;
+    this.barSectionHeight = 40;
+    this.barHeight = this.barSectionHeight * 2;
     this.heartBeatSize = 200;
-    this.heartBeatScale = this.barHeight/this.heartBeatSize;
-    
+    this.heartBeatScale = 0.2;
+
   }
 
   renderHeartBeat = () => {
@@ -82,32 +86,39 @@ class Bar extends Component {
 
   getBar = () => {
     let text1;
+    let shrines;
     if (this.props.isHuman) {
       text1 = 'Priest';
+      shrines = this.props.humanShrinesToWin;
     } else {
       text1 = 'Evil';
+      shrines = this.props.monsterShrinesToWin;
     }
     let shrineAmount = this.props.shrineAmount;
-    let shrinesUnclaimed = this.props.shrinesUnclaimed;
-
+    // let shrinesUnclaimed = this.props.shrinesUnclaimed;
 
     // let src={require("../data/images/shrine.png")}
     return(
-      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'row', alignItems: 'center', height: this.barHeight}}>
+      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'column', height: this.barHeight}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight}}>
 
-        <Text style={{color: '#fff'}}>{text1}</Text>
+          <Text style={{color: '#fff'}}>{text1}</Text>
 
-        <Image
-          style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 - 20}}
-          source={require("../data/images/shrine.png")}
-        />
+          <Image
+            style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 - 20}}
+            source={require("../data/images/shrine.png")}
+          />
 
-        <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrinesUnclaimed}</Text>
+          <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrines}</Text>
 
-        {this.renderHeartBeat()}
+          {this.renderHeartBeat()}
 
-        {this.renderButton()}
+          {this.renderButton()}
 
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{color: '#fff'}}>{this.props.monsterSanityLevel}</Text>
+        </View>
       </View>
     )
   }

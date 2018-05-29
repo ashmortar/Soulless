@@ -67,7 +67,7 @@ export default class Engine extends Component {
       targetPicker: null,
     };
   }
-  
+
   getInitialSpriteX = () => {
     if (this.props.isHuman) {
       if (this.props.tileWidth === this.props.zoomedInValue) {
@@ -95,7 +95,7 @@ export default class Engine extends Component {
       return (this.state.playerX - this.props.tileWidth*3);
     }
   }
-  
+
 
   getInitialSpriteY = () => {
     if (this.props.isHuman) {
@@ -110,7 +110,7 @@ export default class Engine extends Component {
       return (this.playerY - (this.props.tileWidth*4.3));
     }
   }
-  
+
   getNewSpriteY = () => {
     if (this.props.isHuman) {
       if (this.props.tileWidth === this.props.zoomedInValue) {

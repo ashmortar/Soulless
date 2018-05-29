@@ -35,8 +35,8 @@ class Game extends Component {
     this.zoomedOutValue = Math.ceil(this.viewPortHeight / this.cellsInRow);
     this.allowedLengthOfWhiteLine = 14; // density
     this.userWon = null;
-    this.humanShrinesToWin = 9;
-    this.monsterShrinesToWin = 5;
+    this.humanShrinesToWin = 7;
+    this.monsterShrinesToWin = 7;
     this.animationCallback = this.showAnimationCallback;
 
     this.state = {
@@ -57,8 +57,8 @@ class Game extends Component {
       turnCounter: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
-      shrinesHumanClaimed: 0,
-      shrinesMonsterClaimed: 0,
+      shrinesBlessed: 0,
+      shrinesDesecrated: 0,
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
     };
@@ -87,7 +87,7 @@ class Game extends Component {
     const heartRateMin = 0;
     const heartRateMax = 8;
     let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
-    let heartRate = heartRateMin + (((heartRateMax - heartRateMin) * (distance - distanceMin)) / (distanceMax-distanceMin)); 
+    let heartRate = heartRateMin + (((heartRateMax - heartRateMin) * (distance - distanceMin)) / (distanceMax-distanceMin));
     this.setState({
       heartBeatTimer: Math.floor(heartRate),
     });
@@ -1840,19 +1840,24 @@ class Game extends Component {
 
   collectShrine = (item) => {
     if (this.state.isHuman) {
-      if (this.state.shrinesHumanClaimed + 1 >= this.humanShrinesToWin) {
+      if (this.state.shrinesBlessed + 1 >= this.humanShrinesToWin) {
         this.userWon = 'human';
         this.gameOver();
       }
-      this.setState({ shrinesHumanClaimed: this.state.shrinesHumanClaimed + 1 });
+
+      item.hasBlessedCache = true;
+      this.setState({ shrinesBlessed: this.state.shrinesBlessed + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
     }
     else {
-      if (this.state.shrinesMonsterClaimed + 1 >= this.monsterShrinesToWin) {
+      if (this.state.shrinesDesecrated + 1 >= this.monsterShrinesToWin) {
         this.userWon = 'monster';
         this.gameOver();
       }
-      this.setState({ shrinesMonsterClaimed: this.state.shrinesMonsterClaimed + 1 });
+
+      item.hasDesecratedCache = true;
+      this.state.monsterSanityLevel -= 15;
+      this.setState({ shrinesDesecrated: this.state.shrinesDesecrated + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
     }
 
@@ -1884,6 +1889,18 @@ class Game extends Component {
     this.setState({ playerSpace: item });
     this.resetHighlighted();
     this.setHeartRate();
+    // if (item.isHighlighted) {
+    //   this.elements[this.monsterSpace.name].hasMonster = false;
+    //   item.hasMonster = true;
+    //   this.monsterSpace = item;
+    //   this.setState({ playerSpace: item });
+    //   this.resetHighlighted();
+    // } else {
+    //   Alert.alert(
+    //     'Uh-Oh',
+    //     'Please select a highlighted space',
+    //   );
+    // }
   }
 
   showHumanMoves = () => {
@@ -1956,6 +1973,28 @@ class Game extends Component {
     this.resetHighlighted();
     this.setState({ playerSpace: item });
     this.setHeartRate();
+    // if (item.isHighlighted) {
+    //   // player moves to the space
+    //   // clear previous cell
+    //   this.elements[this.humanSpace.name].hasHuman = false;
+    //   // put human in new cell,
+    //   item.hasHuman = true;
+    //   // check if the space has a cache
+    //   if (item.hasCache) {
+    //     //take the cache
+    //     this.collectShrine(item);
+    //     // this.showSplashScreen('shrine', false);
+    //     // console.log('shrine collected: ', this.state.shrinesBlessed, this.state.shrinesDesecrated, this.state.shrinesUnclaimed);
+    //   }
+    //   this.humanSpace = item;
+    //   this.resetHighlighted();
+    //   this.setState({ playerSpace: item });
+    // } else {
+    //   Alert.alert(
+    //     'Uh-Oh',
+    //     'Please select a highlighted space',
+    //   );
+    // }
   }
 
   handleChangePlayer = () => {
@@ -2040,18 +2079,21 @@ class Game extends Component {
       outOfMoves={this.state.outOfMoves}
       isHuman={this.state.isHuman}
       onItemSelected={this.onItemSelected}
-      shrineAmount={this.state.isHuman ? this.state.shrinesHumanClaimed : this.state.shrinesMonsterClaimed}
+      shrineAmount={this.state.isHuman ? this.state.shrinesBlessed : this.state.shrinesDesecrated}
       shrinesUnclaimed={this.state.shrinesUnclaimed}
       heartBeatTimer={this.state.heartBeatTimer}
+      humanShrinesToWin={this.humanShrinesToWin}
+      monsterShrinesToWin={this.monsterShrinesToWin}
+      monsterSanityLevel={this.state.monsterSanityLevel}
     />;
     if (this.state.boardFinished) {
       return (
-      <SideMenu        
-      menu={menuRight}
-      menuPosition='right'
-      disableGestures={disableGestures}
-    >
-    <SideMenu
+        <SideMenu
+        menu={menuRight}
+        menuPosition='right'
+        disableGestures={disableGestures}
+      >
+      <SideMenu
         menu={menuLeft}
         menuPosition='left'
       >
@@ -2135,7 +2177,7 @@ class Game extends Component {
         {bar}
       </SideMenu>
       </SideMenu>
-    )
+      )
     }
   }
 

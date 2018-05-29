@@ -22,6 +22,8 @@ export default class Board extends Component {
     // debug:
     // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
+    this.tileBlessedCashMapArray = this.props.gameBoard.map(x => x.hasBlessedCache ? 1 : 0);
+    this.tileDesecratedCashMapArray = this.props.gameBoard.map(x => x.hasDesecratedCache ? 1 : 0);
     this.tileDecorMapArray = this.props.gameBoard.map(x => (!this.props.isHuman) ? x.imageDecorKey : 0);
     this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     this.state = {
@@ -232,6 +234,51 @@ export default class Board extends Component {
     }
   }
 
+    renderBlessedShrines = () => {
+      if (this.props.isHuman) {
+        return (
+          <TileMap
+            src={require("../data/images/shrine_blessed.png")}
+            tileSize={this.props.tileWidth}
+            columns={40}
+            rows={40}
+            sourceWidth={this.props.tileWidth}
+            layers={[this.tileBlessedCashMapArray]}
+            renderTile={(tile, src, styles) => (
+              <Image
+                resizeMode="stretch"
+                style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
+                source={src}
+              />
+            )}
+          />
+        );
+      }
+    }
+
+
+    renderDesecratedShrines = () => {
+      if (this.props.isHuman) {
+        return (
+          <TileMap
+            src={require("../data/images/shrine_desecrated.png")}
+            tileSize={this.props.tileWidth}
+            columns={40}
+            rows={40}
+            sourceWidth={this.props.tileWidth}
+            layers={[this.tileDesecratedCashMapArray]}
+            renderTile={(tile, src, styles) => (
+              <Image
+                resizeMode="stretch"
+                style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
+                source={src}
+              />
+            )}
+          />
+        );
+      }
+    }
+
 
   renderDecorations = () => {
     return (
@@ -253,6 +300,8 @@ export default class Board extends Component {
 
         {this.renderBasement()}
         {this.renderShrines()}
+        {this.renderBlessedShrines()}
+        {this.renderDesecratedShrines()}
         {this.renderDecorations()}
 
       </View>
