@@ -1873,12 +1873,28 @@ class Game extends Component {
     let index = this.monsterSpace.name;
     let indexesOfAvailableCellsAround = this.getIndexesOfAvailableCellsAround(index, this.cellsInRow, this.cellsTotal, true);
     let cells = [];
-    indexesOfAvailableCellsAround.forEach((i) => {
-      if (this.elements[i].value > 0) {
-        cells.push(this.elements[i]);
-        this.elements[i].isHighlighted = true;
-      }
-    });
+    let cells2 = [];
+    let cellsAll = [];
+    cells.push(this.elements[index]);
+    // while () {
+    for (let s = 0; s < this.state.shrinesDesecrated + 1; s++) {
+      cells.forEach((cell) => {
+        indexesOfAvailableCellsAround = this.getIndexesOfAvailableCellsAround(cell.name, this.cellsInRow, this.cellsTotal, true);
+        indexesOfAvailableCellsAround.forEach((i) => {
+          if (!cellsAll.includes(this.elements[i])) {
+            if (this.elements[i].value > 0) {
+              this.elements[i].isHighlighted = true;
+            }
+            cells2.push(this.elements[i]);
+            cellsAll.push(this.elements[i]);
+          }
+        });
+      })
+      cells = cells2.slice();
+      // var newArray = oldArray.slice();
+    }
+
+
     this.setState({ redraw: !this.state.redraw })
   }
 
