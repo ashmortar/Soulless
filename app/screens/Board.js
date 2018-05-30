@@ -258,7 +258,7 @@ export default class Board extends Component {
 
 
     renderDesecratedShrines = () => {
-      if (this.props.isHuman) {
+      // if (this.props.isHuman) {
         return (
           <TileMap
             src={require("../data/images/shrine_desecrated.png")}
@@ -276,7 +276,7 @@ export default class Board extends Component {
             )}
           />
         );
-      }
+      // }
     }
 
 

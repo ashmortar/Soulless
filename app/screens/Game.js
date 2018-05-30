@@ -1876,7 +1876,6 @@ class Game extends Component {
     let cells2 = [];
     let cellsAll = [];
     cells.push(this.elements[index]);
-    // while () {
     for (let s = 0; s < this.state.shrinesDesecrated + 1; s++) {
       cells.forEach((cell) => {
         indexesOfAvailableCellsAround = this.getIndexesOfAvailableCellsAround(cell.name, this.cellsInRow, this.cellsTotal, true);
@@ -1891,7 +1890,6 @@ class Game extends Component {
         });
       })
       cells = cells2.slice();
-      // var newArray = oldArray.slice();
     }
 
 
@@ -1905,18 +1903,6 @@ class Game extends Component {
     this.setState({ playerSpace: item });
     this.resetHighlighted();
     this.setHeartRate();
-    // if (item.isHighlighted) {
-    //   this.elements[this.monsterSpace.name].hasMonster = false;
-    //   item.hasMonster = true;
-    //   this.monsterSpace = item;
-    //   this.setState({ playerSpace: item });
-    //   this.resetHighlighted();
-    // } else {
-    //   Alert.alert(
-    //     'Uh-Oh',
-    //     'Please select a highlighted space',
-    //   );
-    // }
   }
 
   showHumanMoves = () => {
@@ -1989,28 +1975,6 @@ class Game extends Component {
     this.resetHighlighted();
     this.setState({ playerSpace: item });
     this.setHeartRate();
-    // if (item.isHighlighted) {
-    //   // player moves to the space
-    //   // clear previous cell
-    //   this.elements[this.humanSpace.name].hasHuman = false;
-    //   // put human in new cell,
-    //   item.hasHuman = true;
-    //   // check if the space has a cache
-    //   if (item.hasCache) {
-    //     //take the cache
-    //     this.collectShrine(item);
-    //     // this.showSplashScreen('shrine', false);
-    //     // console.log('shrine collected: ', this.state.shrinesBlessed, this.state.shrinesDesecrated, this.state.shrinesUnclaimed);
-    //   }
-    //   this.humanSpace = item;
-    //   this.resetHighlighted();
-    //   this.setState({ playerSpace: item });
-    // } else {
-    //   Alert.alert(
-    //     'Uh-Oh',
-    //     'Please select a highlighted space',
-    //   );
-    // }
   }
 
   handleChangePlayer = () => {
@@ -2028,25 +1992,6 @@ class Game extends Component {
     this.setState({ turnCounter: 0 });
     this.setState({ outOfMoves: false });
   }
-
-  // renderBar = () => {
-  //   return(
-  //     <View style={{backgroundColor:'#555', padding: 10}}>
-  //       <Text style={{alignItems: 'flex-end'}}>HEY</Text>
-  //
-  //       <TouchableOpacity style={{alignItems: 'flex-end'}} onPress={()=>{console.log('pressed');}}>
-  //         <View style={{    padding: 10,
-  //             borderRadius: 15,
-  //             borderColor: '#d94400',
-  //             borderWidth: 2,
-  //             backgroundColor: '#000' }}>
-  //           <Text style={{ color: '#fff' }}>hey</Text>
-  //         </View>
-  //       </TouchableOpacity>
-  //
-  //     </View>
-  //   );
-  // }
 
 
   boardFinishedCallback = () => (
