@@ -67,6 +67,7 @@ export default class Engine extends Component {
       targetPicker: null,
       srcPriest: require("../data/images/priestIdle.png"),
       srcEvil: require("../data/images/priestIdle-ghost.png"),
+      ticksPerFrame: 6,
       ticksPerFramePriest: 10,
     };
   }
@@ -316,26 +317,23 @@ export default class Engine extends Component {
       // });
     }
     // let ticksPerFrame = 11 - distance;
-    let ticksPerFrame = 1;
+    // let ticksPerFrame = 1;
 
-    // console.log('-----');
-    // console.log(this.state.ticksPerFramePriest);
 
-    if (ticksPerFrame != this.state.ticksPerFramePriest) {
-      this.setState({ ticksPerFramePriest: ticksPerFrame}, () => {
-        // do something with new state
-      });
-    }
+    // if (ticksPerFrame != this.state.ticksPerFramePriest) {
+    //   this.setState({ ticksPerFramePriest: ticksPerFrame}, () => {
+    //     // do something with new state
+    //   });
+    // }
 
     Animated.parallel([
-      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1000 }),
-      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1000 })
+      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1000 * distance }),
+      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1000 * distance })
     ]).start((finished) => {
       if (finished.finished) {
         if (this.props.isHuman) {
           if (this.state.srcPriest != require("../data/images/priestIdle.png")) {
             this.setState({
-              ticksPerFramePriest: 10,
               srcPriest: require("../data/images/priestIdle.png"),
             });
           }
@@ -648,7 +646,7 @@ export default class Engine extends Component {
         state={0}
         onPlayStateChanged={this.handlePlayStateChanged}
         tileHeight={128}
-        ticksPerFrame={this.state.ticksPerFramePriest}
+        ticksPerFrame={this.state.ticksPerFrame}
         tileWidth={64}
         />
         </TouchableSprite>
@@ -664,7 +662,7 @@ export default class Engine extends Component {
             state={0}
             onPlayStateChanged={this.handlePlayStateChanged}
             tileHeight={128}
-            ticksPerFrame={10}
+            ticksPerFrame={this.state.ticksPerFrame}
             tileWidth={64}
           />
         </TouchableSprite>
