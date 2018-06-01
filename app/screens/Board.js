@@ -216,7 +216,7 @@ export default class Board extends Component {
     if (this.props.isHuman) {
       return (
         <TileMap
-          src={require("../data/images/shrine.png")}
+          src={require("../data/images/shrine-grey.png")}
           tileSize={this.props.tileWidth}
           columns={40}
           rows={40}
@@ -233,6 +233,23 @@ export default class Board extends Component {
       );
     }
   }
+  // return (
+  //   <TileMap
+  //     src={require("../data/images/shrine.png")}
+  //     tileSize={this.props.tileWidth}
+  //     columns={40}
+  //     rows={40}
+  //     sourceWidth={this.props.tileWidth}
+  //     layers={[this.tileCashMapArray]}
+  //     renderTile={(tile, src, styles) => (
+  //       <Image
+  //         resizeMode="stretch"
+  //         style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
+  //         source={src}
+  //       />
+  //     )}
+  //   />
+  // );
 
     renderBlessedShrines = () => {
       if (this.props.isHuman) {

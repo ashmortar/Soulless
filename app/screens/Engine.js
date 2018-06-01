@@ -66,6 +66,8 @@ export default class Engine extends Component {
       targetPickerVisible: false,
       targetPicker: null,
       srcPriest: require("../data/images/priestIdle.png"),
+      srcEvil: require("../data/images/priestIdle-ghost.png"),
+      ticksPerFramePriest: 10,
     };
   }
 
@@ -259,34 +261,95 @@ export default class Engine extends Component {
   animateSpritePosition = () => {
     const { spriteX, spriteY } = this.state;
 
-    if ((this.getNewSpriteX() - spriteX._value < 0) || (this.getNewSpriteY() - spriteY._value > 0))  {
-      if (this.state.srcPriest != require("../data/images/priest-walk-left.png")) {
-        this.setState({
-          srcPriest: require("../data/images/priest-walk-left.png")
-        });
+
+    if (this.props.isHuman) {
+      if ((this.getNewSpriteX() - spriteX._value < 0) || (this.getNewSpriteY() - spriteY._value > 0))  {
+        if (this.state.srcPriest != require("../data/images/priest-walk-left.png")) {
+            this.setState({
+              srcPriest: require("../data/images/priest-walk-left.png")
+            });
+        }
       }
-    }
-    else {
-      if (this.state.srcPriest != require("../data/images/priest-walk-right.png")) {
-        this.setState({
-          srcPriest: require("../data/images/priest-walk-right.png")
-        });
+      else {
+        if (this.state.srcPriest != require("../data/images/priest-walk-right.png")) {
+            this.setState({
+              srcPriest: require("../data/images/priest-walk-right.png")
+            });
+        }
       }
     }
 
+    else {
+      if ((this.getNewSpriteX() - spriteX._value < 0) || (this.getNewSpriteY() - spriteY._value > 0))  {
+        if (this.state.srcEvil != require("../data/images/monster-move-left.png")) {
+            this.setState({
+              srcEvil: require("../data/images/monster-move-left.png")
+            });
+        }
+      }
+      else {
+        if (this.state.srcEvil != require("../data/images/monster-move-right.png")) {
+            this.setState({
+              srcEvil: require("../data/images/monster-move-right.png")
+            });
+        }
+      }
+    }
+
+    let distance = 10;
+    if (Math.abs(this.getNewSpriteX() - spriteX._value) != 0) {
+      distance = Math.abs(this.getNewSpriteX() - spriteX._value) / 50; //- cells to move
+      if (distance > 10) {
+        distance = 10;
+      }
+      // this.setState({
+      //   ticksPerFramePriest: 11 - distance
+      // });
+    }
+    else if (Math.abs(this.getNewSpriteY() - spriteY._value) != 0) {
+      distance = Math.abs(this.getNewSpriteY() - spriteY._value) / 50; //- cells to move
+      if (distance > 10) {
+        distance = 10;
+      }
+      // this.setState({
+      //   ticksPerFramePriest: 11 - distance
+      // });
+    }
+    // let ticksPerFrame = 11 - distance;
+    let ticksPerFrame = 1;
+
+    // console.log('-----');
+    // console.log(this.state.ticksPerFramePriest);
+
+    if (ticksPerFrame != this.state.ticksPerFramePriest) {
+      this.setState({ ticksPerFramePriest: ticksPerFrame}, () => {
+        // do something with new state
+      });
+    }
 
     Animated.parallel([
       Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1000 }),
       Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1000 })
     ]).start((finished) => {
       if (finished.finished) {
-        if (this.state.srcPriest != require("../data/images/priestIdle.png")) {
-          this.setState({
-            srcPriest: require("../data/images/priestIdle.png")
-          });
+        if (this.props.isHuman) {
+          if (this.state.srcPriest != require("../data/images/priestIdle.png")) {
+            this.setState({
+              ticksPerFramePriest: 10,
+              srcPriest: require("../data/images/priestIdle.png"),
+            });
+          }
+        }
+        else {
+          if (this.state.srcEvil != require("../data/images/priestIdle-ghost.png")) {
+            this.setState({
+              srcEvil: require("../data/images/priestIdle-ghost.png"),
+            });
+          }
         }
       }
     });
+
   }
 
   animateSpriteYPosition = () => {
@@ -572,6 +635,8 @@ export default class Engine extends Component {
 
 
   renderSprite = () => {
+    console.log('***render***');
+    console.log(this.state.ticksPerFramePriest);
     if (this.props.isHuman) {
       return (
         <TouchableSprite onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
@@ -583,7 +648,7 @@ export default class Engine extends Component {
         state={0}
         onPlayStateChanged={this.handlePlayStateChanged}
         tileHeight={128}
-        ticksPerFrame={10}
+        ticksPerFrame={this.state.ticksPerFramePriest}
         tileWidth={64}
         />
         </TouchableSprite>
@@ -594,7 +659,7 @@ export default class Engine extends Component {
           <Sprite
             offset={[0, 0]}
             repeat={true}
-            src={require("../data/images/priestIdle-ghost.png")}
+            src={this.state.srcEvil}
             steps={[11]}
             state={0}
             onPlayStateChanged={this.handlePlayStateChanged}
