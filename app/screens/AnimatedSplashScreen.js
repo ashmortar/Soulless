@@ -47,7 +47,7 @@ export default class AnimatedSplashScreen extends Component {
 
   renderImage = () => {
     if (this.props.animationType === 'shrine') {
-      return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/shrine.png")} />);
+      return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/shrine-grey.png")} />);
     } else if (this.props.animationType === 'hands') {
       return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/echo-hands.png")} />);
     } else if (this.props.animationType === 'priestWon') {

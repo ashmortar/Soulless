@@ -117,8 +117,8 @@ class Bar extends Component {
           <Text style={{color: '#fff'}}>{text1}</Text>
 
           <Image
-            style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 - 20}}
-            source={require("../data/images/shrine.png")}
+            style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 - 20 }}
+            source={require("../data/images/shrine-grey.png")}
           />
 
           <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrines}</Text>

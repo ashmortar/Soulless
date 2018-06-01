@@ -68,72 +68,42 @@ export default class Engine extends Component {
       srcPriest: require("../data/images/priestIdle.png"),
       srcEvil: require("../data/images/priestIdle-ghost.png"),
       ticksPerFrame: 6,
-      ticksPerFramePriest: 10,
     };
   }
 
   getInitialSpriteX = () => {
-
-    // if (this.props.isHuman) {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        return (this.playerX - this.props.tileWidth*0.1);
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return (this.playerX - this.props.tileWidth*0.8);
-      }
-    // this.setState({
-    //   src: require("../data/images/priest-walk.png")
-    // });
-    // } else if (this.props.tileWidth === this.props.zoomedInValue) {
-    //     return (this.playerX - Math.ceil((this.props.tileWidth - 4)));
-    // } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-    //   return (this.playerX - this.props.tileWidth*3);
-    // }
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return (this.playerX - this.props.tileWidth*0.1);
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return (this.playerX - this.props.tileWidth*0.8);
+    }
   }
 
   getNewSpriteX = () => {
-    // if (this.props.isHuman) {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        return (this.state.playerX - this.props.tileWidth*0.1);
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return (this.state.playerX - this.props.tileWidth*0.8);
-      }
-    // } else if (this.props.tileWidth === this.props.zoomedInValue) {
-    //     return (this.state.playerX - Math.ceil((this.props.tileWidth - 4)));
-    // } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-    //   return (this.state.playerX - this.props.tileWidth*3);
-    // }
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return (this.state.playerX - this.props.tileWidth*0.1);
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return (this.state.playerX - this.props.tileWidth*0.8);
+    }
   }
 
   getInitialSpriteY = () => {
-    // if (this.props.isHuman) {
       if (this.props.tileWidth === this.props.zoomedInValue) {
         return (this.playerY - this.props.tileWidth*1.5);
       } else if (this.props.tileWidth === this.props.zoomedOutValue) {
         return (this.playerY - this.props.tileWidth*3.5);
       }
-    // } else if (this.props.tileWidth === this.props.zoomedInValue) {
-    //   return (this.playerY - ((this.props.tileWidth*2 + 4)));
-    // } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-    //   return (this.playerY - (this.props.tileWidth*4.3));
-    // }
   }
 
   getNewSpriteY = () => {
-    // if (this.props.isHuman) {
       if (this.props.tileWidth === this.props.zoomedInValue) {
         return (this.state.playerY - this.props.tileWidth*1.5);
       } else if (this.props.tileWidth === this.props.zoomedOutValue) {
         return (this.state.playerY - this.props.tileWidth*3.5);
       }
-    // } else if (this.props.tileWidth === this.props.zoomedInValue) {
-    //   return (this.state.playerY - ((this.props.tileWidth*2 + 4)));
-    // } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-    //   return (this.state.playerY - (this.props.tileWidth*4.3));
-    // }
   }
 
   getCameraY = () => {
-    // if (this.props.isHuman) {
       if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
@@ -144,20 +114,9 @@ export default class Engine extends Component {
       } else {
         return (this.playerY - (this.screenDimensions.height / 2));
       }
-    // } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
-    //     for (let i = 0; i < this.props.gameBoard.length; i++) {
-    //       if (this.props.gameBoard[i].wasEchoed) {
-    //         this.feedbackSquare = this.props.gameBoard[i];
-    //         return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
-    //       }
-    //     }
-    // } else {
-    //   return (this.playerY - (this.screenDimensions.height / 2));
-    // }
   }
 
   getCameraX = () => {
-    // if (this.props.isHuman) {
       if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
@@ -168,16 +127,6 @@ export default class Engine extends Component {
       } else {
         return (this.playerX - (this.screenDimensions.width / 2));
       }
-    // } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
-    //     for (let i = 0; i < this.props.gameBoard.length; i++) {
-    //       if (this.props.gameBoard[i].wasEchoed) {
-    //         this.feedbackSquare = this.props.gameBoard[i];
-    //         return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
-    //       }
-    //     }
-    // } else {
-    //   return (this.playerX - (this.screenDimensions.width / 2));
-    // }
   }
 
   getBeginningX = () => {
@@ -262,20 +211,19 @@ export default class Engine extends Component {
   animateSpritePosition = () => {
     const { spriteX, spriteY } = this.state;
 
-
     if (this.props.isHuman) {
       if ((this.getNewSpriteX() - spriteX._value < 0) || (this.getNewSpriteY() - spriteY._value > 0))  {
         if (this.state.srcPriest != require("../data/images/priest-walk-left.png")) {
-            this.setState({
-              srcPriest: require("../data/images/priest-walk-left.png")
-            });
+          this.setState({
+            srcPriest: require("../data/images/priest-walk-left.png")
+          });
         }
       }
       else {
         if (this.state.srcPriest != require("../data/images/priest-walk-right.png")) {
-            this.setState({
-              srcPriest: require("../data/images/priest-walk-right.png")
-            });
+          this.setState({
+            srcPriest: require("../data/images/priest-walk-right.png")
+          });
         }
       }
     }
@@ -283,16 +231,16 @@ export default class Engine extends Component {
     else {
       if ((this.getNewSpriteX() - spriteX._value < 0) || (this.getNewSpriteY() - spriteY._value > 0))  {
         if (this.state.srcEvil != require("../data/images/monster-move-left.png")) {
-            this.setState({
-              srcEvil: require("../data/images/monster-move-left.png")
-            });
+          this.setState({
+            srcEvil: require("../data/images/monster-move-left.png")
+          });
         }
       }
       else {
         if (this.state.srcEvil != require("../data/images/monster-move-right.png")) {
-            this.setState({
-              srcEvil: require("../data/images/monster-move-right.png")
-            });
+          this.setState({
+            srcEvil: require("../data/images/monster-move-right.png")
+          });
         }
       }
     }
@@ -303,28 +251,13 @@ export default class Engine extends Component {
       if (distance > 10) {
         distance = 10;
       }
-      // this.setState({
-      //   ticksPerFramePriest: 11 - distance
-      // });
     }
     else if (Math.abs(this.getNewSpriteY() - spriteY._value) != 0) {
       distance = Math.abs(this.getNewSpriteY() - spriteY._value) / 50; //- cells to move
       if (distance > 10) {
         distance = 10;
       }
-      // this.setState({
-      //   ticksPerFramePriest: 11 - distance
-      // });
     }
-    // let ticksPerFrame = 11 - distance;
-    // let ticksPerFrame = 1;
-
-
-    // if (ticksPerFrame != this.state.ticksPerFramePriest) {
-    //   this.setState({ ticksPerFramePriest: ticksPerFrame}, () => {
-    //     // do something with new state
-    //   });
-    // }
 
     Animated.parallel([
       Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1000 * distance }),
@@ -347,7 +280,6 @@ export default class Engine extends Component {
         }
       }
     });
-
   }
 
   animateSpriteYPosition = () => {
@@ -529,7 +461,6 @@ export default class Engine extends Component {
   }
 
   renderFogTile = (tile, src, styles) => {
-    // console.log('renderFogTile');
     switch (tile.index) {
       case 1://nw
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-nw.gif")} />;
@@ -562,7 +493,6 @@ export default class Engine extends Component {
         break;
     }
   }
-  // return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-full.gif")} />;
 
   renderLastTurn = () => {
     if (this.props.isHuman) {
@@ -633,8 +563,6 @@ export default class Engine extends Component {
 
 
   renderSprite = () => {
-    console.log('***render***');
-    console.log(this.state.ticksPerFramePriest);
     if (this.props.isHuman) {
       return (
         <TouchableSprite onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
@@ -668,23 +596,6 @@ export default class Engine extends Component {
         </TouchableSprite>
       );
     }
-   //  } else {
-   //   return (
-   //     <TouchableSprite style={this.getSpriteStyle()} onPress={this.controlSwitch}>
-   //       <Sprite
-   //         offset={[0, 0]}
-   //         repeat={true}
-   //         src={require("../data/images/monsterMoveIdle.png")}
-   //         steps={[11, 11, 11, 11]}
-   //         state={0}
-   //         onPlayStateChanged={this.handlePlayStateChanged}
-   //         tileHeight={150}
-   //         ticksPerFrame={10}
-   //         tileWidth={150}
-   //       />
-   //     </TouchableSprite>
-   //   );
-   // }
   }
 
   echoControlSwitch = () => {
