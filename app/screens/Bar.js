@@ -144,7 +144,7 @@ class Bar extends Component {
 
 
   render() {
-    console.log('heartbeat', this.props.heartBeatTimer)
+    // console.log('heartbeat', this.props.heartBeatTimer)
     const bar = this.getBar();
     return (
       <View>

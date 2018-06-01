@@ -65,16 +65,21 @@ export default class Engine extends Component {
       echoControlsVisible: false,
       targetPickerVisible: false,
       targetPicker: null,
+      src: require("../data/images/priestIdle.png"),
     };
   }
 
   getInitialSpriteX = () => {
+
     // if (this.props.isHuman) {
       if (this.props.tileWidth === this.props.zoomedInValue) {
         return (this.playerX - this.props.tileWidth*0.1);
       } else if (this.props.tileWidth === this.props.zoomedOutValue) {
         return (this.playerX - this.props.tileWidth*0.8);
       }
+    // this.setState({
+    //   src: require("../data/images/priest-walk.png")
+    // });
     // } else if (this.props.tileWidth === this.props.zoomedInValue) {
     //     return (this.playerX - Math.ceil((this.props.tileWidth - 4)));
     // } else if (this.props.tileWidth === this.props.zoomedOutValue) {
@@ -95,7 +100,6 @@ export default class Engine extends Component {
     //   return (this.state.playerX - this.props.tileWidth*3);
     // }
   }
-
 
   getInitialSpriteY = () => {
     // if (this.props.isHuman) {
@@ -254,10 +258,23 @@ export default class Engine extends Component {
 
   animateSpritePosition = () => {
     const { spriteX, spriteY } = this.state;
+    if (this.state.src != require("../data/images/priest-walk.png")) {
+      this.setState({
+        src: require("../data/images/priest-walk.png")
+      });
+    }
     Animated.parallel([
       Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1000 }),
-      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1000 }),
-    ]).start();
+      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1000 })
+    ]).start((finished) => {
+      if (finished.finished) {
+        if (this.state.src != require("../data/images/priestIdle.png")) {
+          this.setState({
+            src: require("../data/images/priestIdle.png")
+          });
+        }
+      }
+    });
   }
 
   animateSpriteYPosition = () => {
@@ -271,7 +288,7 @@ export default class Engine extends Component {
       this.animateCamera();
     }
     if (this.props.boardFinished && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
-      console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
+      // console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
       this.animateSpritePosition();
     }
   }
@@ -344,7 +361,7 @@ export default class Engine extends Component {
     if (!this.state.isMoving) {
       let x = touchX - this.state.left._value;
       let y = touchY - this.state.top._value;
-      console.log("process move", this.highlightedTileRanges, x, y);
+      // console.log("process move", this.highlightedTileRanges, x, y);
       for (let i = 0; i < this.highlightedTileRanges.length; i++) {
         if (
           x > this.highlightedTileRanges[i].xMin &&
@@ -361,7 +378,7 @@ export default class Engine extends Component {
           this.props.move(newPlayerTile);
           this.props.incrementTurnCounter();
         } else {
-          console.log('else');
+          // console.log('else');
           setTimeout(function() {
             if (!this.state.isMoving) {
               this.setState({
@@ -525,7 +542,7 @@ export default class Engine extends Component {
   }
 
   controlSwitch = () => {
-    console.log('switch')
+    // console.log('switch')
     if (this.state.controlsVisible) {
       this.setState({
         controlsVisible: false,
@@ -546,17 +563,17 @@ export default class Engine extends Component {
     if (this.props.isHuman) {
       return (
         <TouchableSprite onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
-          <Sprite
-            offset={[0, 0]}
-            repeat={true}
-            src={require("../data/images/priestIdle.png")}
-            steps={[17]}
-            state={0}
-            onPlayStateChanged={this.handlePlayStateChanged}
-            tileHeight={128}
-            ticksPerFrame={10}
-            tileWidth={64}
-          />
+        <Sprite
+        offset={[0, 0]}
+        repeat={true}
+        src={this.state.src}
+        steps={[11]}
+        state={0}
+        onPlayStateChanged={this.handlePlayStateChanged}
+        tileHeight={128}
+        ticksPerFrame={10}
+        tileWidth={64}
+        />
         </TouchableSprite>
       );
     } else {
