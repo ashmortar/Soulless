@@ -65,7 +65,7 @@ export default class Engine extends Component {
       echoControlsVisible: false,
       targetPickerVisible: false,
       targetPicker: null,
-      src: require("../data/images/priestIdle.png"),
+      srcPriest: require("../data/images/priestIdle.png"),
     };
   }
 
@@ -258,19 +258,31 @@ export default class Engine extends Component {
 
   animateSpritePosition = () => {
     const { spriteX, spriteY } = this.state;
-    if (this.state.src != require("../data/images/priest-walk.png")) {
-      this.setState({
-        src: require("../data/images/priest-walk.png")
-      });
+
+    if ((this.getNewSpriteX() - spriteX._value < 0) || (this.getNewSpriteY() - spriteY._value > 0))  {
+      if (this.state.srcPriest != require("../data/images/priest-walk-left.png")) {
+        this.setState({
+          srcPriest: require("../data/images/priest-walk-left.png")
+        });
+      }
     }
+    else {
+      if (this.state.srcPriest != require("../data/images/priest-walk-right.png")) {
+        this.setState({
+          srcPriest: require("../data/images/priest-walk-right.png")
+        });
+      }
+    }
+
+
     Animated.parallel([
       Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1000 }),
       Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1000 })
     ]).start((finished) => {
       if (finished.finished) {
-        if (this.state.src != require("../data/images/priestIdle.png")) {
+        if (this.state.srcPriest != require("../data/images/priestIdle.png")) {
           this.setState({
-            src: require("../data/images/priestIdle.png")
+            srcPriest: require("../data/images/priestIdle.png")
           });
         }
       }
@@ -566,7 +578,7 @@ export default class Engine extends Component {
         <Sprite
         offset={[0, 0]}
         repeat={true}
-        src={this.state.src}
+        src={this.state.srcPriest}
         steps={[11]}
         state={0}
         onPlayStateChanged={this.handlePlayStateChanged}
