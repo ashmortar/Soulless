@@ -88,11 +88,11 @@ export default class Engine extends Component {
   }
 
   getInitialSpriteY = () => {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        return (this.playerY - this.props.tileWidth*1.5);
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return (this.playerY - this.props.tileWidth*3.5);
-      }
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return (this.playerY - this.props.tileWidth*1.5);
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return (this.playerY - this.props.tileWidth*3.5);
+    }
   }
 
   getNewSpriteY = () => {
@@ -229,18 +229,34 @@ export default class Engine extends Component {
     }
 
     else {
-      if ((this.getNewSpriteX() - spriteX._value < 0) || (this.getNewSpriteY() - spriteY._value > 0))  {
+      if (this.getNewSpriteX() - spriteX._value < 0)  {
         if (this.state.srcEvil != require("../data/images/monster-move-left.png")) {
           this.setState({
             srcEvil: require("../data/images/monster-move-left.png")
           });
         }
       }
-      else {
+      else if (this.getNewSpriteX() - spriteX._value > 0) {
         if (this.state.srcEvil != require("../data/images/monster-move-right.png")) {
           this.setState({
             srcEvil: require("../data/images/monster-move-right.png")
           });
+        }
+      }
+      else {
+        if (this.getNewSpriteY() - spriteY._value > 0) {//down
+          if (this.state.srcEvil != require("../data/images/monster-move-left.png")) {
+            this.setState({
+              srcEvil: require("../data/images/monster-move-left.png")
+            });
+          }
+        }
+        else if (this.getNewSpriteY() - spriteY._value < 0) {
+          if (this.state.srcEvil != require("../data/images/monster-move-right.png")) {
+            this.setState({
+              srcEvil: require("../data/images/monster-move-right.png")
+            });
+          }
         }
       }
     }
