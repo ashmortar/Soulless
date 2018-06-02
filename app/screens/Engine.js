@@ -238,9 +238,9 @@ export default class Engine extends Component {
         }
       }
       else if (this.getNewSpriteX() - spriteX._value > 0) {
-        if (this.state.srcEvil != require("../data/images/monster-move-right.png")) {
+        if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-right.png")
+            srcEvil: require("../data/images/monster-move-right-dropped-down.png")
           });
         }
       }
@@ -253,9 +253,9 @@ export default class Engine extends Component {
           }
         }
         else if (this.getNewSpriteY() - spriteY._value < 0) {
-          if (this.state.srcEvil != require("../data/images/monster-move-right.png")) {
+          if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
             this.setState({
-              srcEvil: require("../data/images/monster-move-right.png")
+              srcEvil: require("../data/images/monster-move-right-dropped-down.png")
             });
           }
         }
