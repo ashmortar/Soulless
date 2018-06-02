@@ -220,9 +220,9 @@ export default class Engine extends Component {
         }
       }
       else {
-        if (this.state.srcPriest != require("../data/images/priest-walk-right.png")) {
+        if (this.state.srcPriest != require("../data/images/priest-walk-right2.png")) {
           this.setState({
-            srcPriest: require("../data/images/priest-walk-right.png")
+            srcPriest: require("../data/images/priest-walk-right2.png")
           });
         }
       }
