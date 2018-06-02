@@ -401,7 +401,6 @@ export default class Engine extends Component {
           let newPlayerTile = this.getTileFromXY(x, y);
           this.props.move(newPlayerTile);
           this.props.incrementTurnCounter();
-          // this.props.showHumanMoves();
         } else {
           // console.log('else');
           setTimeout(function() {
@@ -410,7 +409,6 @@ export default class Engine extends Component {
                 showHighlighted: false,
               });
               this.props.resetHighlighted();
-              // this.props.showHumanMoves();
             }
           }.bind(this), 200);
         }
