@@ -20,6 +20,7 @@ export default class Engine extends Component {
     turnCounter: PropTypes.number,
     animationVisible: PropTypes.bool,
     assignImageFogKeys: PropTypes.func,
+    showHumanMoves: PropTypes.func,
   };
 
   constructor(props) {
@@ -230,9 +231,9 @@ export default class Engine extends Component {
 
     else {
       if (this.getNewSpriteX() - spriteX._value < 0)  {
-        if (this.state.srcEvil != require("../data/images/monster-move-left.png")) {
+        if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-left.png")
+            srcEvil: require("../data/images/monster-move-left-dropped-down.png")
           });
         }
       }
@@ -245,9 +246,9 @@ export default class Engine extends Component {
       }
       else {
         if (this.getNewSpriteY() - spriteY._value > 0) {//down
-          if (this.state.srcEvil != require("../data/images/monster-move-left.png")) {
+          if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
             this.setState({
-              srcEvil: require("../data/images/monster-move-left.png")
+              srcEvil: require("../data/images/monster-move-left-dropped-down.png")
             });
           }
         }
@@ -285,6 +286,7 @@ export default class Engine extends Component {
             this.setState({
               srcPriest: require("../data/images/priestIdle.png"),
             });
+            this.props.showHumanMoves();
           }
         }
         else {
@@ -292,6 +294,7 @@ export default class Engine extends Component {
             this.setState({
               srcEvil: require("../data/images/priestIdle-ghost.png"),
             });
+            this.props.showMonsterMoves();
           }
         }
       }
@@ -398,6 +401,7 @@ export default class Engine extends Component {
           let newPlayerTile = this.getTileFromXY(x, y);
           this.props.move(newPlayerTile);
           this.props.incrementTurnCounter();
+          // this.props.showHumanMoves();
         } else {
           // console.log('else');
           setTimeout(function() {
@@ -406,6 +410,7 @@ export default class Engine extends Component {
                 showHighlighted: false,
               });
               this.props.resetHighlighted();
+              // this.props.showHumanMoves();
             }
           }.bind(this), 200);
         }

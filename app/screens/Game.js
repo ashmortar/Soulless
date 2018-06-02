@@ -1973,8 +1973,9 @@ class Game extends Component {
     }
     this.humanSpace = item;
     this.resetHighlighted();
-    this.setState({ playerSpace: item });
     this.setHeartRate();
+    this.showHumanMoves();
+    this.setState({ playerSpace: item });
   }
 
   handleChangePlayer = () => {
