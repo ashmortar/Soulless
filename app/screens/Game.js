@@ -1875,13 +1875,15 @@ class Game extends Component {
     let cells = [];
     let cells2 = [];
     let cellsAll = [];
+    let distance = null;
     cells.push(this.elements[index]);
     for (let s = 0; s < this.state.shrinesDesecrated + 1; s++) {
       cells.forEach((cell) => {
         indexesOfAvailableCellsAround = this.getIndexesOfAvailableCellsAround(cell.name, this.cellsInRow, this.cellsTotal, true);
         indexesOfAvailableCellsAround.forEach((i) => {
           if (!cellsAll.includes(this.elements[i])) {
-            if (this.elements[i].value > 0) {
+            distance = this.findShortestPath(this.monsterSpace, this.elements[i]);
+            if (this.elements[i].value > 0 && distance <= (this.state.shrinesDesecrated + 1)) {
               this.elements[i].isHighlighted = true;
             }
             cells2.push(this.elements[i]);
