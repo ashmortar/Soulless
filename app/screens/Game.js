@@ -42,7 +42,7 @@ class Game extends Component {
     this.state = {
       redraw: false,
       isHuman: true,
-      tileWidth: this.zoomedInValue,
+      tileWidth: this.zoomedOutValue,
       playerSpace: { name: 0 },
       boardFinished: false,
       animationType: 'hands',
@@ -1471,12 +1471,12 @@ class Game extends Component {
       this.setState({
         tileWidth: this.zoomedOutValue,
       })
-      this.showSplashScreen('hands', false, 600);
+      this.showSplashScreen('hands', false, 100);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
       })
-      this.showSplashScreen('hands', false, 600);
+      this.showSplashScreen('hands', false, 100);
     }
   }
 
