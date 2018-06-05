@@ -18,7 +18,9 @@ class Home extends Component {
       phone: null,
       code: null,
       numberVerified: false,
+      authorized: false,
       auth_token: null,
+      accessToken: null,
     }
   }
 
@@ -33,13 +35,12 @@ class Home extends Component {
         	"phone": phone
         }),
       }).then(res => {
-        console.log('hey');
-        console.log(res.json());
+        res.json();
         if (res.error) {
           console.log('error');
         }
         if (res.status===200) {
-          console.log("posted");
+          console.log("successful");
           this.setState({numberVerified: true})
         }
       })
@@ -55,7 +56,6 @@ class Home extends Component {
   }
 
   postLogin = (code) => {
-    console.log('postLogin()');
       fetch("https://demonspell.herokuapp.com/api/login", {
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,6 @@ class Home extends Component {
           "code": code
         }),
       }).then(res => {
-        console.log('hey');
         res.json()
           .then((responseJSON) => {
              // do stuff with responseJSON here...
@@ -76,7 +75,40 @@ class Home extends Component {
           console.log('error');
         }
         if (res.status===200) {
-          console.log("posted");
+          console.log("successful");
+          this.setState({authorized: true})
+        }
+      })
+      .catch((e)=>{
+        console.log(e);
+        if (e.error === "Unauthorized") {
+          navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+        } else {
+          navigation.connectionLost(context.props.navigator);
+        }
+        throw e;
+      })
+  }
+
+  postGames = () => {//get access token
+      fetch("https://demonspell.herokuapp.com/api/games", {
+        headers: {
+          'Content-Type': 'application/json',
+          'auth_token': this.state.auth_token,
+        },
+        method: "POST",
+      }).then(res => {
+        res.json()
+          .then((responseJSON) => {
+            this.setState({ accessToken: responseJSON.accessToken})
+            console.log(this.state.accessToken);
+          })
+
+        if (res.error) {
+          console.log('error');
+        }
+        if (res.status===200) {
+          console.log("successful");
           this.setState({numberVerified: true})
         }
       })
@@ -92,13 +124,7 @@ class Home extends Component {
   }
 
 
-  // handlePressWaitingButton = () => {
-  //   this.props.navigation.navigate('Waiting');
-  // };
-  //
-  // handlePressConnectButton = () => {
-  //   this.props.navigation.navigate('Connect');
-  // };
+
 
   handlePressPlayLocallyButton = () => {
     this.props.navigation.navigate('Game');
@@ -106,12 +132,11 @@ class Home extends Component {
 
   handlePressPlayOnlineButton = () => {
     this.setState({
-      inputsVisible: true
+      inputsVisible: true,
     })
   };
 
   handlePressLoginButton = () => {
-    console.log('login');
     this.postLogin(this.state.code);
   }
 
@@ -121,12 +146,27 @@ class Home extends Component {
     }
   }
 
+  handlePressHostJoinButton = () => {
+    this.postGames();
+  }
+
 
   renderInputs = () => {
 
     if (this.state.inputsVisible) {
 
-      if (this.state.numberVerified) {
+      if (this.state.authorized) {
+        return (
+          <View
+            style={{marginTop: 20, width: 150}}
+          >
+
+
+            <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
+          </View>
+        )
+      }
+      else if (this.state.numberVerified) {
         return (
           <View
             style={{marginTop: 20, width: 150}}
@@ -157,6 +197,11 @@ class Home extends Component {
       }
 
     }
+    else {
+      return (
+        <NavButton onPress={this.handlePressPlayOnlineButton} text="Play online" />
+      )
+    }
   }
 
 
@@ -166,13 +211,11 @@ class Home extends Component {
         <Header text="Home Screen" />
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
-        <NavButton onPress={this.handlePressPlayOnlineButton} text="Play online" />
+
         {this.renderInputs()}
       </Container>
     );
   }
-  // <NavButton onPress={this.handlePressWaitingButton} text="go to waiting screen" />
-  // <NavButton onPress={this.handlePressConnectButton} text="go to connect screen" />
 }
 
 export default Home;
