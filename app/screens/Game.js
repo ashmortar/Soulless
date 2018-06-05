@@ -41,8 +41,8 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: true,
-      tileWidth: this.zoomedOutValue,
+      isHuman: false,
+      tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
       animationType: 'hands',
@@ -1519,35 +1519,22 @@ class Game extends Component {
     return {shrine: closest, distance: distance};
   }
 
-  sniff = (target) => {
-    this.resetHighlighted();
-    if (target === "human") {
+  focus = (target) => {
+    if (target === 'human') {
       this.setState({
         modalDialogOnly: 1,
       });
     } else {
       this.setState({
         modalDialogOnly: 2,
-      });
-    }
-  }
-
-  listen = (target) => {
-    this.resetHighlighted();
-    if(target === 'human') {
-      this.setState({
-        modalDialogOnly: 3,
-      });
-    } else {
-      this.setState({
-        modalDialogOnly: 4,
       })
     }
   }
+  
 
 
   renderModalContent = () => {
-    if (this.state.modalDialogOnly === 1) {//SNIFF FOR HUMAN
+    if (this.state.modalDialogOnly === 1) { // focus on young priest
       let cell1;
       let cell2;
       if (this.state.isHuman) {
@@ -1568,9 +1555,10 @@ class Game extends Component {
       } else if (cell2 % this.cellsInRow < cell1 % this.cellsInRow) {
         direction += 'W';
       }
+      let distance = this.findShortestPath(this.elements[cell1], this.elements[cell2]);
 
-      let text1 = 'You sniffed.';
-      let text2 = `Opponent is in ${direction} direction from you.`;
+      let text1 = 'You focus on the Priest.';
+      let text2 = `He is ${distance} squares away to the ${direction}`;
 
       return (
         <View style={{
@@ -1590,9 +1578,9 @@ class Game extends Component {
       )
     }
 
-    else if (this.state.modalDialogOnly === 2) {//SNIFF FOR CLOSEST SHRINE
+    else if (this.state.modalDialogOnly === 2) {//focus on closest shrine
       let monsterIndex = this.monsterSpace.name;
-      let { shrine } = this.findClosestShrine();
+      let { shrine, distance } = this.findClosestShrine();
       let shrineIndex = shrine.name;
       let direction = '';
       if (Math.floor(shrineIndex / this.cellsInRow) > Math.floor(monsterIndex / this.cellsInRow)) {
@@ -1606,8 +1594,8 @@ class Game extends Component {
         direction += 'W';
       }
 
-      let text1 = 'You sniffed.';
-      let text2 = `Shrine is in ${direction} direction from you.`;
+      let text1 = 'You focus on the nearest Shrine.';
+      let text2 = `It is in ${distance} spaces away to the ${direction}.`;
 
       return (
         <View style={{
@@ -2077,8 +2065,7 @@ class Game extends Component {
           showHumanMoves={this.showHumanMoves}
           showMonsterMoves={this.showMonsterMoves}
           monsterProcessPounce={this.monsterProcessPounce}
-          sniff={this.sniff}
-          listen={this.listen}
+          focus={this.focus}
           assignImageFogKeys={this.assignImageFogKeys}
           resetHighlighted={this.resetHighlighted}
           alterZoom={this.alterZoom}
