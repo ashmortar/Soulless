@@ -18,6 +18,7 @@ class Home extends Component {
       phone: null,
       code: null,
       numberVerified: false,
+      auth_token: null,
     }
   }
 
@@ -33,8 +34,7 @@ class Home extends Component {
         }),
       }).then(res => {
         console.log('hey');
-        res.json()
-        console.log(res);
+        console.log(res.json());
         if (res.error) {
           console.log('error');
         }
@@ -67,7 +67,11 @@ class Home extends Component {
       }).then(res => {
         console.log('hey');
         res.json()
-        console.log(res);
+          .then((responseJSON) => {
+             // do stuff with responseJSON here...
+             this.setState({ auth_token: responseJSON.auth_token})
+             console.log(this.state.auth_token);
+          })
         if (res.error) {
           console.log('error');
         }
@@ -144,6 +148,7 @@ class Home extends Component {
             <TextInput
               style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}}
               onChangeText={(phone) => this.setState({phone})}
+
             />
 
             <NavButton onPress={this.handlePressGetCodeButton} text="get code" />
