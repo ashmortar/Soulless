@@ -542,10 +542,8 @@ export default class Engine extends Component {
           renderTile={(tile, src, styles) => {
             return (
               <TouchableOpacity style={[styles]}>
-                <Image
-                  resizeMode="stretch"
-                  style={[styles, { opacity: 0.1 }]}
-                  source={src}
+                <View
+                  style={[styles, { opacity: 0.3, backgroundColor: 'red' }]}
                 />
               </TouchableOpacity>
             );

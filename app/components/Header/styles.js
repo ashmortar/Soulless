@@ -10,9 +10,9 @@ export default EStyleSheet.create({
     top: 25,
   },
   headerText: {
+    fontFamily: 'Perfect DOS VGA 437',
     color: '$white',
     fontWeight: '$headerWeight',
     fontSize: '$headerSize',
-    fontFamily: 'Perfect DOS VGA 437',
   },
 });

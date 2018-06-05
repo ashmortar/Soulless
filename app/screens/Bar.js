@@ -34,7 +34,7 @@ class Bar extends Component {
     this.barSectionHeight = 40;
     this.barHeight = this.barSectionHeight * 3;
     this.heartBeatSize = 200;
-    this.heartBeatScale = 0.2;
+    this.heartBeatScale = 0.15;
 
   }
 
@@ -111,8 +111,8 @@ class Bar extends Component {
     };
 
     return(
-      <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1, borderWidth: 4, borderTopColor: "#161B35", borderLeftColor: "#161B35", borderRightColor: "#8f72ad", borderBottomColor: "#8f72ad"}} source={require("../data/images/windowTile.png")} resizeMode="cover" >
-        <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5}}>
+      <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
+        <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
 
           <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
 
@@ -128,7 +128,7 @@ class Bar extends Component {
           {this.renderButton()}
 
         </View>
-        <View style={{flexDirection: 'column', padding: 5}}>
+        <View style={{flexDirection: 'column', padding: 5, marginTop: 5, marginLeft: 5 }}>
           <Text style={{color: '#fff', paddingVertical: 10, fontFamily: 'Perfect DOS VGA 437',}}>{`Possessed priest's sanity level:`}</Text>
           <ProgressBarAnimated
             {...progressCustomStyles}
@@ -147,7 +147,7 @@ class Bar extends Component {
     // console.log('heartbeat', this.props.heartBeatTimer)
     const bar = this.getBar();
     return (
-      <View style={{position: "absolute", left: 0, bottom: 0, height: this.barHeight, width: Dimensions.get("window").width - 10, borderWidth: 4, borderColor: "#333065", margin: 5 }}>
+      <View style={{position: "absolute", left: 5, bottom: 5, height: this.barHeight + 10, width: Dimensions.get("window").width - 10 }}>
         {bar}
       </View>
     );

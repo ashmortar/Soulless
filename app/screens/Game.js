@@ -1386,9 +1386,6 @@ class Game extends Component {
     let text2 = "Can't echo locate in that direction."
     return (
         <View style={{
-          borderWidth: 4,
-          borderColor: "#333065",
-          margin: "auto",
           backgroundColor: 'transparent',
           width: Dimensions.get("window").width*0.9,
           marginLeft: "auto",
@@ -1400,16 +1397,11 @@ class Game extends Component {
               height: undefined,
               width: undefined,
               flex: 1,
-              borderWidth: 4,
-              borderTopColor: "#161B35",
-              borderLeftColor: "#161B35",
-              borderRightColor: "#8f72ad",
-              borderBottomColor: "#8f72ad",
               justifyContent: 'center',
               alignItems: 'center'
               }}
-            source={require("../data/images/windowTile.png")}
-            resizeMode={"cover"}
+            source={require("../data/images/mainWindow.png")}
+            resizeMode={"stretch"}
             >
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
@@ -1580,9 +1572,6 @@ class Game extends Component {
 
       return (
         <View style={{
-          borderWidth: 4,
-          borderColor: "#333065",
-          margin: "auto",
           backgroundColor: 'transparent',
           width: Dimensions.get("window").width*0.9,
           marginLeft: "auto",
@@ -1594,16 +1583,11 @@ class Game extends Component {
               height: undefined,
               width: undefined,
               flex: 1,
-              borderWidth: 4,
-              borderTopColor: "#161B35",
-              borderLeftColor: "#161B35",
-              borderRightColor: "#8f72ad",
-              borderBottomColor: "#8f72ad",
               justifyContent: 'center',
               alignItems: 'center'
               }}
-            source={require("../data/images/windowTile.png")}
-            resizeMode={"cover"}
+            source={require("../data/images/mainWindow.png")}
+            resizeMode={"stretch"}
             >
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
@@ -1635,9 +1619,6 @@ class Game extends Component {
 
       return (
         <View style={{
-          borderWidth: 4,
-          borderColor: "#333065",
-          margin: "auto",
           backgroundColor: 'transparent',
           width: Dimensions.get("window").width*0.9,
           marginLeft: "auto",
@@ -1649,16 +1630,11 @@ class Game extends Component {
               height: undefined,
               width: undefined,
               flex: 1,
-              borderWidth: 4,
-              borderTopColor: "#161B35",
-              borderLeftColor: "#161B35",
-              borderRightColor: "#8f72ad",
-              borderBottomColor: "#8f72ad",
               justifyContent: 'center',
               alignItems: 'center'
               }}
-            source={require("../data/images/windowTile.png")}
-            resizeMode={"cover"}
+            source={require("../data/images/mainWindow.png")}
+            resizeMode={"stretch"}
             >
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
@@ -1717,20 +1693,28 @@ class Game extends Component {
       text2 = 'There is nothing here.';
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-          <NavButton onPress={() => {
-            this.setState({ modalPounce: 0 });
-          }} text='OK' />
+          <ImageBackground 
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/mainWindow.png")}
+            resizeMode={"stretch"}
+            >
+
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
+            <NavButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
+          </ImageBackground>
         </View>
       );
     }
