@@ -54,6 +54,39 @@ class Home extends Component {
       })
   }
 
+  postLogin = (code) => {
+    console.log('postLogin()');
+      fetch("https://demonspell.herokuapp.com/api/login", {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: "POST",
+        body: JSON.stringify({
+          "code": code
+        }),
+      }).then(res => {
+        console.log('hey');
+        res.json()
+        console.log(res);
+        if (res.error) {
+          console.log('error');
+        }
+        if (res.status===200) {
+          console.log("posted");
+          this.setState({numberVerified: true})
+        }
+      })
+      .catch((e)=>{
+        console.log(e);
+        if (e.error === "Unauthorized") {
+          navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+        } else {
+          navigation.connectionLost(context.props.navigator);
+        }
+        throw e;
+      })
+  }
+
 
   // handlePressWaitingButton = () => {
   //   this.props.navigation.navigate('Waiting');
@@ -75,6 +108,7 @@ class Home extends Component {
 
   handlePressLoginButton = () => {
     console.log('login');
+    this.postLogin(this.state.code);
   }
 
   handlePressGetCodeButton = () => {
