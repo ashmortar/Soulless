@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Dimensions, Image, View, PanResponder, TouchableOpacity, Animated } from "react-native";
 import { Loop, Stage, TileMap, Sprite } from "react-game-kit/native";
+import ControlButton from '../components/Button/ControlButton';
 
 const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -132,23 +133,25 @@ export default class Engine extends Component {
   }
 
   getBeginningX = () => {
-    if (this.cameraX < 0) {
-      return 0;
-    } else if (this.cameraX > this.xOffsetMax) {
-      return -this.xOffsetMax;
-    } else {
-      return -this.cameraX;
-    }
+    return -this.cameraX;
+    // if (this.cameraX < 0) {
+    //   return 0;
+    // } else if (this.cameraX > this.xOffsetMax) {
+    //   return -this.xOffsetMax;
+    // } else {
+    //   return -this.cameraX;
+    // }
   }
 
   getBeginningY = () => {
-    if (this.cameraY < 0) {
-      return 0;
-    } else if (this.cameraY > this.yOffsetMax) {
-      return -this.yOffsetMax;
-    } else {
-      return -this.cameraY;
-    }
+    return -this.cameraY;
+    // if (this.cameraY < 0) {
+    //   return 0;
+    // } else if (this.cameraY > this.yOffsetMax) {
+    //   return -this.yOffsetMax;
+    // } else {
+    //   return -this.cameraY;
+    // }
   }
 
   componentWillMount() {
@@ -287,6 +290,7 @@ export default class Engine extends Component {
             this.setState({
               srcPriest: require("../data/images/priestIdle.png"),
             });
+            this.setState({ controlsVisible: false });
             this.props.showHumanMoves();
           }
         }
@@ -295,6 +299,7 @@ export default class Engine extends Component {
             this.setState({
               srcEvil: require("../data/images/priestIdle-ghost.png"),
             });
+            this.setState({ controlsVisible: false });
             this.props.showMonsterMoves();
           }
         }
@@ -403,11 +408,12 @@ export default class Engine extends Component {
           this.props.move(newPlayerTile);
           this.props.incrementTurnCounter();
         } else {
-          // console.log('else');
+          console.log('check');
           setTimeout(function() {
-            if (!this.state.isMoving) {
+            if (!this.state.isMoving || !this.state.showHighlighted) {
               this.setState({
                 showHighlighted: false,
+                controlsVisible: true,
               });
               this.props.resetHighlighted();
               //--------------------------------------------------------------------------------------------------------------
@@ -568,17 +574,22 @@ export default class Engine extends Component {
   controlSwitch = () => {
     // console.log('switch')
     if (this.state.controlsVisible) {
-      this.setState({
-        controlsVisible: false,
-        echoControlsVisible: false,
-        targetPickerVisible: false,
-      });
-
-
+      if(this.props.isHuman) {
+        this.props.showHumanMoves();
+        this.setState({
+          controlsVisible: false,
+        });
+      } else {
+        this.props.showMonsterMoves();
+        this.setState({
+          controlsVisible: false,
+        });
+      }
     } else {
       this.setState({
         controlsVisible: true,
-      })
+        showHighlighted: false,
+      });
     }
   }
 
@@ -633,19 +644,25 @@ export default class Engine extends Component {
   }
 
   echoNorth = () => {
+    this.props.resetHighlighted();
     this.props.echolocate('north');
   }
   echoEast = () => {
+    this.props.resetHighlighted();
+
     this.props.echolocate('east');
   }
   echoBurst = () => {
+    this.props.resetHighlighted();
     this.props.echolocate('radius');
   }
 
   echoWest = () => {
+    this.props.resetHighlighted();
     this.props.echolocate('west');
   }
   echoSouth = () => {
+    this.props.resetHighlighted();
     this.props.echolocate('south');
   }
 
@@ -700,7 +717,6 @@ export default class Engine extends Component {
   }
 
   movementSwitch = () => {
-    this.controlSwitch();
     if (this.props.isHuman) {
       this.props.showHumanMoves();
     } else {
@@ -711,47 +727,21 @@ export default class Engine extends Component {
   renderControls = () => {
     if (this.state.controlsVisible) {
       if (this.props.isHuman) {
-        if (!this.state.echoControlsVisible) {
           return (
-            <View style={[this.getPriestControlStyles(), {height: this.props.tileWidth, width: this.props.tileWidth * 3 }]}>
-              <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.movementSwitch}>
-                <Image source={require('../data/images/move.png')} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.5 }} />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ width: this.props.tileWidth}} onPress={this.echoControlSwitch}>
-                <Image source={require("../data/images/echoIcon.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.5 }} />
-              </TouchableOpacity>
-            </View>
-          );
-        } else {
-          return (
-            <View style={this.getEchoControlStyles()} >
-              <View style={{flexDirection: 'row', flex: 1}}>
-                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoControlSwitch}>
-                  <Image source={require("../data/images/cancel.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, opacity: 0.1 }} />
-                </TouchableOpacity>
-                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoNorth} >
-                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '90deg'}] }} />
-                </TouchableOpacity>
+            <View style={this.getPriestControlStyles()}>
+              <View style={this.getControlButtonStyles()}>
+                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoNorthOut.png")} source2={require("../data/images/echoNorthIn.png")} onPress={this.echoNorth} />
               </View>
-              <View style={{flexDirection: 'row', flex: 1}}>
-                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoWest}>
-                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
-                </TouchableOpacity>
-                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoBurst}>
-                  <Image source={require("../data/images/echoBurst.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3 }} />
-                </TouchableOpacity>
-                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoEast}>
-                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '180deg'}] }} />
-                </TouchableOpacity>
+              <View style={this.getControlButtonStyles()}>
+                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoWestOut.png")} source2={require("../data/images/echoWestIn.png")} onPress={this.echoWest} />
+                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoBurstOut.png")} source2={require("../data/images/echoBurstIn.png")} onPress={this.echoBurst} />
+                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoEastOut.png")} source2={require("../data/images/echoEastIn.png")} onPress={this.echoEast} />
               </View>
-              <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center'}}>
-                <TouchableOpacity style={{ width: this.props.tileWidth, height: this.props.tileWidth }} onPress={this.echoSouth}>
-                  <Image source={require("../data/images/echoArrow.png")} style={{ width: this.props.tileWidth, height: this.props.tileWidth, backgroundColor: "#fff", opacity: 0.3, transform: [{ rotate: '-90deg'}] }} />
-                </TouchableOpacity>
+              <View style={this.getControlButtonStyles()}>
+                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoSouthOut.png")} source2={require("../data/images/echoSouthIn.png")} onPress={this.echoSouth} />
               </View>
             </View>
-          );
-        }
+          )
       } else {
         if (!this.state.targetPickerVisible) {
           return (
@@ -789,6 +779,7 @@ export default class Engine extends Component {
       }
     }
   }
+  
 
   getMonsterControlStyles = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
@@ -800,17 +791,14 @@ export default class Engine extends Component {
 
   getPriestControlStyles = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ height: this.props.tileWidth, width: this.props.tileWidth * 3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*5, flexDirection: 'row', justifyContent: 'space-between' });
+      return { height: this.props.tileWidth * 3, width: this.props.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.props.tileWidth, top: this.state.playerY - (this.props.tileWidth*5) };
     } else {
-      return ({height: this.props.tileWidth, width: this.props.tileWidth * 3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*9, flexDirection: 'row', justifyContent: 'space-between' });
+      return { height: this.props.tileWidth * 3, width: this.props.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.props.tileWidth, top: this.state.playerY - (this.props.tileWidth*8) };
     }
   }
-  getEchoControlStyles = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ zIndex: 2, height: this.props.tileWidth * 3, width: this.props.tileWidth * 3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*5, flexDirection: 'column' });
-    } else {
-      return ({ zIndex: 2, height: this.props.tileWidth * 3, width: this.props.tileWidth * 3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*9, flexDirection: 'column' });
-    }
+
+  getControlButtonStyles = () => {
+    return ({ height: this.props.tileWidth, width: this.props.tileWidth * 3, flexDirection: 'row', justifyContent: 'center', zIndex: 3 });
   }
 
   render() {
