@@ -31,6 +31,7 @@ export default class Engine extends Component {
     this.wasPouncedTileMap = this.props.gameBoard.map(a => a.wasPounced ? 1 : 0);
     this.wasEchoedTileMap = this.props.gameBoard.map(a => a.wasEchoed ? 1 : 0);
     this.highlightedTileRanges = [];
+    this.playerTileRanges = [];
     this.xOffsetMax = this.gameBoardWidth - this.screenDimensions.width;
     this.yOffsetMax = this.gameBoardWidth - this.screenDimensions.height;
     this.playerX = (this.props.playerSpace.name % 40) * this.props.tileWidth;
@@ -288,8 +289,8 @@ export default class Engine extends Component {
     }
 
     Animated.parallel([
-      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1000 * distance }),
-      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1000 * distance })
+      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1300 * distance }),
+      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1300 * distance })
     ]).start((finished) => {
       if (finished.finished) {
         if (this.props.isHuman) {
@@ -423,6 +424,7 @@ export default class Engine extends Component {
                 controlsVisible: true,
               });
               this.props.resetHighlighted();
+              //--------------------------------------------------------------------------------------------------------------
             }
           }.bind(this), 200);
         }
