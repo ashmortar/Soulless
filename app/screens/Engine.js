@@ -289,6 +289,7 @@ export default class Engine extends Component {
             this.setState({
               srcPriest: require("../data/images/priestIdle.png"),
             });
+            this.setState({ controlsVisible: false });
             this.props.showHumanMoves();
           }
         }
@@ -297,6 +298,7 @@ export default class Engine extends Component {
             this.setState({
               srcEvil: require("../data/images/priestIdle-ghost.png"),
             });
+            this.setState({ controlsVisible: false });
             this.props.showMonsterMoves();
           }
         }
@@ -405,11 +407,12 @@ export default class Engine extends Component {
           this.props.move(newPlayerTile);
           this.props.incrementTurnCounter();
         } else {
-          // console.log('else');
+          console.log('check');
           setTimeout(function() {
-            if (!this.state.isMoving) {
+            if (!this.state.isMoving || !this.state.showHighlighted) {
               this.setState({
                 showHighlighted: false,
+                controlsVisible: true,
               });
               this.props.resetHighlighted();
             }
@@ -639,19 +642,25 @@ export default class Engine extends Component {
   }
 
   echoNorth = () => {
+    this.props.resetHighlighted();
     this.props.echolocate('north');
   }
   echoEast = () => {
+    this.props.resetHighlighted();
+
     this.props.echolocate('east');
   }
   echoBurst = () => {
+    this.props.resetHighlighted();
     this.props.echolocate('radius');
   }
 
   echoWest = () => {
+    this.props.resetHighlighted();
     this.props.echolocate('west');
   }
   echoSouth = () => {
+    this.props.resetHighlighted();
     this.props.echolocate('south');
   }
 
