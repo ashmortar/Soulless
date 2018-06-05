@@ -37,6 +37,8 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		F178D30AD1524327A4ECE04F /* Perfect DOS VGA 437 Win.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1527D33530449BE886F925A /* Perfect DOS VGA 437 Win.ttf */; };
+		F63A7F08C1484699B5A0EC9D /* Perfect DOS VGA 437.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17E428804AD241B68254F2FB /* Perfect DOS VGA 437.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -342,6 +344,8 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		E1527D33530449BE886F925A /* Perfect DOS VGA 437 Win.ttf */ = {isa = PBXFileReference; name = "Perfect DOS VGA 437 Win.ttf"; path = "../assets/fonts/Perfect DOS VGA 437 Win.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		17E428804AD241B68254F2FB /* Perfect DOS VGA 437.ttf */ = {isa = PBXFileReference; name = "Perfect DOS VGA 437.ttf"; path = "../assets/fonts/Perfect DOS VGA 437.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -577,6 +581,7 @@
 				00E356EF1AD99517003FC87E /* ProjectEyeCueTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				610F0BECF041413A8113268A /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -602,6 +607,16 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		610F0BECF041413A8113268A /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				E1527D33530449BE886F925A /* Perfect DOS VGA 437 Win.ttf */,
+				17E428804AD241B68254F2FB /* Perfect DOS VGA 437.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -1049,6 +1064,8 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				F178D30AD1524327A4ECE04F /* Perfect DOS VGA 437 Win.ttf in Resources */,
+				F63A7F08C1484699B5A0EC9D /* Perfect DOS VGA 437.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

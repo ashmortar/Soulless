@@ -35,6 +35,7 @@ class Menu extends Component {
           color: '#fff',
           fontWeight: '600',
           fontSize: 20,
+          fontFamily: 'Perfect DOS VGA 437',
         }}>Choose an action:</Text>
 
         <NavButton
@@ -68,6 +69,7 @@ class Menu extends Component {
           color: '#fff',
           fontWeight: '600',
           fontSize: 20,
+          fontFamily: 'Perfect DOS VGA 437',
         }}>Choose an action:</Text>
 
         <NavButton
@@ -97,6 +99,7 @@ class Menu extends Component {
           color: '#fff',
           fontWeight: '600',
           fontSize: 20,
+          fontFamily: 'Perfect DOS VGA 437',
         }}>Settings</Text>
 
         <NavButton

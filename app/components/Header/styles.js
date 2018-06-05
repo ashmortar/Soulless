@@ -13,5 +13,6 @@ export default EStyleSheet.create({
     color: '$white',
     fontWeight: '$headerWeight',
     fontSize: '$headerSize',
+    fontFamily: 'Perfect DOS VGA 437',
   },
 });

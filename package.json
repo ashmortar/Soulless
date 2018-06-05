@@ -6,6 +6,11 @@
     "start": "nodemon app",
     "test": "jest"
   },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
+  },
   "dependencies": {
     "color": "2.0.0",
     "ejs": "^2.6.1",

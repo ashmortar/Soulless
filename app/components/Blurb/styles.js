@@ -16,5 +16,6 @@ export default EStyleSheet.create({
     fontWeight: '$regularWeight',
     fontSize: '$headerSize / 3',
     textAlign: 'center',
+    fontFamily: 'Perfect DOS VGA 437',
   },
 });

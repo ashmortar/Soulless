@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Picker, View, Animated, TouchableOpacity, Alert, Dimensions, ActivityIndicator, BackAndroid } from 'react-native';
+import { Text, Picker, View, Animated, TouchableOpacity, Alert, ImageBackground, Dimensions, ActivityIndicator, BackAndroid } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Grid, AnimatedGrid } from '../components/Grid';
@@ -1385,20 +1385,38 @@ class Game extends Component {
     let text1 = "Uh-oh."
     let text2 = "Can't echo locate in that direction."
     return (
-      <View style={{
+        <View style={{
+          borderWidth: 4,
+          borderColor: "#333065",
+          margin: "auto",
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
+        }}>
+          <ImageBackground 
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              borderWidth: 4,
+              borderTopColor: "#161B35",
+              borderLeftColor: "#161B35",
+              borderRightColor: "#8f72ad",
+              borderBottomColor: "#8f72ad",
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/windowTile.png")}
+            resizeMode={"cover"}
+            >
 
-        borderWidth: 2,
-        borderColor: "#000",
-
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 22,
-        backgroundColor: '#212121',
-      }}>
-        <Text style={{color:'#fff'}}>{text1}</Text>
-        <Text style={{color:'#fff'}}>{text2}</Text>
-        <NavButton onPress={() => {this.setState({ modalAlert: 0 }); }} text='OK' />
-      </View>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
+            <NavButton onPress={() => this.setState({ modalAlert: 0})} text='OK' />
+          </ImageBackground>
+        </View>
     );
   }
 
@@ -1562,18 +1580,36 @@ class Game extends Component {
 
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          borderWidth: 4,
+          borderColor: "#333065",
+          margin: "auto",
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
-          <Text style={{color:'#fff'}}>{text1}</Text>
-          <Text style={{color:'#fff'}}>{text2}</Text>
-          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+          <ImageBackground 
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              borderWidth: 4,
+              borderTopColor: "#161B35",
+              borderLeftColor: "#161B35",
+              borderRightColor: "#8f72ad",
+              borderBottomColor: "#8f72ad",
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/windowTile.png")}
+            resizeMode={"cover"}
+            >
+
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
+            <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+          </ImageBackground>
         </View>
       )
     }
@@ -1599,18 +1635,36 @@ class Game extends Component {
 
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          borderWidth: 4,
+          borderColor: "#333065",
+          margin: "auto",
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
-          <Text style={{color:'#fff'}}>{text1}</Text>
-          <Text style={{color:'#fff'}}>{text2}</Text>
-          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+          <ImageBackground 
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              borderWidth: 4,
+              borderTopColor: "#161B35",
+              borderLeftColor: "#161B35",
+              borderRightColor: "#8f72ad",
+              borderBottomColor: "#8f72ad",
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/windowTile.png")}
+            resizeMode={"cover"}
+            >
+
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
+            <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+          </ImageBackground>
         </View>
       )
     }
@@ -1630,8 +1684,8 @@ class Game extends Component {
           padding: 22,
           backgroundColor: '#212121',
         }}>
-          <Text style={{color:'#fff'}}>{text1}</Text>
-          <Text style={{color:'#fff'}}>{text2}</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
           <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
         </View>
       );
@@ -1650,8 +1704,8 @@ class Game extends Component {
           padding: 22,
           backgroundColor: '#212121',
         }}>
-          <Text style={{color:'#fff'}}>{text1}</Text>
-          <Text style={{color:'#fff'}}>{text2}</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
           <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
         </View>
       );
@@ -1672,8 +1726,8 @@ class Game extends Component {
           padding: 22,
           backgroundColor: '#212121',
         }}>
-          <Text style={{color:'#fff'}}>{text1}</Text>
-          <Text style={{color:'#fff'}}>{text2}</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
           <NavButton onPress={() => {
             this.setState({ modalPounce: 0 });
           }} text='OK' />
@@ -1693,7 +1747,7 @@ class Game extends Component {
           padding: 22,
           backgroundColor: '#212121',
         }}>
-          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
           <NavButton onPress={() => {this.echoLocate('north'); this.setState({ modal: 0 });}} text='North' />
           <NavButton onPress={() => {this.echoLocate('south'); this.setState({ modal: 0 });}} text='South' />
           <NavButton onPress={() => {this.echoLocate('east'); this.setState({ modal: 0 });}} text='East' />
@@ -1715,7 +1769,7 @@ class Game extends Component {
           padding: 22,
           backgroundColor: '#212121',
         }}>
-          <Text style={{color:'#fff'}}>{text1}</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
           <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 1 }); }} text='player' />
           <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 2 }); }} text='shrine' />
         </View>
@@ -1735,7 +1789,7 @@ class Game extends Component {
             padding: 22,
             backgroundColor: '#212121',
           }}>
-            <Text style={{color:'#fff'}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
             <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 3 }); }} text='player' />
             <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 4 }); }} text='shrine' />
           </View>
@@ -1754,7 +1808,7 @@ class Game extends Component {
           padding: 22,
           backgroundColor: '#212121',
         }}>
-          <Text style={{color:'#fff'}}>Are you sure you want to exit?</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => BackAndroid.exitApp()} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
 
@@ -1773,7 +1827,7 @@ class Game extends Component {
           padding: 22,
           backgroundColor: '#212121',
         }}>
-          <Text style={{color:'#fff'}}>Are you sure you want to exit?</Text>
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
 

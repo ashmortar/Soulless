@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity, View, StyleSheet, Dimensions, Image } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet, Dimensions, Image, ImageBackground } from 'react-native';
 import { Loop, Sprite } from 'react-game-kit/native';
 
 import { Container } from '../components/Container';
@@ -111,13 +111,13 @@ class Bar extends Component {
     };
 
     return(
-      <View style={{backgroundColor:'#212121', padding: 10, flexDirection: 'column', height: this.barHeight}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight}}>
+      <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1, borderWidth: 4, borderTopColor: "#161B35", borderLeftColor: "#161B35", borderRightColor: "#8f72ad", borderBottomColor: "#8f72ad"}} source={require("../data/images/windowTile.png")} resizeMode="cover" >
+        <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5}}>
 
-          <Text style={{color: '#fff'}}>{text1}</Text>
+          <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
 
           <Image
-            style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 3 - 20 }}
+            style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 4 }}
             source={require("../data/images/shrine-grey.png")}
           />
 
@@ -128,15 +128,15 @@ class Bar extends Component {
           {this.renderButton()}
 
         </View>
-        <View style={{flexDirection: 'column'}}>
-          <Text style={{color: '#fff', paddingVertical: 10}}>{`Possessed priest's sanity level:`}</Text>
+        <View style={{flexDirection: 'column', padding: 5}}>
+          <Text style={{color: '#fff', paddingVertical: 10, fontFamily: 'Perfect DOS VGA 437',}}>{`Possessed priest's sanity level:`}</Text>
           <ProgressBarAnimated
             {...progressCustomStyles}
-            width={Dimensions.get("window").width - 20}
+            width={Dimensions.get("window").width - 35}
             value={this.props.monsterSanityLevel}
           />
         </View>
-      </View>
+      </ImageBackground>
     )
     // <View style={{flexDirection: 'row'}}>
   }
@@ -147,7 +147,7 @@ class Bar extends Component {
     // console.log('heartbeat', this.props.heartBeatTimer)
     const bar = this.getBar();
     return (
-      <View>
+      <View style={{position: "absolute", left: 0, bottom: 0, height: this.barHeight, width: Dimensions.get("window").width - 10, borderWidth: 4, borderColor: "#333065", margin: 5 }}>
         {bar}
       </View>
     );

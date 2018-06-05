@@ -25,5 +25,6 @@ export default EStyleSheet.create({
     paddingVertical: 20,
     fontWeight: '$regularWeight',
     color: '$white',
+    fontFamily: 'Perfect DOS VGA 437',
   },
 });
