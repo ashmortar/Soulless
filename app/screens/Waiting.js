@@ -39,7 +39,7 @@ class Waiting extends Component {
 
 
     this.launchSocket(this.props.navigation.state.params.accessToken);
-    this.getGameInfo();
+    // this.getGameInfo();
   }
 
 
@@ -51,8 +51,9 @@ class Waiting extends Component {
     });
     // this.setState({ socket })
     socket.on('connect', () => {
-      console.log('on connect');
+      console.log('socket on connect');
       socket.emit('game', accessToken);
+      this.getGameInfo();
       socket.on('gameEvent', (message) => {
         console.log('socket on game event');
         this.parseGameEvent(message);
@@ -64,22 +65,6 @@ class Waiting extends Component {
     });
   }
 
-  launchSocket = () => {
-    window.navigator.userAgent = 'ReactNative';
-    const socket = io('http://demonspell.herokuapp.com', {
-      transports: ['websocket']
-    });
-    // this.setState({ socket })
-    socket.on('connect', () => {
-      socket.emit('game', this.state.accessToken);
-      socket.on('gameEvent', (message) => {
-        this.parseGameEvent(message);
-      });
-      socket.on('disconnect', () => {
-        this.renderEndGameDialog("USER_DISCONNECT");
-      })
-    });
-  }
 
 
 
@@ -91,7 +76,6 @@ class Waiting extends Component {
       //then post board event
     }
     else if (this.player_number === 2) {
-      this.player2Ready = true;
       //post event ready
       this.postEvent({"ready": "player2"})
     }
@@ -166,6 +150,7 @@ class Waiting extends Component {
     console.log(message);
     if (message.ready) {
       console.log('player2 ready!');
+      this.player2Ready = true;
     }
   }
 
@@ -204,7 +189,8 @@ class Waiting extends Component {
 
 
   handlePressNavButton = () => {
-    this.props.navigation.navigate('Home');
+    // this.props.navigation.navigate('Home');
+    this.postEvent({"button": "PRESSED"})
   };
 
   render() {
