@@ -28,6 +28,12 @@
     "object-curly-newline": "off",
     "react/jsx-boolean-value": "off",
     "no-nested-ternary": "off",
-    "quotes": "off"
+    "quotes": "off",
+    "no-else-return": "off",
+    "react/sort-comp": "off",
+    "no-underscore-dangle": "off",
+    "indent": "off",
+    "no-loop-func": "off",
+    "max-len": "off"
   }
 }
