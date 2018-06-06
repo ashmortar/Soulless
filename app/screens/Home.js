@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text } from "react-native";
+import { TextInput, View, Text, Modal, TouchableHighlight, ActivityIndicator, Dimensions, ImageBackground } from "react-native";
 
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
@@ -13,11 +13,13 @@ class Home extends Component {
   }
   constructor(props) {
     super(props);
+    this.auth_token = null;
     this.state = {
       inputsVisible: false,
       phone: null,
       code: null,
       numberVerified: false,
+      modalVisible: false,
     }
   }
 
@@ -40,7 +42,9 @@ class Home extends Component {
         }
         if (res.status===200) {
           console.log("posted");
-          this.setState({numberVerified: true})
+          this.setState({
+            numberVerified: true,
+          })
         }
       })
       .catch((e)=>{
@@ -51,7 +55,7 @@ class Home extends Component {
           navigation.connectionLost(context.props.navigator);
         }
         throw e;
-      })
+      });
   }
 
   postLogin = (code) => {
@@ -66,14 +70,22 @@ class Home extends Component {
         }),
       }).then(res => {
         console.log('hey');
-        res.json()
-        console.log(res);
+        console.log("response");
         if (res.error) {
           console.log('error');
         }
         if (res.status===200) {
           console.log("posted");
-          this.setState({numberVerified: true})
+          res.json().then(data => {
+            let { auth_token } = data;
+            this.auth_token = auth_token;
+            console.log(this.auth_token);
+            this.setState({
+              numberVerified: true,
+              modalVisible: true,
+            });
+          })
+          // console.log("authtoken", res.json().then)
         }
       })
       .catch((e)=>{
@@ -128,6 +140,7 @@ class Home extends Component {
             style={{marginTop: 20, width: 150}}
           >
             <TextInput
+              keyboardType={"numeric"}
               style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}}
               onChangeText={(code) => this.setState({code})}
             />
@@ -142,6 +155,7 @@ class Home extends Component {
             style={{marginTop: 20, width: 150}}
           >
             <TextInput
+              keyboardType={"numeric"}
               style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}}
               onChangeText={(phone) => this.setState({phone})}
             />
@@ -154,6 +168,41 @@ class Home extends Component {
     }
   }
 
+  setModalVisible = () => {
+    this.setState({modalVisible: !this.state.modalVisible});
+  }
+
+  renderConnectingModal= () => {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {
+          alert('Modal has been closed.');
+        }}>
+        <View style={{width: Dimensions.get("window").width*0.8, height: Dimensions.get("window").height*0.6, marginLeft: "auto", marginRight: "auto"}} >
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode="contain"
+          >
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437'}}>searching for a partner ...</Text>
+            <ActivityIndicator size={"large"}/>
+            <NavButton onPress={this.setModalVisible} text='cancel search' />
+          </ImageBackground>
+        </View>
+      </Modal>
+    );
+  }
+
 
   render() {
     return (
@@ -163,6 +212,7 @@ class Home extends Component {
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
         <NavButton onPress={this.handlePressPlayOnlineButton} text="Play online" />
         {this.renderInputs()}
+        {this.renderConnectingModal()}
       </Container>
     );
   }

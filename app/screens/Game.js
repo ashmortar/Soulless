@@ -1400,7 +1400,7 @@ class Game extends Component {
               justifyContent: 'center',
               alignItems: 'center'
               }}
-            source={require("../data/images/mainWindow.png")}
+            source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
             >
 
@@ -1586,7 +1586,7 @@ class Game extends Component {
               justifyContent: 'center',
               alignItems: 'center'
               }}
-            source={require("../data/images/mainWindow.png")}
+            source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
             >
 
@@ -1633,7 +1633,7 @@ class Game extends Component {
               justifyContent: 'center',
               alignItems: 'center'
               }}
-            source={require("../data/images/mainWindow.png")}
+            source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
             >
 
@@ -1707,7 +1707,7 @@ class Game extends Component {
               justifyContent: 'center',
               alignItems: 'center'
               }}
-            source={require("../data/images/mainWindow.png")}
+            source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
             >
 
