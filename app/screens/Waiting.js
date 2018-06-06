@@ -8,6 +8,12 @@ import { Blurb } from '../components/Blurb';
 import BoardGenerator from '../Services/BoardGenerator';
 
 const generator = new BoardGenerator();
+const generateBoard = async () => {
+  let array = await generator.generateBoard();
+  console.log("boardgeneration finished");
+  this.boardReady = true;
+  return array;
+}
 var io = require('socket.io-client');
 
 
@@ -24,14 +30,14 @@ class Waiting extends Component {
     this.player_id = 0;
     this.player_number = 0;
     this.player2Ready = false;
-    this.elements = [];
+    this.elements = null;
+    this.boardReady = false;
     this.state = {
     }
   }
 
 
   componentDidMount() {
-    console.log("gameboard", this.elements)
     console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken);
     // AsyncStorage.getItem('auth_token').then((value) => console.log ("auth_token", value));
 
@@ -71,7 +77,7 @@ class Waiting extends Component {
   gamePrep = () => {
     if (this.player_number === 1) {
       //generate board
-      this.elements = generator.generateBoard();
+      this.elements = generateBoard();
       //if board.done and player2.ready
       if (this.player2Ready) {
         //then post board event
