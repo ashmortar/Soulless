@@ -19,6 +19,7 @@ class Home extends Component {
       code: null,
       numberVerified: false,
       authorized: false,
+      connectedToGame: false,
       auth_token: null,
       accessToken: null,
     }
@@ -109,7 +110,7 @@ class Home extends Component {
         }
         if (res.status===200) {
           console.log("successful");
-          this.setState({numberVerified: true})
+          this.setState({connectedToGame: true})
         }
       })
       .catch((e)=>{
@@ -122,6 +123,43 @@ class Home extends Component {
         throw e;
       })
   }
+
+  postEvent = () => {
+      fetch("https://demonspell.herokuapp.com/api/games/" + this.state.accessToken + "/events", {
+        headers: {
+          'Content-Type': 'application/json',
+          'auth_token': this.state.auth_token,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          "data": "sample data"
+        }),
+      }).then(res => {
+        res.json()
+          .then((responseJSON) => {
+            console.log(responseJSON);
+          })
+
+        if (res.error) {
+          console.log('error');
+        }
+        if (res.status===200) {
+          console.log("successful");
+          this.setState({connectedToGame: true})
+        }
+      })
+      .catch((e)=>{
+        console.log(e);
+        if (e.error === "Unauthorized") {
+          navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+        } else {
+          navigation.connectionLost(context.props.navigator);
+        }
+        throw e;
+      })
+  }
+
+
 
 
 
@@ -150,19 +188,30 @@ class Home extends Component {
     this.postGames();
   }
 
+  handlePressSendDataButton = () => {
+    this.postEvent();
+  }
+
 
   renderInputs = () => {
 
     if (this.state.inputsVisible) {
 
-      if (this.state.authorized) {
+      if (this.state.connectedToGame) {
         return (
           <View
-            style={{marginTop: 20, width: 150}}
+          style={{marginTop: 20, width: 150}}
           >
-
-
-            <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
+          <NavButton onPress={this.handlePressSendDataButton} text="send mock data" />
+          </View>
+        )
+      }
+      else if (this.state.authorized) {
+        return (
+          <View
+          style={{marginTop: 20, width: 150}}
+          >
+          <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
           </View>
         )
       }
