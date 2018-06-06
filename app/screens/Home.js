@@ -7,6 +7,9 @@ import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 
+var io = require('socket.io-client');
+
+
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.object,
@@ -23,6 +26,31 @@ class Home extends Component {
       auth_token: null,
       accessToken: null,
     }
+  }
+
+
+  parseGameEvent = (message) => {
+    console.log('-----------------------------------');
+    console.log(message);
+  }
+
+
+
+  launchSocket = () => {
+    window.navigator.userAgent = 'ReactNative';
+    const socket = io('http://demonspell.herokuapp.com', {
+      transports: ['websocket']
+    });
+    // this.setState({ socket })
+    socket.on('connect', () => {
+      socket.emit('game', this.state.accessToken);
+      socket.on('gameEvent', (message) => {
+        this.parseGameEvent(message);
+      });
+      socket.on('disconnect', () => {
+        this.renderEndGameDialog("USER_DISCONNECT");
+      })
+    });
   }
 
 
@@ -103,6 +131,7 @@ class Home extends Component {
           .then((responseJSON) => {
             this.setState({ accessToken: responseJSON.accessToken})
             console.log(this.state.accessToken);
+            this.launchSocket();
           })
 
         if (res.error) {
@@ -191,6 +220,7 @@ class Home extends Component {
   handlePressSendDataButton = () => {
     this.postEvent();
   }
+
 
 
   renderInputs = () => {
