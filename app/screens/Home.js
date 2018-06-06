@@ -29,6 +29,32 @@ class Home extends Component {
     }
   }
 
+
+  parseGameEvent = (message) => {
+    console.log('-----------------------------------');
+    console.log(message);
+  }
+
+
+
+  launchSocket = () => {
+    window.navigator.userAgent = 'ReactNative';
+    const socket = io('http://demonspell.herokuapp.com', {
+      transports: ['websocket']
+    });
+    // this.setState({ socket })
+    socket.on('connect', () => {
+      socket.emit('game', this.state.accessToken);
+      socket.on('gameEvent', (message) => {
+        this.parseGameEvent(message);
+      });
+      socket.on('disconnect', () => {
+        this.renderEndGameDialog("USER_DISCONNECT");
+      })
+    });
+  }
+
+
   postVerify = (phone) => {
       fetch("https://demonspell.herokuapp.com/api/verify", {
         headers: {
@@ -106,6 +132,7 @@ class Home extends Component {
           .then((responseJSON) => {
             this.setState({ accessToken: responseJSON.accessToken})
             console.log(this.state.accessToken);
+            this.launchSocket();
           })
 
         if (res.error) {
@@ -194,6 +221,7 @@ class Home extends Component {
   handlePressSendDataButton = () => {
     this.postEvent();
   }
+
 
 
   renderInputs = () => {
