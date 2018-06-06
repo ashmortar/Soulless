@@ -41,11 +41,6 @@ class Home extends Component {
 
 
   parseGameEvent = (message) => {
-    if (message.ready) {
-      this.setModalVisible();
-      const { navigate } = this.props.navigation;
-      navigate('Waiting', this.state.auth_token, this.state.accessToken);
-    }
     console.log('-----------------------------------');
     console.log(message);
   }
@@ -179,7 +174,9 @@ class Home extends Component {
           'auth_token': this.state.auth_token,
         },
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          data: data,
+        }),
       }).then(res => {
         res.json()
           .then((responseJSON) => {
@@ -208,7 +205,7 @@ class Home extends Component {
   };
 
   handlePressPlayOnlineButton = () => {
-    this.setModalVisible();
+    this.setModalVisible(true);
   };
   
   handlePressLoginButton = () => {
@@ -224,8 +221,9 @@ class Home extends Component {
   }
 
   handlePressHostJoinButton = () => {
-    this.setState({ findingGame: true });
-    this.postGames();
+    this.setModalVisible(false)
+    const { navigate } = this.props.navigation;
+    navigate("Waiting", this.state.auth_token, this.state.accessToken);
   }
 
   handlePressSendDataButton = () => {
@@ -237,38 +235,13 @@ class Home extends Component {
     this.postEvent({
       ready: true,
     })
-    this.setModalVisible();
+    this.setModalVisible(false);
     const { navigate } = this.props.navigation;
     navigate('Waiting', this.state.auth_token, this.state.accessToken);
   }
 
   renderInputs = () => {
-    if (this.state.connectedToGame) {
-      return (
-        <View>
-          <Text style={{
-            color: "#fff",
-            textAlign: 'center',
-            fontFamily: 'Perfect DOS VGA 437',
-          }}>Opponent found! click below to begin the game</Text>
-          <NavButton onPress={this.handleBeginGame} text={"BEGIN!"} />
-          <NavButton onPress={this.setModalVisible} text="cancel" />
-      </View>
-      )
-    } else if (this.state.findingGame) {
-      return (
-        <View>
-          <Text style={{
-            color: "#fff",
-            textAlign: 'center',
-            fontFamily: 'Perfect DOS VGA 437',
-          }}>Finding your opponent..</Text>
-          <ActivityIndicator size={"large"} />
-          <NavButton onPress={this.handlePressSendDataButton} text={"data"} />
-          <NavButton onPress={this.setModalVisible} text="cancel" />
-        </View>
-      )
-    } else if (this.state.auth_token !== null) {
+    if (this.state.auth_token !== null) {
       return (
         <View>
           <Text style={{
@@ -278,11 +251,11 @@ class Home extends Component {
           }}>All set! Click below to find a game!</Text>
 
           <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
-          <NavButton onPress={this.setModalVisible} text="cancel" />
+          <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
         
-      </View>
-      )
-    }  else if (this.state.numberVerified) {
+        </View>
+      );
+    } else if (this.state.numberVerified) {
       return (
         <View>
           <Text style={{
@@ -298,7 +271,7 @@ class Home extends Component {
           />
 
           <NavButton onPress={this.handlePressLoginButton} text="login" />
-          <NavButton onPress={this.setModalVisible} text="cancel" />
+          <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
 
         </View>
       )
@@ -319,7 +292,7 @@ class Home extends Component {
           />
 
           <NavButton onPress={this.handlePressGetCodeButton} text="get code" />
-          <NavButton onPress={this.setModalVisible} text="cancel" />
+          <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
           
         </View>
       );
@@ -358,8 +331,8 @@ class Home extends Component {
     // }
   }
   
-  setModalVisible = () => {
-    this.setState({modalVisible: !this.state.modalVisible});
+  setModalVisible = (boolean) => {
+    this.setState({modalVisible: boolean});
   }
   
   renderConnectingModal= () => {
