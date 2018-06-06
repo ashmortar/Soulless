@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import { AsyncStorage } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
@@ -16,8 +16,32 @@ class Waiting extends Component {
     this.props.navigation.navigate('Home');
   };
 
-  componentDidMount() {
-    console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken)
+  parseGameEvent = (message) => {
+    console.log('-----------------------------------');
+    console.log(message);
+  }
+
+
+
+  launchSocket = () => {
+    window.navigator.userAgent = 'ReactNative';
+    const socket = io('http://demonspell.herokuapp.com', {
+      transports: ['websocket']
+    });
+    // this.setState({ socket })
+    socket.on('connect', () => {
+      socket.emit('game', this.state.accessToken);
+      socket.on('gameEvent', (message) => {
+        this.parseGameEvent(message);
+      });
+      socket.on('disconnect', () => {
+        this.renderEndGameDialog("USER_DISCONNECT");
+      })
+    });
+  }
+
+  componentDidMount = () => {
+    AsyncStorage.getItem('auth_token').then((value) => console.log ("auth_token", value));
   }
 
   render() {

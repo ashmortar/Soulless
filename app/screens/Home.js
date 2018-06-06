@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Modal, TouchableHighlight, ActivityIndicator, Dimensions, ImageBackground } from "react-native";
+import { TextInput, View, Text, Modal, TouchableHighlight, ActivityIndicator, Dimensions, ImageBackground, AsyncStorage } from "react-native";
 
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
@@ -15,7 +15,7 @@ class Home extends Component {
   }
   constructor(props) {
     super(props);
-    this.auth_token = null;
+    this.textInput = null;
     this.state = {
       inputsVisible: false,
       phone: null,
@@ -27,6 +27,15 @@ class Home extends Component {
       auth_token: null,
       accessToken: null,
     }
+  }
+
+  componentDidMount = () => {
+    AsyncStorage.getItem('auth_token').then((value) => this.setState({ auth_token: value}));
+  }
+
+  setAuthToken = (auth_token) => {
+    AsyncStorage.setItem('auth_token', auth_token);
+    this.setState({ auth_token: auth_token });
   }
 
 
@@ -98,8 +107,8 @@ class Home extends Component {
         res.json()
           .then((responseJSON) => {
              // do stuff with responseJSON here...
-             this.setState({ auth_token: responseJSON.auth_token})
-             console.log(this.state.auth_token);
+             this.setAuthToken(responseJSON.auth_token);
+             console.log("set", this.state.auth_token);
           })
         if (res.error) {
           console.log('error');
@@ -199,18 +208,18 @@ class Home extends Component {
   };
 
   handlePressPlayOnlineButton = () => {
-    this.setState({
-      inputsVisible: true,
-    })
+    this.setModalVisible();
   };
 
   handlePressLoginButton = () => {
     this.postLogin(this.state.code);
+    this.textInput.clear();
   }
 
   handlePressGetCodeButton = () => {
     if ((this.state.phone) && (this.state.phone.length === 10)) {
       this.postVerify(this.state.phone);
+      this.textInput.clear();
     }
   }
 
@@ -225,71 +234,89 @@ class Home extends Component {
 
 
   renderInputs = () => {
-
-    if (this.state.inputsVisible) {
-
-      if (this.state.connectedToGame) {
-        return (
-          <View
-          style={{marginTop: 20, width: 150}}
-          >
-          <NavButton onPress={this.handlePressSendDataButton} text="send mock data" />
-          </View>
-        )
-      }
-      else if (this.state.authorized) {
-        return (
-          <View
-          style={{marginTop: 20, width: 150}}
-          >
-          <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
-          </View>
-        )
-      }
-      else if (this.state.numberVerified) {
-        return (
-          <View
-            style={{marginTop: 20, width: 150}}
-          >
-            <TextInput
-              keyboardType={"numeric"}
-              style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}}
-              onChangeText={(code) => this.setState({code})}
-            />
-
-            <NavButton onPress={this.handlePressLoginButton} text="login" />
-          </View>
-        )
-      }
-      else {
-        return (
-          <View
-            style={{marginTop: 20, width: 150}}
-          >
-            <TextInput
-              keyboardType={"numeric"}
-              style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}}
-              onChangeText={(phone) => this.setState({phone})}
-
-            />
-
-            <NavButton onPress={this.handlePressGetCodeButton} text="get code" />
-          </View>
-        )
-      }
-
-    }
-    else {
+    if (this.state.auth_token !== null) {
+      return (<NavButton onPress={this.setModalVisible} text="close modal" />)
+    } else if (this.state.numberVerified) {
       return (
-        <NavButton onPress={this.handlePressPlayOnlineButton} text="Play online" />
-      )
-    }
-  }
+        <View>
+          <Text style={{
+            color: "#fff",
+            textAlign: 'center',
+            fontFamily: 'Perfect DOS VGA 437',
+          }}>Enter the code in your SMS</Text>
+          <TextInput
+            ref={input => {this.textInput = input}}
+            keyboardType={"numeric"}
+            style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff', width: 150, marginLeft: "auto", marginRight: "auto", marginTop: 10}}
+            onChangeText={(code) => this.setState({code})}
+          />
 
+          <NavButton onPress={this.handlePressLoginButton} text="login" />
+          <NavButton onPress={this.setModalVisible} text="cancel" />
+
+        </View>
+      )
+    } else {
+      return (
+        <View>
+          <Text style={{
+            color: "#fff",
+            textAlign: 'center',
+            fontFamily: 'Perfect DOS VGA 437',
+          }}>Enter you phone number and press the button below to receive an SMS code for verification</Text>
+          <TextInput
+            ref={input => {this.textInput = input}}
+            keyboardType={"numeric"}
+            style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff', width: 150, marginLeft: "auto", marginRight: "auto", marginTop: 10}}
+            onChangeText={(phone) => this.setState({phone})}
+
+          />
+
+          <NavButton onPress={this.handlePressGetCodeButton} text="get code" />
+          <NavButton onPress={this.setModalVisible} text="cancel" />
+          
+        </View>
+      );
+    }
+    // if (this.state.inputsVisible) {
+
+    //   if (this.state.connectedToGame) {
+    //     return (
+    //       <View
+    //       style={{marginTop: 20, width: 150}}
+    //       >
+    //       <NavButton onPress={this.handlePressSendDataButton} text="send mock data" />
+    //       </View>
+    //     )
+    //   }
+    //   else if (this.state.authorized) {
+    //     return (
+    //       <View
+    //       style={{marginTop: 20, width: 150}}
+    //       >
+    //       <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
+    //       </View>
+    //     )
+    //   }
+      // else if (this.state.numberVerified) {
+
+      // }
+    //   else {
+
+    //   }
+
+    // }
+    // else {
+    //   return (
+    //     <NavButton onPress={this.handlePressPlayOnlineButton} text="Play online" />
+    //   )
+    // }
+  }
+  
   setModalVisible = () => {
     this.setState({modalVisible: !this.state.modalVisible});
   }
-
+  
   renderConnectingModal= () => {
     return (
       <Modal
@@ -312,24 +339,28 @@ class Home extends Component {
             source={require("../data/images/tallWindow.png")}
             resizeMode="contain"
           >
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437'}}>searching for a partner ...</Text>
-            <ActivityIndicator size={"large"}/>
-            <NavButton onPress={this.setModalVisible} text='cancel search' />
+            {this.renderInputs()}
           </ImageBackground>
         </View>
       </Modal>
     );
   }
-
-
+  
+  
   render() {
+    let text = "";
+    if (this.state.auth_token !== null) {
+      text = "find an online game";
+    } else {
+      text = "log in to play online";
+    }
     return (
       <Container>
         <Header text="Home Screen" />
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
-
-        {this.renderInputs()}
+        <NavButton onPress={this.handlePressPlayOnlineButton} text={text} />
+        
         {this.renderConnectingModal()}
       </Container>
     );
