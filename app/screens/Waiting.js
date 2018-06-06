@@ -5,8 +5,9 @@ import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
-import Game from './Game';
+import BoardGenerator from '../Services/BoardGenerator';
 
+const generator = new BoardGenerator();
 var io = require('socket.io-client');
 
 
@@ -23,13 +24,14 @@ class Waiting extends Component {
     this.player_id = 0;
     this.player_number = 0;
     this.player2Ready = false;
-    this.game = new Game();
+    this.elements = [];
     this.state = {
     }
   }
 
 
   componentDidMount() {
+    console.log("gameboard", this.elements)
     console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken);
     // AsyncStorage.getItem('auth_token').then((value) => console.log ("auth_token", value));
 
@@ -37,7 +39,6 @@ class Waiting extends Component {
     this.auth_token = this.props.navigation.state.params.auth_token;
     this.accessToken = this.props.navigation.state.params.accessToken;
     this.phone = this.props.navigation.state.params.phone;
-
 
 
     this.launchSocket(this.props.navigation.state.params.accessToken);
@@ -70,7 +71,7 @@ class Waiting extends Component {
   gamePrep = () => {
     if (this.player_number === 1) {
       //generate board
-      this.game.gameInit();
+      this.elements = generator.generateBoard();
       //if board.done and player2.ready
       if (this.player2Ready) {
         //then post board event

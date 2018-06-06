@@ -75166,8 +75166,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               connectedToGame: true
             });
 
-            _this.launchSocket();
-
             res.json().then(function (responseJSON) {
               var id = responseJSON.id,
                   accessToken = responseJSON.accessToken,
@@ -75180,10 +75178,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
               if (player2) {
                 console.log("working?");
-
-                _this.setState({
-                  connectedToGame: true
-                });
               }
             });
           }
@@ -75207,7 +75201,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             'auth_token': _this.state.auth_token
           },
           method: "POST",
-          body: JSON.stringify(data)
+          body: JSON.stringify({
+            data: data
+          })
         }).then(function (res) {
           res.json().then(function (responseJSON) {});
 
@@ -75236,7 +75232,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.handlePressPlayOnlineButton = function () {
-        _this.setModalVisible();
+        _this.setModalVisible(true);
       };
 
       _this.handlePressLoginButton = function () {
@@ -75254,10 +75250,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.handlePressHostJoinButton = function () {
-        _this.setState({
-          findingGame: true
-        });
-
         _this.postGames();
       };
 
@@ -75268,14 +75260,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this.handleBeginGame = function () {
-        _this.postEvent({
-          ready: true
-        });
-
-        _this.setModalVisible();
+        _this.setModalVisible(false);
 
         var navigate = _this.props.navigation.navigate;
-        navigate('Waiting', _this.state.auth_token, _this.state.accessToken);
+        navigate('Waiting', {
+          auth_token: _this.state.auth_token,
+          accessToken: _this.state.accessToken,
+          phone: _this.state.phone
+        });
       };
 
       _this.renderInputs = function () {
@@ -75285,7 +75277,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 243
+                lineNumber: 240
               }
             },
             _react3.default.createElement(
@@ -75298,35 +75290,39 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 244
+                  lineNumber: 241
                 }
               },
-              "Opponent found! click below to begin the game"
+              "Game initiated, press below to begin"
             ),
             _react3.default.createElement(_Button.NavButton, {
               onPress: _this.handleBeginGame,
-              text: "BEGIN!",
+              text: "begin",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 249
+                lineNumber: 247
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.setModalVisible,
+              onPress: function onPress() {
+                return _this.setModalVisible(false);
+              },
               text: "cancel",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 250
+                lineNumber: 248
               }
             })
           );
-        } else if (_this.state.findingGame) {
+        }
+
+        if (_this.state.auth_token !== null) {
           return _react3.default.createElement(
             _reactNative.View,
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 255
+                lineNumber: 254
               }
             },
             _react3.default.createElement(
@@ -75339,36 +75335,31 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 256
+                  lineNumber: 255
                 }
               },
-              "Finding your opponent.."
+              "Click below to find a game!"
             ),
-            _react3.default.createElement(_reactNative.ActivityIndicator, {
-              size: "large",
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: _this.handlePressHostJoinButton,
+              text: "host/join",
               __source: {
                 fileName: _jsxFileName,
                 lineNumber: 261
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.handlePressSendDataButton,
-              text: "data",
+              onPress: function onPress() {
+                return _this.setModalVisible(false);
+              },
+              text: "cancel",
               __source: {
                 fileName: _jsxFileName,
                 lineNumber: 262
               }
-            }),
-            _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.setModalVisible,
-              text: "cancel",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 263
-              }
             })
           );
-        } else if (_this.state.auth_token !== null) {
+        } else if (_this.state.numberVerified) {
           return _react3.default.createElement(
             _reactNative.View,
             {
@@ -75388,47 +75379,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 __source: {
                   fileName: _jsxFileName,
                   lineNumber: 269
-                }
-              },
-              "All set! Click below to find a game!"
-            ),
-            _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.handlePressHostJoinButton,
-              text: "host/join",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 275
-              }
-            }),
-            _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.setModalVisible,
-              text: "cancel",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 276
-              }
-            })
-          );
-        } else if (_this.state.numberVerified) {
-          return _react3.default.createElement(
-            _reactNative.View,
-            {
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 282
-              }
-            },
-            _react3.default.createElement(
-              _reactNative.Text,
-              {
-                style: {
-                  color: "#fff",
-                  textAlign: 'center',
-                  fontFamily: 'Perfect DOS VGA 437'
-                },
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 283
                 }
               },
               "Enter the code in your SMS"
@@ -75455,7 +75405,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 288
+                lineNumber: 274
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
@@ -75463,15 +75413,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               text: "login",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 295
+                lineNumber: 281
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.setModalVisible,
+              onPress: function onPress() {
+                return _this.setModalVisible(false);
+              },
               text: "cancel",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 296
+                lineNumber: 282
               }
             })
           );
@@ -75481,7 +75433,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 302
+                lineNumber: 288
               }
             },
             _react3.default.createElement(
@@ -75494,7 +75446,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 303
+                  lineNumber: 289
                 }
               },
               "Enter you phone number and press the button below to receive an SMS code for verification"
@@ -75521,7 +75473,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 308
+                lineNumber: 294
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
@@ -75529,24 +75481,26 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               text: "get code",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 316
+                lineNumber: 302
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.setModalVisible,
+              onPress: function onPress() {
+                return _this.setModalVisible(false);
+              },
               text: "cancel",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 317
+                lineNumber: 303
               }
             })
           );
         }
       };
 
-      _this.setModalVisible = function () {
+      _this.setModalVisible = function (boolean) {
         _this.setState({
-          modalVisible: !_this.state.modalVisible
+          modalVisible: boolean
         });
       };
 
@@ -75562,7 +75516,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 362
+              lineNumber: 348
             }
           },
           _react3.default.createElement(
@@ -75576,7 +75530,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 369
+                lineNumber: 355
               }
             },
             _react3.default.createElement(
@@ -75594,7 +75548,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 resizeMode: "contain",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 370
+                  lineNumber: 356
                 }
               },
               _this.renderInputs()
@@ -75635,21 +75589,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 398
+              lineNumber: 384
             }
           },
           _react3.default.createElement(_Header.Header, {
             text: "Home Screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 399
+              lineNumber: 385
             }
           }),
           _react3.default.createElement(_Blurb.Blurb, {
             text: "This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 400
+              lineNumber: 386
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75657,7 +75611,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "Play locally",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 401
+              lineNumber: 387
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75665,7 +75619,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: text,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 402
+              lineNumber: 388
             }
           }),
           this.renderConnectingModal()
@@ -76105,7 +76059,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     headerText: {
       fontFamily: 'Perfect DOS VGA 437',
       color: '$white',
-      fontWeight: '$headerWeight',
       fontSize: '$headerSize'
     }
   });
@@ -81122,6 +81075,28 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this));
 
+      _this.gameInit = function () {
+        _this.createMap();
+
+        _this.assignMonsterEdges();
+
+        _this.assignHumanStart();
+
+        _this.assignMonsterStart();
+
+        _this.assignCacheLocations();
+
+        _this.echoLocate('initial');
+
+        _this.assignImageKeys();
+
+        _this.assignImageDecorKeys();
+
+        _this.assignImageFogKeys();
+
+        _this.setHeartRate();
+      };
+
       _this.setHeartRate = function () {
         var distanceMin = 0;
         var distanceMax = 40;
@@ -82044,50 +82019,50 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                         cell.imageKey = 32;
                       }
                     } else {
-                        var probability = _this.getProbability();
+                      var probability = _this.getProbability();
 
-                        if (probability < 80) {
-                          cell.imageKey = 22;
-                        } else if (probability < 160) {
-                          cell.imageKey = 17;
-                        } else if (probability < 240) {
-                          cell.imageKey = 38;
-                        } else if (probability < 320) {
-                          cell.imageKey = 33;
-                        } else if (probability < 400) {
-                          cell.imageKey = 34;
-                        } else if (probability < 480) {
-                          cell.imageKey = 35;
-                        } else if (probability < 643) {
-                          cell.imageKey = 31;
-                        } else if (probability < 679) {
-                          cell.imageKey = 21;
-                        } else if (probability < 715) {
-                          cell.imageKey = 18;
-                        } else if (probability < 751) {
-                          cell.imageKey = 20;
-                        } else if (probability < 787) {
-                          cell.imageKey = 30;
-                        } else if (probability < 823) {
-                          cell.imageKey = 29;
-                        } else if (probability < 859) {
-                          cell.imageKey = 32;
-                        } else if (probability < 895) {
-                          cell.imageKey = 17;
-                        } else if (probability < 988) {
-                          cell.imageKey = 19;
-                        } else if (probability < 991) {
-                          cell.imageKey = 40;
-                        } else if (probability < 994) {
-                          cell.imageKey = 39;
-                        } else if (probability < 996) {
-                          cell.imageKey = 36;
-                        } else if (probability < 999) {
-                          cell.imageKey = 41;
-                        } else {
-                          cell.imageKey = 42;
-                        }
+                      if (probability < 80) {
+                        cell.imageKey = 22;
+                      } else if (probability < 160) {
+                        cell.imageKey = 17;
+                      } else if (probability < 240) {
+                        cell.imageKey = 38;
+                      } else if (probability < 320) {
+                        cell.imageKey = 33;
+                      } else if (probability < 400) {
+                        cell.imageKey = 34;
+                      } else if (probability < 480) {
+                        cell.imageKey = 35;
+                      } else if (probability < 643) {
+                        cell.imageKey = 31;
+                      } else if (probability < 679) {
+                        cell.imageKey = 21;
+                      } else if (probability < 715) {
+                        cell.imageKey = 18;
+                      } else if (probability < 751) {
+                        cell.imageKey = 20;
+                      } else if (probability < 787) {
+                        cell.imageKey = 30;
+                      } else if (probability < 823) {
+                        cell.imageKey = 29;
+                      } else if (probability < 859) {
+                        cell.imageKey = 32;
+                      } else if (probability < 895) {
+                        cell.imageKey = 17;
+                      } else if (probability < 988) {
+                        cell.imageKey = 19;
+                      } else if (probability < 991) {
+                        cell.imageKey = 40;
+                      } else if (probability < 994) {
+                        cell.imageKey = 39;
+                      } else if (probability < 996) {
+                        cell.imageKey = 36;
+                      } else if (probability < 999) {
+                        cell.imageKey = 41;
+                      } else {
+                        cell.imageKey = 42;
                       }
+                    }
           }
         }
       };
@@ -82475,7 +82450,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1388
+              lineNumber: 1377
             }
           },
           _react3.default.createElement(
@@ -82492,7 +82467,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               resizeMode: "stretch",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1395
+                lineNumber: 1384
               }
             },
             _react3.default.createElement(
@@ -82504,7 +82479,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1407
+                  lineNumber: 1396
                 }
               },
               text1
@@ -82518,7 +82493,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1408
+                  lineNumber: 1397
                 }
               },
               text2
@@ -82532,7 +82507,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               text: "OK",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1409
+                lineNumber: 1398
               }
             })
           )
@@ -82752,7 +82727,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1574
+                lineNumber: 1563
               }
             },
             _react3.default.createElement(
@@ -82769,7 +82744,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 resizeMode: "stretch",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1581
+                  lineNumber: 1570
                 }
               },
               _react3.default.createElement(
@@ -82781,7 +82756,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1593
+                    lineNumber: 1582
                   }
                 },
                 text1
@@ -82795,7 +82770,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1594
+                    lineNumber: 1583
                   }
                 },
                 text2
@@ -82807,7 +82782,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "OK",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1595
+                  lineNumber: 1584
                 }
               })
             )
@@ -82850,7 +82825,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1621
+                lineNumber: 1610
               }
             },
             _react3.default.createElement(
@@ -82867,7 +82842,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 resizeMode: "stretch",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1628
+                  lineNumber: 1617
                 }
               },
               _react3.default.createElement(
@@ -82879,7 +82854,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1640
+                    lineNumber: 1629
                   }
                 },
                 _text
@@ -82893,7 +82868,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1641
+                    lineNumber: 1630
                   }
                 },
                 _text2
@@ -82905,7 +82880,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "OK",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1642
+                  lineNumber: 1631
                 }
               })
             )
@@ -82930,7 +82905,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1653
+                  lineNumber: 1642
                 }
               },
               _react3.default.createElement(
@@ -82942,7 +82917,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1663
+                    lineNumber: 1652
                   }
                 },
                 _text3
@@ -82956,7 +82931,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1664
+                    lineNumber: 1653
                   }
                 },
                 _text4
@@ -82968,7 +82943,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "OK",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1665
+                  lineNumber: 1654
                 }
               })
             );
@@ -82993,7 +82968,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1673
+                  lineNumber: 1662
                 }
               },
               _react3.default.createElement(
@@ -83005,7 +82980,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1683
+                    lineNumber: 1672
                   }
                 },
                 _text5
@@ -83019,7 +82994,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1684
+                    lineNumber: 1673
                   }
                 },
                 _text6
@@ -83031,7 +83006,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "OK",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1685
+                  lineNumber: 1674
                 }
               })
             );
@@ -83054,7 +83029,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1695
+                  lineNumber: 1684
                 }
               },
               _react3.default.createElement(
@@ -83071,7 +83046,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   resizeMode: "stretch",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1702
+                    lineNumber: 1691
                   }
                 },
                 _react3.default.createElement(
@@ -83083,7 +83058,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 1714
+                      lineNumber: 1703
                     }
                   },
                   _text7
@@ -83097,7 +83072,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 1715
+                      lineNumber: 1704
                     }
                   },
                   _text8
@@ -83111,7 +83086,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   text: "OK",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1716
+                    lineNumber: 1705
                   }
                 })
               )
@@ -83131,7 +83106,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1724
+                  lineNumber: 1713
                 }
               },
               _react3.default.createElement(
@@ -83143,7 +83118,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1734
+                    lineNumber: 1723
                   }
                 },
                 _text9
@@ -83159,7 +83134,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "North",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1735
+                  lineNumber: 1724
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83173,7 +83148,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "South",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1736
+                  lineNumber: 1725
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83187,7 +83162,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "East",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1737
+                  lineNumber: 1726
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83201,7 +83176,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "West",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1738
+                  lineNumber: 1727
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83215,7 +83190,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "Burst",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1739
+                  lineNumber: 1728
                 }
               })
             );
@@ -83234,7 +83209,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1746
+                  lineNumber: 1735
                 }
               },
               _react3.default.createElement(
@@ -83246,7 +83221,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1756
+                    lineNumber: 1745
                   }
                 },
                 _text10
@@ -83264,7 +83239,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "player",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1757
+                  lineNumber: 1746
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83280,7 +83255,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "shrine",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1758
+                  lineNumber: 1747
                 }
               })
             );
@@ -83300,7 +83275,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1766
+                    lineNumber: 1755
                   }
                 },
                 _react3.default.createElement(
@@ -83312,7 +83287,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 1776
+                      lineNumber: 1765
                     }
                   },
                   _text11
@@ -83330,7 +83305,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   text: "player",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1777
+                    lineNumber: 1766
                   }
                 }),
                 _react3.default.createElement(_Button.NavButton, {
@@ -83346,7 +83321,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   text: "shrine",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1778
+                    lineNumber: 1767
                   }
                 })
               );
@@ -83365,7 +83340,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1785
+                  lineNumber: 1774
                 }
               },
               _react3.default.createElement(
@@ -83377,7 +83352,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1795
+                    lineNumber: 1784
                   }
                 },
                 "Are you sure you want to exit?"
@@ -83389,7 +83364,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "Yes",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1796
+                  lineNumber: 1785
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83401,7 +83376,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "No",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1797
+                  lineNumber: 1786
                 }
               })
             );
@@ -83419,7 +83394,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1804
+                  lineNumber: 1793
                 }
               },
               _react3.default.createElement(
@@ -83431,7 +83406,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1814
+                    lineNumber: 1803
                   }
                 },
                 "Are you sure you want to exit?"
@@ -83447,7 +83422,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "Yes",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1815
+                  lineNumber: 1804
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83459,7 +83434,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "No",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1816
+                  lineNumber: 1805
                 }
               })
             );
@@ -83746,7 +83721,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 2051
+                lineNumber: 2040
               }
             },
             _react3.default.createElement(_AnimatedSplashScreen2.default, {
@@ -83757,7 +83732,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               animationTimer: _this.state.animationTimer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 2052
+                lineNumber: 2041
               }
             })
           );
@@ -83780,7 +83755,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onItemSelected: _this.onItemSelected,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 2065
+            lineNumber: 2054
           }
         });
 
@@ -83789,7 +83764,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onItemSelected: _this.onItemSelected,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 2066
+            lineNumber: 2055
           }
         });
 
@@ -83805,7 +83780,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           monsterSanityLevel: _this.state.monsterSanityLevel,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 2067
+            lineNumber: 2056
           }
         });
 
@@ -83818,7 +83793,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               disableGestures: disableGestures,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 2080
+                lineNumber: 2069
               }
             },
             _react3.default.createElement(
@@ -83828,7 +83803,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 menuPosition: "left",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 2085
+                  lineNumber: 2074
                 }
               },
               _react3.default.createElement(_Engine2.default, {
@@ -83854,7 +83829,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 alterZoom: _this.alterZoom,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 2089
+                  lineNumber: 2078
                 }
               }),
               _react3.default.createElement(
@@ -83876,7 +83851,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2111
+                    lineNumber: 2100
                   }
                 },
                 _this.renderModalContent()
@@ -83900,7 +83875,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2122
+                    lineNumber: 2111
                   }
                 },
                 _this.generateCustomAlert()
@@ -83920,7 +83895,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2133
+                    lineNumber: 2122
                   }
                 },
                 _this.renderModalContent()
@@ -83934,7 +83909,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2144
+                    lineNumber: 2133
                   }
                 },
                 _this.renderModalContent()
@@ -83958,7 +83933,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2154
+                    lineNumber: 2143
                   }
                 },
                 _this.renderModalContent()
@@ -84016,16 +83991,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     _createClass(Game, [{
       key: "componentWillMount",
       value: function componentWillMount() {
-        this.createMap();
-        this.assignMonsterEdges();
-        this.assignHumanStart();
-        this.assignMonsterStart();
-        this.assignCacheLocations();
-        this.echoLocate('initial');
-        this.assignImageKeys();
-        this.assignImageDecorKeys();
-        this.assignImageFogKeys();
-        this.setHeartRate();
+        this.gameInit();
       }
     }, {
       key: "componentWillUnmount",
@@ -84098,7 +84064,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 2176
+              lineNumber: 2165
             }
           },
           this.renderAnimator(),
@@ -100850,7 +100816,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
   var _class,
-      _temp2,
+      _temp,
       _jsxFileName = "c:\\Users\\ashmo\\Desktop\\ProjectEyeCue\\app\\screens\\Waiting.js";
 
   var _propTypes = _require(_dependencyMap[2], "prop-types");
@@ -100866,6 +100832,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   var _Header = _require(_dependencyMap[6], "../components/Header");
 
   var _Blurb = _require(_dependencyMap[7], "../components/Blurb");
+
+  var _BoardGenerator = _require(_dependencyMap[8], "../Services/BoardGenerator");
+
+  var _BoardGenerator2 = _interopRequireDefault(_BoardGenerator);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -100894,47 +100864,182 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     };
   }
 
-  var Waiting = _wrapComponent("Waiting")((_temp2 = _class = function (_Component) {
+  var generator = new _BoardGenerator2.default();
+
+  var io = _require(_dependencyMap[9], 'socket.io-client');
+
+  var Waiting = _wrapComponent("Waiting")((_temp = _class = function (_Component) {
     _inherits(Waiting, _Component);
 
-    function Waiting() {
-      var _ref;
-
-      var _temp, _this, _ret;
-
+    function Waiting(props) {
       _classCallCheck(this, Waiting);
 
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
+      var _this = _possibleConstructorReturn(this, (Waiting.__proto__ || Object.getPrototypeOf(Waiting)).call(this, props));
 
-      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Waiting.__proto__ || Object.getPrototypeOf(Waiting)).call.apply(_ref, [this].concat(args))), _this), _this.handlePressNavButton = function () {
-        _this.props.navigation.navigate('Home');
-      }, _this.parseGameEvent = function (message) {
-        console.log('-----------------------------------');
-        console.log(message);
-      }, _this.launchSocket = function () {
+      _this.launchSocket = function (accessToken) {
+        console.log('launchSocket');
         window.navigator.userAgent = 'ReactNative';
         var socket = io('http://demonspell.herokuapp.com', {
           transports: ['websocket']
         });
         socket.on('connect', function () {
-          socket.emit('game', _this.state.accessToken);
+          console.log('socket on connect');
+          socket.emit('game', accessToken);
+
+          _this.getGameInfo();
+
           socket.on('gameEvent', function (message) {
+            console.log('socket on game event');
+
             _this.parseGameEvent(message);
           });
           socket.on('disconnect', function () {
-            _this.renderEndGameDialog("USER_DISCONNECT");
+            console.log('socket on disconnect');
           });
         });
-      }, _this.componentDidMount = function () {
-        _reactNative.AsyncStorage.getItem('auth_token').then(function (value) {
-          return console.log("auth_token", value);
+      };
+
+      _this.gamePrep = function () {
+        if (_this.player_number === 1) {} else if (_this.player_number === 2) {
+          _this.postEvent({
+            "ready": "player2"
+          });
+        } else {
+          console.log('player_number is invalid. gamePrep');
+        }
+      };
+
+      _this.parseGameInfo = function (data) {
+        var phoneCompare = "+1" + _this.phone;
+
+        if (data.accessToken === _this.accessToken) {
+          if (data.player1.phone == phoneCompare) {
+            _this.player_number = 1;
+            console.log('player_number:' + _this.player_number);
+
+            _this.gamePrep();
+          } else if (data.hasOwnProperty('player2') && data.player2.phone == phoneCompare) {
+            _this.player_number = 2;
+            console.log('player_number:' + _this.player_number);
+
+            _this.gamePrep();
+          } else {
+            console.log("phone number doesn't match");
+            console.log(phoneCompare);
+            console.log(data.player1.phone);
+          }
+        } else {
+          console.log('accessToken does not match');
+        }
+      };
+
+      _this.getGameInfo = function () {
+        fetch("https://demonspell.herokuapp.com/api/games/" + _this.accessToken, {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth_token': _this.auth_token
+          },
+          method: "GET"
+        }).then(function (res) {
+          res.json().then(function (responseJSON) {
+            console.log('responseJSON in getGameInfo');
+            console.log(responseJSON);
+
+            _this.parseGameInfo(responseJSON);
+          });
+
+          if (res.error) {
+            console.log('error');
+          }
+
+          if (res.status === 200) {
+            console.log("successful");
+          }
+        }).catch(function (e) {
+          console.log(e);
+
+          if (e.error === "Unauthorized") {
+            navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+          } else {
+            navigation.connectionLost(context.props.navigator);
+          }
+
+          throw e;
         });
-      }, _temp), _possibleConstructorReturn(_this, _ret);
+      };
+
+      _this.parseGameEvent = function (message) {
+        console.log('-----------------------------------');
+        console.log(message);
+
+        if (message.ready) {
+          console.log('player2 ready!');
+          _this.player2Ready = true;
+        }
+      };
+
+      _this.postEvent = function (event) {
+        console.log('postEvent');
+        fetch("https://demonspell.herokuapp.com/api/games/" + _this.accessToken + "/events", {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth_token': _this.auth_token
+          },
+          method: "POST",
+          body: JSON.stringify(event)
+        }).then(function (res) {
+          res.json().then(function (responseJSON) {
+            console.log(responseJSON);
+          });
+
+          if (res.error) {
+            console.log('error');
+          }
+
+          if (res.status === 200) {
+            console.log("successful");
+          }
+        }).catch(function (e) {
+          console.log(e);
+
+          if (e.error === "Unauthorized") {
+            navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+          } else {
+            navigation.connectionLost(context.props.navigator);
+          }
+
+          throw e;
+        });
+      };
+
+      _this.handlePressNavButton = function () {
+        _this.postEvent({
+          "button": "PRESSED"
+        });
+      };
+
+      _this.auth_token = null;
+      _this.accessToken = null;
+      _this.phone = null;
+      _this.player_id = 0;
+      _this.player_number = 0;
+      _this.player2Ready = false;
+      _this.elements = generator.generateBoard();
+      _this.state = {};
+      return _this;
     }
 
     _createClass(Waiting, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        console.log("gameboard", this.elements);
+        console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken);
+        this.auth_token = this.props.navigation.state.params.auth_token;
+        this.accessToken = this.props.navigation.state.params.accessToken;
+        this.phone = this.props.navigation.state.params.phone;
+        this.launchSocket(this.props.navigation.state.params.accessToken);
+      }
+    }, {
       key: "render",
       value: function render() {
         return _react3.default.createElement(
@@ -100942,21 +101047,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 49
+              lineNumber: 198
             }
           },
           _react3.default.createElement(_Header.Header, {
             text: "waiting screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 50
+              lineNumber: 199
             }
           }),
           _react3.default.createElement(_Blurb.Blurb, {
             text: "waiting for player to join..",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 51
+              lineNumber: 200
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -100964,7 +101069,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "Back",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 52
+              lineNumber: 201
             }
           })
         );
@@ -100974,10 +101079,1282 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     return Waiting;
   }(_react2.Component), _class.propTypes = {
     navigation: _propTypes2.default.object
-  }, _temp2));
+  }, _temp));
 
   exports.default = Waiting;
-},791,[118,179,129,12,586,589,593,596],"app\\screens\\Waiting.js");
+},791,[118,179,129,12,586,589,593,596,793,599],"app\\screens\\Waiting.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = undefined;
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _Cell = _require(_dependencyMap[0], "../data/Cell");
+
+  var _Cell2 = _interopRequireDefault(_Cell);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  var BoardGenerator = function () {
+    function BoardGenerator() {
+      var _this = this;
+
+      _classCallCheck(this, BoardGenerator);
+
+      this.createMap = function () {
+        _this.getGridLayout();
+
+        while (!_this.detectClosedLoops()) {
+          _this.resetWalls();
+        }
+
+        _this.adjustGrid();
+      };
+
+      this.getGridLayout = function () {
+        _this.createWalls();
+
+        _this.fillAngles();
+
+        for (var _i = 0; _i < _this.cellsTotal; _i++) {
+          if (_this.elements[_i].value === 0) {
+            _this.fillGaps(_i);
+          }
+        }
+
+        _this.addValuesToCells();
+      };
+
+      this.adjustGrid = function () {
+        for (var _i2 = 0; _i2 < _this.cellsTotal; _i2++) {
+          if (_this.elements[_i2].value === 0) {
+            _this.fillGaps(_i2);
+          }
+        }
+
+        _this.addValuesToCells();
+      };
+
+      this.resetWalls = function () {
+        _this.elements = [];
+
+        _this.getGridLayout();
+      };
+
+      this.createWalls = function () {
+        for (var _i3 = 0; _i3 < _this.cellsTotal; _i3++) {
+          _this.elements.push(new _Cell2.default(_i3));
+        }
+
+        for (var _i4 = 0; _i4 < 30; _i4++) {
+          var randWallType = Math.floor(Math.random() * 2);
+          var randStartingPoint = Math.floor(Math.random() * _this.cellsTotal);
+          var randLength = Math.floor(Math.random() * 4) + 2;
+
+          switch (randWallType) {
+            case 0:
+              _this.createWall_straightVertical(randStartingPoint, randLength);
+
+              break;
+
+            case 1:
+              _this.createWall_straightHorizontal(randStartingPoint, Math.floor(randLength - 1));
+
+              break;
+
+            default:}
+        }
+
+        _this.fillWhiteGaps();
+
+        _this.fillWhiteVertLines();
+
+        _this.fillWhiteHorLines();
+
+        _this.createBorderWalls();
+      };
+
+      this.createBorderWalls = function () {
+        _this.createWall_straightHorizontal(80, _this.cellsInRow / 2);
+
+        _this.createWall_straightHorizontal(_this.cellsTotal - _this.cellsInRow, _this.cellsInRow / 2);
+
+        _this.createWall_straightVertical(80, _this.cellsInRow - 2);
+
+        _this.createWall_straightVertical(80 + _this.cellsInRow - 1, _this.cellsInRow - 2);
+      };
+
+      this.fillGaps = function (i) {
+        var counter = 0;
+        var counterForExtraGreyCells = 0;
+        i += _this.cellsInRow;
+
+        while (true) {
+          if (_this.elements[i].value === 0) {
+            for (var c = 0; c < counter; c++) {
+              i -= _this.cellsInRow;
+              _this.elements[i].value = 0;
+            }
+
+            break;
+          } else if (_this.elements[i].value === -1 && i + _this.cellsInRow < _this.cellsTotal) {
+            i += _this.cellsInRow;
+            counter++;
+            counterForExtraGreyCells++;
+          } else {
+            if (counterForExtraGreyCells > 2) {
+              var j = i;
+
+              while (counterForExtraGreyCells != 2) {
+                j -= _this.cellsInRow;
+                counterForExtraGreyCells--;
+                _this.elements[j].value = 1;
+              }
+            } else if (counterForExtraGreyCells < 2) {
+              var _k = i;
+
+              while (_this.elements[_k].value != 0) {
+                _k -= _this.cellsInRow;
+              }
+
+              if (_this.elements[_k + _this.cellsInRow].value != 0) {
+                _this.elements[_k + _this.cellsInRow].value = -1;
+              }
+
+              if (_this.elements[_k + 2 * _this.cellsInRow].value != 0) {
+                _this.elements[_k + 2 * _this.cellsInRow].value = -1;
+              }
+            }
+
+            break;
+          }
+        }
+      };
+
+      this.fillWhiteGaps = function () {
+        for (var _i5 = 3 * _this.cellsInRow + 1; _i5 < _this.cellsTotal - 10 * _this.cellsInRow + 9; _i5++) {
+          if (_this.elements[_i5].value > 0) {
+            var flag = true;
+
+            for (var j = 0; j < 8; j++) {
+              for (var _k2 = 0; _k2 < 8; _k2++) {
+                if (_this.elements[_i5 + j * _this.cellsInRow + _k2].value <= 0) {
+                  flag = false;
+                }
+              }
+            }
+
+            if (flag) {
+              _this.createWall_squareColumn(_i5 + 4 + 5 * _this.cellsInRow);
+            }
+          }
+        }
+      };
+
+      this.fillWhiteHorLines = function () {
+        for (var _i6 = 3 * _this.cellsInRow + 1; _i6 < _this.cellsTotal - 2 * _this.cellsInRow - _this.allowedLengthOfWhiteLine; _i6++) {
+          if (_this.elements[_i6].value > 0) {
+            var flag = true;
+
+            for (var _k3 = 0; _k3 < _this.allowedLengthOfWhiteLine + 1; _k3++) {
+              if (_this.elements[_i6 + _k3].value <= 0) {
+                flag = false;
+              }
+            }
+
+            if (flag) {
+              _this.createWall_straightVertical(_i6 + _this.allowedLengthOfWhiteLine + 2 * _this.cellsInRow, 2);
+            }
+          }
+        }
+      };
+
+      this.fillWhiteVertLines = function () {
+        for (var _i7 = 3 * _this.cellsInRow + 1; _i7 < _this.cellsTotal - _this.allowedLengthOfWhiteLine * _this.cellsInRow; _i7++) {
+          if (_this.elements[_i7].value > 0) {
+            var flag = true;
+
+            for (var j = 0; j < _this.allowedLengthOfWhiteLine + 1; j++) {
+              if (_this.elements[_i7 + j * _this.cellsInRow].value <= 0) {
+                flag = false;
+              }
+            }
+
+            if (flag) {
+              _this.createWall_straightHorizontal(_i7 + _this.allowedLengthOfWhiteLine * _this.cellsInRow, 1);
+            }
+          }
+        }
+      };
+
+      this.detectClosedLoops = function () {
+        var amountOfLoops = 0;
+        var loopIndexes = [];
+        var cellAmounts = [];
+        var cellIndexesInLoops = [];
+        var gamefield = [];
+        var c = 0;
+
+        for (var _i8 = 3 * _this.cellsInRow + 1; _i8 < _this.cellsTotal - 3 * _this.cellsInRow - 1; _i8++) {
+          if (_i8 % 40 != 0 && _i8 % 40 != 39) {
+            var copy = _extends({}, _this.elements[_i8]);
+
+            copy.name = c;
+            gamefield.push(copy);
+            c++;
+          }
+        }
+
+        var row = _this.cellsInRow - 2;
+        var col = _this.cellsInRow - 6;
+        var thereAreNewItemsInQueue = void 0;
+        var queue = void 0;
+        var current_cell = void 0;
+        var current_zone = 10;
+        var cellsInThisLoop = [];
+        var cellAmountInThisLoop = void 0;
+        current_cell = _this.findFirstTopLeftCorner(gamefield);
+
+        while (current_cell) {
+          loopIndexes.push(_this.convertIndex(current_cell.name));
+          cellAmountInThisLoop = 1;
+          cellsInThisLoop = [];
+          amountOfLoops++;
+          current_cell.value = current_zone;
+          queue = [];
+          queue.push(current_cell);
+          thereAreNewItemsInQueue = true;
+
+          while (thereAreNewItemsInQueue) {
+            thereAreNewItemsInQueue = false;
+            queue.forEach(function (cellInAQueue) {
+              var availableCells = [];
+              var index = cellInAQueue.name;
+              availableCells = _this.getIndexesOfAvailableCellsAround(index, _this.cellsInRow - 2, gamefield.length, false);
+              availableCells.forEach(function (availableCellIndex) {
+                if (gamefield[availableCellIndex].value > 0 && gamefield[availableCellIndex].value < 10) {
+                  gamefield[availableCellIndex].value = current_zone;
+                  cellAmountInThisLoop++;
+                  cellsInThisLoop.push(_this.convertIndex(availableCellIndex));
+                  queue.push(gamefield[availableCellIndex]);
+                  thereAreNewItemsInQueue = true;
+                }
+              });
+            });
+          }
+
+          cellAmounts.push(cellAmountInThisLoop);
+          cellIndexesInLoops.push(cellsInThisLoop);
+          current_zone++;
+          current_cell = _this.findFirstTopLeftCorner(gamefield);
+        }
+
+        var output = 1;
+
+        if (amountOfLoops > 1) {
+          output = _this.fillLoops(amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops);
+        }
+
+        return output;
+      };
+
+      this.fillLoops = function (amountOfLoops, loopIndexes, cellAmounts, cellIndexesInLoops) {
+        var max = 0;
+        var k = void 0;
+
+        for (var _i9 = 0; _i9 < amountOfLoops; _i9++) {
+          if (cellAmounts[_i9] > max) {
+            max = cellAmounts[_i9];
+            k = _i9;
+          }
+        }
+
+        var loopIndexes2 = [];
+        var cellAmounts2 = [];
+        var cellIndexesInLoops2 = [];
+
+        for (var _i10 = 0; _i10 < amountOfLoops; _i10++) {
+          if (_i10 < k) {
+            loopIndexes2[_i10] = loopIndexes[_i10];
+            cellAmounts2[_i10] = cellAmounts[_i10];
+            cellIndexesInLoops2.push(cellIndexesInLoops[_i10]);
+          } else if (_i10 > k) {
+            loopIndexes2[_i10 - 1] = loopIndexes[_i10];
+            cellAmounts2[_i10 - 1] = cellAmounts[_i10];
+            cellIndexesInLoops2.push(cellIndexesInLoops[_i10]);
+          }
+        }
+
+        amountOfLoops--;
+
+        for (var loop = 0; loop < amountOfLoops; loop++) {
+          if (cellAmounts2[loop] > 30) {
+            return 0;
+          } else {
+            cellIndexesInLoops2[loop].unshift(loopIndexes2[loop]);
+            cellIndexesInLoops2[loop].forEach(function (cellToFill) {
+              _this.elements[cellToFill].value = 0;
+            });
+          }
+        }
+
+        return 1;
+      };
+
+      this.getIndexesOfAvailableCellsAround = function (index, row, total, monsterFlag) {
+        var result = [];
+        var left = false;
+        var right = false;
+        var up = false;
+        var down = false;
+
+        if (index % row != 0) {
+          result.push(index - 1);
+          left = true;
+        }
+
+        if (index % row != row - 1) {
+          result.push(index + 1);
+          right = true;
+        }
+
+        if (index - row >= 0) {
+          result.push(index - row);
+          up = true;
+        }
+
+        if (index + row < total) {
+          result.push(index + row);
+          down = true;
+        }
+
+        if (monsterFlag) {
+          if (left && up) {
+            result.push(index - 1 - row);
+          }
+
+          if (left && down) {
+            result.push(index - 1 + row);
+          }
+
+          if (right && up) {
+            result.push(index + 1 - row);
+          }
+
+          if (right && down) {
+            result.push(index + 1 + row);
+          }
+        }
+
+        return result;
+      };
+
+      this.convertIndex = function (i) {
+        return 3 * _this.cellsInRow + i + 2 * Math.floor(i / (_this.cellsInRow - 2)) + 1;
+      };
+
+      this.findFirstTopLeftCorner = function (gamefield) {
+        var row = _this.cellsInRow - 2;
+
+        for (var _i11 = 0; _i11 < gamefield.length; _i11++) {
+          if (gamefield[_i11].value > 0 && gamefield[_i11].value < 10) {
+            if (_i11 === 0) {
+              return gamefield[_i11];
+            } else if (_i11 % row === 0) {
+              if (gamefield[_i11 - row].value <= 0) {
+                return gamefield[_i11];
+              }
+            } else if (_i11 - row < 0) {
+              if (gamefield[_i11 - 1].value <= 0) {
+                return gamefield[_i11];
+              }
+            } else {
+              if (gamefield[_i11 - 1].value <= 0 && gamefield[_i11 - row].value <= 0) {
+                return gamefield[_i11];
+              }
+            }
+          }
+        }
+
+        return null;
+      };
+
+      this.fillAngles = function () {
+        for (var i = 0; i < _this.cellsTotal; i++) {
+          if (i - 1 >= 0 && i + 3 * _this.cellsInRow < _this.cellsTotal) {
+            if (_this.elements[i].value === 0) {
+              if (_this.elements[i - 1].value > 0) {
+                if (_this.elements[i + _this.cellsInRow].value === -1) {
+                  if (_this.elements[i + 3 * _this.cellsInRow - 1].value === 0) {
+                    _this.elements[i + 3 * _this.cellsInRow].value = 0;
+                  }
+
+                  if (_this.elements[i + 2 * _this.cellsInRow - 1].value === 0) {
+                    _this.elements[i + 2 * _this.cellsInRow].value = 0;
+                  }
+
+                  if (_this.elements[i + _this.cellsInRow - 1].value === 0) {
+                    _this.elements[i + _this.cellsInRow].value = 0;
+                  }
+                }
+              }
+            }
+          }
+
+          if (i + 1 % _this.cellsInRow != 0 && i + 3 * _this.cellsInRow < _this.cellsTotal) {
+            if (_this.elements[i].value === 0) {
+              if (_this.elements[i + 1].value > 0) {
+                if (_this.elements[i + _this.cellsInRow].value === -1) {
+                  if (_this.elements[i + 3 * _this.cellsInRow + 1].value === 0) {
+                    _this.elements[i + 3 * _this.cellsInRow].value = 0;
+                  }
+
+                  if (_this.elements[i + 2 * _this.cellsInRow + 1].value === 0) {
+                    _this.elements[i + 2 * _this.cellsInRow].value = 0;
+                  }
+
+                  if (_this.elements[i + _this.cellsInRow + 1].value === 0) {
+                    _this.elements[i + _this.cellsInRow].value = 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+
+      this.addValuesToCells = function () {
+        for (var _i12 = 0; _i12 < _this.cellsTotal; _i12++) {
+          if (_this.elements[_i12].value > 0) {
+            var adjacent = 0;
+
+            var cellsAround = _this.getIndexesOfAvailableCellsAround(_i12, _this.cellsInRow, _this.cellsTotal, false);
+
+            for (var j = 0; j < cellsAround.length; j++) {
+              if (_this.elements[cellsAround[j]].value > 0) {
+                adjacent++;
+              }
+            }
+
+            _this.elements[_i12].value = adjacent;
+          }
+        }
+      };
+
+      this.assignMonsterEdges = function () {
+        for (var _i13 = 0; _i13 < _this.cellsTotal; _i13++) {
+          var cell = _this.elements[_i13];
+
+          if (cell.value > 0) {
+            var _getNeighboringCells = _this.getNeighboringCells(_i13),
+                topLeft = _getNeighboringCells.topLeft,
+                top = _getNeighboringCells.top,
+                topRight = _getNeighboringCells.topRight,
+                left = _getNeighboringCells.left,
+                right = _getNeighboringCells.right,
+                bottomLeft = _getNeighboringCells.bottomLeft,
+                bottom = _getNeighboringCells.bottom,
+                bottomRight = _getNeighboringCells.bottomRight;
+
+            if (topLeft && topLeft.value > 0) {
+              cell.monsterEdges.push(topLeft);
+            }
+
+            if (top && top.value > 0) {
+              cell.monsterEdges.push(top);
+            }
+
+            if (topRight && topRight.value > 0) {
+              cell.monsterEdges.push(topRight);
+            }
+
+            if (left && left.value > 0) {
+              cell.monsterEdges.push(left);
+            }
+
+            if (right && right.value > 0) {
+              cell.monsterEdges.push(right);
+            }
+
+            if (bottomLeft && bottomLeft.value > 0) {
+              cell.monsterEdges.push(bottomLeft);
+            }
+
+            if (bottom && bottom.value > 0) {
+              cell.monsterEdges.push(bottom);
+            }
+
+            if (bottomLeft && bottomLeft.value > 0) {
+              cell.monsterEdges.push(bottomLeft);
+            }
+
+            if (bottomRight && bottomRight.value > 0) {
+              cell.monsterEdges.push(bottomRight);
+            }
+          }
+        }
+      };
+
+      this.createWall_straightHorizontal = function (i, length) {
+        var a = i - 2 * _this.cellsInRow;
+        var b = i + length * 2 - 1;
+        var c = i - 2 * _this.cellsInRow + length * 2 - 1;
+        var total = _this.cellsTotal;
+
+        if (i >= 0 && i < total && a >= 0 && a < total && b >= 0 && b < total && c >= 0 && c < total) {
+          for (var j = 0; j < length; j++) {
+            k = i + 2 * j;
+
+            if (_this.elements[k].value != 0) {
+              _this.elements[k].value = -1;
+            }
+
+            if (_this.elements[k - _this.cellsInRow].value != 0) {
+              _this.elements[k - _this.cellsInRow].value = -1;
+            }
+
+            _this.elements[k - 2 * _this.cellsInRow].value = 0;
+
+            if (_this.elements[k + 1].value != 0) {
+              _this.elements[k + 1].value = -1;
+            }
+
+            if (_this.elements[k - _this.cellsInRow + 1].value != 0) {
+              _this.elements[k - _this.cellsInRow + 1].value = -1;
+            }
+
+            _this.elements[k - 2 * _this.cellsInRow + 1].value = 0;
+          }
+        }
+      };
+
+      this.createWall_straightVertical = function (i, length) {
+        if (i + _this.cellsInRow * length > _this.cellsTotal) {
+          length = Math.floor((_this.cellsTotal - i) / _this.cellsInRow);
+        }
+
+        if (i - 2 * _this.cellsInRow >= 0) {
+          for (var j = 0; j < length; j++) {
+            k = i + 40 * j;
+
+            if (_this.elements[k].value != 0) {
+              _this.elements[k].value = -1;
+            }
+
+            if (_this.elements[k - _this.cellsInRow].value != 0) {
+              _this.elements[k - _this.cellsInRow].value = -1;
+            }
+
+            _this.elements[k - 2 * _this.cellsInRow].value = 0;
+          }
+        }
+      };
+
+      this.createWall_squareColumn = function (i) {
+        if (i - 3 * _this.cellsInRow >= 0 && i + 1 % _this.cellsInRow != 0 && i + 1 < _this.cellsTotal) {
+          for (var j = 0; j < 2; j++) {
+            k = i + j;
+
+            if (_this.elements[k].value != 0) {
+              _this.elements[k].value = -1;
+            }
+
+            if (_this.elements[k - _this.cellsInRow].value != 0) {
+              _this.elements[k - _this.cellsInRow].value = -1;
+            }
+
+            _this.elements[k - 2 * _this.cellsInRow].value = 0;
+            _this.elements[k - 3 * _this.cellsInRow].value = 0;
+          }
+        }
+      };
+
+      this.resetParents = function () {
+        for (i = 0; i < _this.elements.length; i++) {
+          _this.elements[i].parent = null;
+        }
+      };
+
+      this.assignHumanStart = function () {
+        if (_this.humanSpace) {
+          _this.humanSpace.isRevealed = false;
+        }
+
+        var cell = _this.getRandomCell();
+
+        while (cell.value < 1) {
+          cell = _this.getRandomCell();
+        }
+
+        cell.hasHuman = true;
+        _this.humanSpace = cell;
+        cell.isRevealed = true;
+      };
+
+      this.assignMonsterStart = function () {
+        var cell = _this.getRandomCell();
+
+        var distance = _this.findShortestPath(cell, _this.humanSpace);
+
+        while (distance < 25) {
+          _this.assignMonsterCounter++;
+          cell = _this.getRandomCell();
+          distance = _this.findShortestPath(cell, _this.humanSpace);
+
+          if (_this.assignMonsterCounter % 5 === 0) {
+            _this.assignHumanStart();
+          }
+        }
+
+        cell.hasMonster = true;
+        _this.monsterSpace = cell;
+      };
+
+      this.assignCacheLocations = function () {
+        var cacheArray = [_this.humanSpace, _this.monsterSpace];
+
+        for (var _i14 = 1; _i14 <= _this.cacheTotal; _i14++) {
+          var cell = _this.getRandomCell();
+
+          while (cell.value < 1 || cell.hasHuman || cell.hasMonster || cell.hasCache || _this.compareToCacheArray(cell, cacheArray)) {
+            cell = _this.getRandomCell();
+          }
+
+          cell.hasCache = true;
+          cell.isRevealed = true;
+          cacheArray.push(cell);
+        }
+      };
+
+      this.compareToCacheArray = function (cell, cacheArray) {
+        _this.assignCacheCounter++;
+
+        if (cacheArray.length > 0) {
+          for (var _i15 = 0; _i15 < cacheArray.length; _i15++) {
+            var distance = _this.findShortestPath(cell, cacheArray[_i15]);
+
+            if (distance < 6) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+      };
+
+      this.getNeighboringCells = function (i) {
+        var top = null;
+        var left = null;
+        var right = null;
+        var bottom = null;
+        var bottomLeft = null;
+        var bottomRight = null;
+        var topLeft = null;
+        var topRight = null;
+
+        if (i - (_this.cellsInRow + 1) >= 0 && i % _this.cellsInRow !== 0) {
+          topLeft = _this.elements[i - (_this.cellsInRow + 1)];
+        }
+
+        if (i - _this.cellsInRow >= 0) {
+          top = _this.elements[i - _this.cellsInRow];
+        }
+
+        if (i - (_this.cellsInRow - 1) >= 0 && i % _this.cellsInRow !== _this.cellsInRow - 1) {
+          topRight = _this.elements[i - (_this.cellsInRow - 1)];
+        }
+
+        if (i - 1 >= 0 && i % _this.cellsInRow !== 0) {
+          left = _this.elements[i - 1];
+        }
+
+        if (i + 1 <= _this.cellsTotal && i % _this.cellsInRow !== _this.cellsInRow - 1) {
+          right = _this.elements[i + 1];
+        }
+
+        if (i + (_this.cellsInRow - 1) <= _this.cellsTotal && i % _this.cellsInRow !== 0) {
+          bottomLeft = _this.elements[i + (_this.cellsInRow - 1)];
+        }
+
+        if (i + _this.cellsInRow <= _this.cellsTotal) {
+          bottom = _this.elements[i + _this.cellsInRow];
+        }
+
+        if (i + (_this.cellsInRow + 1) <= _this.cellsTotal && i % _this.cellInRow !== _this.cellsInRow - 1) {
+          bottomRight = _this.elements[i + (_this.cellsInRow + 1)];
+        }
+
+        return {
+          top: top,
+          left: left,
+          right: right,
+          bottom: bottom,
+          bottomLeft: bottomLeft,
+          bottomRight: bottomRight,
+          topLeft: topLeft,
+          topRight: topRight
+        };
+      };
+
+      this.assignImageKeys = function () {
+        for (var _i16 = 0; _i16 < _this.elements.length; _i16++) {
+          var _getNeighboringCells2 = _this.getNeighboringCells(_i16),
+              topLeft = _getNeighboringCells2.topLeft,
+              top = _getNeighboringCells2.top,
+              topRight = _getNeighboringCells2.topRight,
+              left = _getNeighboringCells2.left,
+              right = _getNeighboringCells2.right,
+              bottomLeft = _getNeighboringCells2.bottomLeft,
+              bottom = _getNeighboringCells2.bottom,
+              bottomRight = _getNeighboringCells2.bottomRight;
+
+          var cell = _this.elements[_i16];
+
+          if (cell.value === 0) {
+            cell.imageKey = 0;
+
+            if (left && top && right && bottom) {
+              if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+                cell.imageKey = 1;
+              }
+
+              if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value === 0) {
+                cell.imageKey = 2;
+              }
+
+              if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
+                cell.imageKey = 3;
+              }
+
+              if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value === 0) {
+                cell.imageKey = 4;
+              }
+
+              if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
+                cell.imageKey = 5;
+              }
+
+              if (left.value !== 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+                cell.imageKey = 6;
+              }
+
+              if (left.value === 0 && top.value === 0 && right.value === 0 && bottom.value !== 0) {
+                cell.imageKey = 7;
+              }
+
+              if (left.value === 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
+                cell.imageKey = 8;
+              }
+
+              if (left.value === 0 && top.value !== 0 && right.value === 0 && bottom.value !== 0) {
+                cell.imageKey = 23;
+              }
+
+              if (left.value !== 0 && top.value === 0 && right.value !== 0 && bottom.value === 0) {
+                cell.imageKey = 24;
+              }
+
+              if (left.value !== 0 && top.value !== 0 && right.value === 0 && bottom.value !== 0) {
+                cell.imageKey = 25;
+              }
+
+              if (left.value === 0 && top.value !== 0 && right.value !== 0 && bottom.value !== 0) {
+                cell.imageKey = 26;
+              }
+
+              if (left.value !== 0 && top.value !== 0 && right.value !== 0 && bottom.value === 0) {
+                cell.imageKey = 27;
+              }
+
+              if (left.value !== 0 && top.value === 0 && right.value !== 0 && bottom.value !== 0) {
+                cell.imageKey = 28;
+              }
+            } else if (top === null && left && right && bottom) {
+                if (bottom.value === 0) {
+                  cell.imageKey = 9;
+                } else {
+                  cell.imageKey = 7;
+                }
+              } else if (left === null && top && right && bottom) {
+                  cell.imageKey = 5;
+
+                  if (right.value === 0) {
+                    cell.imageKey = 9;
+                  }
+
+                  if (bottom.value !== 0) {
+                    cell.imageKey = 7;
+                  }
+                } else if (right === null && top && left && bottom) {
+                    cell.imageKey = 4;
+
+                    if (left.value === 0) {
+                      cell.imageKey = 9;
+                    }
+
+                    if (bottom.value !== 0) {
+                      cell.imageKey = 7;
+                    }
+                  }
+          }
+
+          if (cell.value < 0) {
+            if (left && top && right && bottom) {
+              if (left.value >= 0 && top.value >= 0 && right.value < 0 && bottom.value < 0) {
+                cell.imageKey = 10;
+              }
+
+              if (left.value < 0 && top.value >= 0 && right.value < 0 && bottom.value < 0 || left.value >= 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0) {
+                cell.imageKey = 11;
+
+                if (bottomLeft) {
+                  if (bottomLeft.value !== cell.value) {
+                    cell.imageKey = 10;
+                  }
+                }
+
+                if (bottomRight) {
+                  if (bottomRight.value !== cell.value) {
+                    cell.imageKey = 12;
+                  }
+                }
+              }
+
+              if (left.value < 0 && top.value >= 0 && right.value >= 0 && bottom.value < 0) {
+                cell.imageKey = 12;
+              }
+
+              if (left.value >= 0 && top.value < 0 && right.value < 0 && bottom.value >= 0) {
+                cell.imageKey = 13;
+              }
+
+              if (left.value < 0 && top.value < 0 && right.value < 0 && bottom.value >= 0 || left.value >= 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
+                cell.imageKey = 14;
+
+                if (topLeft) {
+                  if (topLeft.value !== cell.value) {
+                    cell.imageKey = 13;
+                  }
+                }
+
+                if (topRight) {
+                  if (topRight.value !== cell.value) {
+                    cell.imageKey = 15;
+                  }
+                }
+              }
+
+              if (left.value < 0 && top.value < 0 && right.value >= 0 && bottom.value >= 0) {
+                cell.imageKey = 15;
+              }
+            } else if (bottom === null && left && right) {
+                cell.imageKey = 14;
+              } else if (left === null) {
+                  cell.imageKey = 10;
+
+                  if (bottom == null) {
+                    cell.imageKey = 13;
+                  }
+                } else if (right === null) {
+                    cell.imageKey = 12;
+
+                    if (bottom == null) {
+                      cell.imageKey = 15;
+                    }
+                  }
+          }
+
+          if (cell.value > 0) {
+            if (left.value < 1 && top.value < 1 && right.value > 0) {
+              cell.imageKey = 17;
+            } else if (left.value > 0 && top.value < 1 && right.value > 0) {
+                var randomValue = _this.getProbability();
+
+                if (randomValue < 800) {
+                  cell.imageKey = 18;
+                } else if (randomValue < 900) {
+                  cell.imageKey = 29;
+                } else {
+                  cell.imageKey = 30;
+                }
+              } else if (left.value > 0 && top.value < 1 && right.value < 1) {
+                  cell.imageKey = 19;
+                } else if (left.value < 1 && top.value > 0 && right.value > 0) {
+                    var _randomValue = _this.getProbability();
+
+                    if (_randomValue < 900) {
+                      cell.imageKey = 20;
+                    } else {
+                      cell.imageKey = 31;
+                    }
+                  } else if (left.value > 0 && top.value > 0 && right.value < 1) {
+                      var _randomValue2 = _this.getProbability();
+
+                      if (_randomValue2 < 900) {
+                        cell.imageKey = 21;
+                      } else {
+                        cell.imageKey = 32;
+                      }
+                    } else {
+                      var probability = _this.getProbability();
+
+                      if (probability < 80) {
+                        cell.imageKey = 22;
+                      } else if (probability < 160) {
+                        cell.imageKey = 17;
+                      } else if (probability < 240) {
+                        cell.imageKey = 38;
+                      } else if (probability < 320) {
+                        cell.imageKey = 33;
+                      } else if (probability < 400) {
+                        cell.imageKey = 34;
+                      } else if (probability < 480) {
+                        cell.imageKey = 35;
+                      } else if (probability < 643) {
+                        cell.imageKey = 31;
+                      } else if (probability < 679) {
+                        cell.imageKey = 21;
+                      } else if (probability < 715) {
+                        cell.imageKey = 18;
+                      } else if (probability < 751) {
+                        cell.imageKey = 20;
+                      } else if (probability < 787) {
+                        cell.imageKey = 30;
+                      } else if (probability < 823) {
+                        cell.imageKey = 29;
+                      } else if (probability < 859) {
+                        cell.imageKey = 32;
+                      } else if (probability < 895) {
+                        cell.imageKey = 17;
+                      } else if (probability < 988) {
+                        cell.imageKey = 19;
+                      } else if (probability < 991) {
+                        cell.imageKey = 40;
+                      } else if (probability < 994) {
+                        cell.imageKey = 39;
+                      } else if (probability < 996) {
+                        cell.imageKey = 36;
+                      } else if (probability < 999) {
+                        cell.imageKey = 41;
+                      } else {
+                        cell.imageKey = 42;
+                      }
+                    }
+          }
+        }
+      };
+
+      this.isACacheIsland = function (element) {
+        var res = false;
+
+        var cellsAround = _this.getIndexesOfAvailableCellsAround(element.name, _this.cellsInRow, _this.cellsTotal, true);
+
+        if (element.isRevealed && element.hasCache) {
+          res = true;
+
+          for (var _i17 = 0; _i17 < cellsAround.length; _i17++) {
+            if (_this.elements[cellsAround[_i17]].isRevealed) {
+              res = false;
+              break;
+            }
+          }
+
+          return res;
+        } else {
+          return res;
+        }
+      };
+
+      this.assignImageFogKeys = function () {
+        for (var _i18 = 0; _i18 < _this.elements.length; _i18++) {
+          if (_this.elements[_i18].isRevealed) {
+            if (_this.elements[_i18].imageFogKey) {
+              _this.elements[_i18].imageFogKey = 0;
+            }
+
+            if (_i18 % _this.cellsInRow > 0 && _i18 - _this.cellsInRow >= 0) {
+              if (!_this.elements[_i18 - 1].isRevealed && !_this.elements[_i18 - _this.cellsInRow].isRevealed) {
+                _this.elements[_i18 - _this.cellsInRow - 1].imageFogKey = 1;
+              }
+
+              if (_this.elements[_i18 - 1].isRevealed && _this.elements[_i18 - _this.cellsInRow].isRevealed && !_this.elements[_i18 - 1 - _this.cellsInRow].isRevealed) {
+                _this.elements[_i18 - 1 - _this.cellsInRow].imageFogKey = 9;
+              }
+            }
+
+            if (_i18 + 1 < _this.cellsTotal && _i18 + 1 % _this.cellsInRow != 0 && _i18 - _this.cellsInRow >= 0) {
+              if (!_this.elements[_i18 + 1].isRevealed && !_this.elements[_i18 - _this.cellsInRow].isRevealed) {
+                _this.elements[_i18 - _this.cellsInRow + 1].imageFogKey = 3;
+              }
+
+              if (_this.elements[_i18 + 1].isRevealed && _this.elements[_i18 - _this.cellsInRow].isRevealed && !_this.elements[_i18 + 1 - _this.cellsInRow].isRevealed) {
+                _this.elements[_i18 + 1 - _this.cellsInRow].imageFogKey = 9;
+              }
+            }
+
+            if (_i18 % _this.cellsInRow > 0 && _i18 + _this.cellsInRow < _this.cellsTotal) {
+              if (!_this.elements[_i18 - 1].isRevealed && !_this.elements[_i18 + _this.cellsInRow].isRevealed) {
+                _this.elements[_i18 + _this.cellsInRow - 1].imageFogKey = 7;
+              }
+
+              if (_this.elements[_i18 - 1].isRevealed && _this.elements[_i18 + _this.cellsInRow].isRevealed && !_this.elements[_i18 - 1 + _this.cellsInRow].isRevealed) {
+                _this.elements[_i18 - 1 + _this.cellsInRow].imageFogKey = 9;
+              }
+            }
+
+            if (_i18 + 1 < _this.cellsTotal && _i18 + 1 % _this.cellsInRow != 0 && _i18 + _this.cellsInRow < _this.cellsTotal) {
+              if (!_this.elements[_i18 + 1].isRevealed && !_this.elements[_i18 + _this.cellsInRow].isRevealed) {
+                _this.elements[_i18 + _this.cellsInRow + 1].imageFogKey = 5;
+              }
+
+              if (_this.elements[_i18 + 1].isRevealed && _this.elements[_i18 + _this.cellsInRow].isRevealed && !_this.elements[_i18 + 1 + _this.cellsInRow].isRevealed) {
+                _this.elements[_i18 + 1 + _this.cellsInRow].imageFogKey = 9;
+              }
+            }
+
+            if (_i18 % _this.cellsInRow > 0) {
+              if (!_this.elements[_i18 - 1].isRevealed && _this.elements[_i18 - 1].imageFogKey != 9) {
+                _this.elements[_i18 - 1].imageFogKey = 8;
+              }
+            }
+
+            if (_i18 + 1 < _this.cellsTotal && _i18 + 1 % _this.cellsInRow != 0) {
+              if (!_this.elements[_i18 + 1].isRevealed && _this.elements[_i18 + 1].imageFogKey != 9) {
+                _this.elements[_i18 + 1].imageFogKey = 4;
+              }
+            }
+
+            if (_i18 - _this.cellsInRow >= 0) {
+              if (!_this.elements[_i18 - _this.cellsInRow].isRevealed && _this.elements[_i18 - _this.cellsInRow].imageFogKey != 9) {
+                _this.elements[_i18 - _this.cellsInRow].imageFogKey = 2;
+              }
+            }
+
+            if (_i18 + _this.cellsInRow < _this.cellsTotal) {
+              if (!_this.elements[_i18 + _this.cellsInRow].isRevealed && _this.elements[_i18 + _this.cellsInRow].imageFogKey != 9) {
+                _this.elements[_i18 + _this.cellsInRow].imageFogKey = 6;
+              }
+            }
+          }
+        }
+
+        for (var _i19 = 0; _i19 < _this.cellsTotal; _i19++) {
+          if (_this.elements[_i19].imageFogKey > 0) {
+            _this.elements[_i19].isSemiRevealed = true;
+          }
+        }
+      };
+
+      this.adjustFog = function () {
+        var cellsAround = void 0;
+        var toReveal = false;
+
+        for (var _i20 = 0; _i20 < _this.cellsTotal; _i20++) {
+          toReveal = true;
+
+          if (_this.elements[_i20].imageFogKey > 0) {
+            cellsAround = _this.getIndexesOfAvailableCellsAround(_i20, _this.cellsInRow, _this.cellsTotal, false);
+
+            for (var j = 0; j < cellsAround.length; j++) {
+              if (!_this.elements[cellsAround[j]].isRevealed && !_this.elements[cellsAround[j]].isSemiRevealed) {
+                toReveal = false;
+                break;
+              }
+            }
+
+            if (toReveal) {
+              _this.elements[_i20].isRevealed = true;
+            }
+          }
+        }
+
+        _this.assignImageFogKeys();
+      };
+
+      this.assignImageDecorKeys = function () {
+        var greyBottomWalls = [];
+
+        for (var _i21 = 0; _i21 < _this.elements.length; _i21++) {
+          if (_i21 < _this.cellsTotal - 3 * _this.cellsInRow) {
+            if (_this.elements[_i21].value === -1) {
+              if (_i21 - _this.cellsInRow > 0 && _i21 - 1 >= 0 && _i21 + 1 < _this.cellsTotal) {
+                if (_this.elements[_i21 - _this.cellsInRow].value === -1 && _this.elements[_i21 - 1].value === -1 && _this.elements[_i21 + 1].value === -1) {
+                  greyBottomWalls.push(_i21);
+                }
+              }
+            }
+          }
+        }
+
+        var numberOfTubes1 = 3;
+        var numberOfTubes2 = 4;
+
+        for (var _i22 = 0; _i22 < numberOfTubes1; _i22++) {
+          _this.elements[greyBottomWalls[Math.floor(Math.random() * greyBottomWalls.length)]].imageDecorKey = 1;
+        }
+
+        for (var _i23 = 0; _i23 < numberOfTubes2 / 2; _i23++) {
+          var rand = Math.floor(Math.random() * (greyBottomWalls.length / 2));
+
+          while (_this.elements[greyBottomWalls[rand]].imageDecorKey != 0 || _this.elements[greyBottomWalls[rand] + 1].imageDecorKey != 0 || _this.elements[greyBottomWalls[rand] - 1].imageDecorKey != 0) {
+            rand = Math.floor(Math.random() * (greyBottomWalls.length / 2));
+          }
+
+          _this.elements[greyBottomWalls[rand]].imageDecorKey = 2;
+        }
+
+        for (var _i24 = numberOfTubes2 / 2; _i24 < numberOfTubes2; _i24++) {
+          var _rand = Math.floor(Math.random() * (greyBottomWalls.length / 2)) + Math.floor(greyBottomWalls.length / 2);
+
+          while (_this.elements[greyBottomWalls[_rand]].imageDecorKey != 0 || _this.elements[greyBottomWalls[_rand] + 1].imageDecorKey != 0 || _this.elements[greyBottomWalls[_rand] - 1].imageDecorKey != 0) {
+            _rand = Math.floor(Math.random() * (greyBottomWalls.length / 2)) + Math.floor(greyBottomWalls.length / 2);
+          }
+
+          _this.elements[greyBottomWalls[_rand]].imageDecorKey = 2;
+        }
+      };
+
+      this.getRandomCell = function () {
+        return _this.elements[Math.floor(Math.random() * _this.cellsTotal)];
+      };
+
+      this.resetHighlighted = function () {
+        for (var _i25 = 0; _i25 < _this.elements.length; _i25++) {
+          _this.elements[_i25].isHighlighted = false;
+        }
+      };
+
+      this.resetWasPounced = function () {
+        for (var _i26 = 0; _i26 < _this.elements.length; _i26++) {
+          _this.elements[_i26].wasPounced = false;
+        }
+      };
+
+      this.resetWasEchoed = function () {
+        for (var _i27 = 0; _i27 < _this.elements.length; _i27++) {
+          _this.elements[_i27].wasEchoed = false;
+        }
+      };
+
+      this.echoLocate = function (direction) {
+        var splashScreenTimer = 500;
+        var index = _this.humanSpace.name;
+
+        var _getNeighboringCells3 = _this.getNeighboringCells(index),
+            topLeft = _getNeighboringCells3.topLeft,
+            top = _getNeighboringCells3.top,
+            topRight = _getNeighboringCells3.topRight,
+            left = _getNeighboringCells3.left,
+            right = _getNeighboringCells3.right,
+            bottomLeft = _getNeighboringCells3.bottomLeft,
+            bottom = _getNeighboringCells3.bottom,
+            bottomRight = _getNeighboringCells3.bottomRight;
+
+        switch (direction) {
+          case 'initial':
+            topLeft.isRevealed = true;
+            top.isRevealed = true;
+            topRight.isRevealed = true;
+            left.isRevealed = true;
+            right.isRevealed = true;
+            bottomLeft.isRevealed = true;
+            bottom.isRevealed = true;
+            bottomRight.isRevealed = true;
+            break;
+
+          default:
+            break;
+        }
+
+        _this.assignImageFogKeys();
+      };
+
+      this.assignCacheCounter = 0;
+      this.assignMonsterCounter = 0;
+      this.elements = [];
+      this.humanSpace = null;
+      this.monsterSpace = null;
+      this.cacheTotal = 13;
+      this.cellsInRow = 40;
+      this.cellsTotal = 1600;
+      this.allowedLengthOfWhiteLine = 14;
+    }
+
+    _createClass(BoardGenerator, [{
+      key: "generateBoard",
+      value: function generateBoard() {
+        this.createMap();
+        this.assignMonsterEdges();
+        this.assignHumanStart();
+        this.assignMonsterStart();
+        this.assignCacheLocations();
+        this.echoLocate('initial');
+        this.assignImageKeys();
+        this.assignImageDecorKeys();
+        this.assignImageFogKeys();
+        return this.elements;
+      }
+    }, {
+      key: "findShortestPath",
+      value: function findShortestPath(start, end) {
+        if (start.value < 1 || end.value < 1) {
+          return -1;
+        }
+
+        var queue = [];
+        var visited = [];
+        visited.push(start);
+        queue.push(start);
+
+        while (queue.length > 0) {
+          var cell = queue.shift();
+
+          if (cell === end) {
+            break;
+          }
+
+          var neighbors = cell.monsterEdges;
+
+          for (var _i28 = 0; _i28 < neighbors.length; _i28++) {
+            var neighbor = neighbors[_i28];
+
+            if (!visited.includes(neighbor)) {
+              neighbor.parent = cell;
+              visited.push(neighbor);
+              queue.push(neighbor);
+            }
+          }
+        }
+
+        var path = [];
+        var next = end;
+
+        while (next != null) {
+          path.push(next);
+          next = next.parent;
+        }
+
+        this.resetParents();
+        return path.length - 1;
+      }
+    }, {
+      key: "getProbability",
+      value: function getProbability() {
+        return Math.floor(Math.random() * 1000);
+      }
+    }]);
+
+    return BoardGenerator;
+  }();
+
+  exports.default = BoardGenerator;
+},793,[655],"app\\Services\\BoardGenerator.js");
 require(44);
 require(11);
 //# sourceMappingURL=index.map
