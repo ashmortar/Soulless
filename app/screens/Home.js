@@ -143,7 +143,7 @@ class Home extends Component {
           if (res.status===200) {
             // console.log("successful");
             this.setState({connectedToGame: true})
-            this.launchSocket();
+            // this.launchSocket();
             res.json()
             .then((responseJSON) => {
               let {id, accessToken, player1, player2 } = responseJSON;
@@ -244,7 +244,7 @@ class Home extends Component {
             fontFamily: 'Perfect DOS VGA 437',
           }}>Game initiated, press below to begin</Text>
 
-          <NavButton onPress={this.handleBeginGame} text="host/join" />
+          <NavButton onPress={this.handleBeginGame} text="begin" />
           <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
         </View>
       )

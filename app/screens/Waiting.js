@@ -31,7 +31,7 @@ class Waiting extends Component {
 
   componentDidMount() {
     console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken);
-    AsyncStorage.getItem('auth_token').then((value) => console.log ("auth_token", value));
+    // AsyncStorage.getItem('auth_token').then((value) => console.log ("auth_token", value));
 
 
     this.auth_token = this.props.navigation.state.params.auth_token;
