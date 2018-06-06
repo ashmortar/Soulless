@@ -133,7 +133,7 @@ class Home extends Component {
             this.setState({ accessToken: responseJSON.accessToken})
             console.log(this.state.accessToken);
             const { navigate } = this.props.navigation;
-            navigate('Waiting', { auth_token: this.state.auth_token, accessToken: this.state.accessToken})
+            navigate('Waiting', { auth_token: this.state.auth_token, accessToken: this.state.accessToken, phone: this.state.phone})
           })
 
         if (res.error) {
