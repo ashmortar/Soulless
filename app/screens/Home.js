@@ -143,7 +143,7 @@ class Home extends Component {
           if (res.status===200) {
             // console.log("successful");
             this.setState({connectedToGame: true})
-            this.launchSocket();
+            // this.launchSocket();
             res.json()
             .then((responseJSON) => {
               let {id, accessToken, player1, player2 } = responseJSON;
