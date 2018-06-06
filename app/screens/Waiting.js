@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { TextInput, View, Text, Modal, TouchableHighlight, ActivityIndicator, Dimensions, ImageBackground } from "react-native";
+
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
@@ -21,6 +23,7 @@ class Waiting extends Component {
     this.phone = null;
     this.player_id = 0;
     this.player_number = 0;
+    this.player2Ready = false;
     this.state = {
     }
   }
@@ -35,10 +38,31 @@ class Waiting extends Component {
     this.phone = this.props.navigation.state.params.phone;
 
 
-    this.launchSocket();
+    this.launchSocket(this.props.navigation.state.params.accessToken);
     this.getGameInfo();
   }
 
+
+  launchSocket = (accessToken) => {
+    console.log('launchSocket');
+    window.navigator.userAgent = 'ReactNative';
+    const socket = io('http://demonspell.herokuapp.com', {
+      transports: ['websocket']
+    });
+    // this.setState({ socket })
+    socket.on('connect', () => {
+      console.log('on connect');
+      socket.emit('game', accessToken);
+      socket.on('gameEvent', (message) => {
+        console.log('socket on game event');
+        this.parseGameEvent(message);
+      });
+      socket.on('disconnect', () => {
+        console.log('socket on disconnect');
+        // this.renderEndGameDialog("USER_DISCONNECT");
+      })
+    });
+  }
 
   launchSocket = () => {
     window.navigator.userAgent = 'ReactNative';
@@ -47,7 +71,7 @@ class Waiting extends Component {
     });
     // this.setState({ socket })
     socket.on('connect', () => {
-      socket.emit('game', this.accessToken);
+      socket.emit('game', this.state.accessToken);
       socket.on('gameEvent', (message) => {
         this.parseGameEvent(message);
       });
@@ -61,23 +85,40 @@ class Waiting extends Component {
 
 
   gamePrep = () => {
+    if (this.player_number === 1) {
+      //generate board
+      //if board.done and player2.ready
+      //then post board event
+    }
+    else if (this.player_number === 2) {
+      this.player2Ready = true;
+      //post event ready
+      this.postEvent({"ready": "player2"})
+    }
+    else {
+      console.log('player_number is invalid. gamePrep');
+    }
   }
 
   parseGameInfo = (data) => {
     let phoneCompare = "+1" + this.phone;
     if (data.accessToken === this.accessToken) {
-      if (data.player1.phone === phoneCompare) {
-        this.setState({ player_number: 1 });
-        console.log('player_number:' + this.state.player_number);
+      if (data.player1.phone == phoneCompare) {
+        // this.setState({ player_number: 1 });
+        this.player_number = 1;
+        console.log('player_number:' + this.player_number);
         this.gamePrep();
       }
-      else if ((data.hasOwnProperty('player2')) && (data.player2.phone === phoneCompare)) {
-        this.setState({ player_number: 2 });
-        console.log('player_number:' + this.state.player_number);
+      else if ((data.hasOwnProperty('player2')) && (data.player2.phone == phoneCompare)) {
+        // this.setState({ player_number: 2 });
+        this.player_number = 2;
+        console.log('player_number:' + this.player_number);
         this.gamePrep();
       }
       else {
         console.log("phone number doesn't match");
+        console.log(phoneCompare);
+        console.log(data.player1.phone);
       }
     }
     else {
@@ -123,12 +164,13 @@ class Waiting extends Component {
   parseGameEvent = (message) => {
     console.log('-----------------------------------');
     console.log(message);
+    if (message.ready) {
+      console.log('player2 ready!');
+    }
   }
 
-  // body: JSON.stringify({
-  //   "data": "sample data"
-  // }),
   postEvent = (event) => {//event = {"data": "sample_data"}
+    console.log('postEvent');
       fetch("https://demonspell.herokuapp.com/api/games/" + this.accessToken + "/events", {
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +188,6 @@ class Waiting extends Component {
         }
         if (res.status===200) {
           console.log("successful");
-          this.setState({connectedToGame: true})
         }
       })
       .catch((e)=>{
