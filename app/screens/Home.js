@@ -240,7 +240,7 @@ class Home extends Component {
     })
     this.setModalVisible(false);
     const { navigate } = this.props.navigation;
-    navigate('Waiting', this.state.auth_token, this.state.accessToken);
+    navigate('Waiting', {auth_token: this.state.auth_token, accessToken: this.state.accessToken});
   }
 
   renderInputs = () => {

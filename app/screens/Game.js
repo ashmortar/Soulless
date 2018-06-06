@@ -65,6 +65,10 @@ class Game extends Component {
   }
 
   componentWillMount() {
+    this.gameInit();
+  }
+
+  gameInit = () => {
     this.createMap();
     this.assignMonsterEdges();
     this.assignHumanStart();
@@ -1392,7 +1396,7 @@ class Game extends Component {
           marginRight: "auto",
           height: 200,
         }}>
-          <ImageBackground 
+          <ImageBackground
             style={{
               height: undefined,
               width: undefined,
@@ -1540,7 +1544,7 @@ class Game extends Component {
       })
     }
   }
-  
+
 
 
   renderModalContent = () => {
@@ -1578,7 +1582,7 @@ class Game extends Component {
           marginRight: "auto",
           height: 200,
         }}>
-          <ImageBackground 
+          <ImageBackground
             style={{
               height: undefined,
               width: undefined,
@@ -1625,7 +1629,7 @@ class Game extends Component {
           marginRight: "auto",
           height: 200,
         }}>
-          <ImageBackground 
+          <ImageBackground
             style={{
               height: undefined,
               width: undefined,
@@ -1699,7 +1703,7 @@ class Game extends Component {
           marginRight: "auto",
           height: 200,
         }}>
-          <ImageBackground 
+          <ImageBackground
             style={{
               height: undefined,
               width: undefined,
