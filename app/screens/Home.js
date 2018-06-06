@@ -206,7 +206,7 @@ class Home extends Component {
   handlePressPlayOnlineButton = () => {
     this.setModalVisible(true);
   };
-  
+
   handlePressLoginButton = () => {
     this.postLogin(this.state.code);
     this.textInput.clear();
@@ -221,10 +221,6 @@ class Home extends Component {
 
   handlePressHostJoinButton = () => {
     this.postGames();
-  }
-
-  navigateToGame = () => {
-    console.log(this.state.auth_token, this.state.accessToken)
   }
 
   handlePressSendDataButton = () => {
@@ -264,7 +260,7 @@ class Home extends Component {
 
           <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
           <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
-        
+
         </View>
       );
     } else if (this.state.numberVerified) {
@@ -305,7 +301,7 @@ class Home extends Component {
 
           <NavButton onPress={this.handlePressGetCodeButton} text="get code" />
           <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
-          
+
         </View>
       );
     }
@@ -342,11 +338,11 @@ class Home extends Component {
     //   )
     // }
   }
-  
+
   setModalVisible = (boolean) => {
     this.setState({modalVisible: boolean});
   }
-  
+
   renderConnectingModal= () => {
     return (
       <Modal
@@ -375,8 +371,8 @@ class Home extends Component {
       </Modal>
     );
   }
-  
-  
+
+
   render() {
     let text = "";
     if (this.state.auth_token !== null) {
@@ -390,7 +386,7 @@ class Home extends Component {
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
         <NavButton onPress={this.handlePressPlayOnlineButton} text={text} />
-        
+
         {this.renderConnectingModal()}
       </Container>
     );
