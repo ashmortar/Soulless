@@ -7,6 +7,8 @@ import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 
+var io = require('socket.io-client');
+
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.object,
@@ -20,9 +22,12 @@ class Home extends Component {
       code: null,
       numberVerified: false,
       modalVisible: false,
+      authorized: false,
+      connectedToGame: false,
+      auth_token: null,
+      accessToken: null,
     }
   }
-
 
   postVerify = (phone) => {
       fetch("https://demonspell.herokuapp.com/api/verify", {
@@ -34,17 +39,13 @@ class Home extends Component {
         	"phone": phone
         }),
       }).then(res => {
-        console.log('hey');
-        res.json()
-        console.log(res);
+        res.json();
         if (res.error) {
           console.log('error');
         }
         if (res.status===200) {
-          console.log("posted");
-          this.setState({
-            numberVerified: true,
-          })
+          console.log("successful");
+          this.setState({numberVerified: true})
         }
       })
       .catch((e)=>{
@@ -59,7 +60,6 @@ class Home extends Component {
   }
 
   postLogin = (code) => {
-    console.log('postLogin()');
       fetch("https://demonspell.herokuapp.com/api/login", {
         headers: {
           'Content-Type': 'application/json',
@@ -69,23 +69,86 @@ class Home extends Component {
           "code": code
         }),
       }).then(res => {
-        console.log('hey');
-        console.log("response");
+        res.json()
+          .then((responseJSON) => {
+             // do stuff with responseJSON here...
+             this.setState({ auth_token: responseJSON.auth_token})
+             console.log(this.state.auth_token);
+          })
         if (res.error) {
           console.log('error');
         }
         if (res.status===200) {
-          console.log("posted");
-          res.json().then(data => {
-            let { auth_token } = data;
-            this.auth_token = auth_token;
-            console.log(this.auth_token);
-            this.setState({
-              numberVerified: true,
-              modalVisible: true,
-            });
+          console.log("successful");
+          this.setState({authorized: true})
+        }
+      })
+      .catch((e)=>{
+        console.log(e);
+        if (e.error === "Unauthorized") {
+          navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+        } else {
+          navigation.connectionLost(context.props.navigator);
+        }
+        throw e;
+      })
+  }
+
+  postGames = () => {//get access token
+      fetch("https://demonspell.herokuapp.com/api/games", {
+        headers: {
+          'Content-Type': 'application/json',
+          'auth_token': this.state.auth_token,
+        },
+        method: "POST",
+      }).then(res => {
+        res.json()
+          .then((responseJSON) => {
+            this.setState({ accessToken: responseJSON.accessToken})
+            console.log(this.state.accessToken);
           })
-          // console.log("authtoken", res.json().then)
+
+        if (res.error) {
+          console.log('error');
+        }
+        if (res.status===200) {
+          console.log("successful");
+          this.setState({connectedToGame: true})
+        }
+      })
+      .catch((e)=>{
+        console.log(e);
+        if (e.error === "Unauthorized") {
+          navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+        } else {
+          navigation.connectionLost(context.props.navigator);
+        }
+        throw e;
+      })
+  }
+
+  postEvent = () => {
+      fetch("https://demonspell.herokuapp.com/api/games/" + this.state.accessToken + "/events", {
+        headers: {
+          'Content-Type': 'application/json',
+          'auth_token': this.state.auth_token,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          "data": "sample data"
+        }),
+      }).then(res => {
+        res.json()
+          .then((responseJSON) => {
+            console.log(responseJSON);
+          })
+
+        if (res.error) {
+          console.log('error');
+        }
+        if (res.status===200) {
+          console.log("successful");
+          this.setState({connectedToGame: true})
         }
       })
       .catch((e)=>{
@@ -100,13 +163,9 @@ class Home extends Component {
   }
 
 
-  // handlePressWaitingButton = () => {
-  //   this.props.navigation.navigate('Waiting');
-  // };
-  //
-  // handlePressConnectButton = () => {
-  //   this.props.navigation.navigate('Connect');
-  // };
+
+
+
 
   handlePressPlayLocallyButton = () => {
     this.props.navigation.navigate('Game');
@@ -114,12 +173,11 @@ class Home extends Component {
 
   handlePressPlayOnlineButton = () => {
     this.setState({
-      inputsVisible: true
+      inputsVisible: true,
     })
   };
 
   handlePressLoginButton = () => {
-    console.log('login');
     this.postLogin(this.state.code);
   }
 
@@ -129,12 +187,38 @@ class Home extends Component {
     }
   }
 
+  handlePressHostJoinButton = () => {
+    this.postGames();
+  }
+
+  handlePressSendDataButton = () => {
+    this.postEvent();
+  }
+
 
   renderInputs = () => {
 
     if (this.state.inputsVisible) {
 
-      if (this.state.numberVerified) {
+      if (this.state.connectedToGame) {
+        return (
+          <View
+          style={{marginTop: 20, width: 150}}
+          >
+          <NavButton onPress={this.handlePressSendDataButton} text="send mock data" />
+          </View>
+        )
+      }
+      else if (this.state.authorized) {
+        return (
+          <View
+          style={{marginTop: 20, width: 150}}
+          >
+          <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
+          </View>
+        )
+      }
+      else if (this.state.numberVerified) {
         return (
           <View
             style={{marginTop: 20, width: 150}}
@@ -158,6 +242,7 @@ class Home extends Component {
               keyboardType={"numeric"}
               style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}}
               onChangeText={(phone) => this.setState({phone})}
+
             />
 
             <NavButton onPress={this.handlePressGetCodeButton} text="get code" />
@@ -165,6 +250,11 @@ class Home extends Component {
         )
       }
 
+    }
+    else {
+      return (
+        <NavButton onPress={this.handlePressPlayOnlineButton} text="Play online" />
+      )
     }
   }
 
@@ -210,14 +300,12 @@ class Home extends Component {
         <Header text="Home Screen" />
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
-        <NavButton onPress={this.handlePressPlayOnlineButton} text="Play online" />
+
         {this.renderInputs()}
         {this.renderConnectingModal()}
       </Container>
     );
   }
-  // <NavButton onPress={this.handlePressWaitingButton} text="go to waiting screen" />
-  // <NavButton onPress={this.handlePressConnectButton} text="go to connect screen" />
 }
 
 export default Home;
