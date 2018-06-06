@@ -70,9 +70,12 @@ class Waiting extends Component {
   gamePrep = () => {
     if (this.player_number === 1) {
       //generate board
-
+      this.game.gameInit();
       //if board.done and player2.ready
-      //then post board event
+      if (this.player2Ready) {
+        //then post board event
+        // this.postEvent({"board": this.game.elements})
+      }
     }
     else if (this.player_number === 2) {
       //post event ready
@@ -150,6 +153,11 @@ class Waiting extends Component {
     if (message.ready) {
       console.log('player2 ready!');
       this.player2Ready = true;
+      if (this.player_number === 1) {
+        //if board finished
+        this.postEvent({"board": "elements of sorts"})
+      }
+
     }
   }
 
