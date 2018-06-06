@@ -151,7 +151,6 @@ class Home extends Component {
               // console.log(this.state.accessToken);
               if (player2) {
                 console.log("working?");
-                this.setState({connectedToGame: true})
               }
             })
           }
@@ -221,12 +220,7 @@ class Home extends Component {
   }
 
   handlePressHostJoinButton = () => {
-    this.setModalVisible(false)
-    const { navigate } = this.props.navigation;
-    console.log('in home');
-    console.log(this.state.auth_token);
-    console.log(this.state.accessToken);
-    navigate("Waiting", {auth_token: this.state.auth_token, accessToken: this.state.accessToken});
+    this.postGames();
   }
 
   handlePressSendDataButton = () => {
@@ -235,15 +229,26 @@ class Home extends Component {
   }
 
   handleBeginGame = () => {
-    this.postEvent({
-      ready: true,
-    })
     this.setModalVisible(false);
     const { navigate } = this.props.navigation;
-    navigate('Waiting', {auth_token: this.state.auth_token, accessToken: this.state.accessToken});
+    navigate('Waiting', { auth_token: this.state.auth_token, accessToken: this.state.accessToken });
   }
 
   renderInputs = () => {
+    if (this.state.connectedToGame) {
+      return (
+        <View>
+          <Text style={{
+            color: "#fff",
+            textAlign: 'center',
+            fontFamily: 'Perfect DOS VGA 437',
+          }}>Game initiated, press below to begin</Text>
+
+          <NavButton onPress={this.handleBeginGame} text="host/join" />
+          <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
+        </View>
+      )
+    }
     if (this.state.auth_token !== null) {
       return (
         <View>
@@ -251,7 +256,7 @@ class Home extends Component {
             color: "#fff",
             textAlign: 'center',
             fontFamily: 'Perfect DOS VGA 437',
-          }}>All set! Click below to find a game!</Text>
+          }}>Click below to find a game!</Text>
 
           <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
           <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />

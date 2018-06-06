@@ -67,10 +67,6 @@ class Waiting extends Component {
     });
   }
 
-
-
-
-
   gamePrep = () => {
     if (this.player_number === 1) {
       //generate board
