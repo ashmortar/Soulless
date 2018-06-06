@@ -16,6 +16,9 @@ class Waiting extends Component {
     this.props.navigation.navigate('Home');
   };
 
+  componentDidMount() {
+    console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken)
+  }
 
   render() {
     return (

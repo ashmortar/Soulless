@@ -132,7 +132,8 @@ class Home extends Component {
           .then((responseJSON) => {
             this.setState({ accessToken: responseJSON.accessToken})
             console.log(this.state.accessToken);
-            this.launchSocket();
+            const { navigate } = this.props.navigation;
+            navigate('Waiting', { auth_token: this.state.auth_token, accessToken: this.state.accessToken})
           })
 
         if (res.error) {
@@ -169,7 +170,6 @@ class Home extends Component {
           .then((responseJSON) => {
             console.log(responseJSON);
           })
-
         if (res.error) {
           console.log('error');
         }
