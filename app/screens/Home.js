@@ -231,7 +231,7 @@ class Home extends Component {
   handleBeginGame = () => {
     this.setModalVisible(false);
     const { navigate } = this.props.navigation;
-    navigate('Waiting', { auth_token: this.state.auth_token, accessToken: this.state.accessToken });
+    navigate('Waiting', { auth_token: this.state.auth_token, accessToken: this.state.accessToken, phone: this.state.phone });
   }
 
   renderInputs = () => {
