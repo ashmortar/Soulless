@@ -8,7 +8,7 @@ import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 
 var io = require('socket.io-client');
-
+let socket = null;
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.object,
@@ -26,6 +26,7 @@ class Home extends Component {
       connectedToGame: false,
       auth_token: null,
       accessToken: null,
+      findingGame: false,
     }
   }
 
@@ -40,15 +41,20 @@ class Home extends Component {
 
 
   parseGameEvent = (message) => {
+    if (message.ready) {
+      this.setModalVisible();
+      const { navigate } = this.props.navigation;
+      navigate('Waiting', this.state.auth_token, this.state.accessToken);
+    }
     console.log('-----------------------------------');
     console.log(message);
   }
 
 
 
-  launchSocket = () => {
+  launchSocket = (responseJSON) => {
     window.navigator.userAgent = 'ReactNative';
-    const socket = io('http://demonspell.herokuapp.com', {
+    socket = io('http://demonspell.herokuapp.com', {
       transports: ['websocket']
     });
     // this.setState({ socket })
@@ -62,7 +68,6 @@ class Home extends Component {
       })
     });
   }
-
 
   postVerify = (phone) => {
       fetch("https://demonspell.herokuapp.com/api/verify", {
@@ -79,7 +84,7 @@ class Home extends Component {
           console.log('error');
         }
         if (res.status===200) {
-          console.log("successful");
+          // console.log("successful");
           this.setState({numberVerified: true})
         }
       })
@@ -114,7 +119,7 @@ class Home extends Component {
           console.log('error');
         }
         if (res.status===200) {
-          console.log("successful");
+          // console.log("successful");
           this.setState({authorized: true})
         }
       })
@@ -137,21 +142,24 @@ class Home extends Component {
         },
         method: "POST",
       }).then(res => {
-        res.json()
-          .then((responseJSON) => {
-            this.setState({ accessToken: responseJSON.accessToken})
-            console.log(this.state.accessToken);
-            const { navigate } = this.props.navigation;
-            navigate('Waiting', { auth_token: this.state.auth_token, accessToken: this.state.accessToken})
-          })
-
-        if (res.error) {
-          console.log('error');
-        }
-        if (res.status===200) {
-          console.log("successful");
-          this.setState({connectedToGame: true})
-        }
+          if (res.error) {
+            console.log('error');
+          }
+          if (res.status===200) {
+            // console.log("successful");
+            this.setState({connectedToGame: true})
+            this.launchSocket();
+            res.json()
+            .then((responseJSON) => {
+              let {id, accessToken, player1, player2 } = responseJSON;
+              this.setState({ accessToken: accessToken})
+              // console.log(this.state.accessToken);
+              if (player2) {
+                console.log("working?");
+                this.setState({connectedToGame: true})
+              }
+            })
+          }
       })
       .catch((e)=>{
         console.log(e);
@@ -164,27 +172,24 @@ class Home extends Component {
       })
   }
 
-  postEvent = () => {
+  postEvent = (data) => {
       fetch("https://demonspell.herokuapp.com/api/games/" + this.state.accessToken + "/events", {
         headers: {
           'Content-Type': 'application/json',
           'auth_token': this.state.auth_token,
         },
         method: "POST",
-        body: JSON.stringify({
-          "data": "sample data"
-        }),
+        body: JSON.stringify(data),
       }).then(res => {
         res.json()
           .then((responseJSON) => {
-            console.log(responseJSON);
+            // console.log(responseJSON);
           })
         if (res.error) {
           console.log('error');
         }
         if (res.status===200) {
-          console.log("successful");
-          this.setState({connectedToGame: true})
+          console.log("POST EVENT successful");
         }
       })
       .catch((e)=>{
@@ -197,11 +202,6 @@ class Home extends Component {
         throw e;
       })
   }
-
-
-
-
-
 
   handlePressPlayLocallyButton = () => {
     this.props.navigation.navigate('Game');
@@ -210,7 +210,7 @@ class Home extends Component {
   handlePressPlayOnlineButton = () => {
     this.setModalVisible();
   };
-
+  
   handlePressLoginButton = () => {
     this.postLogin(this.state.code);
     this.textInput.clear();
@@ -224,19 +224,65 @@ class Home extends Component {
   }
 
   handlePressHostJoinButton = () => {
+    this.setState({ findingGame: true });
     this.postGames();
   }
 
   handlePressSendDataButton = () => {
+    console.log("data pressed")
     this.postEvent();
   }
 
-
+  handleBeginGame = () => {
+    this.postEvent({
+      ready: true,
+    })
+    this.setModalVisible();
+    const { navigate } = this.props.navigation;
+    navigate('Waiting', this.state.auth_token, this.state.accessToken);
+  }
 
   renderInputs = () => {
-    if (this.state.auth_token !== null) {
-      return (<NavButton onPress={this.setModalVisible} text="close modal" />)
-    } else if (this.state.numberVerified) {
+    if (this.state.connectedToGame) {
+      return (
+        <View>
+          <Text style={{
+            color: "#fff",
+            textAlign: 'center',
+            fontFamily: 'Perfect DOS VGA 437',
+          }}>Opponent found! click below to begin the game</Text>
+          <NavButton onPress={this.handleBeginGame} text={"BEGIN!"} />
+          <NavButton onPress={this.setModalVisible} text="cancel" />
+      </View>
+      )
+    } else if (this.state.findingGame) {
+      return (
+        <View>
+          <Text style={{
+            color: "#fff",
+            textAlign: 'center',
+            fontFamily: 'Perfect DOS VGA 437',
+          }}>Finding your opponent..</Text>
+          <ActivityIndicator size={"large"} />
+          <NavButton onPress={this.handlePressSendDataButton} text={"data"} />
+          <NavButton onPress={this.setModalVisible} text="cancel" />
+        </View>
+      )
+    } else if (this.state.auth_token !== null) {
+      return (
+        <View>
+          <Text style={{
+            color: "#fff",
+            textAlign: 'center',
+            fontFamily: 'Perfect DOS VGA 437',
+          }}>All set! Click below to find a game!</Text>
+
+          <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
+          <NavButton onPress={this.setModalVisible} text="cancel" />
+        
+      </View>
+      )
+    }  else if (this.state.numberVerified) {
       return (
         <View>
           <Text style={{
@@ -294,7 +340,6 @@ class Home extends Component {
     //       <View
     //       style={{marginTop: 20, width: 150}}
     //       >
-    //       <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
     //       </View>
     //     )
     //   }
