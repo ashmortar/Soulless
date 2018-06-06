@@ -244,7 +244,7 @@ class Home extends Component {
             fontFamily: 'Perfect DOS VGA 437',
           }}>Game initiated, press below to begin</Text>
 
-          <NavButton onPress={this.handleBeginGame} text="host/join" />
+          <NavButton onPress={this.handleBeginGame} text="begin" />
           <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
         </View>
       )
