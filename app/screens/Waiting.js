@@ -37,6 +37,7 @@ class Waiting extends Component {
     this.phone = this.props.navigation.state.params.phone;
 
 
+
     this.launchSocket(this.props.navigation.state.params.accessToken);
     // this.getGameInfo();
   }

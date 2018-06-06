@@ -223,7 +223,10 @@ class Home extends Component {
   handlePressHostJoinButton = () => {
     this.setModalVisible(false)
     const { navigate } = this.props.navigation;
-    navigate("Waiting", this.state.auth_token, this.state.accessToken);
+    console.log('in home');
+    console.log(this.state.auth_token);
+    console.log(this.state.accessToken);
+    navigate("Waiting", {auth_token: this.state.auth_token, accessToken: this.state.accessToken});
   }
 
   handlePressSendDataButton = () => {
