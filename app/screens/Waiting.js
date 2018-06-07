@@ -26,6 +26,7 @@ class Waiting extends Component {
     this.elements = null;
     this.boardReady = false;
     this.generator = new BoardGenerator();
+    this.boardPieceCounter = 0;
     this.state = {
       readyToBeginPlaying: false,
     }
@@ -193,9 +194,15 @@ class Waiting extends Component {
           this.elements[message.board[i].name] = message.board[i];
         }
       }
-      console.log("player 2 recieved piece of board and made changes");
-      console.log(message);
-      console.log(this.elements);
+      this.boardPieceCounter++;
+      if (this.boardPieceCounter >= 8) {
+        this.setState({ readyToBeginPlaying: true });
+        console.log('***ready to play?');
+        console.log(this.state.readyToBeginPlaying);
+      }
+      // console.log("player 2 recieved piece of board and made changes");
+      // console.log(message);
+      // console.log(this.elements);
     }
   }
 
