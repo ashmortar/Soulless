@@ -69,6 +69,7 @@ class Game extends Component {
   }
 
   gameInit = () => {
+    console.log('gameInit from Game');
     this.createMap();
     this.assignMonsterEdges();
     this.assignHumanStart();

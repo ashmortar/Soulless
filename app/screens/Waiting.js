@@ -11,6 +11,7 @@ const generator = new BoardGenerator();
 const generateBoard = async () => {
   let array = await generator.generateBoard();
   this.boardReady = true;
+  console.log("board complete");
   return array;
 }
 var io = require('socket.io-client');
@@ -78,7 +79,7 @@ class Waiting extends Component {
       //generate board
       this.elements = generateBoard();
       //if board.done and player2.ready
-      this.postEvent({"board": this.elements})
+      // this.postEvent({"board": this.elements})
     }
     else if (this.player_number === 2) {
       //post event ready
