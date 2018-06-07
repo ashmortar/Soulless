@@ -1216,7 +1216,8 @@ class Waiting extends Component {
           this.setState({ playerSpace: this.monsterSpace});
         }
         this.boardPieceCounter = 0;
-        this.setState({ turn: this.state.turn + 1, redraw: !this.state.redraw });
+        this.setState({ turn: this.state.turn + 1, });
+        this.showSplashScreen('hands', false, 100);
       }
     }
   }

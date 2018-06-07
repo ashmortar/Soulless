@@ -122,6 +122,12 @@ export default class Engine extends Component {
             return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
           }
         }
+      } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
+        for (let i = 0; i < this.props.gameBoard.length; i++) {
+          if (this.props.gameBoard[i].wasEchoed) {
+            this.feedbackSquare = this.props.gameBoard[i];
+            return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));          }
+        }
       } else {
         return (this.playerY - (this.screenDimensions.height / 2));
       }
@@ -135,6 +141,13 @@ export default class Engine extends Component {
             return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
           }
         }
+      } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
+        for (let i = 0; i < this.props.gameBoard.length; i++) {
+          if (this.props.gameBoard[i].wasEchoed) {
+            this.feedbackSquare = this.props.gameBoard[i];
+            return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
+          }
+        }
       } else {
         return (this.playerX - (this.screenDimensions.width / 2));
       }
@@ -142,24 +155,24 @@ export default class Engine extends Component {
 
   getBeginningX = () => {
     return -this.cameraX;
-    // if (this.cameraX < 0) {
-    //   return 0;
-    // } else if (this.cameraX > this.xOffsetMax) {
-    //   return -this.xOffsetMax;
-    // } else {
-    //   return -this.cameraX;
-    // }
+    if (this.cameraX < 0) {
+      return 0;
+    } else if (this.cameraX > this.xOffsetMax) {
+      return -this.xOffsetMax;
+    } else {
+      return -this.cameraX;
+    }
   }
 
   getBeginningY = () => {
     return -this.cameraY;
-    // if (this.cameraY < 0) {
-    //   return 0;
-    // } else if (this.cameraY > this.yOffsetMax) {
-    //   return -this.yOffsetMax;
-    // } else {
-    //   return -this.cameraY;
-    // }
+    if (this.cameraY < 0) {
+      return 0;
+    } else if (this.cameraY > this.yOffsetMax) {
+      return -this.yOffsetMax;
+    } else {
+      return -this.cameraY;
+    }
   }
 
   componentWillMount() {
@@ -782,16 +795,16 @@ export default class Engine extends Component {
       }
     }
 
-    renderTargetPicker = () => {
-      if (this.state.targetPickerVisible) {
-        return (
-          <View style={this.getMonsterControlStyles()} >
-            <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcTargetPriestOut} source2={this.state.srcTargetPriestIn} onPress={this.humanPicked} />
-            <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcTargetShrineOut} source2={this.state.srcTargetShrineIn} onPress={this.shrinePicked} />
-          </View>
-        );
-      }
+  renderTargetPicker = () => {
+    if (this.state.targetPickerVisible) {
+      return (
+        <View style={this.getMonsterControlStyles()} >
+          <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcTargetPriestOut} source2={this.state.srcTargetPriestIn} onPress={this.humanPicked} />
+          <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcTargetShrineOut} source2={this.state.srcTargetShrineIn} onPress={this.shrinePicked} />
+        </View>
+      );
     }
+  }
 
   getMonsterControlStyles = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
