@@ -1,6 +1,8 @@
 -- new todos
 make echo cause monster to be visible if it hits him
 make priest visible if in an unobstructed line from monster only rows and columns;
+remove shrine icon from button to use in bar
+standardize text size
 
 TODO
 ----------------------------------
