@@ -64,6 +64,7 @@ class Waiting extends Component {
       modalPounce: 0,
       modalAlert: 0,
       turnCounter: 0,
+      turn: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
       shrinesBlessed: 0,
@@ -72,6 +73,7 @@ class Waiting extends Component {
       heartBeatTimer: 8,
       opponentVisible: false,
     }
+    //turn: odd - priest; even - evil
   }
 
   makeBoard = async () => {
@@ -406,10 +408,17 @@ class Waiting extends Component {
     );
   }
 
+
+  changePlayerMode = () => {//-------------------------------------------------------new
+    // this.setState({ turn: this.state.turn + 1 })
+    this.postEvent({"endTurn": "sample"});
+
+  }
+
   onItemSelected = (item) => {
     // console.log('onItemSelected', item);
     switch (item) {
-      case 'endTurn':
+      case 'endTurn'://--------------------------------------------------------------endTurn
         if (this.state.outOfMoves) {
           if (this.state.isHuman) {
             this.resetWasPounced();
@@ -418,40 +427,8 @@ class Waiting extends Component {
           }
           this.resetHighlighted();
           this.changePlayerMode();
+          this.setState({ outOfMoves: false, turnCounter: 0 })
         }
-        break;
-      case 'move':
-        if (this.state.isHuman) {
-          this.showHumanMoves();
-          this.setState({ redraw: !this.state.redraw });
-        } else {
-          this.showMonsterMoves();
-          // this.setState({ redraw: !this.state.redraw });
-        }
-        break;
-      case 'sniff':
-        this.resetHighlighted();
-        // this.setState({ modalDialogOnly: 1 });
-        this.setState({ modal: 3 });
-        break;
-      case 'listen':
-        this.resetHighlighted();
-        if (this.state.isHuman) {
-          this.setState({ modalDialogOnly: 3 });
-        }
-        else {
-          this.setState({ modal: 4 });
-        }
-        break;
-      case 'echo':
-        this.resetHighlighted();
-        this.setState({ modal: 1 });
-        break;
-      case 'pounce':
-        // this.setState({ modalPounce: 1 });
-        this.resetHighlighted();
-        this.monsterProcessPounce();
-        // this.setState({ modalPounce: 0 });
         break;
       case 'home':
         this.resetHighlighted();
@@ -524,6 +501,36 @@ class Waiting extends Component {
   }
 
 
+
+  renderModalWaitForTurnContent = () => {//--------------------------------------------new
+    let text1 = 'Waiting for the evil to make their move.';
+
+    return (
+      <View style={{
+        backgroundColor: 'transparent',
+        width: Dimensions.get("window").width*0.9,
+        marginLeft: "auto",
+        marginRight: "auto",
+        height: 200,
+      }}>
+        <ImageBackground
+          style={{
+            height: undefined,
+            width: undefined,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+            }}
+          source={require("../data/images/tallWindow.png")}
+          resizeMode={"stretch"}
+          >
+
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+
+        </ImageBackground>
+      </View>
+    )
+  }
 
   renderModalContent = () => {
     if (this.state.modalDialogOnly === 1) { // focus on young priest
@@ -1129,9 +1136,9 @@ class Waiting extends Component {
         console.log('***ready to play?');
         console.log(this.state.readyToBeginPlaying);
       }
-      // console.log("player 2 recieved piece of board and made changes");
-      // console.log(message);
-      // console.log(this.elements);
+    }
+    else if (message.endTurn) {
+      this.setState({ turn: this.state.turn + 1 })
     }
   }
 
@@ -1311,6 +1318,16 @@ class Waiting extends Component {
         >
           {this.renderModalContent()}
         </Modal>
+
+
+        <Modal
+          isVisible={(this.state.isHuman == (this.state.turn % 2 === 1))}
+          animationIn="slideInRight"
+          animationOut="slideOutLeft"
+        >
+          {this.renderModalWaitForTurnContent()}
+        </Modal>
+
 
         {bar}
       </SideMenu>
