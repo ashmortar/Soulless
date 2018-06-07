@@ -26,7 +26,7 @@ class Waiting extends Component {
     super(props);
     this.auth_token = null;
     this.accessToken = null;
-    this.phone = null;
+    this.phone = "5038757789";
     this.player_id = 0;
     this.player_number = 0;
     this.player2Ready = false;
@@ -44,7 +44,7 @@ class Waiting extends Component {
 
     this.auth_token = this.props.navigation.state.params.auth_token;
     this.accessToken = this.props.navigation.state.params.accessToken;
-    this.phone = this.props.navigation.state.params.phone;
+    // this.phone = this.props.navigation.state.params.phone;
 
 
     this.launchSocket(this.props.navigation.state.params.accessToken);
@@ -162,42 +162,41 @@ class Waiting extends Component {
       this.player2Ready = true;
       if (this.player_number === 1) {
         //if board finished
-        this.postEvent({"board": "elements of sorts"})
+        this.postEvent(this.elements)
       }
 
     }
   }
 
   postEvent = (event) => {//event = {"data": "sample_data"}
-    console.log('postEvent');
-      fetch("https://demonspell.herokuapp.com/api/games/" + this.accessToken + "/events", {
-        headers: {
-          'Content-Type': 'application/json',
-          'auth_token': this.auth_token,
-        },
-        method: "POST",
-        body: JSON.stringify(event),
-      }).then(res => {
-        res.json()
-          .then((responseJSON) => {
-            console.log(responseJSON);
-          })
-        if (res.error) {
-          console.log('error');
-        }
-        if (res.status===200) {
-          console.log("successful");
-        }
-      })
-      .catch((e)=>{
-        console.log(e);
-        if (e.error === "Unauthorized") {
-          navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
-        } else {
-          navigation.connectionLost(context.props.navigator);
-        }
-        throw e;
-      })
+    fetch("https://demonspell.herokuapp.com/api/games/" + this.accessToken + "/events", {
+      headers: {
+        'Content-Type': 'text/plain',
+        'auth_token': this.auth_token,
+      },
+      method: "POST",
+      body: eventObject,
+    }).then(res => {
+      res.json()
+        .then((responseJSON) => {
+          console.log(responseJSON);
+        })
+      if (res.error) {
+        console.log('error');
+      }
+      if (res.status===200) {
+        console.log("successful");
+      }
+    })
+    .catch((e)=>{
+      console.log(e);
+      if (e.error === "Unauthorized") {
+        navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+      } else {
+        navigation.connectionLost(context.props.navigator);
+      }
+      throw e;
+    })
   }
 
 
