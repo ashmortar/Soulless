@@ -10,7 +10,6 @@ import BoardGenerator from '../Services/BoardGenerator';
 const generator = new BoardGenerator();
 const generateBoard = async () => {
   let array = await generator.generateBoard();
-  console.log("boardgeneration finished");
   this.boardReady = true;
   return array;
 }
@@ -38,7 +37,7 @@ class Waiting extends Component {
 
 
   componentDidMount() {
-    console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken);
+    console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken, this.props.navigation.state.params.phone);
     // AsyncStorage.getItem('auth_token').then((value) => console.log ("auth_token", value));
 
 
@@ -94,7 +93,7 @@ class Waiting extends Component {
   }
 
   parseGameInfo = (data) => {
-    let phoneCompare = "+1" + this.phone;
+    let phoneCompare = this.phone;
     if (data.accessToken === this.accessToken) {
       if (data.player1.phone == phoneCompare) {
         // this.setState({ player_number: 1 });
@@ -169,41 +168,43 @@ class Waiting extends Component {
   }
 
   postEvent = (event) => {//event = {"data": "sample_data"}
-    fetch("https://demonspell.herokuapp.com/api/games/" + this.accessToken + "/events", {
-      headers: {
-        'Content-Type': 'text/plain',
-        'auth_token': this.auth_token,
-      },
-      method: "POST",
-      body: eventObject,
-    }).then(res => {
-      res.json()
-        .then((responseJSON) => {
-          console.log(responseJSON);
-        })
-      if (res.error) {
-        console.log('error');
-      }
-      if (res.status===200) {
-        console.log("successful");
-      }
-    })
-    .catch((e)=>{
-      console.log(e);
-      if (e.error === "Unauthorized") {
-        navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
-      } else {
-        navigation.connectionLost(context.props.navigator);
-      }
-      throw e;
-    })
+    console.log('postEvent');
+      fetch("https://demonspell.herokuapp.com/api/games/" + this.accessToken + "/events", {
+        headers: {
+          'Content-Type': 'application/json',
+          'auth_token': this.auth_token,
+        },
+        method: "POST",
+        body: JSON.stringify(event),
+      }).then(res => {
+        res.json()
+          .then((responseJSON) => {
+            // console.log(responseJSON);
+          })
+        if (res.error) {
+          console.log('error');
+        }
+        if (res.status===200) {
+          console.log("successful");
+        }
+      })
+      .catch((e)=>{
+        console.log(e);
+        if (e.error === "Unauthorized") {
+          navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+        } else {
+          navigation.connectionLost(context.props.navigator);
+        }
+        throw e;
+      })
   }
 
 
 
   handlePressNavButton = () => {
     // this.props.navigation.navigate('Home');
-    this.postEvent({"button": "PRESSED"})
+    // this.postEvent({"button": "PRESSED"})
+    console.log("boardgeneration finished", this.elements, JSON.stringify(this.elements));
   };
 
   render() {

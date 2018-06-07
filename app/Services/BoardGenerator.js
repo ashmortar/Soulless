@@ -473,31 +473,31 @@ export default class BoardGenerator {
       if (cell.value > 0) {
         let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(i);
         if (topLeft && topLeft.value > 0) {
-          cell.monsterEdges.push(topLeft);
+          cell.monsterEdges.push(topLeft.name);
         }
         if (top && top.value > 0) {
-          cell.monsterEdges.push(top);
+          cell.monsterEdges.push(top.name);
         }
         if (topRight && topRight.value > 0) {
-          cell.monsterEdges.push(topRight);
+          cell.monsterEdges.push(topRight.name);
         }
         if (left && left.value > 0) {
-          cell.monsterEdges.push(left);
+          cell.monsterEdges.push(left.name);
         }
         if (right && right.value > 0) {
-          cell.monsterEdges.push(right);
+          cell.monsterEdges.push(right.name);
         }
         if (bottomLeft && bottomLeft.value > 0) {
-          cell.monsterEdges.push(bottomLeft);
+          cell.monsterEdges.push(bottomLeft.name);
         }
         if (bottom && bottom.value > 0) {
-          cell.monsterEdges.push(bottom);
+          cell.monsterEdges.push(bottom.name);
         }
         if (bottomLeft && bottomLeft.value > 0) {
-          cell.monsterEdges.push(bottomLeft);
+          cell.monsterEdges.push(bottomLeft.name);
         }
         if (bottomRight && bottomRight.value > 0) {
-          cell.monsterEdges.push(bottomRight);
+          cell.monsterEdges.push(bottomRight.name);
         }
       }
     }
@@ -583,7 +583,10 @@ export default class BoardGenerator {
       if (cell === end) {
         break;
       }
-      let neighbors = cell.monsterEdges;
+      let neighbors = [];
+      for (i = 0; i < cell.monsterEdges.length; i++) {
+        neighbors.push(this.elements[cell.monsterEdges[i]]);
+      }
       for ( let i = 0; i < neighbors.length; i++) {
         let neighbor = neighbors[i];
         if (!visited.includes(neighbor)) {
@@ -601,6 +604,12 @@ export default class BoardGenerator {
     }
     this.resetParents()
     return (path.length - 1);
+  }
+
+  resetParents = () => {
+    for (i = 0; i < this.elements.length; i++) {
+      this.elements[i].parent = null;
+    }
   }
 
   resetParents = () => {

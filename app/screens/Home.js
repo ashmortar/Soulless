@@ -32,11 +32,22 @@ class Home extends Component {
 
   componentDidMount = () => {
     AsyncStorage.getItem('auth_token').then((value) => this.setState({ auth_token: value}));
+    AsyncStorage.getItem('phone').then((value) => this.setState({ phone: value}));
+    AsyncStorage.getItem('id').then((value) => this.setState({ id: value}));
   }
 
   setAuthToken = (auth_token) => {
     AsyncStorage.setItem('auth_token', auth_token);
     this.setState({ auth_token: auth_token });
+  }
+
+  setPhoneAndId = (phone, id) => {
+    AsyncStorage.setItem('phone', phone);
+    AsyncStorage.setItem('id', id);
+    this.setState({
+      phone: phone,
+      id: id,
+    });
   }
 
 
@@ -74,7 +85,10 @@ class Home extends Component {
         	"phone": phone
         }),
       }).then(res => {
-        res.json();
+        res.json().then((response) => {
+          this.setPhoneAndId(response.phone, response.id);
+          console.log("verify", this.state.phone, this.state.id)
+        })
         if (res.error) {
           console.log('error');
         }
