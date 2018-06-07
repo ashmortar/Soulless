@@ -164,7 +164,7 @@ class Waiting extends Component {
       this.player2Ready = true;
       if (this.player_number === 1) {
         console.log("sending board", this.elements);
-        this.postEvent(this.elements);
+        this.postEvent({ board: this.elements });
       }
     }
   }
