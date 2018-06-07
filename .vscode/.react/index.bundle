@@ -81103,6 +81103,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this));
 
       _this.gameInit = function () {
+        console.log('gameInit from Game');
+
         _this.createMap();
 
         _this.assignMonsterEdges();
@@ -82477,7 +82479,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 1380
+              lineNumber: 1381
             }
           },
           _react3.default.createElement(
@@ -82494,7 +82496,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               resizeMode: "stretch",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1387
+                lineNumber: 1388
               }
             },
             _react3.default.createElement(
@@ -82506,7 +82508,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1399
+                  lineNumber: 1400
                 }
               },
               text1
@@ -82520,7 +82522,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1400
+                  lineNumber: 1401
                 }
               },
               text2
@@ -82534,7 +82536,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               text: "OK",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1401
+                lineNumber: 1402
               }
             })
           )
@@ -82754,7 +82756,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1566
+                lineNumber: 1567
               }
             },
             _react3.default.createElement(
@@ -82771,7 +82773,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 resizeMode: "stretch",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1573
+                  lineNumber: 1574
                 }
               },
               _react3.default.createElement(
@@ -82783,7 +82785,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1585
+                    lineNumber: 1586
                   }
                 },
                 text1
@@ -82797,7 +82799,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1586
+                    lineNumber: 1587
                   }
                 },
                 text2
@@ -82809,7 +82811,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "OK",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1587
+                  lineNumber: 1588
                 }
               })
             )
@@ -82852,7 +82854,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 1613
+                lineNumber: 1614
               }
             },
             _react3.default.createElement(
@@ -82869,7 +82871,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 resizeMode: "stretch",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1620
+                  lineNumber: 1621
                 }
               },
               _react3.default.createElement(
@@ -82881,7 +82883,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1632
+                    lineNumber: 1633
                   }
                 },
                 _text
@@ -82895,7 +82897,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1633
+                    lineNumber: 1634
                   }
                 },
                 _text2
@@ -82907,7 +82909,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "OK",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1634
+                  lineNumber: 1635
                 }
               })
             )
@@ -82932,7 +82934,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1645
+                  lineNumber: 1646
                 }
               },
               _react3.default.createElement(
@@ -82944,7 +82946,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1655
+                    lineNumber: 1656
                   }
                 },
                 _text3
@@ -82958,7 +82960,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1656
+                    lineNumber: 1657
                   }
                 },
                 _text4
@@ -82970,7 +82972,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "OK",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1657
+                  lineNumber: 1658
                 }
               })
             );
@@ -82995,7 +82997,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1665
+                  lineNumber: 1666
                 }
               },
               _react3.default.createElement(
@@ -83007,7 +83009,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1675
+                    lineNumber: 1676
                   }
                 },
                 _text5
@@ -83021,7 +83023,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1676
+                    lineNumber: 1677
                   }
                 },
                 _text6
@@ -83033,7 +83035,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "OK",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1677
+                  lineNumber: 1678
                 }
               })
             );
@@ -83056,7 +83058,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1687
+                  lineNumber: 1688
                 }
               },
               _react3.default.createElement(
@@ -83073,7 +83075,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   resizeMode: "stretch",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1694
+                    lineNumber: 1695
                   }
                 },
                 _react3.default.createElement(
@@ -83085,7 +83087,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 1706
+                      lineNumber: 1707
                     }
                   },
                   _text7
@@ -83099,7 +83101,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 1707
+                      lineNumber: 1708
                     }
                   },
                   _text8
@@ -83113,7 +83115,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   text: "OK",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1708
+                    lineNumber: 1709
                   }
                 })
               )
@@ -83133,7 +83135,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1716
+                  lineNumber: 1717
                 }
               },
               _react3.default.createElement(
@@ -83145,7 +83147,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1726
+                    lineNumber: 1727
                   }
                 },
                 _text9
@@ -83161,7 +83163,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "North",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1727
+                  lineNumber: 1728
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83175,7 +83177,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "South",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1728
+                  lineNumber: 1729
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83189,7 +83191,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "East",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1729
+                  lineNumber: 1730
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83203,7 +83205,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "West",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1730
+                  lineNumber: 1731
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83217,7 +83219,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "Burst",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1731
+                  lineNumber: 1732
                 }
               })
             );
@@ -83236,7 +83238,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1738
+                  lineNumber: 1739
                 }
               },
               _react3.default.createElement(
@@ -83248,7 +83250,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1748
+                    lineNumber: 1749
                   }
                 },
                 _text10
@@ -83266,7 +83268,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "player",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1749
+                  lineNumber: 1750
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83282,7 +83284,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "shrine",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1750
+                  lineNumber: 1751
                 }
               })
             );
@@ -83302,7 +83304,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1758
+                    lineNumber: 1759
                   }
                 },
                 _react3.default.createElement(
@@ -83314,7 +83316,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                     },
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 1768
+                      lineNumber: 1769
                     }
                   },
                   _text11
@@ -83332,7 +83334,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   text: "player",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1769
+                    lineNumber: 1770
                   }
                 }),
                 _react3.default.createElement(_Button.NavButton, {
@@ -83348,7 +83350,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   text: "shrine",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1770
+                    lineNumber: 1771
                   }
                 })
               );
@@ -83367,7 +83369,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1777
+                  lineNumber: 1778
                 }
               },
               _react3.default.createElement(
@@ -83379,7 +83381,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1787
+                    lineNumber: 1788
                   }
                 },
                 "Are you sure you want to exit?"
@@ -83391,7 +83393,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "Yes",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1788
+                  lineNumber: 1789
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83403,7 +83405,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "No",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1789
+                  lineNumber: 1790
                 }
               })
             );
@@ -83421,7 +83423,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1796
+                  lineNumber: 1797
                 }
               },
               _react3.default.createElement(
@@ -83433,7 +83435,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   },
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 1806
+                    lineNumber: 1807
                   }
                 },
                 "Are you sure you want to exit?"
@@ -83449,7 +83451,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "Yes",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1807
+                  lineNumber: 1808
                 }
               }),
               _react3.default.createElement(_Button.NavButton, {
@@ -83461,7 +83463,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 text: "No",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 1808
+                  lineNumber: 1809
                 }
               })
             );
@@ -83748,7 +83750,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 2043
+                lineNumber: 2044
               }
             },
             _react3.default.createElement(_AnimatedSplashScreen2.default, {
@@ -83759,7 +83761,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               animationTimer: _this.state.animationTimer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 2044
+                lineNumber: 2045
               }
             })
           );
@@ -83782,7 +83784,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onItemSelected: _this.onItemSelected,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 2057
+            lineNumber: 2058
           }
         });
 
@@ -83791,7 +83793,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           onItemSelected: _this.onItemSelected,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 2058
+            lineNumber: 2059
           }
         });
 
@@ -83807,7 +83809,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           monsterSanityLevel: _this.state.monsterSanityLevel,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 2059
+            lineNumber: 2060
           }
         });
 
@@ -83820,7 +83822,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               disableGestures: disableGestures,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 2072
+                lineNumber: 2073
               }
             },
             _react3.default.createElement(
@@ -83830,7 +83832,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 menuPosition: "left",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 2077
+                  lineNumber: 2078
                 }
               },
               _react3.default.createElement(_Engine2.default, {
@@ -83856,7 +83858,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 alterZoom: _this.alterZoom,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 2081
+                  lineNumber: 2082
                 }
               }),
               _react3.default.createElement(
@@ -83878,7 +83880,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2103
+                    lineNumber: 2104
                   }
                 },
                 _this.renderModalContent()
@@ -83902,7 +83904,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2114
+                    lineNumber: 2115
                   }
                 },
                 _this.generateCustomAlert()
@@ -83922,7 +83924,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2125
+                    lineNumber: 2126
                   }
                 },
                 _this.renderModalContent()
@@ -83936,7 +83938,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2136
+                    lineNumber: 2137
                   }
                 },
                 _this.renderModalContent()
@@ -83960,7 +83962,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   swipeDirection: "right",
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 2146
+                    lineNumber: 2147
                   }
                 },
                 _this.renderModalContent()
@@ -84095,7 +84097,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 2168
+              lineNumber: 2169
             }
           },
           this.renderAnimator(),
@@ -100910,9 +100912,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           case 2:
             array = _context.sent;
             _this.boardReady = true;
+            console.log("board complete");
             return _context.abrupt("return", array);
 
-          case 5:
+          case 6:
           case "end":
             return _context.stop();
         }
@@ -100956,6 +100959,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this2.gamePrep = function () {
         if (_this2.player_number === 1) {
           _this2.elements = generateBoard();
+
+          if (_this2.player2Ready) {}
         } else if (_this2.player_number === 2) {
           _this2.postEvent({
             "ready": "player2"
@@ -101101,21 +101106,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 204
+              lineNumber: 209
             }
           },
           _react3.default.createElement(_Header.Header, {
             text: "waiting screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 205
+              lineNumber: 210
             }
           }),
           _react3.default.createElement(_Blurb.Blurb, {
             text: "waiting for player to join..",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 206
+              lineNumber: 211
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -101123,7 +101128,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "Back",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 207
+              lineNumber: 212
             }
           })
         );

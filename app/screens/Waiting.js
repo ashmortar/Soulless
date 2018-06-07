@@ -80,14 +80,10 @@ class Waiting extends Component {
       this.elements = generateBoard();
       // console.log();
       //if board.done and player2.ready
-<<<<<<< HEAD
-      // this.postEvent({"board": this.elements})
-=======
       if (this.player2Ready) {
         //then post board event
         // this.postEvent({"board": this.elements});
       }
->>>>>>> 2659d1a4d519a270c762f6a063a5f60eebd4dc85
     }
     else if (this.player_number === 2) {
       //post event ready
