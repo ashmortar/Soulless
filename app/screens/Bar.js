@@ -27,6 +27,7 @@ class Bar extends Component {
     humanShrinesToWin: PropTypes.number,
     monsterShrinesToWin: PropTypes.number,
     monsterSanityLevel: PropTypes.number,
+    barActive: PropTypes.bool,
   }
 
   constructor() {
@@ -89,66 +90,94 @@ class Bar extends Component {
 
 
   getBar = () => {
-    let text1;
-    let shrines;
-    let progress = 0.5;
-    if (this.props.isHuman) {
-      text1 = 'Priest';
-      shrines = this.props.humanShrinesToWin;
-    } else {
-      text1 = 'Evil';
-      shrines = this.props.monsterShrinesToWin;
-    }
-    let shrineAmount = this.props.shrineAmount;
-    // let shrinesUnclaimed = this.props.shrinesUnclaimed;
+    if (this.props.barActive) {
+      let text1;
+      let shrines;
+      let progress = 0.5;
+      if (this.props.isHuman) {
+        text1 = 'Priest';
+        shrines = this.props.humanShrinesToWin;
+      } else {
+        text1 = 'Evil';
+        shrines = this.props.monsterShrinesToWin;
+      }
+      let shrineAmount = this.props.shrineAmount;
+      // let shrinesUnclaimed = this.props.shrinesUnclaimed;
 
-    // let src={require("../data/images/shrine.png")}
+      // let src={require("../data/images/shrine.png")}
 
-    const progressCustomStyles = {
-      backgroundColor: '#a30000',
-      borderRadius: 0,
-      borderColor: '#000',
-    };
+      const progressCustomStyles = {
+        backgroundColor: '#a30000',
+        borderRadius: 0,
+        borderColor: '#000',
+      };
 
-    return(
-      <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
+      return(
+        <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
         <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
 
-          <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+        <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
 
-          <Image
-            style={{ height: 25, width: 25, marginLeft: Dimensions.get("window").width / 4 }}
-            source={require("../data/images/targetShrineOut.png")}
-          />
+        <Image
+        style={{ height: 25, width: 25, marginLeft: Dimensions.get("window").width / 4 }}
+        source={require("../data/images/targetShrineOut.png")}
+        />
 
-          <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrines}</Text>
+        <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrines}</Text>
 
-          {this.renderHeartBeat()}
+        {this.renderHeartBeat()}
 
-          {this.renderButton()}
+        {this.renderButton()}
 
         </View>
         <View style={{flexDirection: 'column', padding: 5, marginTop: 5, marginLeft: 5 }}>
-          <Text style={{color: '#fff', paddingVertical: 10, fontFamily: 'Perfect DOS VGA 437',}}>{`Possessed priest's sanity level:`}</Text>
-          <ProgressBarAnimated
-            {...progressCustomStyles}
-            width={Dimensions.get("window").width - 35}
-            value={this.props.monsterSanityLevel}
-          />
+        <Text style={{color: '#fff', paddingVertical: 10, fontFamily: 'Perfect DOS VGA 437',}}>{`Possessed priest's sanity level:`}</Text>
+        <ProgressBarAnimated
+        {...progressCustomStyles}
+        width={Dimensions.get("window").width - 35}
+        value={this.props.monsterSanityLevel}
+        />
         </View>
-      </ImageBackground>
-    )
-    // <View style={{flexDirection: 'row'}}>
+        </ImageBackground>
+      )
+      // <View style={{flexDirection: 'row'}}>
+    }
+  }
+
+
+
+  getBarWaitingForOpponent = () => {
+    if (!this.props.barActive) {
+
+      const progressCustomStyles = {
+        backgroundColor: '#a30000',
+        borderRadius: 0,
+        borderColor: '#000',
+      };
+
+      return(
+        <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
+        <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
+
+        <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>Waiting for opponent</Text>
+
+        </View>
+        </ImageBackground>
+      )
+      // <View style={{flexDirection: 'row'}}>
+    }
   }
 
 
 
   render() {
     // console.log('heartbeat', this.props.heartBeatTimer)
-    const bar = this.getBar();
+    const barPlay = this.getBar();
+    const barWait = this.getBarWaitingForOpponent();
     return (
       <View style={{position: "absolute", left: 5, bottom: 5, height: this.barHeight + 10, width: Dimensions.get("window").width - 10 }}>
-        {bar}
+        {barPlay}
+        {barWait}
       </View>
     );
   }

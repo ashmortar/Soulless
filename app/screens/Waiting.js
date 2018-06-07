@@ -1215,7 +1215,8 @@ class Waiting extends Component {
           this.setState({ playerSpace: this.monsterSpace});
         }
         this.boardPieceCounter = 0;
-        this.setState({ turn: this.state.turn + 1, redraw: !this.state.redraw });
+        this.setState({ turn: this.state.turn + 1 });
+        this.showSplashScreen('hands', false, 100);
       }
     }
   }
@@ -1308,6 +1309,7 @@ class Waiting extends Component {
       humanShrinesToWin={this.humanShrinesToWin}
       monsterShrinesToWin={this.monsterShrinesToWin}
       monsterSanityLevel={this.state.monsterSanityLevel}
+      barActive={(this.state.isHuman == (this.state.turn % 2 === 0))}
     />;
     if (this.state.boardFinished) {
       return (
@@ -1400,14 +1402,6 @@ class Waiting extends Component {
         </Modal>
 
 
-        <Modal
-          isVisible={(this.state.isHuman == (this.state.turn % 2 === 1))}
-          animationIn="slideInRight"
-          animationOut="slideOutLeft"
-        >
-          {this.renderModalWaitForTurnContent()}
-        </Modal>
-
 
         {bar}
       </SideMenu>
@@ -1415,6 +1409,14 @@ class Waiting extends Component {
       )
     }
   }
+  // <Modal
+  // isVisible={(this.state.isHuman == (this.state.turn % 2 === 1))}
+  // animationIn="slideInRight"
+  // animationOut="slideOutLeft"
+  // >
+  // {this.renderModalWaitForTurnContent()}
+  // </Modal>
+  //
 
   render() {
     return (
