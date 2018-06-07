@@ -78,7 +78,7 @@ class Waiting extends Component {
       //generate board
       this.elements = generateBoard();
       //if board.done and player2.ready
-      //then post board event
+      this.postEvent({"board": this.elements})
     }
     else if (this.player_number === 2) {
       //post event ready
@@ -195,8 +195,8 @@ class Waiting extends Component {
 
   handlePressNavButton = () => {
     // this.props.navigation.navigate('Home');
-    // this.postEvent({"button": "PRESSED"})
-    console.log("boardgeneration finished", this.elements, JSON.stringify(this.elements));
+    this.postEvent({"button": "PRESSED"})
+    // console.log("boardgeneration finished", this.elements, JSON.stringify(this.elements));
   };
 
   render() {

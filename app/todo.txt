@@ -1,3 +1,8 @@
+-- new todos
+make monster check pounce after moving, if shrine or priest within range, resolve pounce
+make echo cause monster to be visible if it hits him
+make priest visible if in an unobstructed line from monster only rows and columns;
+
 TODO
 ----------------------------------
 

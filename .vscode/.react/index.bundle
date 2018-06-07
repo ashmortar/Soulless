@@ -101067,7 +101067,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this2.handlePressNavButton = function () {
-        console.log("boardgeneration finished", _this2.elements, JSON.stringify(_this2.elements));
+        _this2.postEvent({
+          "button": "PRESSED"
+        });
       };
 
       _this2.auth_token = null;
