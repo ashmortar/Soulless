@@ -647,6 +647,44 @@ export default class Engine extends Component {
     }
   }
 
+  renderOpponent = () => {
+    if (this.props.opponentVisible) {
+      if (this.props.isHuman) {
+        return (
+          <TouchableSprite activeOpacity={1} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+            <Sprite
+              offset={[0, 0]}
+              repeat={true}
+              src={this.state.srcEvil}
+              steps={[11]}
+              state={0}
+              onPlayStateChanged={this.handlePlayStateChanged}
+              tileHeight={128}
+              ticksPerFrame={this.state.ticksPerFrame}
+              tileWidth={64}
+            />
+          </TouchableSprite>
+        );
+      } else {
+        return (
+          <TouchableSprite activeOpacity={1} onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+          <Sprite
+          offset={[0, 0]}
+          repeat={true}
+          src={this.state.srcPriest}
+          steps={[11]}
+          state={0}
+          onPlayStateChanged={this.handlePlayStateChanged}
+          tileHeight={128}
+          ticksPerFrame={this.state.ticksPerFrame}
+          tileWidth={64}
+          />
+          </TouchableSprite>
+        );
+      }
+    }
+  }
+
   echoNorth = () => {
     this.props.resetHighlighted();
     this.props.echolocate('north');
@@ -784,6 +822,7 @@ export default class Engine extends Component {
               {this.renderFog()}
               {this.renderLastTurn()}
               {this.renderSprite()}
+              {this.renderOpponent()}
               {this.renderControls()}
               {this.renderTargetPicker()}
 
@@ -809,6 +848,10 @@ export default class Engine extends Component {
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
       return ({zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
     }
+  }
+
+  getOpponentStyle = () => {
+    
   }
 
   handlePlayStateChanged = (state) => {

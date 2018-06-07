@@ -70,6 +70,7 @@ class Waiting extends Component {
       shrinesDesecrated: 0,
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
+      opponentVisible: false,
     }
   }
 
@@ -231,7 +232,7 @@ class Waiting extends Component {
     let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
     switch (direction) {
 
-      case 'initial' :
+      case 'initial':
 
         topLeft.isRevealed = true;
         top.isRevealed = true;
@@ -254,6 +255,11 @@ class Waiting extends Component {
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
+            if (cell.hasMonster) {
+              this.setState({
+                opponentVisible: true,
+              });
+            }
             if (cell.name - this.cellsInRow > 0) {
               cell = this.elements[cell.name - this.cellsInRow];
             } else {
@@ -275,6 +281,11 @@ class Waiting extends Component {
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
+            if (cell.hasMonster) {
+              this.setState({
+                opponentVisible: true,
+              });
+            }
             if ((cell.name + 1) % this.cellsInRow === 0) {
               break;
             } else {
@@ -296,6 +307,11 @@ class Waiting extends Component {
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
+            if (cell.hasMonster) {
+              this.setState({
+                opponentVisible: true,
+              });
+            }
             if (cell.name + this.cellsInRow < this.cellsTotal) {
               cell = this.elements[cell.name + this.cellsInRow];
             } else {
@@ -317,6 +333,11 @@ class Waiting extends Component {
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
+            if (cell.hasMonster) {
+              this.setState({
+                opponentVisible: true,
+              });
+            }
             if ((cell.name - 1) % this.cellsInRow === 0) {
               break;
             } else {
@@ -1235,6 +1256,7 @@ class Waiting extends Component {
           assignImageFogKeys={this.assignImageFogKeys}
           resetHighlighted={this.resetHighlighted}
           alterZoom={this.alterZoom}
+          opponentVisible={this.state.opponentVisible}
         />
         <Modal
           isVisible={this.state.modal != 0}

@@ -61,6 +61,7 @@ class Game extends Component {
       shrinesDesecrated: 0,
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
+      opponentVisible: false,
     };
   }
 
@@ -1274,6 +1275,11 @@ class Game extends Component {
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
+            if (cell.hasMonster) {
+              this.setState({
+                opponentVisible: true,
+              });
+            }
             if (cell.name - this.cellsInRow > 0) {
               cell = this.elements[cell.name - this.cellsInRow];
             } else {
@@ -1295,6 +1301,11 @@ class Game extends Component {
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
+            if (cell.hasMonster) {
+              this.setState({
+                opponentVisible: true,
+              });
+            }
             if ((cell.name + 1) % this.cellsInRow === 0) {
               break;
             } else {
@@ -1316,6 +1327,11 @@ class Game extends Component {
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
+            if (cell.hasMonster) {
+              this.setState({
+                opponentVisible: true,
+              });
+            }
             if (cell.name + this.cellsInRow < this.cellsTotal) {
               cell = this.elements[cell.name + this.cellsInRow];
             } else {
@@ -1337,6 +1353,11 @@ class Game extends Component {
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
+            if (cell.hasMonster) {
+              this.setState({
+                opponentVisible: true,
+              });
+            }
             if ((cell.name - 1) % this.cellsInRow === 0) {
               break;
             } else {
@@ -2001,11 +2022,13 @@ class Game extends Component {
       this.setState({
         isHuman: false,
         playerSpace: this.monsterSpace,
+        opponentVisible: false,
       });
     } else {
       this.setState({
         isHuman: true,
         playerSpace: this.humanSpace,
+        opponentVisible: false,
       });
     }
     this.setState({ turnCounter: 0 });
@@ -2098,6 +2121,7 @@ class Game extends Component {
           assignImageFogKeys={this.assignImageFogKeys}
           resetHighlighted={this.resetHighlighted}
           alterZoom={this.alterZoom}
+          opponentVisible={this.state.opponentVisible}
         />
         <Modal
           isVisible={this.state.modal != 0}
