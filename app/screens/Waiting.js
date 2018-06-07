@@ -929,6 +929,13 @@ class Waiting extends Component {
     this.setState({ modalDialogOnly: 0 });
     this.incrementTurnCounter();
   }
+  makeEmptyBoard = () => {
+    let array = [];
+    for (let i = 0; i < 1600; i++) {//note: array length hardcoded
+      array.push(null);
+    }
+    this.elements = array;
+  }
 
 
   componentDidMount() {
@@ -980,6 +987,7 @@ class Waiting extends Component {
       }
     }
     else if (this.player_number === 2) {
+      this.makeEmptyBoard();
       //post event ready
       this.postEvent({"ready": "player2"})
     }
@@ -1056,9 +1064,29 @@ class Waiting extends Component {
       console.log('player2 ready!');
       this.player2Ready = true;
       if (this.player_number === 1) {
-        console.log("sending board", this.elements);
-        this.postEvent({ board: this.elements });
+
+        for (let j = 0; j < 8; j++) {
+          let array = [];
+          // array.push(j);
+          let arrayJSON;
+          for (let i = 200 * j; i < 200 * (j+1); i++) {
+            array.push(this.elements[i]);
+          }
+          arrayJSON = JSON.parse(JSON.stringify(array));
+          this.postEvent({"board": arrayJSON});
+        }
+
       }
+    }
+    else if (message.board) {
+      if (this.player_number === 2) {
+        for (let i = 0; i < 200; i++) {
+          this.elements[message.board[i].name] = message.board[i];
+        }
+      }
+      console.log("player 2 recieved piece of board and made changes");
+      console.log(message);
+      console.log(this.elements);
     }
   }
 
@@ -1226,7 +1254,7 @@ class Waiting extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{flex: 1, backgroundColor: "transparent"}}>
         {this.renderWaiting()}
 
         {this.renderGame()}
