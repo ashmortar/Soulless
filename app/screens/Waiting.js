@@ -1346,6 +1346,7 @@ class Waiting extends Component {
           resetHighlighted={this.resetHighlighted}
           alterZoom={this.alterZoom}
           opponentVisible={this.state.opponentVisible}
+          gameActive={(this.state.isHuman == (this.state.turn % 2 === 0))}
         />
         <Modal
           isVisible={this.state.modal != 0}

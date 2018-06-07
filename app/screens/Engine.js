@@ -22,6 +22,7 @@ export default class Engine extends Component {
     animationVisible: PropTypes.bool,
     assignImageFogKeys: PropTypes.func,
     showHumanMoves: PropTypes.func,
+    gameActive: PropTypes.bool,
   };
 
   constructor(props) {
@@ -244,7 +245,7 @@ export default class Engine extends Component {
         this.setState({
           srcPriest: require("../data/images/priestWalkDown.png")
         })
-      } 
+      }
       // left
       else if ((this.getNewSpriteX() - spriteX._value < 0))  {
         if (this.state.srcPriest != require("../data/images/priest-walk-left.png")) {
@@ -254,7 +255,7 @@ export default class Engine extends Component {
         }
       }
       // right
-      else { 
+      else {
         if (this.state.srcPriest != require("../data/images/priest-walk-right2.png")) {
           this.setState({
             srcPriest: require("../data/images/priest-walk-right2.png")
@@ -480,6 +481,9 @@ export default class Engine extends Component {
   }
 
   renderHighlighted = () => {
+    if ((!this.props.gameActive) && (this.state.showHighlighted)) {
+      this.setState({ showHighlighted: false })
+    }
     if (this.state.showHighlighted) {
       return (
         <TileMap
@@ -613,25 +617,27 @@ export default class Engine extends Component {
 
   controlSwitch = () => {
     // console.log('switch')
-    if (this.state.controlsVisible) {
-      if (this.props.isHuman) {
-        this.props.showHumanMoves();
-        this.setState({
-          controlsVisible: false,
-        });
+    if (this.props.gameActive) {
+      if (this.state.controlsVisible) {
+        if (this.props.isHuman) {
+          this.props.showHumanMoves();
+          this.setState({
+            controlsVisible: false,
+          });
+        } else {
+          this.props.showMonsterMoves();
+          this.setState({
+            controlsVisible: false,
+            targetPickerVisible: false,
+          });
+        }
       } else {
-        this.props.showMonsterMoves();
         this.setState({
-          controlsVisible: false,
+          controlsVisible: true,
           targetPickerVisible: false,
+          showHighlighted: false,
         });
       }
-    } else {
-      this.setState({
-        controlsVisible: true,
-        targetPickerVisible: false,
-        showHighlighted: false,
-      });
     }
   }
 
@@ -767,6 +773,9 @@ export default class Engine extends Component {
   }
 
   renderControls = () => {
+    if ((!this.props.gameActive) && (this.state.controlsVisible)) {
+      this.setState({ controlsVisible: false })
+    }
     if (this.state.controlsVisible && this.props.tileWidth === this.props.zoomedInValue) {
       if (this.props.isHuman) {
           return (
