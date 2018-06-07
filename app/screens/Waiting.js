@@ -38,6 +38,14 @@ class Waiting extends Component {
     console.log("board complete", this.elements);
   }
 
+  makeEmptyBoard = () => {
+    let array = [];
+    for (let i = 0; i < 1600; i++) {//note: array length hardcoded
+      array.push(null);
+    }
+    this.elements = array;
+  }
+
 
   componentDidMount() {
     console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken, this.props.navigation.state.params.phone);
@@ -88,6 +96,7 @@ class Waiting extends Component {
       }
     }
     else if (this.player_number === 2) {
+      this.makeEmptyBoard();
       //post event ready
       this.postEvent({"ready": "player2"})
     }
@@ -164,15 +173,10 @@ class Waiting extends Component {
       console.log('player2 ready!');
       this.player2Ready = true;
       if (this.player_number === 1) {
-        // console.log("sending board", this.elements);
-        // this.postEvent(this.elements);
-        // console.log("***");
-        // console.log(JSON.parse(JSON.stringify([this.elements[0], this.elements[1]])));
-        // console.log("***");
 
         for (let j = 0; j < 8; j++) {
           let array = [];
-          array.push(j);
+          // array.push(j);
           let arrayJSON;
           for (let i = 200 * j; i < 200 * (j+1); i++) {
             array.push(this.elements[i]);
@@ -180,10 +184,18 @@ class Waiting extends Component {
           arrayJSON = JSON.parse(JSON.stringify(array));
           this.postEvent({"board": arrayJSON});
         }
+
       }
     }
     else if (message.board) {
-
+      if (this.player_number === 2) {
+        for (let i = 0; i < 200; i++) {
+          this.elements[message.board[i].name] = message.board[i];
+        }
+      }
+      console.log("player 2 recieved piece of board and made changes");
+      console.log(message);
+      console.log(this.elements);
     }
   }
 
