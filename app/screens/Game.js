@@ -41,7 +41,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: false,
+      isHuman: true,
       tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -2106,6 +2106,8 @@ class Game extends Component {
           boardFinished={this.state.boardFinished}
           isHuman={this.state.isHuman}
           playerSpace={this.state.playerSpace}
+          monsterSpace={this.monsterSpace}
+          humanSpace={this.humanSpace}
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
           echolocate={this.echoLocate}
           tileWidth={this.state.tileWidth}

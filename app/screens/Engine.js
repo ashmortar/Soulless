@@ -651,7 +651,7 @@ export default class Engine extends Component {
     if (this.props.opponentVisible) {
       if (this.props.isHuman) {
         return (
-          <TouchableSprite activeOpacity={1} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+          <TouchableSprite activeOpacity={1} style={this.getOpponentStyle()} onPress={this.controlSwitch}>
             <Sprite
               offset={[0, 0]}
               repeat={true}
@@ -850,11 +850,22 @@ export default class Engine extends Component {
     }
   }
 
+  // this.playerX = (this.props.playerSpace.name % 40) * this.props.tileWidth;
+  // this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.props.tileWidth;
+
   getOpponentStyle = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
-    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
+    if (this.props.isHuman) {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.monsterSpace.name / 40) * this.props.tileWidth) });
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return ({zIndex: 1, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.monsterSpace.name / 40) * this.props.tileWidth), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
+      }
+    } else {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.humanSpace.name / 40) * this.props.tileWidth) });
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return ({zIndex: 1, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.humanSpace.name / 40) * this.props.tileWidth), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
+      }
     }
   }
 

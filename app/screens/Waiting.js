@@ -1289,6 +1289,8 @@ class Waiting extends Component {
           boardFinished={this.state.boardFinished}
           isHuman={this.state.isHuman}
           playerSpace={this.state.playerSpace}
+          monsterSpace={this.monsterSpace}
+          humanSpace={this.humanSpace}
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
           echolocate={this.echoLocate}
           tileWidth={this.state.tileWidth}
