@@ -93,7 +93,7 @@ class Waiting extends Component {
   }
 
   parseGameInfo = (data) => {
-    let phoneCompare = this.phone;
+    let phoneCompare = "+1" + this.phone;
     if (data.accessToken === this.accessToken) {
       if (data.player1.phone == phoneCompare) {
         // this.setState({ player_number: 1 });
