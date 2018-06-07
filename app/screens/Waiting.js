@@ -157,12 +157,12 @@ class Waiting extends Component {
 
   parseGameEvent = (message) => {
     console.log('-----------------------------------');
-    console.log("this is the message", JSON.parse(message));
+    // console.log("this is the message", JSON.parse(message));
     if (message.ready) {
       console.log('player2 ready!');
       this.player2Ready = true;
       if (this.player_number === 1) {
-        this.postEvent({"board": this.elements})
+        this.postEvent({"board": JSON.stringify(this.elements)})
       }
     }
   }
