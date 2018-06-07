@@ -157,11 +157,11 @@ class Bar extends Component {
 
       return(
         <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
-        <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
 
-        <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>Waiting for opponent</Text>
+            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: 20}}>Waiting for opponent</Text>
 
-        </View>
+          </View>
         </ImageBackground>
       )
       // <View style={{flexDirection: 'row'}}>
