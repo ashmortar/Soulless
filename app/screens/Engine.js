@@ -39,7 +39,7 @@ export default class Engine extends Component {
     this.cameraX = this.getCameraX();
     this.cameraY = this.getCameraY();
     this.beginningX = this.getBeginningX();
-    this.beginningY = this.getBeginningY();
+    this.beginningY = this.getBeginningY()
     this.feedbackSquare = null;
     this.previousTouchTimestamp = 0;
     this.state = {
@@ -344,6 +344,8 @@ export default class Engine extends Component {
     // console.log('engine received props');
     let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
+    let newWasPouncedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
+    let newWasEchoedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
     if (this.props.playerSpace !== nextProps.playerSpace) {
       // console.log("player space", this.props.playerSpace, nextProps.playerSpace)
       this.setState({
@@ -371,6 +373,16 @@ export default class Engine extends Component {
         finishedUpdatingFogMap: false,
         fogMap: newFogMap,
       });
+    }
+    if (JSON.stringify(this.state.wasPouncedTileMap) !== JSON.stringify(newWasPouncedMap)) {
+      this.setState({
+        wasPouncedTileMap: newWasPouncedMap,
+      });
+    }
+    if (JSON.stringify(this.state.wasEchoedTileMap) !== JSON.stringify(newWasEchoedMap)) {
+      this.setState({
+        wasEchoedTileMap: newWasEchoedMap,
+      })
     }
   }
 
@@ -651,7 +663,7 @@ export default class Engine extends Component {
     if (this.props.opponentVisible) {
       if (this.props.isHuman) {
         return (
-          <TouchableSprite activeOpacity={1} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+          <TouchableSprite activeOpacity={1} style={this.getOpponentStyle()} onPress={this.controlSwitch}>
             <Sprite
               offset={[0, 0]}
               repeat={true}
@@ -850,11 +862,22 @@ export default class Engine extends Component {
     }
   }
 
+  // this.playerX = (this.props.playerSpace.name % 40) * this.props.tileWidth;
+  // this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.props.tileWidth;
+
   getOpponentStyle = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
-    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
+    if (this.props.isHuman) {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.props.tileWidth)) });
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return ({zIndex: 1, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.monsterSpace.name / 40) * this.props.tileWidth), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
+      }
+    } else {
+      if (this.props.tileWidth === this.props.zoomedInValue) {
+        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.props.tileWidt) - this.props.tileWidth*6) });
+      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+        return ({zIndex: 1, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.humanSpace.name / 40) * this.props.tileWidth), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
+      }
     }
   }
 

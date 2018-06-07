@@ -80,7 +80,7 @@ class Waiting extends Component {
     let array = await this.generator.generateBoard();
     this.boardReady = true;
     this.elements = array;
-    console.log("board complete", this.elements);
+    // console.log("board complete", this.elements);
   }
 
   setHeartRate = () => {
@@ -1057,7 +1057,7 @@ class Waiting extends Component {
     if (this.player_number === 1) {
       //generate board
       this.makeBoard();
-      console.log("game prep", this.elements);
+      // console.log("game prep", this.elements);
       //if board.done and player2.ready
       if (this.player2Ready) {
         //then post board event
@@ -1114,7 +1114,7 @@ class Waiting extends Component {
       res.json()
       .then((responseJSON) => {
         console.log('responseJSON in getGameInfo');
-        console.log(responseJSON);
+        // console.log(responseJSON);
         this.parseGameInfo(responseJSON);
       })
       if (res.error) {
@@ -1326,6 +1326,8 @@ class Waiting extends Component {
           boardFinished={this.state.boardFinished}
           isHuman={this.state.isHuman}
           playerSpace={this.state.playerSpace}
+          monsterSpace={this.monsterSpace}
+          humanSpace={this.humanSpace}
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
           echolocate={this.echoLocate}
           tileWidth={this.state.tileWidth}
