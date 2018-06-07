@@ -64,6 +64,7 @@ class Waiting extends Component {
       modalPounce: 0,
       modalAlert: 0,
       turnCounter: 0,
+      turn: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
       shrinesBlessed: 0,
@@ -71,6 +72,7 @@ class Waiting extends Component {
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
     }
+    //turn: odd - priest; even - evil
   }
 
   makeBoard = async () => {
@@ -312,10 +314,17 @@ class Waiting extends Component {
     );
   }
 
+
+  changePlayerMode = () => {//-------------------------------------------------------new
+    // this.setState({ turn: this.state.turn + 1 })
+    this.postEvent({"endTurn": "sample"});
+
+  }
+
   onItemSelected = (item) => {
     // console.log('onItemSelected', item);
     switch (item) {
-      case 'endTurn':
+      case 'endTurn'://--------------------------------------------------------------endTurn
         if (this.state.outOfMoves) {
           if (this.state.isHuman) {
             this.resetWasPounced();
@@ -325,39 +334,6 @@ class Waiting extends Component {
           this.resetHighlighted();
           this.changePlayerMode();
         }
-        break;
-      case 'move':
-        if (this.state.isHuman) {
-          this.showHumanMoves();
-          this.setState({ redraw: !this.state.redraw });
-        } else {
-          this.showMonsterMoves();
-          // this.setState({ redraw: !this.state.redraw });
-        }
-        break;
-      case 'sniff':
-        this.resetHighlighted();
-        // this.setState({ modalDialogOnly: 1 });
-        this.setState({ modal: 3 });
-        break;
-      case 'listen':
-        this.resetHighlighted();
-        if (this.state.isHuman) {
-          this.setState({ modalDialogOnly: 3 });
-        }
-        else {
-          this.setState({ modal: 4 });
-        }
-        break;
-      case 'echo':
-        this.resetHighlighted();
-        this.setState({ modal: 1 });
-        break;
-      case 'pounce':
-        // this.setState({ modalPounce: 1 });
-        this.resetHighlighted();
-        this.monsterProcessPounce();
-        // this.setState({ modalPounce: 0 });
         break;
       case 'home':
         this.resetHighlighted();
@@ -430,6 +406,36 @@ class Waiting extends Component {
   }
 
 
+
+  renderModalWaitForTurnContent = () => {
+    let text1 = 'Waiting for the evil to make their move.';
+
+    return (
+      <View style={{
+        backgroundColor: 'transparent',
+        width: Dimensions.get("window").width*0.9,
+        marginLeft: "auto",
+        marginRight: "auto",
+        height: 200,
+      }}>
+        <ImageBackground
+          style={{
+            height: undefined,
+            width: undefined,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+            }}
+          source={require("../data/images/tallWindow.png")}
+          resizeMode={"stretch"}
+          >
+
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+
+        </ImageBackground>
+      </View>
+    )
+  }
 
   renderModalContent = () => {
     if (this.state.modalDialogOnly === 1) { // focus on young priest
@@ -533,47 +539,6 @@ class Waiting extends Component {
       )
     }
     // <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
-    else if (this.state.modalDialogOnly === 3) {//LISTEN FOR HUMAN
-      let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
-      let text1 = 'You listened.';
-      let text2 = `Opponent is ${distance} cells away`;
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
-        </View>
-      );
-    } else if (this.state.modalDialogOnly === 4) {// LISTEN FOR SHRINE
-      let { distance } = this.findClosestShrine();
-      let text1 = 'You listened.';
-      let text2 = `Shrine is ${distance} cells away`;
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
-        </View>
-      );
-    }
     else if (this.state.modalPounce === 1) {//POUNCE
       let text1;
       let text2;
@@ -605,68 +570,6 @@ class Waiting extends Component {
           </ImageBackground>
         </View>
       );
-    }
-    else if (this.state.modal === 1) {//ECHO
-      let text1 = 'Choose echo direction:';
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <NavButton onPress={() => {this.echoLocate('north'); this.setState({ modal: 0 });}} text='North' />
-          <NavButton onPress={() => {this.echoLocate('south'); this.setState({ modal: 0 });}} text='South' />
-          <NavButton onPress={() => {this.echoLocate('east'); this.setState({ modal: 0 });}} text='East' />
-          <NavButton onPress={() => {this.echoLocate('west'); this.setState({ modal: 0 });}} text='West' />
-          <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 });}} text='Burst' />
-        </View>
-      );
-    }
-    else if (this.state.modal === 3) {//sniff
-      let text1 = 'Sniff:';
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 1 }); }} text='player' />
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 2 }); }} text='shrine' />
-        </View>
-      );
-    }
-    else if (this.state.modal === 4) {//listen
-      if (!this.state.isHuman) {
-        let text1 = 'Listen:';
-        return (
-          <View style={{
-
-            borderWidth: 2,
-            borderColor: "#000",
-
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 22,
-            backgroundColor: '#212121',
-          }}>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 3 }); }} text='player' />
-            <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 4 }); }} text='shrine' />
-          </View>
-        );
-      }
     }
     else if (this.state.modalLeft === 1) {//EXIT
       return (
@@ -930,6 +833,11 @@ class Waiting extends Component {
     this.setState({ modalDialogOnly: 0 });
     this.incrementTurnCounter();
   }
+
+
+
+//-----------------------------------------------------------------------------------
+
   makeEmptyBoard = () => {
     let array = [];
     for (let i = 0; i < 1600; i++) {//note: array length hardcoded
@@ -1091,9 +999,9 @@ class Waiting extends Component {
         console.log('***ready to play?');
         console.log(this.state.readyToBeginPlaying);
       }
-      // console.log("player 2 recieved piece of board and made changes");
-      // console.log(message);
-      // console.log(this.elements);
+    }
+    else if (message.endTurn) {
+      this.setState({ turn: this.state.turn + 1 })
     }
   }
 
@@ -1251,6 +1159,16 @@ class Waiting extends Component {
         >
           {this.renderModalContent()}
         </Modal>
+
+
+        <Modal
+          isVisible={(this.state.isHuman == (this.state.turn % 2 === 1))}
+          animationIn="slideInRight"
+          animationOut="slideOutLeft"
+        >
+          {this.renderModalWaitForTurnContent()}
+        </Modal>
+
 
         {bar}
       </SideMenu>
