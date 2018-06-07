@@ -96959,10 +96959,10 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             _react3.default.createElement(_reactNative.Image, {
               style: {
                 height: 25,
-                width: 12,
+                width: 25,
                 marginLeft: _reactNative.Dimensions.get("window").width / 4
               },
-              source: _require(_dependencyMap[12], "../data/images/shrine-grey.png"),
+              source: _require(_dependencyMap[12], "../data/images/targetShrineOut.png"),
               __source: {
                 fileName: _jsxFileName,
                 lineNumber: 119
@@ -97073,7 +97073,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   }, _temp));
 
   exports.default = Bar;
-},752,[118,179,129,12,657,586,589,593,596,753,755,756,748],"app\\screens\\Bar.js");
+},752,[118,179,129,12,657,586,589,593,596,753,755,756,744],"app\\screens\\Bar.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -100912,8 +100912,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           case 2:
             array = _context.sent;
             _this.boardReady = true;
-            console.log("board complete");
-            return _context.abrupt("return", array);
+            _this.elements = array;
+            console.log("board complete", JSON.stringify(_this.elements));
 
           case 6:
           case "end":
@@ -100958,7 +100958,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       _this2.gamePrep = function () {
         if (_this2.player_number === 1) {
-          _this2.elements = generateBoard();
+          generateBoard();
+          console.log("game prep", _this2.elements);
 
           if (_this2.player2Ready) {}
         } else if (_this2.player_number === 2) {
@@ -101031,11 +101032,15 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       _this2.parseGameEvent = function (message) {
         console.log('-----------------------------------');
-        console.log(message);
+        console.log("this is the message", JSON.parse(message));
 
         if (message.ready) {
           console.log('player2 ready!');
           _this2.player2Ready = true;
+
+          _this2.postEvent({
+            "board": _this2.elements
+          });
         }
       };
 
@@ -101106,21 +101111,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 209
+              lineNumber: 210
             }
           },
           _react3.default.createElement(_Header.Header, {
             text: "waiting screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 210
+              lineNumber: 211
             }
           }),
           _react3.default.createElement(_Blurb.Blurb, {
             text: "waiting for player to join..",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 211
+              lineNumber: 212
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -101128,7 +101133,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "Back",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 212
+              lineNumber: 213
             }
           })
         );

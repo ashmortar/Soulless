@@ -117,8 +117,8 @@ class Bar extends Component {
           <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
 
           <Image
-            style={{ height: 25, width: 12, marginLeft: Dimensions.get("window").width / 4 }}
-            source={require("../data/images/shrine-grey.png")}
+            style={{ height: 25, width: 25, marginLeft: Dimensions.get("window").width / 4 }}
+            source={require("../data/images/targetShrineOut.png")}
           />
 
           <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrines}</Text>
