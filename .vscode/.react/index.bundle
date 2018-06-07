@@ -75046,6 +75046,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             auth_token: value
           });
         });
+
+        _reactNative.AsyncStorage.getItem('phone').then(function (value) {
+          return _this.setState({
+            phone: value
+          });
+        });
+
+        _reactNative.AsyncStorage.getItem('id').then(function (value) {
+          return _this.setState({
+            id: value
+          });
+        });
       };
 
       _this.setAuthToken = function (auth_token) {
@@ -75053,6 +75065,17 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
         _this.setState({
           auth_token: auth_token
+        });
+      };
+
+      _this.setPhoneAndId = function (phone, id) {
+        _reactNative.AsyncStorage.setItem('phone', phone);
+
+        _reactNative.AsyncStorage.setItem('id', id);
+
+        _this.setState({
+          phone: phone,
+          id: id
         });
       };
 
@@ -75087,7 +75110,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             "phone": phone
           })
         }).then(function (res) {
-          res.json();
+          res.json().then(function (response) {
+            _this.setPhoneAndId(response.phone, response.id);
+
+            console.log("verify", _this.state.phone, _this.state.id);
+          });
 
           if (res.error) {
             console.log('error');
@@ -75277,51 +75304,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 240
-              }
-            },
-            _react3.default.createElement(
-              _reactNative.Text,
-              {
-                style: {
-                  color: "#fff",
-                  textAlign: 'center',
-                  fontFamily: 'Perfect DOS VGA 437'
-                },
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 241
-                }
-              },
-              "Game initiated, press below to begin"
-            ),
-            _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.handleBeginGame,
-              text: "begin",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 247
-              }
-            }),
-            _react3.default.createElement(_Button.NavButton, {
-              onPress: function onPress() {
-                return _this.setModalVisible(false);
-              },
-              text: "cancel",
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 248
-              }
-            })
-          );
-        }
-
-        if (_this.state.auth_token !== null) {
-          return _react3.default.createElement(
-            _reactNative.View,
-            {
-              __source: {
-                fileName: _jsxFileName,
                 lineNumber: 254
               }
             },
@@ -75338,11 +75320,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                   lineNumber: 255
                 }
               },
-              "Click below to find a game!"
+              "Game initiated, press below to begin"
             ),
             _react3.default.createElement(_Button.NavButton, {
-              onPress: _this.handlePressHostJoinButton,
-              text: "host/join",
+              onPress: _this.handleBeginGame,
+              text: "begin",
               __source: {
                 fileName: _jsxFileName,
                 lineNumber: 261
@@ -75359,7 +75341,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               }
             })
           );
-        } else if (_this.state.numberVerified) {
+        }
+
+        if (_this.state.auth_token !== null) {
           return _react3.default.createElement(
             _reactNative.View,
             {
@@ -75379,6 +75363,49 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 __source: {
                   fileName: _jsxFileName,
                   lineNumber: 269
+                }
+              },
+              "Click below to find a game!"
+            ),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: _this.handlePressHostJoinButton,
+              text: "host/join",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 275
+              }
+            }),
+            _react3.default.createElement(_Button.NavButton, {
+              onPress: function onPress() {
+                return _this.setModalVisible(false);
+              },
+              text: "cancel",
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 276
+              }
+            })
+          );
+        } else if (_this.state.numberVerified) {
+          return _react3.default.createElement(
+            _reactNative.View,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 282
+              }
+            },
+            _react3.default.createElement(
+              _reactNative.Text,
+              {
+                style: {
+                  color: "#fff",
+                  textAlign: 'center',
+                  fontFamily: 'Perfect DOS VGA 437'
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 283
                 }
               },
               "Enter the code in your SMS"
@@ -75405,7 +75432,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 274
+                lineNumber: 288
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
@@ -75413,7 +75440,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               text: "login",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 281
+                lineNumber: 295
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
@@ -75423,7 +75450,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               text: "cancel",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 282
+                lineNumber: 296
               }
             })
           );
@@ -75433,7 +75460,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 288
+                lineNumber: 302
               }
             },
             _react3.default.createElement(
@@ -75446,7 +75473,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 },
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 289
+                  lineNumber: 303
                 }
               },
               "Enter you phone number and press the button below to receive an SMS code for verification"
@@ -75473,7 +75500,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 294
+                lineNumber: 308
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
@@ -75481,7 +75508,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               text: "get code",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 302
+                lineNumber: 316
               }
             }),
             _react3.default.createElement(_Button.NavButton, {
@@ -75491,7 +75518,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               text: "cancel",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 303
+                lineNumber: 317
               }
             })
           );
@@ -75516,7 +75543,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 348
+              lineNumber: 362
             }
           },
           _react3.default.createElement(
@@ -75530,7 +75557,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 355
+                lineNumber: 369
               }
             },
             _react3.default.createElement(
@@ -75548,7 +75575,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
                 resizeMode: "contain",
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 356
+                  lineNumber: 370
                 }
               },
               _this.renderInputs()
@@ -75589,21 +75616,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 384
+              lineNumber: 398
             }
           },
           _react3.default.createElement(_Header.Header, {
             text: "Home Screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 385
+              lineNumber: 399
             }
           }),
           _react3.default.createElement(_Blurb.Blurb, {
             text: "This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 386
+              lineNumber: 400
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75611,7 +75638,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "Play locally",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 387
+              lineNumber: 401
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -75619,7 +75646,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: text,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 388
+              lineNumber: 402
             }
           }),
           this.renderConnectingModal()
@@ -100878,10 +100905,11 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
           case 2:
             array = _context.sent;
-            console.log("boardgeneration finished", array);
+            console.log("boardgeneration finished");
+            _this.boardReady = true;
             return _context.abrupt("return", array);
 
-          case 5:
+          case 6:
           case "end":
             return _context.stop();
         }
@@ -100924,7 +100952,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
       _this2.gamePrep = function () {
         if (_this2.player_number === 1) {
-          _this2.elements = generator.generateBoard();
+          _this2.elements = generateBoard();
         } else if (_this2.player_number === 2) {
           _this2.postEvent({
             "ready": "player2"
@@ -100935,7 +100963,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       };
 
       _this2.parseGameInfo = function (data) {
-        var phoneCompare = "+1" + _this2.phone;
+        var phoneCompare = _this2.phone;
 
         if (data.accessToken === _this2.accessToken) {
           if (data.player1.phone == phoneCompare) {
@@ -101013,9 +101041,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           method: "POST",
           body: JSON.stringify(event)
         }).then(function (res) {
-          res.json().then(function (responseJSON) {
-            console.log(responseJSON);
-          });
+          res.json().then(function (responseJSON) {});
 
           if (res.error) {
             console.log('error');
@@ -101049,7 +101075,8 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       _this2.player_id = 0;
       _this2.player_number = 0;
       _this2.player2Ready = false;
-      _this2.elements = generateBoard();
+      _this2.elements = null;
+      _this2.boardReady = false;
       _this2.state = {};
       return _this2;
     }
@@ -101057,8 +101084,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     _createClass(Waiting, [{
       key: "componentDidMount",
       value: function componentDidMount() {
-        console.log("gameboard", this.elements);
-        console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken);
+        console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken, this.props.navigation.state.params.phone);
         this.auth_token = this.props.navigation.state.params.auth_token;
         this.accessToken = this.props.navigation.state.params.accessToken;
         this.phone = this.props.navigation.state.params.phone;
@@ -101072,21 +101098,21 @@ __d(function (global, _require, module, exports, _dependencyMap) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 203
+              lineNumber: 204
             }
           },
           _react3.default.createElement(_Header.Header, {
             text: "waiting screen",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 204
+              lineNumber: 205
             }
           }),
           _react3.default.createElement(_Blurb.Blurb, {
             text: "waiting for player to join..",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 205
+              lineNumber: 206
             }
           }),
           _react3.default.createElement(_Button.NavButton, {
@@ -101094,7 +101120,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
             text: "Back",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 206
+              lineNumber: 207
             }
           })
         );

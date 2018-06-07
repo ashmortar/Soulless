@@ -38,7 +38,7 @@ class Waiting extends Component {
 
 
   componentDidMount() {
-    console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken);
+    console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken, this.props.navigation.state.params.phone);
     // AsyncStorage.getItem('auth_token').then((value) => console.log ("auth_token", value));
 
 
@@ -91,7 +91,7 @@ class Waiting extends Component {
   }
 
   parseGameInfo = (data) => {
-    let phoneCompare = "+1" + this.phone;
+    let phoneCompare = this.phone;
     if (data.accessToken === this.accessToken) {
       if (data.player1.phone == phoneCompare) {
         // this.setState({ player_number: 1 });
@@ -172,7 +172,7 @@ class Waiting extends Component {
       }).then(res => {
         res.json()
           .then((responseJSON) => {
-            console.log(responseJSON);
+            // console.log(responseJSON);
           })
         if (res.error) {
           console.log('error');
