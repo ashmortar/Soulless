@@ -1287,6 +1287,11 @@ class Game extends Component {
             }
           }
           cell.isRevealed = true;
+          if (cell.hasMonster) {
+            this.setState({
+              opponentVisible: true,
+            });
+          }
         }
         break;
 
@@ -1313,6 +1318,11 @@ class Game extends Component {
             }
           }
           cell.isRevealed = true;
+          if (cell.hasMonster) {
+            this.setState({
+              opponentVisible: true,
+            });
+          }
         }
         break;
 
@@ -1339,6 +1349,11 @@ class Game extends Component {
             }
           }
           cell.isRevealed = true;
+          if (cell.hasMonster) {
+            this.setState({
+              opponentVisible: true,
+            });
+          }
         }
         break;
 
@@ -1365,6 +1380,11 @@ class Game extends Component {
             }
           }
           cell.isRevealed = true;
+          if (cell.hasMonster) {
+            this.setState({
+              opponentVisible: true,
+            });
+          }
         }
         break;
 

@@ -856,7 +856,7 @@ export default class Engine extends Component {
   getOpponentStyle = () => {
     if (this.props.isHuman) {
       if (this.props.tileWidth === this.props.zoomedInValue) {
-        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.props.tileWidt) - this.props.tileWidth*6) });
+        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.props.tileWidth)) });
       } else if (this.props.tileWidth === this.props.zoomedOutValue) {
         return ({zIndex: 1, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.monsterSpace.name / 40) * this.props.tileWidth), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
       }
