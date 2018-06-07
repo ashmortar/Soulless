@@ -10,7 +10,6 @@ import BoardGenerator from '../Services/BoardGenerator';
 const generator = new BoardGenerator();
 const generateBoard = async () => {
   let array = await generator.generateBoard();
-  console.log("boardgeneration finished");
   this.boardReady = true;
   return array;
 }
@@ -196,7 +195,8 @@ class Waiting extends Component {
 
   handlePressNavButton = () => {
     // this.props.navigation.navigate('Home');
-    this.postEvent({"button": "PRESSED"})
+    // this.postEvent({"button": "PRESSED"})
+    console.log("boardgeneration finished", this.elements, JSON.stringify(this.elements));
   };
 
   render() {
