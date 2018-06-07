@@ -39,7 +39,7 @@ export default class Engine extends Component {
     this.cameraX = this.getCameraX();
     this.cameraY = this.getCameraY();
     this.beginningX = this.getBeginningX();
-    this.beginningY = this.getBeginningY();
+    this.beginningY = this.getBeginningY()
     this.feedbackSquare = null;
     this.previousTouchTimestamp = 0;
     this.state = {
@@ -344,6 +344,8 @@ export default class Engine extends Component {
     // console.log('engine received props');
     let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
+    let newWasPouncedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
+    let newWasEchoedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
     if (this.props.playerSpace !== nextProps.playerSpace) {
       // console.log("player space", this.props.playerSpace, nextProps.playerSpace)
       this.setState({
@@ -371,6 +373,16 @@ export default class Engine extends Component {
         finishedUpdatingFogMap: false,
         fogMap: newFogMap,
       });
+    }
+    if (JSON.stringify(this.state.wasPouncedTileMap) !== JSON.stringify(newWasPouncedMap)) {
+      this.setState({
+        wasPouncedTileMap: newWasPouncedMap,
+      });
+    }
+    if (JSON.stringify(this.state.wasEchoedTileMap) !== JSON.stringify(newWasEchoedMap)) {
+      this.setState({
+        wasEchoedTileMap: newWasEchoedMap,
+      })
     }
   }
 

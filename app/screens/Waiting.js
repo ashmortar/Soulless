@@ -1188,7 +1188,7 @@ class Waiting extends Component {
         console.log('***ready to play?');
         console.log(this.state.readyToBeginPlaying);
         this.boardPieceCounter = 0;
-        this.setState({ turn: this.state.turn + 1 });
+        
       }
     }
     else if (message.endTurn) {
@@ -1216,6 +1216,7 @@ class Waiting extends Component {
           this.setState({ playerSpace: this.monsterSpace});
         }
         this.boardPieceCounter = 0;
+        this.setState({ turn: this.state.turn + 1, redraw: !this.state.redraw });
       }
     }
   }
