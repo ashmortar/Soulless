@@ -918,6 +918,47 @@ class Waiting extends Component {
     this.incrementTurnCounter();
   }
 
+  getIndexesOfAvailableCellsAround = (index, row, total, monsterFlag) => {
+    let result = [];
+
+    let left = false;
+    let right = false;
+    let up = false;
+    let down = false;
+
+    if (index % row != 0) {
+      result.push(index - 1);
+      left = true;
+    }
+    if (index % row != row - 1) {
+      result.push(index + 1);
+      right = true;
+    }
+    if (index - row >= 0) {
+      result.push(index - row);
+      up = true;
+    }
+    if (index + row < total) {
+      result.push(index + row);
+      down = true;
+    }
+    if (monsterFlag) {
+      if (left && up) {
+        result.push(index - 1 - row);
+      }
+      if (left && down) {
+        result.push(index - 1 + row);
+      }
+      if (right && up) {
+        result.push(index + 1 - row);
+      }
+      if (right && down) {
+        result.push(index + 1 + row);
+      }
+    }
+    return result;
+  }
+
   getNeighboringCells = (i) => {
     let top = null;
     let left = null;

@@ -851,7 +851,11 @@ export default class Engine extends Component {
   }
 
   getOpponentStyle = () => {
-    
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return ({zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
+    }
   }
 
   handlePlayStateChanged = (state) => {
