@@ -161,6 +161,7 @@ class Waiting extends Component {
     if (message.ready) {
       console.log('player2 ready!');
       this.player2Ready = true;
+      this.postEvent({"board": this.elements})
     }
   }
 
