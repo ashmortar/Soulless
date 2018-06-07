@@ -119,7 +119,7 @@ export default class Engine extends Component {
       if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
-            this.feedbackSquare = this.props.gameBoard[i + 41];
+            this.feedbackSquare = this.props.gameBoard[i];
             return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
           }
         }
@@ -138,7 +138,7 @@ export default class Engine extends Component {
       if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
-            this.feedbackSquare = this.props.gameBoard[i + 41];
+            this.feedbackSquare = this.props.gameBoard[i];
             return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
           }
         }
@@ -890,13 +890,13 @@ export default class Engine extends Component {
   getOpponentStyle = () => {
     if (this.props.isHuman) {
       if (this.props.tileWidth === this.props.zoomedInValue) {
-        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.props.tileWidth)) });
+        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.monsterSpace.name / 40) * this.props.tileWidth) - this.props.tileWidth * 5.5) });
       } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return ({zIndex: 1, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.monsterSpace.name / 40) * this.props.tileWidth), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
+        return ({zIndex: 1, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.monsterSpace.name / 40) * this.props.tileWidth - (this.props.tileWidth*10)), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
       }
     } else {
       if (this.props.tileWidth === this.props.zoomedInValue) {
-        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.props.tileWidt) - this.props.tileWidth*6) });
+        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.props.tileWidth) - this.props.tileWidth*6) });
       } else if (this.props.tileWidth === this.props.zoomedOutValue) {
         return ({zIndex: 1, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.humanSpace.name / 40) * this.props.tileWidth), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
       }

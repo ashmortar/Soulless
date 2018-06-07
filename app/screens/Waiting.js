@@ -722,14 +722,13 @@ class Waiting extends Component {
     let human = false;
     let shrine = false;
     let index = this.monsterSpace.name;
-    this.monsterSpace.wasPounced = true;
     cellsAround.forEach((i) => {
-      this.elements[i].wasPounced = true;
       if (this.elements[i].hasHuman) {
         human = true;
         // break;
       }
       else if (this.elements[i].hasCache) {
+        this.elements[i].wasPounced = true;
         shrine = true;
         index = i;
       }
