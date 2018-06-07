@@ -420,7 +420,7 @@ class Waiting extends Component {
       arrayJSON = JSON.parse(JSON.stringify(array));
       this.postEvent({"endTurn": arrayJSON});
     }
-    this.setState({ turn: this.state.turn + 1 })
+    // this.setState({ turn: this.state.turn + 1 })
     // this.postEvent({"endTurn": "sample"});
 
   }
@@ -1168,6 +1168,7 @@ class Waiting extends Component {
           this.elements[message.board[i].name] = message.board[i];
         }
       }
+
       this.boardPieceCounter++;
       if (this.boardPieceCounter >= 8) {
         for(i = 0; i < this.elements.length; i++) {
@@ -1187,6 +1188,7 @@ class Waiting extends Component {
         console.log('***ready to play?');
         console.log(this.state.readyToBeginPlaying);
         this.boardPieceCounter = 0;
+        this.setState({ turn: this.state.turn + 1 });
       }
     }
     else if (message.endTurn) {
