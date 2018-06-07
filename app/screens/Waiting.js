@@ -406,6 +406,7 @@ class Waiting extends Component {
           }
           this.resetHighlighted();
           this.changePlayerMode();
+          this.setState({ outOfMoves: false, turnCounter: 0 })
         }
         break;
       case 'home':
@@ -480,7 +481,7 @@ class Waiting extends Component {
 
 
 
-  renderModalWaitForTurnContent = () => {
+  renderModalWaitForTurnContent = () => {//--------------------------------------------new
     let text1 = 'Waiting for the evil to make their move.';
 
     return (
