@@ -163,9 +163,26 @@ class Waiting extends Component {
       console.log('player2 ready!');
       this.player2Ready = true;
       if (this.player_number === 1) {
-        console.log("sending board", this.elements);
-        this.postEvent(this.elements);
+        // console.log("sending board", this.elements);
+        // this.postEvent(this.elements);
+        // console.log("***");
+        // console.log(JSON.parse(JSON.stringify([this.elements[0], this.elements[1]])));
+        // console.log("***");
+
+        for (let j = 0; j < 8; j++) {
+          let array = [];
+          array.push(j);
+          let arrayJSON;
+          for (let i = 200 * j; i < 200 * (j+1); i++) {
+            array.push(this.elements[i]);
+          }
+          arrayJSON = JSON.parse(JSON.stringify(array));
+          this.postEvent({"board": arrayJSON});
+        }
       }
+    }
+    else if (message.board) {
+
     }
   }
 
