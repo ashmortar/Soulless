@@ -7,13 +7,6 @@ import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 import BoardGenerator from '../Services/BoardGenerator';
 
-const generator = new BoardGenerator();
-const generateBoard = async () => {
-  let array = await generator.generateBoard();
-  this.boardReady = true;
-  this.elements = array;
-  console.log("board complete", this.elements);
-}
 var io = require('socket.io-client');
 
 
@@ -32,8 +25,16 @@ class Waiting extends Component {
     this.player2Ready = false;
     this.elements = null;
     this.boardReady = false;
+    this.generator = new BoardGenerator();
     this.state = {
     }
+  }
+
+  makeBoard = async () => {
+    let array = await this.generator.generateBoard();
+    this.boardReady = true;
+    this.elements = array;
+    console.log("board complete", this.elements);
   }
 
 
@@ -77,7 +78,7 @@ class Waiting extends Component {
   gamePrep = () => {
     if (this.player_number === 1) {
       //generate board
-      generateBoard();
+      this.makeBoard();
       console.log("game prep", this.elements);
       //if board.done and player2.ready
       if (this.player2Ready) {
@@ -157,12 +158,13 @@ class Waiting extends Component {
 
   parseGameEvent = (message) => {
     console.log('-----------------------------------');
-    console.log("this is the message", JSON.parse(message));
+    console.log("this is the message", message);
     if (message.ready) {
       console.log('player2 ready!');
       this.player2Ready = true;
       if (this.player_number === 1) {
-        this.postEvent({"board": this.elements})
+        console.log("sending board", this.elements);
+        this.postEvent(this.elements);
       }
     }
   }
@@ -171,6 +173,7 @@ class Waiting extends Component {
     console.log('postEvent');
       fetch("https://demonspell.herokuapp.com/api/games/" + this.accessToken + "/events", {
         headers: {
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'auth_token': this.auth_token,
         },
