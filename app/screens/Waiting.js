@@ -27,6 +27,7 @@ class Waiting extends Component {
     this.boardReady = false;
     this.generator = new BoardGenerator();
     this.state = {
+      readyToBeginPlaying: false,
     }
   }
 

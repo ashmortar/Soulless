@@ -225,14 +225,23 @@ export default class Engine extends Component {
     const { spriteX, spriteY } = this.state;
 
     if (this.props.isHuman) {
-      if ((this.getNewSpriteX() - spriteX._value < 0) || (this.getNewSpriteY() - spriteY._value > 0))  {
+      // down
+      if (this.getNewSpriteY() - spriteY._value > 0) {
+        if (this.state.srcPriest != require("../data/images/priestWalkDown.png"))
+        this.setState({
+          srcPriest: require("../data/images/priestWalkDown.png")
+        })
+      } 
+      // left
+      else if ((this.getNewSpriteX() - spriteX._value < 0))  {
         if (this.state.srcPriest != require("../data/images/priest-walk-left.png")) {
           this.setState({
             srcPriest: require("../data/images/priest-walk-left.png")
           });
         }
       }
-      else {
+      // right
+      else { 
         if (this.state.srcPriest != require("../data/images/priest-walk-right2.png")) {
           this.setState({
             srcPriest: require("../data/images/priest-walk-right2.png")
