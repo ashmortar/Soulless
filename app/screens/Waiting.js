@@ -605,48 +605,6 @@ class Waiting extends Component {
         </View>
       )
     }
-    // <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
-    else if (this.state.modalDialogOnly === 3) {//LISTEN FOR HUMAN
-      let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
-      let text1 = 'You listened.';
-      let text2 = `Opponent is ${distance} cells away`;
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
-        </View>
-      );
-    } else if (this.state.modalDialogOnly === 4) {// LISTEN FOR SHRINE
-      let { distance } = this.findClosestShrine();
-      let text1 = 'You listened.';
-      let text2 = `Shrine is ${distance} cells away`;
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
-        </View>
-      );
-    }
     else if (this.state.modalPounce === 1) {//POUNCE
       let text1;
       let text2;
@@ -678,68 +636,6 @@ class Waiting extends Component {
           </ImageBackground>
         </View>
       );
-    }
-    else if (this.state.modal === 1) {//ECHO
-      let text1 = 'Choose echo direction:';
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <NavButton onPress={() => {this.echoLocate('north'); this.setState({ modal: 0 });}} text='North' />
-          <NavButton onPress={() => {this.echoLocate('south'); this.setState({ modal: 0 });}} text='South' />
-          <NavButton onPress={() => {this.echoLocate('east'); this.setState({ modal: 0 });}} text='East' />
-          <NavButton onPress={() => {this.echoLocate('west'); this.setState({ modal: 0 });}} text='West' />
-          <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 });}} text='Burst' />
-        </View>
-      );
-    }
-    else if (this.state.modal === 3) {//sniff
-      let text1 = 'Sniff:';
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 1 }); }} text='player' />
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 2 }); }} text='shrine' />
-        </View>
-      );
-    }
-    else if (this.state.modal === 4) {//listen
-      if (!this.state.isHuman) {
-        let text1 = 'Listen:';
-        return (
-          <View style={{
-
-            borderWidth: 2,
-            borderColor: "#000",
-
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 22,
-            backgroundColor: '#212121',
-          }}>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 3 }); }} text='player' />
-            <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 4 }); }} text='shrine' />
-          </View>
-        );
-      }
     }
     else if (this.state.modalLeft === 1) {//EXIT
       return (
@@ -806,10 +702,7 @@ class Waiting extends Component {
       this.gameOver();
     } else if (shrine) {
       this.collectShrine(this.elements[index]);
-    } else {
-      this.setState({ modalPounce: 1 });
     }
-    this.incrementTurnCounter();
   }
 
 
@@ -892,6 +785,7 @@ class Waiting extends Component {
     this.setState({ playerSpace: item });
     this.resetHighlighted();
     this.setHeartRate();
+    this.monsterProcessPounce();
   }
 
   showHumanMoves = () => {
