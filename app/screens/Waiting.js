@@ -411,7 +411,17 @@ class Waiting extends Component {
 
   changePlayerMode = () => {//-------------------------------------------------------new
     // this.setState({ turn: this.state.turn + 1 })
-    this.postEvent({"endTurn": "sample"});
+    for (let j = 0; j < 8; j++) {
+      let array = [];
+      // array.push(j);
+      let arrayJSON;
+      for (let i = 200 * j; i < 200 * (j+1); i++) {
+        array.push(this.elements[i]);
+      }
+      arrayJSON = JSON.parse(JSON.stringify(array));
+      this.postEvent({"endTurn": arrayJSON});
+    }
+    // this.postEvent({"endTurn": "sample"});
 
   }
 
@@ -1176,10 +1186,36 @@ class Waiting extends Component {
         this.setState({ readyToBeginPlaying: true });
         console.log('***ready to play?');
         console.log(this.state.readyToBeginPlaying);
+        this.boardPieceCounter = 0;
       }
     }
     else if (message.endTurn) {
       this.setState({ turn: this.state.turn + 1 })
+
+      for (let i = 0; i < 200; i++) {
+        this.elements[message.endTurn[i].name] = message.endTurn[i];
+      }
+
+      this.boardPieceCounter++;
+
+
+      if (this.boardPieceCounter >= 8) {
+        for(i = 0; i < this.elements.length; i++) {
+          if (this.elements[i].hasHuman) {
+            this.humanSpace = this.elements[i];
+          }
+          if (this.elements[i].hasMonster) {
+            this.monsterSpace = this.elements[i];
+          }
+        }
+        
+        if (this.state.isHuman) {
+          this.setState({ playerSpace: this.humanSpace});
+        } else {
+          this.setState({ playerSpace: this.monsterSpace});
+        }
+        this.boardPieceCounter = 0;
+      }
     }
   }
 
