@@ -53,10 +53,10 @@ class Waiting extends Component {
       isHuman: true,
       tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
-      boardFinished: false,
+      boardFinished: true,
       animationType: 'hands',
       animationTouchable: true,
-      animationVisible: true,
+      animationVisible: false,
       animationTimer: 1000,
       modal: 0,
       modalLeft: 0,
@@ -92,6 +92,79 @@ class Waiting extends Component {
     this.setState({
       heartBeatTimer: Math.floor(heartRate),
     });
+  }
+
+  assignImageFogKeys = () => {
+
+    for (let i = 0; i < this.elements.length; i++) {
+      if ((this.elements[i].isRevealed)) {
+
+        if (this.elements[i].imageFogKey) { this.elements[i].imageFogKey = 0; }
+
+        if ((i % this.cellsInRow > 0) && (i - this.cellsInRow >= 0)) {
+          if ((!this.elements[i - 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
+              this.elements[i - this.cellsInRow - 1].imageFogKey = 1;//nw
+          }
+          if ((this.elements[i - 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i - 1 - this.cellsInRow].isRevealed)) {
+              this.elements[i - 1 - this.cellsInRow].imageFogKey = 9;
+          }
+        }
+
+        if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0) && (i - this.cellsInRow >= 0)) {
+          if ((!this.elements[i + 1].isRevealed) && (!this.elements[i - this.cellsInRow].isRevealed)) {
+              this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
+          }
+          if ((this.elements[i + 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i + 1 - this.cellsInRow].isRevealed)) {
+              this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
+          }
+        }
+
+        if ((i % this.cellsInRow > 0) && (i + this.cellsInRow < this.cellsTotal)) {
+          if ((!this.elements[i - 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
+              this.elements[i + this.cellsInRow - 1].imageFogKey = 7;//sw
+          }
+          if ((this.elements[i - 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i - 1 + this.cellsInRow].isRevealed)) {
+              this.elements[i - 1 + this.cellsInRow].imageFogKey = 9;
+          }
+        }
+
+        if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0) && (i + this.cellsInRow < this.cellsTotal)) {
+          if ((!this.elements[i + 1].isRevealed) && (!this.elements[i + this.cellsInRow].isRevealed)) {
+              this.elements[i + this.cellsInRow + 1].imageFogKey = 5;//se
+          }
+          if ((this.elements[i + 1].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed) && (!this.elements[i + 1 + this.cellsInRow].isRevealed)) {
+              this.elements[i + 1 + this.cellsInRow].imageFogKey = 9;
+          }
+        }
+
+        if (i % this.cellsInRow > 0) {
+          if ((!this.elements[i - 1].isRevealed) && (this.elements[i - 1].imageFogKey != 9)) {//w
+              this.elements[i - 1].imageFogKey = 8;
+          }
+        }
+        if ((i + 1 < this.cellsTotal) && (i + 1 % this.cellsInRow != 0)) {
+          if ((!this.elements[i + 1].isRevealed) && (this.elements[i + 1].imageFogKey != 9)) {//e
+              this.elements[i + 1].imageFogKey = 4;
+          }
+        }
+        if (i - this.cellsInRow >= 0) {
+          if ((!this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i - this.cellsInRow].imageFogKey != 9)) {//n
+              this.elements[i - this.cellsInRow].imageFogKey = 2;
+          }
+        }
+        if (i + this.cellsInRow < this.cellsTotal) {
+          if ((!this.elements[i + this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].imageFogKey != 9)) {//s
+              this.elements[i + this.cellsInRow].imageFogKey = 6;
+          }
+        }
+      }
+    }
+
+    for (let i = 0; i < this.cellsTotal; i++) {
+      if (this.elements[i].imageFogKey > 0) {
+        this.elements[i].isSemiRevealed = true;
+      }
+    }
   }
 
   findShortestPath(start, end) {
@@ -538,7 +611,6 @@ class Waiting extends Component {
         </View>
       )
     }
-    // <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
     else if (this.state.modalPounce === 1) {//POUNCE
       let text1;
       let text2;
@@ -636,10 +708,7 @@ class Waiting extends Component {
       this.gameOver();
     } else if (shrine) {
       this.collectShrine(this.elements[index]);
-    } else {
-      this.setState({ modalPounce: 1 });
     }
-    this.incrementTurnCounter();
   }
 
 
@@ -722,6 +791,7 @@ class Waiting extends Component {
     this.setState({ playerSpace: item });
     this.resetHighlighted();
     this.setHeartRate();
+    this.monsterProcessPounce();
   }
 
   showHumanMoves = () => {
@@ -819,24 +889,50 @@ class Waiting extends Component {
     })
   }
 
-  renderAnimator = () => {
-    if (this.state.animationVisible) {
-      return(
-        <View style={{ backgroundColor: '#000', flex: 1, zIndex: 2 }}>
-          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.animationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
-        </View>
-      )
-    }
-  }
+
 
   closeModalDialogOnly = () => {
     this.setState({ modalDialogOnly: 0 });
     this.incrementTurnCounter();
   }
 
+  getNeighboringCells = (i) => {
+    let top = null;
+    let left = null;
+    let right = null;
+    let bottom = null;
+    let bottomLeft = null;
+    let bottomRight = null;
+    let topLeft = null;
+    let topRight = null;
 
+    if((i - (this.cellsInRow + 1) >= 0) && (i % this.cellsInRow !== 0)) {
+      topLeft = this.elements[i - (this.cellsInRow + 1)];
+    }
+    if (i - this.cellsInRow >= 0) {
+      top = this.elements[i - this.cellsInRow];
+    }
+    if ((i - (this.cellsInRow - 1) >= 0) && (i % this.cellsInRow !== (this.cellsInRow - 1))) {
+      topRight = this.elements[i - (this.cellsInRow - 1)];
+    }
+    if ((i - 1 >= 0) && (i % this.cellsInRow !== 0)) {
+      left = this.elements[i - 1];
+    }
+    if ((i + 1 <= this.cellsTotal) && (i % this.cellsInRow !== (this.cellsInRow - 1))) {
+      right = this.elements[i + 1];
+    }
+    if ((i + (this.cellsInRow - 1) <= this.cellsTotal) && ((i % this.cellsInRow !== 0))) {
+      bottomLeft = this.elements[i + (this.cellsInRow - 1)];
+    }
+    if (i + this.cellsInRow <= this.cellsTotal) {
+      bottom = this.elements[i + this.cellsInRow];
+    }
+    if ((i + (this.cellsInRow + 1) <= this.cellsTotal) && (i % this.cellInRow !== (this.cellsInRow - 1))) {
+      bottomRight = this.elements[i + (this.cellsInRow + 1)];
+    }
+    return ({ top, left, right, bottom, bottomLeft, bottomRight, topLeft, topRight})
+  }
 
-//-----------------------------------------------------------------------------------
 
   makeEmptyBoard = () => {
     let array = [];
@@ -898,6 +994,9 @@ class Waiting extends Component {
     else if (this.player_number === 2) {
       this.makeEmptyBoard();
       //post event ready
+      this.setState({
+        isHuman: false,
+      })
       this.postEvent({"ready": "player2"})
     }
     else {
@@ -989,12 +1088,28 @@ class Waiting extends Component {
     }
     else if (message.board) {
       if (this.player_number === 2) {
+        this.setState({
+          isHuman: false,
+        })
         for (let i = 0; i < 200; i++) {
           this.elements[message.board[i].name] = message.board[i];
         }
       }
       this.boardPieceCounter++;
       if (this.boardPieceCounter >= 8) {
+        for(i = 0; i < this.elements.length; i++) {
+          if (this.elements[i].hasHuman) {
+            this.humanSpace = this.elements[i];
+          }
+          if (this.elements[i].hasMonster) {
+            this.monsterSpace = this.elements[i];
+          }
+        }
+        if (this.state.isHuman) {
+          this.setState({ playerSpace: this.humanSpace});
+        } else {
+          this.setState({ playerSpace: this.monsterSpace});
+        }
         this.setState({ readyToBeginPlaying: true });
         console.log('***ready to play?');
         console.log(this.state.readyToBeginPlaying);
@@ -1059,6 +1174,27 @@ class Waiting extends Component {
   }
 
   renderGame = () => {
+    if (this.state.readyToBeginPlaying) {
+      return(
+        <View style={{flex: 1, backgroundColor: "transparent"}}>
+          {this.renderAnimator()}
+          {this.renderEngine()}
+        </View>
+      )
+    }
+  }
+
+  renderAnimator = () => {
+    if (this.state.animationVisible) {
+      return(
+        <View style={{ backgroundColor: '#000', flex: 1, zIndex: 2 }}>
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.animationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
+        </View>
+      )
+    }
+  }
+
+  renderEngine = () => {
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
@@ -1073,7 +1209,7 @@ class Waiting extends Component {
       monsterShrinesToWin={this.monsterShrinesToWin}
       monsterSanityLevel={this.state.monsterSanityLevel}
     />;
-    if (this.state.readyToBeginPlaying) {
+    if (this.state.boardFinished) {
       return (
         <SideMenu
         menu={menuRight}

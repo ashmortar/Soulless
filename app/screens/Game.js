@@ -41,7 +41,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: true,
+      isHuman: false,
       tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -1838,10 +1838,7 @@ class Game extends Component {
       this.gameOver();
     } else if (shrine) {
       this.collectShrine(this.elements[index]);
-    } else {
-      this.setState({ modalPounce: 1 });
     }
-    this.incrementTurnCounter();
   }
 
 
@@ -1924,6 +1921,7 @@ class Game extends Component {
     this.setState({ playerSpace: item });
     this.resetHighlighted();
     this.setHeartRate();
+    this.monsterProcessPounce();
   }
 
   showHumanMoves = () => {
