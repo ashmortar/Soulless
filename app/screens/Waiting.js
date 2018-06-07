@@ -25,7 +25,7 @@ class Waiting extends Component {
     super(props);
     this.auth_token = null;
     this.accessToken = null;
-    this.phone = "5038757789";
+    this.phone = null;
     this.player_id = 0;
     this.player_number = 0;
     this.player2Ready = false;
@@ -43,7 +43,7 @@ class Waiting extends Component {
 
     this.auth_token = this.props.navigation.state.params.auth_token;
     this.accessToken = this.props.navigation.state.params.accessToken;
-    // this.phone = this.props.navigation.state.params.phone;
+    this.phone = this.props.navigation.state.params.phone;
 
 
     this.launchSocket(this.props.navigation.state.params.accessToken);
@@ -77,10 +77,11 @@ class Waiting extends Component {
     if (this.player_number === 1) {
       //generate board
       this.elements = generateBoard();
+      // console.log();
       //if board.done and player2.ready
       if (this.player2Ready) {
         //then post board event
-        // this.postEvent({"board": this.game.elements})
+        // this.postEvent({"board": this.elements});
       }
     }
     else if (this.player_number === 2) {
