@@ -58,7 +58,7 @@ class Bar extends Component {
   }
 
   renderMenuButton = () => {
-    
+
   }
 
   renderButton = () => {
@@ -166,7 +166,7 @@ class Bar extends Component {
         <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
 
-            <Text style={{color: '#fff', marginHorizontal: 10, marginTop: 70, alignItems: 'center', justifyContent: 'center', fontFamily: 'Perfect DOS VGA 437', fontSize: 30}}>Waiting for opponent</Text>
+            <Text style={{color: '#fff', marginLeft: Dimensions.get("window").width / 27, marginTop: Dimensions.get("window").height / 10, alignItems: 'center', justifyContent: 'center', fontFamily: 'Perfect DOS VGA 437', fontSize: 30}}>Waiting for opponent</Text>
 
           </View>
         </ImageBackground>
