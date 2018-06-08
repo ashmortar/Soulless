@@ -52,24 +52,37 @@ class Bar extends Component {
             ticksPerFrame={(this.props.heartBeatTimer)}
             tileWidth={this.heartBeatSize}
             scale={this.heartBeatScale}
-      
+
           />
         </Loop>
       );
   }
 
   renderMenuButton = () => {
-
+    // let marginLeft = Dimensions.get("window").width / 3 + 25;
+    let marginLeft = 0;
+      return(
+        <TouchableOpacity
+          onPress={()=>{this.props.onItemSelected('menu');}}
+        >
+          <View style={{
+            padding: 5,
+            borderRadius: 25,
+            borderColor: '#D57A66',
+            borderWidth: 2,
+            backgroundColor: '#343434',
+            marginLeft: marginLeft,
+          }}>
+            <Text style={{ color: '#fff' }}>menu</Text>
+          </View>
+        </TouchableOpacity>
+      );
   }
 
   renderButton = () => {
-    let marginLeft;
-    if (this.props.isHuman) {
-      marginLeft = Dimensions.get("window").width / 3 + 25;
-    }
-    else {
-      marginLeft = Dimensions.get("window").width / 3 + 35;
-    }
+    let marginLeft = 20;
+      // marginLeft = Dimensions.get("window").width / 3 + 25;
+
     if (this.props.outOfMoves) {
       return(
         <TouchableOpacity
@@ -134,6 +147,8 @@ class Bar extends Component {
 
             {this.renderHeartBeat()}
 
+            {this.renderMenuButton()}
+
             {this.renderButton()}
 
           </View>
@@ -145,7 +160,6 @@ class Bar extends Component {
               value={this.props.monsterSanityLevel}
             />
 
-            {this.renderMenuButton()}
           </View>
         </ImageBackground>
       )

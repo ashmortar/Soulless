@@ -440,6 +440,10 @@ class Waiting extends Component {
           this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false })
         }
         break;
+      case 'menu':
+        this.resetHighlighted();
+        this.setState({ modalLeft: 3 });
+        break;
       case 'home':
         this.resetHighlighted();
         this.setState({ modalLeft: 2 });
@@ -667,7 +671,7 @@ class Waiting extends Component {
           >
 
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
-          <NavButton onPress={() => BackAndroid.exitApp()} text='Yes' />
+          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); BackAndroid.exitApp();}} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
           </ImageBackground>
         </View>
@@ -697,6 +701,35 @@ class Waiting extends Component {
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          </ImageBackground>
+        </View>
+      );
+    }
+    else if (this.state.modalLeft === 3) {//MENU
+      return (
+        <View style={{
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 300,
+        }}>
+
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Menu</Text>
+          <NavButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
+          <NavButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
           </ImageBackground>
         </View>
       );

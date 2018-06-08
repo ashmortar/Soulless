@@ -1460,38 +1460,9 @@ class Game extends Component {
           this.changePlayerMode();
         }
         break;
-      case 'move':
-        if (this.state.isHuman) {
-          this.showHumanMoves();
-          this.setState({ redraw: !this.state.redraw });
-        } else {
-          this.showMonsterMoves();
-          // this.setState({ redraw: !this.state.redraw });
-        }
-        break;
-      case 'sniff':
+      case 'menu':
         this.resetHighlighted();
-        // this.setState({ modalDialogOnly: 1 });
-        this.setState({ modal: 3 });
-        break;
-      case 'listen':
-        this.resetHighlighted();
-        if (this.state.isHuman) {
-          this.setState({ modalDialogOnly: 3 });
-        }
-        else {
-          this.setState({ modal: 4 });
-        }
-        break;
-      case 'echo':
-        this.resetHighlighted();
-        this.setState({ modal: 1 });
-        break;
-      case 'pounce':
-        // this.setState({ modalPounce: 1 });
-        this.resetHighlighted();
-        this.monsterProcessPounce();
-        // this.setState({ modalPounce: 0 });
+        this.setState({ modalLeft: 3 });
         break;
       case 'home':
         this.resetHighlighted();
@@ -1762,6 +1733,35 @@ class Game extends Component {
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          </ImageBackground>
+        </View>
+      );
+    }
+    else if (this.state.modalLeft === 3) {//MENU
+      return (
+        <View style={{
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 300,
+        }}>
+
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Menu</Text>
+          <NavButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
+          <NavButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
           </ImageBackground>
         </View>
       );
