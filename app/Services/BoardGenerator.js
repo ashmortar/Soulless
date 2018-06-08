@@ -1150,14 +1150,7 @@ export default class BoardGenerator {
     }
   }
 
-  resetWasEchoed = () => {
-    for (let i = 0; i < this.elements.length; i++) {
-      this.elements[i].wasEchoed = false;
-    }
-  }
-
   echoLocate = (direction) => {
-    const splashScreenTimer = 500;
     const index = this.humanSpace.name;
     let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
     switch (direction) {

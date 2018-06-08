@@ -837,7 +837,7 @@ class Waiting extends Component {
             this.setState({ opponentVisible: true });
             break;
           } else {
-            cell = this.elements[cell.name + this.cellsInRow];
+            cell = this.elements[cell.name - this.cellsInRow];
           }
         }
       } else if (this.monsterSpace.name < this.humanSpace.name) {
@@ -877,6 +877,8 @@ class Waiting extends Component {
           }
         }
       }
+    } else {
+      this.setState({ opponentVisible: false });
     }
   }
 
