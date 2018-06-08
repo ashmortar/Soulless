@@ -60,7 +60,6 @@ class Bar extends Component {
 
   renderMenuButton = () => {
     // let marginLeft = Dimensions.get("window").width / 3 + 25;
-    let marginLeft = 0;
       return(
         <TouchableOpacity
           onPress={()=>{this.props.onItemSelected('menu');}}
@@ -71,7 +70,7 @@ class Bar extends Component {
             borderColor: '#D57A66',
             borderWidth: 2,
             backgroundColor: '#343434',
-            marginLeft: marginLeft,
+            marginRight: Dimensions.get("window").width / 10,
           }}>
             <Text style={{ color: '#fff' }}>menu</Text>
           </View>
@@ -115,7 +114,6 @@ class Bar extends Component {
       if (this.props.barActive) {
         let text1;
         let shrines;
-        let progress = 0.5;
         if (this.props.isHuman) {
           text1 = 'Priest';
           shrines = this.props.humanShrinesToWin;
@@ -138,32 +136,35 @@ class Bar extends Component {
 
         return(
           <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10, flex: 1}}>
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginTop: this.barSectionHeight/2}}>
 
-          {/* <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1,}}>{text1}</Text> */}
+            {/* <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1,}}>{text1}</Text> */}
 
-          <Image
-          style={{flex: 1}}
-          source={require("../data/images/shrineIconOnly.png")}
-          resizeMode="contain"
-          />
+            <View
+              style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginLeft: Dimensions.get("window").width/15, marginRight: Dimensions.get("window").width/15}}
+            >
+              <Image
+                style={{flex: 1, height: 50}}
+                source={require("../data/images/shrineIconOnly.png")}
+                resizeMode="contain"
+              />
 
-          <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2, flex: 1}}>{shrineAmount}/{shrines}</Text>
+              <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2, flex: 1, marginRight: Dimensions.get("window").width*0}}>{shrineAmount}/{shrines}</Text>
+            </View>
 
-          {this.renderHeartBeat()}
+            {this.renderHeartBeat()}
 
-          {this.renderMenuButton()}
-
-
+            {this.renderMenuButton()}
 
           </View>
-          <View style={{flexDirection: 'column', flex: 2, padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1}}>{`Possessed priest's sanity level:`}</Text>
-          <ProgressBarAnimated
-          {...progressCustomStyles}
-          width={Dimensions.get("window").width * 0.8}
-          value={this.props.monsterSanityLevel}
-          />
+
+          <View style={{flexDirection: 'column', flex: 2, padding: 10, alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, marginTop: this.barSectionHeight/3, flex: 1}}>{`Possessed priest's sanity level:`}</Text>
+            <ProgressBarAnimated
+              {...progressCustomStyles}
+              width={Dimensions.get("window").width * 0.9}
+              value={this.props.monsterSanityLevel}
+            />
 
           </View>
           </ImageBackground>

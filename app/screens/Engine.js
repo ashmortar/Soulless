@@ -524,13 +524,13 @@ export default class Engine extends Component {
     if (this.props.isHuman) {
       return (
         <TileMap
-        src={require("../data/images/fog-nw.gif")}
-        tileSize={this.props.tileWidth}
-        columns={40}
-        rows={40}
-        sourceWidth={this.props.tileWidth}
-        layers={[this.state.tileFogMapArray]}
-        renderTile={this.renderFogTile}
+          src={require("../data/images/fog-nw.gif")}
+          tileSize={this.props.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.props.tileWidth}
+          layers={[this.state.tileFogMapArray]}
+          renderTile={this.renderFogTile}
         />
       );
     }
