@@ -803,7 +803,6 @@ export default class Engine extends Component {
       } else {
           return (
             <View style={this.getMonsterControlStyles()} >
-              <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcpounceOut} source2={this.state.srcpounceIn} onPress={this.props.monsterProcessPounce} />
               <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcfocusOut} source2={this.state.srcfocusIn} onPress={this.pickTarget} />
             </View>
           );

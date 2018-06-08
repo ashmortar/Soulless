@@ -34,8 +34,8 @@ class Bar extends Component {
     super();
     this.barSectionHeight = 40;
     this.barHeight = this.barSectionHeight * 3;
-    this.heartBeatSize = 200;
-    this.heartBeatScale = 0.15;
+    this.heartBeatSize = 64;
+    this.heartBeatScale = 0.5;
 
   }
 
@@ -45,13 +45,14 @@ class Bar extends Component {
           <Sprite
             offset={[0, 0]}
             repeat={true}
-            src={require("../data/images/heartBeatTwo.png")}
+            src={require("../data/images/heartBeatsmall.png")}
             steps={[9]}
             state={0}
             tileHeight={this.heartBeatSize}
             ticksPerFrame={(this.props.heartBeatTimer)}
             tileWidth={this.heartBeatSize}
             scale={this.heartBeatScale}
+      
           />
         </Loop>
       );
@@ -78,7 +79,6 @@ class Bar extends Component {
         >
           <View style={{
             padding: 5,
-            paddingHorizontal: 9,
             borderRadius: 25,
             borderColor: '#D57A66',
             borderWidth: 2,
@@ -114,31 +114,34 @@ class Bar extends Component {
         backgroundColor: '#a30000',
         borderRadius: 0,
         borderColor: '#000',
+        flex: 1,
+        marginBottom: this.barHeight/2,
       };
 
       return(
         <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
-          <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10, flex: 1}}>
 
-            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+            {/* <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1,}}>{text1}</Text> */}
 
             <Image
-              style={{ height: 25, width: 25, marginLeft: Dimensions.get("window").width / 6 }}
-              source={require("../data/images/targetShrineOut.png")}
+              style={{flex: 1}}
+              source={require("../data/images/shrineIconOnly.png")}
+              resizeMode="contain"
             />
 
-            <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrines}</Text>
+            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2, flex: 1}}>{shrineAmount}/{shrines}</Text>
 
             {this.renderHeartBeat()}
 
             {this.renderButton()}
 
           </View>
-          <View style={{flexDirection: 'column', padding: 5, marginTop: 5, marginLeft: 5 }}>
-            <Text style={{color: '#fff', paddingVertical: 10, fontFamily: 'Perfect DOS VGA 437',}}>{`Possessed priest's sanity level:`}</Text>
+          <View style={{flexDirection: 'column', flex: 2, padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1}}>{`Possessed priest's sanity level:`}</Text>
             <ProgressBarAnimated
               {...progressCustomStyles}
-              width={Dimensions.get("window").width - 120}
+              width={Dimensions.get("window").width * 0.8}
               value={this.props.monsterSanityLevel}
             />
 
@@ -182,7 +185,7 @@ class Bar extends Component {
     const barPlay = this.getBar();
     const barWait = this.getBarWaitingForOpponent();
     return (
-      <View style={{position: "absolute", left: 5, bottom: 5, height: this.barHeight + 10, width: Dimensions.get("window").width - 10 }}>
+      <View style={{position: "absolute", bottom: 5, left: 5, height: this.barHeight, width: Dimensions.get("window").width - 10 }}>
         {barPlay}
         {barWait}
       </View>
