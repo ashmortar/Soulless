@@ -647,38 +647,57 @@ class Waiting extends Component {
     else if (this.state.modalLeft === 1) {//EXIT
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
+
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
+
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => BackAndroid.exitApp()} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
-
+          </ImageBackground>
         </View>
       );
     }
     else if (this.state.modalLeft === 2) {//HOME
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
+
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
-
+          </ImageBackground>
         </View>
       );
     }
