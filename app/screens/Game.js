@@ -1962,6 +1962,63 @@ class Game extends Component {
     this.resetHighlighted();
     this.setHeartRate();
     this.monsterProcessPounce();
+    this.checkForVisiblePriest();
+  }
+
+  checkForVisiblePriest = () => {
+    if (this.monsterSpace.name % this.cellsInRow === this.humanSpace.name % this.cellsInRow) {
+      // they are in the same column, check to see if view is obstructed
+      if (this.monsterSpace.name > this.humanSpace.name) {
+        // north
+        let cell = this.elements[this.monsterSpace.name - this.cellsInRow];
+        while (cell.value > 0) {
+          if (cell.hasHuman) {
+            this.setState({ opponentVisible: true });
+            break;
+          } else {
+            cell = this.elements[cell.name - this.cellsInRow];
+          }
+        }
+      } else if (this.monsterSpace.name < this.humanSpace.name) {
+        // south
+        let cell = this.elements[this.monsterSpace.name + this.cellsInRow];
+        while (cell.value > 0) {
+          if (cell.hasHuman) {
+            this.setState({ opponentVisible: true });
+            break;
+          } else {
+            cell = this.elements[cell.name + this.cellsInRow];
+          }
+        }
+      }
+  } else if (Math.floor(this.monsterSpace.name / this.cellsInRow) === Math.floor(this.humanSpace.name / this.cellsInRow)) {
+      // they are in the same row, check to see if view is obstructed
+      if (this.monsterSpace.name > this.humanSpace.name) {
+        // west
+        let cell = this.elements[this.monsterSpace.name - 1];
+        while (cell.value > 0) {
+          if (cell.hasHuman) {
+            this.setState({ opponentVisible: true });
+            break;
+          } else {
+            cell = this.elements[cell.name - 1];
+          }
+        }
+      } else if (this.monsterSpace.name < this.humanSpace.name) {
+        // east
+        let cell = this.elements[this.monsterSpace.name + 1];
+        while (cell.value > 0) {
+          if (cell.hasHuman) {
+            this.setState({ opponentVisible: true });
+            break;
+          } else {
+            cell = this.elements[cell.name + 1];
+          }
+        }
+      }
+    } else {
+      this.setState({ opponentVisible: false });
+    }
   }
 
   showHumanMoves = () => {
@@ -2107,6 +2164,7 @@ class Game extends Component {
       humanShrinesToWin={this.humanShrinesToWin}
       monsterShrinesToWin={this.monsterShrinesToWin}
       monsterSanityLevel={this.state.monsterSanityLevel}
+      barActive={true}
     />;
     if (this.state.boardFinished) {
       return (
@@ -2143,6 +2201,7 @@ class Game extends Component {
           resetHighlighted={this.resetHighlighted}
           alterZoom={this.alterZoom}
           opponentVisible={this.state.opponentVisible}
+          gameActive={true}
         />
         <Modal
           isVisible={this.state.modal != 0}
