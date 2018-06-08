@@ -80,7 +80,8 @@ class Bar extends Component {
   }
 
   renderButton = () => {
-    let marginLeft = 20;
+    // let marginLeft = 20;
+    let marginLeft = 0;
       // marginLeft = Dimensions.get("window").width / 3 + 25;
 
     if (this.props.outOfMoves) {
@@ -91,81 +92,87 @@ class Bar extends Component {
           isVisible={this.props.outOfMoves}
         >
           <View style={{
-            padding: 5,
+            padding: 15,
             borderRadius: 25,
             borderColor: '#D57A66',
             borderWidth: 2,
             backgroundColor: '#343434',
             marginLeft: marginLeft,
+            marginTop: Dimensions.get("window").height / 10,
           }}>
-            <Text style={{ color: '#fff' }}>✓</Text>
+            <Text style={{ color: '#fff' }}>End your turn</Text>
           </View>
         </TouchableOpacity>
       );
     }
   }
+  // padding: 5,
+  // <Text style={{ color: '#fff' }}>✓</Text>
 
 
   getBar = () => {
-    if (this.props.barActive) {
-      let text1;
-      let shrines;
-      let progress = 0.5;
-      if (this.props.isHuman) {
-        text1 = 'Priest';
-        shrines = this.props.humanShrinesToWin;
-      } else {
-        text1 = 'Evil';
-        shrines = this.props.monsterShrinesToWin;
-      }
-      let shrineAmount = this.props.shrineAmount;
-      // let shrinesUnclaimed = this.props.shrinesUnclaimed;
+    if (!this.props.outOfMoves) {
+      if (this.props.barActive) {
+        let text1;
+        let shrines;
+        let progress = 0.5;
+        if (this.props.isHuman) {
+          text1 = 'Priest';
+          shrines = this.props.humanShrinesToWin;
+        } else {
+          text1 = 'Evil';
+          shrines = this.props.monsterShrinesToWin;
+        }
+        let shrineAmount = this.props.shrineAmount;
+        // let shrinesUnclaimed = this.props.shrinesUnclaimed;
 
-      // let src={require("../data/images/shrine.png")}
+        // let src={require("../data/images/shrine.png")}
 
-      const progressCustomStyles = {
-        backgroundColor: '#a30000',
-        borderRadius: 0,
-        borderColor: '#000',
-        flex: 1,
-        marginBottom: this.barHeight/2,
-      };
+        const progressCustomStyles = {
+          backgroundColor: '#a30000',
+          borderRadius: 0,
+          borderColor: '#000',
+          flex: 1,
+          marginBottom: this.barHeight/2,
+        };
 
-      return(
-        <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
+        return(
+          <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10, flex: 1}}>
 
-            {/* <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1,}}>{text1}</Text> */}
+          {/* <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1,}}>{text1}</Text> */}
 
-            <Image
-              style={{flex: 1}}
-              source={require("../data/images/shrineIconOnly.png")}
-              resizeMode="contain"
-            />
+          <Image
+          style={{flex: 1}}
+          source={require("../data/images/shrineIconOnly.png")}
+          resizeMode="contain"
+          />
 
-            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2, flex: 1}}>{shrineAmount}/{shrines}</Text>
+          <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2, flex: 1}}>{shrineAmount}/{shrines}</Text>
 
-            {this.renderHeartBeat()}
+          {this.renderHeartBeat()}
 
-            {this.renderMenuButton()}
+          {this.renderMenuButton()}
 
-            {this.renderButton()}
+
 
           </View>
           <View style={{flexDirection: 'column', flex: 2, padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1}}>{`Possessed priest's sanity level:`}</Text>
-            <ProgressBarAnimated
-              {...progressCustomStyles}
-              width={Dimensions.get("window").width * 0.8}
-              value={this.props.monsterSanityLevel}
-            />
+          <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1}}>{`Possessed priest's sanity level:`}</Text>
+          <ProgressBarAnimated
+          {...progressCustomStyles}
+          width={Dimensions.get("window").width * 0.8}
+          value={this.props.monsterSanityLevel}
+          />
 
           </View>
-        </ImageBackground>
-      )
-      // width={Dimensions.get("window").width - 35}
-      // <View style={{flexDirection: 'row'}}>
+          </ImageBackground>
+        )
+        // width={Dimensions.get("window").width - 35}
+        // <View style={{flexDirection: 'row'}}>
+      }
     }
+
   }
 
 
@@ -192,16 +199,40 @@ class Bar extends Component {
     }
   }
 
+  getBarEndTurn = () => {
+    if (this.props.outOfMoves) {
+      if (this.props.barActive) {
 
+        const progressCustomStyles = {
+          backgroundColor: '#a30000',
+          borderRadius: 0,
+          borderColor: '#000',
+        };
+
+        return(
+          <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
+
+          {this.renderButton()}
+
+          </View>
+          </ImageBackground>
+        )
+        // <View style={{flexDirection: 'row'}}>
+      }
+    }
+  }
 
   render() {
     // console.log('heartbeat', this.props.heartBeatTimer)
     const barPlay = this.getBar();
     const barWait = this.getBarWaitingForOpponent();
+    const barEndTurn = this.getBarEndTurn();
     return (
       <View style={{position: "absolute", bottom: 5, left: 5, height: this.barHeight, width: Dimensions.get("window").width - 10 }}>
         {barPlay}
         {barWait}
+        {barEndTurn}
       </View>
     );
   }
