@@ -31,8 +31,8 @@ class Game extends Component {
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
     this.viewPortHeight = Dimensions.get("window").height;
-    this.zoomedInValue = 50;
-    this.zoomedOutValue = Math.ceil(this.viewPortHeight / this.cellsInRow);
+    this.zoomedInValue = 64;
+    this.zoomedOutValue = 25;
     this.allowedLengthOfWhiteLine = 14; // density
     this.userWon = null;
     this.humanShrinesToWin = 7;

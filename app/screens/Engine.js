@@ -85,34 +85,34 @@ export default class Engine extends Component {
 
   getInitialSpriteX = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return (this.playerX - this.props.tileWidth*0.1);
+      return this.playerX;
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return (this.playerX - this.props.tileWidth*0.8);
+      return this.playerX - this.props.tileWidth*0.8;
     }
   }
 
   getNewSpriteX = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return (this.state.playerX - this.props.tileWidth*0.1);
+      return this.state.playerX;
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return (this.state.playerX - this.props.tileWidth*0.8);
+      return (this.state.playerX - this.props.tileWidth*0.8)
     }
   }
 
   getInitialSpriteY = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return (this.playerY - this.props.tileWidth*1.5);
+      return this.playerY - this.props.tileWidth;
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return (this.playerY - this.props.tileWidth*3.5);
+      return (this.playerY - this.props.tileWidth*2.8)
     }
   }
 
   getNewSpriteY = () => {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        return (this.state.playerY - this.props.tileWidth*1.5);
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return (this.state.playerY - this.props.tileWidth*3.5);
-      }
+    if (this.props.tileWidth === this.props.zoomedInValue) {
+      return this.state.playerY - this.props.tileWidth;
+    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
+      return (this.state.playerY - this.props.tileWidth*2.8)
+    }
   }
 
   getCameraY = () => {
@@ -653,17 +653,18 @@ export default class Engine extends Component {
     if (this.props.isHuman) {
       return (
         <TouchableSprite activeOpacity={1} onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
-        <Sprite
-        offset={[0, 0]}
-        repeat={true}
-        src={this.state.srcPriest}
-        steps={[11]}
-        state={0}
-        onPlayStateChanged={this.handlePlayStateChanged}
-        tileHeight={128}
-        ticksPerFrame={this.state.ticksPerFrame}
-        tileWidth={64}
-        />
+          <Sprite
+            offset={[0, 0]}
+            repeat={true}
+            src={this.state.srcPriest}
+            steps={[11]}
+            scale={this.state.spriteScale}
+            state={0}
+            onPlayStateChanged={this.handlePlayStateChanged}
+            tileHeight={128}
+            ticksPerFrame={this.state.ticksPerFrame}
+            tileWidth={64}
+          />
         </TouchableSprite>
       );
     } else {
@@ -674,6 +675,7 @@ export default class Engine extends Component {
             repeat={true}
             src={this.state.srcEvil}
             steps={[11]}
+            scale={this.state.spriteScale}
             state={0}
             onPlayStateChanged={this.handlePlayStateChanged}
             tileHeight={128}
@@ -881,12 +883,11 @@ export default class Engine extends Component {
     }
 
   }
-
   getPriestStyle = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
+      return ({zIndex: 1, width: this.props.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
+      return ([ {zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth/this.state.spriteScale}]);
     }
   }
 
