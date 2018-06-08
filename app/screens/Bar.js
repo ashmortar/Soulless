@@ -57,6 +57,10 @@ class Bar extends Component {
       );
   }
 
+  renderMenuButton = () => {
+    
+  }
+
   renderButton = () => {
     let marginLeft;
     if (this.props.isHuman) {
@@ -114,32 +118,35 @@ class Bar extends Component {
 
       return(
         <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
-        <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
 
-        <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
+            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
 
-        <Image
-        style={{ height: 25, width: 25, marginLeft: Dimensions.get("window").width / 4 }}
-        source={require("../data/images/targetShrineOut.png")}
-        />
+            <Image
+              style={{ height: 25, width: 25, marginLeft: Dimensions.get("window").width / 6 }}
+              source={require("../data/images/targetShrineOut.png")}
+            />
 
-        <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrines}</Text>
+            <Text style={{color: '#fff', marginLeft: 10}}>{shrineAmount}/{shrines}</Text>
 
-        {this.renderHeartBeat()}
+            {this.renderHeartBeat()}
 
-        {this.renderButton()}
+            {this.renderButton()}
 
-        </View>
-        <View style={{flexDirection: 'column', padding: 5, marginTop: 5, marginLeft: 5 }}>
-        <Text style={{color: '#fff', paddingVertical: 10, fontFamily: 'Perfect DOS VGA 437',}}>{`Possessed priest's sanity level:`}</Text>
-        <ProgressBarAnimated
-        {...progressCustomStyles}
-        width={Dimensions.get("window").width - 35}
-        value={this.props.monsterSanityLevel}
-        />
-        </View>
+          </View>
+          <View style={{flexDirection: 'column', padding: 5, marginTop: 5, marginLeft: 5 }}>
+            <Text style={{color: '#fff', paddingVertical: 10, fontFamily: 'Perfect DOS VGA 437',}}>{`Possessed priest's sanity level:`}</Text>
+            <ProgressBarAnimated
+              {...progressCustomStyles}
+              width={Dimensions.get("window").width - 120}
+              value={this.props.monsterSanityLevel}
+            />
+
+            {this.renderMenuButton()}
+          </View>
         </ImageBackground>
       )
+      // width={Dimensions.get("window").width - 35}
       // <View style={{flexDirection: 'row'}}>
     }
   }
@@ -157,9 +164,9 @@ class Bar extends Component {
 
       return(
         <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
-          <View style={{flexDirection: 'row', alignItems: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
 
-            <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: 20}}>Waiting for opponent</Text>
+            <Text style={{color: '#fff', marginHorizontal: 10, marginTop: 70, alignItems: 'center', justifyContent: 'center', fontFamily: 'Perfect DOS VGA 437', fontSize: 30}}>Waiting for opponent</Text>
 
           </View>
         </ImageBackground>

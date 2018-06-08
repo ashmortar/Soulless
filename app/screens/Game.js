@@ -2107,6 +2107,7 @@ class Game extends Component {
       humanShrinesToWin={this.humanShrinesToWin}
       monsterShrinesToWin={this.monsterShrinesToWin}
       monsterSanityLevel={this.state.monsterSanityLevel}
+      barActive={true}
     />;
     if (this.state.boardFinished) {
       return (
@@ -2143,6 +2144,7 @@ class Game extends Component {
           resetHighlighted={this.resetHighlighted}
           alterZoom={this.alterZoom}
           opponentVisible={this.state.opponentVisible}
+          gameActive={true}
         />
         <Modal
           isVisible={this.state.modal != 0}

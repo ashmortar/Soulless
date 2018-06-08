@@ -437,7 +437,7 @@ class Waiting extends Component {
           }
           this.resetHighlighted();
           this.changePlayerMode();
-          this.setState({ outOfMoves: false, turnCounter: 0 })
+          this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false })
         }
         break;
       case 'home':
@@ -510,37 +510,6 @@ class Waiting extends Component {
     }
   }
 
-
-
-  renderModalWaitForTurnContent = () => {//--------------------------------------------new
-    let text1 = 'Waiting for the evil to make their move.';
-
-    return (
-      <View style={{
-        backgroundColor: 'transparent',
-        width: Dimensions.get("window").width*0.9,
-        marginLeft: "auto",
-        marginRight: "auto",
-        height: 200,
-      }}>
-        <ImageBackground
-          style={{
-            height: undefined,
-            width: undefined,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
-            }}
-          source={require("../data/images/tallWindow.png")}
-          resizeMode={"stretch"}
-          >
-
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-
-        </ImageBackground>
-      </View>
-    )
-  }
 
   renderModalContent = () => {
     if (this.state.modalDialogOnly === 1) { // focus on young priest
@@ -1312,11 +1281,7 @@ class Waiting extends Component {
     />;
     if (this.state.boardFinished) {
       return (
-        <SideMenu
-        menu={menuRight}
-        menuPosition='right'
-        disableGestures={disableGestures}
-      >
+
       <SideMenu
         menu={menuLeft}
         menuPosition='left'
@@ -1405,18 +1370,10 @@ class Waiting extends Component {
 
         {bar}
       </SideMenu>
-      </SideMenu>
       )
     }
   }
-  // <Modal
-  // isVisible={(this.state.isHuman == (this.state.turn % 2 === 1))}
-  // animationIn="slideInRight"
-  // animationOut="slideOutLeft"
-  // >
-  // {this.renderModalWaitForTurnContent()}
-  // </Modal>
-  //
+
 
   render() {
     return (
