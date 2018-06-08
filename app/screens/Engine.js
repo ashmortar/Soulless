@@ -244,7 +244,14 @@ export default class Engine extends Component {
         if (this.state.srcPriest != require("../data/images/priestWalkDown.png"))
         this.setState({
           srcPriest: require("../data/images/priestWalkDown.png")
-        })
+        });
+      }
+      //up
+      else if (this.getNewSpriteY() - spriteY._value < 0) {
+        if (this.state.srcPriest != require("../data/images/priestWalkUp.png"))
+        this.setState({
+          srcPriest: require("../data/images/priestWalkUp.png")
+        });
       }
       // left
       else if ((this.getNewSpriteX() - spriteX._value < 0))  {
