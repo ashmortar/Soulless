@@ -1194,8 +1194,7 @@ class Game extends Component {
         }
       }
     }
-
-    // this.assignImageFogKeys();
+    this.assignImageFogKeys();
   }
 
   adjustFog_old = () => {
