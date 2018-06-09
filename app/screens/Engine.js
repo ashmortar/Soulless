@@ -825,9 +825,9 @@ export default class Engine extends Component {
 
   getMonsterControlStyles = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ height: this.props.tileWidth, width: this.props.tileWidth*3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*5, flexDirection: "row", justifyContent: 'space-between' });
+      return ({ height: this.props.tileWidth, width: this.props.tileWidth*3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*4, flexDirection: "row", justifyContent: 'space-between' });
     } else {
-      return ({ height: this.props.tileWidth, width: this.props.tileWidth*3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*8, flexDirection: "row", justifyContent: 'space-between' });
+      return ({ height: this.props.tileWidth, width: this.props.tileWidth*3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*6, flexDirection: "row", justifyContent: 'space-between' });
     }
   }
 
