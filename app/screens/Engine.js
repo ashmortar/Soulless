@@ -139,7 +139,7 @@ export default class Engine extends Component {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasEchoed) {
             this.feedbackSquare = this.props.gameBoard[i];
-            return ((Math.floor(this.feedbackSquare.name / 40) * this.state.tileWidth) - (this.screenDimensions.height / 2));          }
+            return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));          }
         }
       } else {
         return (this.playerY - (this.screenDimensions.height / 2));
@@ -158,7 +158,7 @@ export default class Engine extends Component {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasEchoed) {
             this.feedbackSquare = this.props.gameBoard[i];
-            return (((this.feedbackSquare.name % 40) * this.state.tileWidth) - (this.screenDimensions.width / 2));
+            return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
           }
         }
       } else {
