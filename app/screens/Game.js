@@ -62,6 +62,7 @@ class Game extends Component {
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
+      justZoomed: false,
     };
   }
 
@@ -1271,7 +1272,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1302,7 +1303,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -1333,7 +1334,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1364,7 +1365,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -1395,7 +1396,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           topLeft.isRevealed = true;
           top.isRevealed = true;
           topRight.isRevealed = true;
@@ -1485,14 +1486,21 @@ class Game extends Component {
     if(this.state.tileWidth === this.zoomedInValue) {
       this.setState({
         tileWidth: this.zoomedOutValue,
+        justZoomed: true,
       })
-      this.showSplashScreen('hands', false, 100);
+      // this.showSplashScreen('hands', false, 100);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
+        justZoomed: true
       })
-      this.showSplashScreen('hands', false, 100);
+      // this.showSplashScreen('hands', false, 100);
     }
+    setTimeout(function() {
+      this.setState({
+        justZoomed: false,
+      });
+    }.bind(this), 3000);
   }
 
   incrementTurnCounter = () => {
@@ -1510,7 +1518,7 @@ class Game extends Component {
   // }
 
   changePlayerMode = () => {
-    this.showSplashScreen('hands', true, 1000);
+    // this.showSplashScreen('hands', true, 1000);
     this.handleChangePlayer();
   }
 
@@ -1833,7 +1841,7 @@ class Game extends Component {
 
     if (!this.userWon) {
       item.hasCache = false;
-      this.showSplashScreen('shrine', false, 2000);
+      // this.showSplashScreen('shrine', false, 2000);
     }
 
   }
@@ -2102,6 +2110,7 @@ class Game extends Component {
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
           echolocate={this.echoLocate}
           tileWidth={this.state.tileWidth}
+          gameBoardWidth={this.zoomedInValue*15}
           zoomedInValue={this.zoomedInValue}
           zoomedOutValue={this.zoomedOutValue}
           incrementTurnCounter={this.incrementTurnCounter}
@@ -2116,6 +2125,7 @@ class Game extends Component {
           alterZoom={this.alterZoom}
           opponentVisible={this.state.opponentVisible}
           gameActive={true}
+          justZoomed={this.state.justZoomed}
         />
         <Modal
           isVisible={this.state.modal != 0}

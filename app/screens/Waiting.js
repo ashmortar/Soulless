@@ -72,6 +72,7 @@ class Waiting extends Component {
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
+      justZoomed: false,
     }
     //turn: odd - priest; even - evil
   }
@@ -253,7 +254,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -279,7 +280,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -305,7 +306,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -331,7 +332,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -357,7 +358,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           topLeft.isRevealed = true;
           top.isRevealed = true;
           topRight.isRevealed = true;
@@ -466,13 +467,18 @@ class Waiting extends Component {
       this.setState({
         tileWidth: this.zoomedOutValue,
       })
-      this.showSplashScreen('hands', false, 100);
+      // this.showSplashScreen('hands', false, 100);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
       })
-      this.showSplashScreen('hands', false, 100);
+      // this.showSplashScreen('hands', false, 100);
     }
+    setTimeout(function() {
+      this.setState({
+        justZoomed: false,
+      });
+    }.bind(this), 3000);
   }
 
   incrementTurnCounter = () => {
@@ -801,7 +807,7 @@ class Waiting extends Component {
 
     if (!this.userWon) {
       item.hasCache = false;
-      this.showSplashScreen('shrine', false, 2000);
+      this.showSplashScreen('shrine', false, 500);
     }
 
   }
@@ -1400,6 +1406,7 @@ class Waiting extends Component {
           tilesInRow={this.cellsInRow}
           boardFinished={this.state.boardFinished}
           isHuman={this.state.isHuman}
+          gameBoardWidth={this.zoomedInValue*15}
           playerSpace={this.state.playerSpace}
           monsterSpace={this.monsterSpace}
           humanSpace={this.humanSpace}
@@ -1419,6 +1426,7 @@ class Waiting extends Component {
           resetHighlighted={this.resetHighlighted}
           alterZoom={this.alterZoom}
           opponentVisible={this.state.opponentVisible}
+          justZoomed={this.state.justZoomed}
           gameActive={(this.state.isHuman == (this.state.turn % 2 === 0))}
         />
         <Modal
