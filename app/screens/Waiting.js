@@ -99,7 +99,12 @@ class Waiting extends Component {
   assignImageFogKeys = () => {
 
     for (let i = 0; i < this.elements.length; i++) {
+      let hadFog = false;
       if ((this.elements[i].isRevealed)) {
+
+        if ((this.elements[i].imageFogKey > 0) && (this.elements[i].imageFogKey < 9)) {
+          hadFog = true;
+        }
 
         if (this.elements[i].imageFogKey) { this.elements[i].imageFogKey = 0; }
 
@@ -117,6 +122,7 @@ class Waiting extends Component {
               this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i + 1 - this.cellsInRow].isRevealed)) {
+
               this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
           }
         }
@@ -166,7 +172,31 @@ class Waiting extends Component {
       if (this.elements[i].imageFogKey > 0) {
         this.elements[i].isSemiRevealed = true;
       }
+      if (this.elements[i].imageFogKey === 9) {
+        this.elements[i].isRevealed = true;
+      }
     }
+  }
+
+  adjustFog = () => {
+    for (let i = 0; i < this.cellsTotal; i++) {
+      if (this.elements[i].imageFogKey > 0) {
+        if ((i - 1 >= 0) && (i + 1 % this.cellsInRow > 0)) {
+          if ((this.elements[i - 1].isRevealed) && (this.elements[i + 1].isRevealed)) {
+            this.elements[i].imageFogKey = 0;
+            this.elements[i].isRevealed = true;
+          }
+        }
+        if ((i - this.cellsInRow >= 0) && (i + this.cellsInRow < this.cellsTotal)) {
+          if ((this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed)) {
+            this.elements[i].imageFogKey = 0;
+            this.elements[i].isRevealed = true;
+          }
+        }
+      }
+    }
+
+    // this.assignImageFogKeys();
   }
 
   findShortestPath(start, end) {
@@ -374,7 +404,7 @@ class Waiting extends Component {
         break;
     }
     this.assignImageFogKeys();
-    // this.adjustFog();
+    this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 

@@ -5,11 +5,11 @@ import styles from './styles';
 
 
 const NavButton = ({ text, onPress }) => (
+  <View style={styles.wrapper}>
   <TouchableOpacity style={styles.container} onPress={onPress}>
-    <View style={styles.wrapper}>
       <Text style={styles.text}>{text}</Text>
-    </View>
   </TouchableOpacity>
+  </View>
 );
 
 NavButton.propTypes = {
