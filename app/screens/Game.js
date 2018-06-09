@@ -2112,14 +2112,10 @@ class Game extends Component {
     />;
     if (this.state.boardFinished) {
       return (
-        <SideMenu
-        menu={menuRight}
-        menuPosition='right'
-        disableGestures={disableGestures}
-      >
-      <SideMenu
-        menu={menuLeft}
-        menuPosition='left'
+
+      <View style={{
+        flex: 1,
+      }}
       >
         <Engine
           gameBoard={this.elements}
@@ -2202,8 +2198,7 @@ class Game extends Component {
         </Modal>
 
         {bar}
-      </SideMenu>
-      </SideMenu>
+      </View>
       )
     }
   }
