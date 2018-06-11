@@ -306,7 +306,14 @@ export default class Engine extends Component {
           });
         }
       }
-      if (this.getNewSpriteX() - spriteX._value < 0)  {
+      else if (this.getNewSpriteY() - spriteY._value < 0 && this.getNewSpriteX() === spriteX._value) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkUp.png")) {
+          this.setState({
+            srcEvil: require("../data/images/monsterWalkUp.png")
+          })
+        }
+      }
+      else if (this.getNewSpriteX() - spriteX._value < 0)  {
         if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
           this.setState({
             srcEvil: require("../data/images/monster-move-left-dropped-down.png")
@@ -318,15 +325,6 @@ export default class Engine extends Component {
           this.setState({
             srcEvil: require("../data/images/monster-move-right-dropped-down.png")
           });
-        }
-      }
-      else {
-        if (this.getNewSpriteY() - spriteY._value < 0) {
-          if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
-            this.setState({
-              srcEvil: require("../data/images/monster-move-right-dropped-down.png")
-            });
-          }
         }
       }
     }
