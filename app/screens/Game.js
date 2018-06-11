@@ -1654,7 +1654,7 @@ class Game extends Component {
       }
 
       let text1 = 'You focus on the nearest Shrine.';
-      let text2 = `It is in ${distance} spaces away to the ${direction}.`;
+      let text2 = `It is ${distance} spaces away to the ${direction}.`;
 
       return (
         <View style={{
