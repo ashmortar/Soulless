@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Dimensions, PanResponder, Image, Text } from "react-native";
 import PropTypes from "prop-types";
 import TileMap from './TileMap';
+// import { TileMap } from "react-game-kit/native";
 
 export default class Board extends Component {
   static contextTypes = {
@@ -11,6 +12,13 @@ export default class Board extends Component {
   static propTypes = {
     gameBoard: PropTypes.array,
     tileWidth: PropTypes.number,
+    isHuman: PropTypes.boolean,
+    boardFinished: PropTypes.boolean,
+    tileCashMapArray: PropTypes.array,
+    tileBlessedCashMapArray: PropTypes.array,
+    tileDesecratedCashMapArray: PropTypes.array,
+    tileDecorMapArray: PropTypes.array,
+    tileMapArray: PropTypes.array,
   };
 
   constructor(props) {
@@ -32,6 +40,11 @@ export default class Board extends Component {
       tileDecorMapArray: this.tileDecorMapArray,
       tileWidth: this.props.tileWidth,
     };
+  }
+
+  componentWillMount() {
+    // console.log('componentWillMount');
+    // console.log(this.state.tileMapArray);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -252,24 +265,6 @@ export default class Board extends Component {
     }
   }
 
-
-  // return (
-  //   <TileMap
-  //     src={require("../data/images/shrine.png")}
-  //     tileSize={this.state.tileWidth}
-  //     columns={40}
-  //     rows={40}
-  //     sourceWidth={this.state.tileWidth}
-  //     layers={[this.tileCashMapArray]}
-  //     renderTile={(tile, src, styles) => (
-  //       <Image
-  //         resizeMode="stretch"
-  //         style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth, overflow: 'hidden' }]}
-  //         source={src}
-  //       />
-  //     )}
-  //   />
-  // );
 
   renderShrines = () => {
     if (this.props.isHuman) {

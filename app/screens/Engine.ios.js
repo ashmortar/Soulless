@@ -4,6 +4,7 @@ import { Dimensions, Image, View, PanResponder, TouchableOpacity, Animated } fro
 import { Loop, Stage, Sprite } from "react-game-kit/native";
 import ControlButton from '../components/Button/ControlButton';
 import TileMap from './TileMap';
+// import { TileMap } from "react-game-kit/native";
 const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
 
 import Board from "./Board";
@@ -189,6 +190,7 @@ export default class Engine extends Component {
   }
 
   componentWillMount() {
+    console.log('engine.ios.js');
     // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
@@ -205,8 +207,14 @@ export default class Engine extends Component {
       // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
       onPanResponderGrant: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
+
         if (touches[0].timestamp - this.previousTouchTimestamp < 200) {
           this.props.alterZoom();
+        }
+        else if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
+          this.processPan(touches[0].pageX, touches[0].pageY);
+        } else if (this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
+          this.processMove(touches[0].pageX, touches[0].pageY);
         }
         this.previousTouchTimestamp = touches[0].timestamp;
       },
@@ -378,7 +386,7 @@ export default class Engine extends Component {
     if (!this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       // console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
       this.animateSpritePosition();
-    } 
+    }
     else if (this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       this.transportSprite();
     }
@@ -484,6 +492,7 @@ export default class Engine extends Component {
   }
 
   processMove(touchX, touchY) {
+    console.log('process move');
     if (!this.state.isMoving) {
       let x = touchX - this.state.left._value;
       let y = touchY - this.state.top._value;
@@ -549,13 +558,13 @@ export default class Engine extends Component {
           renderTile={(tile, src, styles) => {
             this.highlightedTileRanges.push(this.getRangesFromTile(tile));
             return (
-              <TouchableOpacity style={[styles]}>
+              <View style={[styles]}>
                 <Image
                   resizeMode="stretch"
                   style={[styles, { opacity: 0.1 }]}
                   source={src}
                 />
-              </TouchableOpacity>
+              </View>
             );
             }
           }
