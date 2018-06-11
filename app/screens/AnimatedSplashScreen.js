@@ -80,8 +80,9 @@ const styles = StyleSheet.create({
   background: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#212121',
     flex: 1,
+    zIndex: 5,
   },
   text: {
     color: '#f500f5',

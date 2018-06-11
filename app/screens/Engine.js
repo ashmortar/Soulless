@@ -4,9 +4,11 @@ import { Dimensions, Image, View, PanResponder, TouchableOpacity, Animated } fro
 import { Loop, Stage, Sprite } from "react-game-kit/native";
 import ControlButton from '../components/Button/ControlButton';
 import TileMap from './TileMap';
-const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
-
+import Bar from './Bar';
 import Board from "./Board";
+
+
+const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
 
 export default class Engine extends Component {
   static propTypes = {
@@ -842,7 +844,7 @@ export default class Engine extends Component {
           margin: 5,
           zIndex: 3,
           position: "absolute",
-          bottom: 135, //bar height + some padding 
+          top: 0,
           end: 0,
 
         }}
@@ -915,8 +917,22 @@ export default class Engine extends Component {
   getControlButtonStyles = () => {
     return ({ height: this.state.tileWidth, width: this.state.tileWidth * 3, flexDirection: 'row', justifyContent: 'center', zIndex: 3 });
   }
-
+  
   render() {
+    const bar = (
+      <Bar
+        outOfMoves={this.props.outOfMoves}
+        isHuman={this.props.isHuman}
+        onItemSelected={this.props.onItemSelected}
+        shrineAmount={this.props.shrineAmount}
+        shrinesUnclaimed={this.props.shrinesUnclaimed}
+        heartBeatTimer={this.props.heartBeatTimer}
+        humanShrinesToWin={this.props.humanShrinesToWin}
+        monsterShrinesToWin={this.props.monsterShrinesToWin}
+        monsterSanityLevel={this.props.monsterSanityLevel}
+        barActive={true}
+      />);
+      
     return (
       <Loop>
         <Stage
@@ -926,6 +942,7 @@ export default class Engine extends Component {
         >
           <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1 }} {...this._panResponder.panHandlers}>
             {this.renderCameraButton()}
+            {bar}
             <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.state.tileWidth*40, height: this.state.tileWidth*40 }} >
               <Board
                 gameBoard={this.props.gameBoard}

@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Picker, View, Animated, TouchableOpacity, Alert, ImageBackground, Dimensions, ActivityIndicator, BackAndroid } from 'react-native';
-import { Container } from '../components/Container';
+import { Text, View, ImageBackground, Dimensions, BackAndroid, StatusBar } from 'react-native';
 import { NavButton } from '../components/Button';
-import { Grid, AnimatedGrid } from '../components/Grid';
-import WallTemplate from '../data/WallTemplate';
 import Cell from '../data/Cell';
 import Engine from './Engine';
 import Menu from './Menu';
 import AnimatedSplashScreen from './AnimatedSplashScreen';
-import Bar from './Bar';
-import SideMenu from 'react-native-side-menu';
+
 import Modal from "react-native-modal";
 
 class Game extends Component {
@@ -85,8 +81,9 @@ class Game extends Component {
     this.setHeartRate();
   }
 
-  // componentDidMount() {
-  // }
+  componentDidMount() {
+    StatusBar.setHidden(true);
+  } 
 
   setHeartRate = () => {
     const distanceMin = 0;
@@ -2106,52 +2103,56 @@ class Game extends Component {
     let disableGestures = this.state.outOfMoves;
     const menuRight = <Menu mode={this.state.isHuman ? 1 : 2} onItemSelected={this.onItemSelected}/>;
     const menuLeft = <Menu mode={0} onItemSelected={this.onItemSelected}/>;
-    const bar = <Bar
-      outOfMoves={this.state.outOfMoves}
-      isHuman={this.state.isHuman}
-      onItemSelected={this.onItemSelected}
-      shrineAmount={this.state.isHuman ? this.state.shrinesBlessed : this.state.shrinesDesecrated}
-      shrinesUnclaimed={this.state.shrinesUnclaimed}
-      heartBeatTimer={this.state.heartBeatTimer}
-      humanShrinesToWin={this.humanShrinesToWin}
-      monsterShrinesToWin={this.monsterShrinesToWin}
-      monsterSanityLevel={this.state.monsterSanityLevel}
-      barActive={true}
-    />;
+    // const bar = <Bar
+    //   outOfMoves={this.state.outOfMoves}
+    //   isHuman={this.state.isHuman}
+    //   onItemSelected={this.onItemSelected}
+    //   shrineAmount={this.state.isHuman ? this.state.shrinesBlessed : this.state.shrinesDesecrated}
+    //   shrinesUnclaimed={this.state.shrinesUnclaimed}
+    //   heartBeatTimer={this.state.heartBeatTimer}
+    //   humanShrinesToWin={this.humanShrinesToWin}
+    //   monsterShrinesToWin={this.monsterShrinesToWin}
+    //   monsterSanityLevel={this.state.monsterSanityLevel}
+    //   barActive={true}
+    // />;
     if (this.state.boardFinished) {
       return (
-
-      <View style={{
-        flex: 1,
-      }}
-      >
+      <View>
         <Engine
-          gameBoard={this.elements}
-          tilesInRow={this.cellsInRow}
+          alterZoom={this.alterZoom}
+          animationVisible={this.state.animationVisible}
+          assignImageFogKeys={this.assignImageFogKeys}
           boardFinished={this.state.boardFinished}
-          isHuman={this.state.isHuman}
-          playerSpace={this.state.playerSpace}
-          monsterSpace={this.monsterSpace}
-          humanSpace={this.humanSpace}
-          move={this.state.isHuman ? this.moveHuman : this.moveMonster}
           echolocate={this.echoLocate}
-          tileWidth={this.state.tileWidth}
+          focus={this.focus}
+          gameActive={true}
+          gameBoard={this.elements}
           gameBoardWidth={this.zoomedInValue*15}
+          heartBeatTimer={this.state.heartBeatTimer}
+          humanSpace={this.humanSpace}
+          humanShrinesToWin={this.humanShrinesToWin}
+          incrementTurnCounter={this.incrementTurnCounter}
+          isHuman={this.state.isHuman}
+          justZoomed={this.state.justZoomed}
+          monsterProcessPounce={this.monsterProcessPounce}
+          monsterSanityLevel={this.state.monsterSanityLevel}
+          monsterShrinesToWin={this.monsterShrinesToWin}
+          monsterSpace={this.monsterSpace}
+          move={this.state.isHuman ? this.moveHuman : this.moveMonster}
+          onItemSelected={this.onItemSelected}
+          opponentVisible={this.state.opponentVisible}
+          outOfMoves={this.state.outOfMoves}
+          playerSpace={this.state.playerSpace}
+          resetHighlighted={this.resetHighlighted}
+          showHumanMoves={this.showHumanMoves}
+          tilesInRow={this.cellsInRow}
+          shrineAmount={this.state.isHuman ? this.state.shrinesBlessed : this.state.shrinesDesecrated}
+          shrinesUnclaimed={this.state.shrinesUnclaimed}
+          showMonsterMoves={this.showMonsterMoves}
+          tileWidth={this.state.tileWidth}
+          turnCounter={this.state.turnCounter}
           zoomedInValue={this.zoomedInValue}
           zoomedOutValue={this.zoomedOutValue}
-          incrementTurnCounter={this.incrementTurnCounter}
-          turnCounter={this.state.turnCounter}
-          animationVisible={this.state.animationVisible}
-          showHumanMoves={this.showHumanMoves}
-          showMonsterMoves={this.showMonsterMoves}
-          monsterProcessPounce={this.monsterProcessPounce}
-          focus={this.focus}
-          assignImageFogKeys={this.assignImageFogKeys}
-          resetHighlighted={this.resetHighlighted}
-          alterZoom={this.alterZoom}
-          opponentVisible={this.state.opponentVisible}
-          gameActive={true}
-          justZoomed={this.state.justZoomed}
         />
         <Modal
           isVisible={this.state.modal != 0}
@@ -2206,8 +2207,6 @@ class Game extends Component {
         >
           {this.renderModalContent()}
         </Modal>
-
-        {bar}
       </View>
       )
     }
@@ -2217,7 +2216,7 @@ class Game extends Component {
     const finished = this.state.boardFinished;
 
       return (
-        <View style={{flex:1}}>
+        <View style={{flex:1, backgroundColor: "#212121"}}>
 
           {this.renderAnimator()}
           {this.renderEngine()}

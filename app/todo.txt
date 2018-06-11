@@ -1,7 +1,6 @@
  
 -- iphone adjustments
 -- back story scroll
--- fix splash screen/bar bug
 -- screen shot zoom?
 -- animate camera post zoom?
 
