@@ -241,10 +241,10 @@ export default class Engine extends Component {
     } else if (newY > this.yOffsetMax) {
       newY = this.yOffsetMax;
     }
-    setTimeout(function() {Animated.parallel([
+    Animated.parallel([
       Animated.timing(left, { toValue: -newX, duration: 1000}),
       Animated.timing(top, { toValue: -newY, duration: 1000}),
-    ]).start()}.bind(this), 2500);
+    ]).start();
   }
 
   transportSprite = () => {
@@ -374,9 +374,9 @@ export default class Engine extends Component {
 
   componentDidUpdate() {
     // console.log('update', this.state.spriteX._value, this.getInitialSpriteX(), this.getNewSpriteX());
-    if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
-      this.animateCamera();
-    }
+    // if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
+    //   this.animateCamera();
+    // }
     if (!this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       // console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
       this.animateSpritePosition();
@@ -829,6 +829,31 @@ export default class Engine extends Component {
     }
   }
 
+  handleCenterCamera = () => {
+    this.animateCamera();
+  }
+
+  renderCameraButton = () => {
+    return (
+      <View
+        style={{
+          width: this.props.zoomedInValue,
+          height: this.props.zoomedInValue,
+          margin: 5,
+          zIndex: 3,
+          position: "absolute",
+          bottom: 135, //bar height + some padding 
+          end: 0,
+
+        }}
+      >
+        <TouchableOpacity style={{flex: 1}} onPress={this.handleCenterCamera}>
+          <Image source={require("../data/images/finderButton.png")} resizeMode="contain" />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   renderControls = () => {
     if ((!this.props.gameActive) && (this.state.controlsVisible)) {
       this.setState({ controlsVisible: false })
@@ -900,6 +925,7 @@ export default class Engine extends Component {
           style={{ backgroundColor: "#000" }}
         >
           <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1 }} {...this._panResponder.panHandlers}>
+            {this.renderCameraButton()}
             <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.state.tileWidth*40, height: this.state.tileWidth*40 }} >
               <Board
                 gameBoard={this.props.gameBoard}

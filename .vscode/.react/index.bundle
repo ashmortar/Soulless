@@ -97125,18 +97125,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
   });
 },752,[164],"app\\data\\images\\shrine-grey.png");
 __d(function (global, _require, module, exports, _dependencyMap) {
-	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
-		"__packager_asset": true,
-		"httpServerLocation": "/assets/app/data/images",
-		"width": 520,
-		"height": 640,
-		"scales": [1],
-		"hash": "0431bb0333521dadb30c7507f1fc98e3",
-		"name": "echo-hands",
-		"type": "png"
-	});
-},753,[164],"app\\data\\images\\echo-hands.png");
-__d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
     "__packager_asset": true,
     "httpServerLocation": "/assets/app/data/images",
@@ -105020,6 +105008,18 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   exports.default = BoardGenerator;
 },797,[655],"app\\Services\\BoardGenerator.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+		"__packager_asset": true,
+		"httpServerLocation": "/assets/app/data/images",
+		"width": 520,
+		"height": 640,
+		"scales": [1],
+		"hash": "0431bb0333521dadb30c7507f1fc98e3",
+		"name": "echo-hands",
+		"type": "png"
+	});
+},753,[164],"app\\data\\images\\echo-hands.png");
 require(44);
 require(11);
 //# sourceMappingURL=index.map

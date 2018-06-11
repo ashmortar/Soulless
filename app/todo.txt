@@ -1,11 +1,9 @@
-
-
--- center camera button
--- evil priest
  
 -- iphone adjustments
--- back
+-- back story scroll
 -- fix splash screen/bar bug
+-- screen shot zoom?
+-- animate camera post zoom?
 
 
 
