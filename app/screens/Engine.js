@@ -302,28 +302,28 @@ export default class Engine extends Component {
       if (this.getNewSpriteY() - spriteY._value > 0 && this.getNewSpriteX() === spriteX._value) {
         if (this.state.srcEvil != require("../data/images/monsterWalkDown.png")) {
           this.setState({
-            srcEvil: require("../data/images/monsterWalkDown.png")
+            srcEvil: require("../data/images/monsterWalkDown.png"),
           });
         }
       }
       else if (this.getNewSpriteY() - spriteY._value < 0 && this.getNewSpriteX() === spriteX._value) {
         if (this.state.srcEvil != require("../data/images/monsterWalkUp.png")) {
           this.setState({
-            srcEvil: require("../data/images/monsterWalkUp.png")
+            srcEvil: require("../data/images/monsterWalkUp.png"),
           })
         }
       }
-      else if (this.getNewSpriteX() - spriteX._value < 0)  {
+      else if (this.getNewSpriteX() - spriteX._value < 0) {
         if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-left-dropped-down.png")
+            srcEvil: require("../data/images/monster-move-left-dropped-down.png"),
           });
         }
       }
       else if (this.getNewSpriteX() - spriteX._value > 0) {
         if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-right-dropped-down.png")
+            srcEvil: require("../data/images/monster-move-right-dropped-down.png"),
           });
         }
       }
@@ -943,12 +943,12 @@ export default class Engine extends Component {
         <Stage
           height={this.screenDimensions.height}
           width={this.screenDimensions.width}
-          style={{ backgroundColor: "#000" }}
+          style={{ backgroundColor: "#212121" }}
         >
           <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1 }} {...this._panResponder.panHandlers}>
             {this.renderCameraButton()}
             {bar}
-            <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.state.tileWidth*40, height: this.state.tileWidth*40 }} >
+            <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.state.tileWidth*40, height: this.state.tileWidth*40, backgroundColor: '#000' }} >
               <Board
                 gameBoard={this.props.gameBoard}
                 isHuman={this.props.isHuman}
