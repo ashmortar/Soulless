@@ -1,87 +1,19 @@
--- new todos
-standardize text size
 
 
-TODO
-----------------------------------
-
-// maybe instead of touchable opacity we use touchable without feedback and "pop" in the modals?
-
-~!~ all things server ~!~
-
-regarding the bar at the bottom being slide-able : what if it was always 
-at the bottom, but you slid it up to reveal all the options.. like move,
-pounce, sniff, listen, echo, etc.  But also change zoom, exit game, etc. 
-When it was "small" (size it is now) it would have just basic info like now,
-but when swipe up it would have the controls? /shrug
-
-~~~~~~~~~~~~~~~~~~~~~~~~
--Animated Splash Screen-
-~~~~~~~~~~~~~~~~~~~~~~~~
---add other types of animations/images
-----winning/losing screen
-----something other than hands for echo?
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~
-----------Bar-----------
-~~~~~~~~~~~~~~~~~~~~~~~~
---make the bar slidable/make the screen smaller?
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~
----------Board----------
-~~~~~~~~~~~~~~~~~~~~~~~~
---experiment with moving boardFinished boolean into Engine for echo
-  re-renders
---shrine being 2 tall can obfuscate wall top tiles above them, maybe
-  change image
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~
---------Connect---------
-~~~~~~~~~~~~~~~~~~~~~~~~
---currently useless
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~
---------Engine----------
-~~~~~~~~~~~~~~~~~~~~~~~~
---resize game screen
---try to make single finger scrolling work
---player move animation logic?
---verify all props are included in proptypes
---remove unused constructor fields
---modify getBeginningX and getBeginningY to check if there were
-  echoes/pounces and start screen centered there, then move to player
-  position
---cleanup fogmap in will receive props
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~
----------Game-----------
-~~~~~~~~~~~~~~~~~~~~~~~~
---echo modal into directional arrows??
---put all props into proptypes
---try make board generation async so that "loading" screen will come up
-  on component render and become touchable when board is complete
---maybe make parameters of values like distance between monster and
-  player and distance between shrines to scale difficulty to a degree
+-- center camera button
+-- evil priest
+ 
+-- iphone adjustments
+-- back
+-- fix splash screen/bar bug
 
 
 
-~~~~~~~~~~~~~~~~~~~~~~~~
----------Home-----------
-~~~~~~~~~~~~~~~~~~~~~~~~
---currently useless
 
 
-~~~~~~~~~~~~~~~~~~~~~~~~
----------Menu-----------
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~
---------Waiting---------
-~~~~~~~~~~~~~~~~~~~~~~~~
---currently useless
++++++ Questions for Rick +++
+-- pixelize splash screen? or art coming our way?
+-- buttons 
+-- sound effects // art // back story scroll // other incoming assets
+-- about
+-- rules / how to play

@@ -258,7 +258,7 @@ export default class Engine extends Component {
   animateSpritePosition = () => {
     const { spriteX, spriteY } = this.state;
 
-    if (this.props.isHuman) {
+    if (this.props.isHuman) { // human
       // down
       if (this.getNewSpriteY() - spriteY._value > 0) {
         if (this.state.srcPriest != require("../data/images/priestWalkDown.png"))
@@ -291,7 +291,16 @@ export default class Engine extends Component {
       }
     }
 
-    else {
+    else { // monster
+      // down animation
+      // console.log("animate monster", this.getNewSpriteY(), spriteY._value, this.getNewSpriteX(), spriteX._value)
+      if (this.getNewSpriteY() - spriteY._value > 0 && this.getNewSpriteX() === spriteX._value) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkDown.png")) {
+          this.setState({
+            srcEvil: require("../data/images/monsterWalkDown.png")
+          });
+        }
+      }
       if (this.getNewSpriteX() - spriteX._value < 0)  {
         if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
           this.setState({
@@ -307,14 +316,7 @@ export default class Engine extends Component {
         }
       }
       else {
-        if (this.getNewSpriteY() - spriteY._value > 0) {//down
-          if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
-            this.setState({
-              srcEvil: require("../data/images/monster-move-left-dropped-down.png")
-            });
-          }
-        }
-        else if (this.getNewSpriteY() - spriteY._value < 0) {
+        if (this.getNewSpriteY() - spriteY._value < 0) {
           if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
             this.setState({
               srcEvil: require("../data/images/monster-move-right-dropped-down.png")
