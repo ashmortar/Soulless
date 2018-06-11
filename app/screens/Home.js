@@ -7,6 +7,8 @@ import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 
+import AnimatedSplashScreen from './AnimatedSplashScreen';
+
 var io = require('socket.io-client');
 let socket = null;
 class Home extends Component {
@@ -27,6 +29,12 @@ class Home extends Component {
       auth_token: null,
       accessToken: null,
       findingGame: false,
+
+      animationType: 'hands',
+      animationTouchable: true,
+      animationVisible: false,
+      boardFinished: false,
+      animationTimer: 1000,
     }
   }
 
@@ -387,6 +395,41 @@ class Home extends Component {
   }
 
 
+
+  boardFinishedCallback = () => (
+    this.setState({
+      boardFinished: true,
+    })
+  )
+
+  showAnimationCallback = () => (
+    this.setState({
+      animationVisible: false,
+      animateCamera: true,
+    })
+  )
+
+  showSplashScreen = (image, touchable, duration) => {
+    this.setState({
+      animationType: image,
+      animationTouchable: touchable,
+      animationVisible: true,
+      boardFinished: false,
+      animationTimer: duration,
+    })
+  }
+
+  renderAnimator = () => {
+    if (this.state.animationVisible) {
+      return(
+        <View style={{ backgroundColor: '#000', flex: 1, zIndex: 2 }}>
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.animationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
+        </View>
+      )
+    }
+  }
+
+
   render() {
     let text = "";
     if (this.state.auth_token !== null) {
@@ -400,6 +443,7 @@ class Home extends Component {
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
         <NavButton onPress={this.handlePressPlayOnlineButton} text={text} />
+
 
         {this.renderConnectingModal()}
       </Container>
