@@ -209,6 +209,9 @@ export default class Engine extends Component {
         let { touches } = evt.nativeEvent;
         if (touches[0].timestamp - this.previousTouchTimestamp < 200) {
           this.props.alterZoom();
+          setTimeout(function() {
+            this.animateCamera();
+          }.bind(this), 1000);
         }
         this.previousTouchTimestamp = touches[0].timestamp;
       },
@@ -372,6 +375,10 @@ export default class Engine extends Component {
   animateSpriteYPosition = () => {
     const {spriteY } = this.state;
     Animated.timing(spriteY, { toValue: (this.getNewSpriteY()), duration: 1000 }).start();
+  }
+  
+  componentDidMount() {
+    this.animateCamera();
   }
 
   componentDidUpdate() {
@@ -922,6 +929,7 @@ export default class Engine extends Component {
     const bar = (
       <Bar
         outOfMoves={this.props.outOfMoves}
+        barActive={this.props.barActive}
         isHuman={this.props.isHuman}
         onItemSelected={this.props.onItemSelected}
         shrineAmount={this.props.shrineAmount}
@@ -930,7 +938,6 @@ export default class Engine extends Component {
         humanShrinesToWin={this.props.humanShrinesToWin}
         monsterShrinesToWin={this.props.monsterShrinesToWin}
         monsterSanityLevel={this.props.monsterSanityLevel}
-        barActive={true}
       />);
       
     return (

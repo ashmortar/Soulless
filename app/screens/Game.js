@@ -2122,6 +2122,7 @@ class Game extends Component {
           alterZoom={this.alterZoom}
           animationVisible={this.state.animationVisible}
           assignImageFogKeys={this.assignImageFogKeys}
+          barActive={true}
           boardFinished={this.state.boardFinished}
           echolocate={this.echoLocate}
           focus={this.focus}

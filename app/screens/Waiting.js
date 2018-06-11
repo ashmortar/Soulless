@@ -1388,7 +1388,7 @@ class Waiting extends Component {
   renderGame = () => {
     if (this.state.readyToBeginPlaying) {
       return(
-        <View style={{flex: 1, backgroundColor: "transparent"}}>
+        <View style={{flex: 1, backgroundColor: "#212121"}}>
           {this.renderAnimator()}
           {this.renderEngine()}
         </View>
@@ -1433,6 +1433,7 @@ class Waiting extends Component {
           alterZoom={this.alterZoom}
           animationVisible={this.state.animationVisible}
           assignImageFogKeys={this.assignImageFogKeys}
+          barActive={(this.state.isHuman == (this.state.turn % 2 === 0))}
           boardFinished={this.state.boardFinished}
           echolocate={this.echoLocate}
           focus={this.focus}

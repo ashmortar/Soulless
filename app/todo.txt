@@ -3,7 +3,7 @@
 -- back story scroll
 -- screen shot zoom?
 -- animate camera post zoom?
-
+-- fix demonspell link to work for verification
 
 
 
