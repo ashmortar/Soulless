@@ -72,6 +72,7 @@ class Waiting extends Component {
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
+      justZoomed: false,
     }
     //turn: odd - priest; even - evil
   }
@@ -98,7 +99,12 @@ class Waiting extends Component {
   assignImageFogKeys = () => {
 
     for (let i = 0; i < this.elements.length; i++) {
+      let hadFog = false;
       if ((this.elements[i].isRevealed)) {
+
+        if ((this.elements[i].imageFogKey > 0) && (this.elements[i].imageFogKey < 9)) {
+          hadFog = true;
+        }
 
         if (this.elements[i].imageFogKey) { this.elements[i].imageFogKey = 0; }
 
@@ -116,6 +122,7 @@ class Waiting extends Component {
               this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i + 1 - this.cellsInRow].isRevealed)) {
+
               this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
           }
         }
@@ -165,7 +172,31 @@ class Waiting extends Component {
       if (this.elements[i].imageFogKey > 0) {
         this.elements[i].isSemiRevealed = true;
       }
+      if (this.elements[i].imageFogKey === 9) {
+        this.elements[i].isRevealed = true;
+      }
     }
+  }
+
+  adjustFog = () => {
+    for (let i = 0; i < this.cellsTotal; i++) {
+      if (this.elements[i].imageFogKey > 0) {
+        if ((i - 1 >= 0) && (i + 1 % this.cellsInRow > 0)) {
+          if ((this.elements[i - 1].isRevealed) && (this.elements[i + 1].isRevealed)) {
+            this.elements[i].imageFogKey = 0;
+            this.elements[i].isRevealed = true;
+          }
+        }
+        if ((i - this.cellsInRow >= 0) && (i + this.cellsInRow < this.cellsTotal)) {
+          if ((this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed)) {
+            this.elements[i].imageFogKey = 0;
+            this.elements[i].isRevealed = true;
+          }
+        }
+      }
+    }
+
+    // this.assignImageFogKeys();
   }
 
   findShortestPath(start, end) {
@@ -253,7 +284,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -279,7 +310,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -305,7 +336,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -331,7 +362,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -357,7 +388,7 @@ class Waiting extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           topLeft.isRevealed = true;
           top.isRevealed = true;
           topRight.isRevealed = true;
@@ -373,7 +404,7 @@ class Waiting extends Component {
         break;
     }
     this.assignImageFogKeys();
-    // this.adjustFog();
+    this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 
@@ -440,6 +471,10 @@ class Waiting extends Component {
           this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false })
         }
         break;
+      case 'menu':
+        this.resetHighlighted();
+        this.setState({ modalLeft: 3 });
+        break;
       case 'home':
         this.resetHighlighted();
         this.setState({ modalLeft: 2 });
@@ -462,13 +497,18 @@ class Waiting extends Component {
       this.setState({
         tileWidth: this.zoomedOutValue,
       })
-      this.showSplashScreen('hands', false, 100);
+      // this.showSplashScreen('hands', false, 100);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
       })
-      this.showSplashScreen('hands', false, 100);
+      // this.showSplashScreen('hands', false, 100);
     }
+    setTimeout(function() {
+      this.setState({
+        justZoomed: false,
+      });
+    }.bind(this), 3000);
   }
 
   incrementTurnCounter = () => {
@@ -647,38 +687,86 @@ class Waiting extends Component {
     else if (this.state.modalLeft === 1) {//EXIT
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
-          <NavButton onPress={() => BackAndroid.exitApp()} text='Yes' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
 
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
+
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
+          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); BackAndroid.exitApp();}} text='Yes' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          </ImageBackground>
         </View>
       );
     }
     else if (this.state.modalLeft === 2) {//HOME
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
+
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          </ImageBackground>
+        </View>
+      );
+    }
+    else if (this.state.modalLeft === 3) {//MENU
+      return (
+        <View style={{
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 300,
+        }}>
 
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Menu</Text>
+          <NavButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
+          <NavButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
+          </ImageBackground>
         </View>
       );
     }
@@ -749,7 +837,7 @@ class Waiting extends Component {
 
     if (!this.userWon) {
       item.hasCache = false;
-      this.showSplashScreen('shrine', false, 2000);
+      this.showSplashScreen('shrine', false, 500);
     }
 
   }
@@ -1348,6 +1436,7 @@ class Waiting extends Component {
           tilesInRow={this.cellsInRow}
           boardFinished={this.state.boardFinished}
           isHuman={this.state.isHuman}
+          gameBoardWidth={this.zoomedInValue*15}
           playerSpace={this.state.playerSpace}
           monsterSpace={this.monsterSpace}
           humanSpace={this.humanSpace}
@@ -1367,6 +1456,7 @@ class Waiting extends Component {
           resetHighlighted={this.resetHighlighted}
           alterZoom={this.alterZoom}
           opponentVisible={this.state.opponentVisible}
+          justZoomed={this.state.justZoomed}
           gameActive={(this.state.isHuman == (this.state.turn % 2 === 0))}
         />
         <Modal

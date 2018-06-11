@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Dimensions, Image, View, PanResponder, TouchableOpacity, Animated } from "react-native";
-import { Loop, Stage, TileMap, Sprite } from "react-game-kit/native";
+import { Loop, Stage, Sprite } from "react-game-kit/native";
 import ControlButton from '../components/Button/ControlButton';
-
+import TileMap from './TileMap';
 const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
 
 import Board from "./Board";
@@ -43,6 +43,12 @@ export default class Engine extends Component {
     this.beginningY = this.getBeginningY()
     this.feedbackSquare = null;
     this.previousTouchTimestamp = 0;
+    this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
+    this.tileBlessedCashMapArray = this.props.gameBoard.map(x => x.hasBlessedCache ? 1 : 0);
+    this.tileDesecratedCashMapArray = this.props.gameBoard.map(x => x.hasDesecratedCache ? 1 : 0);
+    this.tileDecorMapArray = this.props.gameBoard.map(x => (!this.props.isHuman) ? x.imageDecorKey : 0);
+    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? ((a.isRevealed || a.isSemiRevealed) ? a.imageKey : 0) : a.imageKey);
+    this.tileFogMapArray = this.props.gameBoard.map(x => (this.props.isHuman) ? x.imageFogKey : 0);
     this.state = {
       playerSpace: this.props.playerSpace,
       playerX: this.playerX,
@@ -60,7 +66,7 @@ export default class Engine extends Component {
       highlightedTileMap: this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0),
       showHighlighted: false,
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
-      tileFogMapArray: this.props.gameBoard.map(x => (this.props.isHuman) ? x.imageFogKey : 0),
+      tileFogMapArray: this.tileFogMapArray,
       spritePlaying: true,
       spriteScale: this.props.tileWidth / this.props.zoomedInValue,
       wasPouncedTileMap: this.wasPouncedTileMap,
@@ -80,39 +86,45 @@ export default class Engine extends Component {
       srcTargetPriestIn: require("../data/images/targetPriestIn.png"),
       srcTargetShrineOut: require("../data/images/targetShrineOut.png"),
       srcTargetShrineIn: require("../data/images/targetShrineIn.png"),
+      tileCashMapArray: this.tileCashMapArray,
+      tileBlessedCashMapArray: this.tileBlessedCashMapArray,
+      tileDesecratedCashMapArray: this.tileDesecratedCashMapArray,
+      tileDecorMapArray: this.tileDecorMapArray,
+      tileMapArray: this.tileMapArray,
+      tileWidth: this.props.tileWidth,
     };
   }
 
   getInitialSpriteX = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return (this.playerX - this.props.tileWidth*0.1);
+      return this.playerX;
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return (this.playerX - this.props.tileWidth*0.8);
+      return this.playerX - this.props.tileWidth*0.8;
     }
   }
 
   getNewSpriteX = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return (this.state.playerX - this.props.tileWidth*0.1);
-    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return (this.state.playerX - this.props.tileWidth*0.8);
+    if (this.state.tileWidth === this.props.zoomedInValue) {
+      return this.state.playerX;
+    } else if (this.state.tileWidth === this.props.zoomedOutValue) {
+      return (this.state.playerX - this.state.tileWidth*0.8)
     }
   }
 
   getInitialSpriteY = () => {
     if (this.props.tileWidth === this.props.zoomedInValue) {
-      return (this.playerY - this.props.tileWidth*1.5);
+      return this.playerY - this.props.tileWidth;
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return (this.playerY - this.props.tileWidth*3.5);
+      return (this.playerY - this.props.tileWidth*2.8)
     }
   }
 
   getNewSpriteY = () => {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        return (this.state.playerY - this.props.tileWidth*1.5);
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return (this.state.playerY - this.props.tileWidth*3.5);
-      }
+    if (this.state.tileWidth === this.props.zoomedInValue) {
+      return this.state.playerY - this.props.tileWidth;
+    } else if (this.state.tileWidth === this.props.zoomedOutValue) {
+      return (this.state.playerY - this.props.tileWidth*2.8)
+    }
   }
 
   getCameraY = () => {
@@ -120,7 +132,7 @@ export default class Engine extends Component {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
             this.feedbackSquare = this.props.gameBoard[i];
-            return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
+            return ((Math.floor(this.feedbackSquare.name / 40) * this.state.tileWidth) - (this.screenDimensions.height / 2));
           }
         }
       } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
@@ -139,7 +151,7 @@ export default class Engine extends Component {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasPounced) {
             this.feedbackSquare = this.props.gameBoard[i];
-            return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
+            return (((this.feedbackSquare.name % 40) * this.state.tileWidth) - (this.screenDimensions.width / 2));
           }
         }
       } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
@@ -202,7 +214,7 @@ export default class Engine extends Component {
         let { touches } = evt.nativeEvent;
         if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
-        } else if (this.state.showHighlighted && this.props.tileWidth === this.props.zoomedInValue) {
+        } else if (this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
       },
@@ -235,10 +247,18 @@ export default class Engine extends Component {
     ]).start()}.bind(this), 2500);
   }
 
+  transportSprite = () => {
+    const { spriteX, spriteY } = this.state;
+    Animated.parallel([
+      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 100 }),
+      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 100 })
+    ]).start();
+  }
+
   animateSpritePosition = () => {
     const { spriteX, spriteY } = this.state;
 
-    if (this.props.isHuman) {
+    if (this.props.isHuman) { // human
       // down
       if (this.getNewSpriteY() - spriteY._value > 0) {
         if (this.state.srcPriest != require("../data/images/priestWalkDown.png"))
@@ -271,7 +291,16 @@ export default class Engine extends Component {
       }
     }
 
-    else {
+    else { // monster
+      // down animation
+      // console.log("animate monster", this.getNewSpriteY(), spriteY._value, this.getNewSpriteX(), spriteX._value)
+      if (this.getNewSpriteY() - spriteY._value > 0 && this.getNewSpriteX() === spriteX._value) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkDown.png")) {
+          this.setState({
+            srcEvil: require("../data/images/monsterWalkDown.png")
+          });
+        }
+      }
       if (this.getNewSpriteX() - spriteX._value < 0)  {
         if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
           this.setState({
@@ -287,14 +316,7 @@ export default class Engine extends Component {
         }
       }
       else {
-        if (this.getNewSpriteY() - spriteY._value > 0) {//down
-          if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
-            this.setState({
-              srcEvil: require("../data/images/monster-move-left-dropped-down.png")
-            });
-          }
-        }
-        else if (this.getNewSpriteY() - spriteY._value < 0) {
+        if (this.getNewSpriteY() - spriteY._value < 0) {
           if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
             this.setState({
               srcEvil: require("../data/images/monster-move-right-dropped-down.png")
@@ -347,7 +369,7 @@ export default class Engine extends Component {
 
   animateSpriteYPosition = () => {
     const {spriteY } = this.state;
-    Animated.timing(spriteY, { toValue: (this.getSpriteY()), duration: 1000 }).start();
+    Animated.timing(spriteY, { toValue: (this.getNewSpriteY()), duration: 1000 }).start();
   }
 
   componentDidUpdate() {
@@ -355,9 +377,12 @@ export default class Engine extends Component {
     if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
       this.animateCamera();
     }
-    if (this.props.boardFinished && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
+    if (!this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       // console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
       this.animateSpritePosition();
+    } 
+    else if (this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
+      this.transportSprite();
     }
   }
 
@@ -367,13 +392,37 @@ export default class Engine extends Component {
     let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
     let newWasPouncedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
     let newWasEchoedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
+    let newSpriteScale = nextProps.tileWidth / nextProps.zoomedInValue;
+    let newTileFogMapArray = nextProps.gameBoard.map(x => (this.props.isHuman) ? x.imageFogKey : 0);
+    if (this.state.spriteScale !== newSpriteScale) {
+      this.setState({
+        spriteScale: newSpriteScale,
+      });
+    }
+    if (this.state.tileWidth !== nextProps.tileWidth) {
+      this.setState({
+        tileWidth: nextProps.tileWidth,
+        left: new Animated.Value((nextProps.playerSpace.name % 40) * nextProps.tileWidth - this.screenDimensions.width/2),
+        top: new Animated.Value(Math.floor(nextProps.playerSpace.name / 40) * nextProps.tileWidth - this.screenDimensions.height/2),
+        playerSpace: nextProps.playerSpace,
+        playerX: (nextProps.playerSpace.name % 40) * nextProps.tileWidth,
+        playerY: Math.floor(nextProps.playerSpace.name / 40) * nextProps.tileWidth,
+        spriteX: new Animated.Value(this.getNewSpriteX()),
+        spriteY: new Animated.Value(this.getNewSpriteY())
+      });
+    }
     if (this.props.playerSpace !== nextProps.playerSpace) {
       // console.log("player space", this.props.playerSpace, nextProps.playerSpace)
       this.setState({
         playerSpace: nextProps.playerSpace,
-        playerX: (nextProps.playerSpace.name % 40) * this.props.tileWidth,
-        playerY: Math.floor(nextProps.playerSpace.name / 40) * this.props.tileWidth,
+        playerX: (nextProps.playerSpace.name % 40) * this.state.tileWidth,
+        playerY: Math.floor(nextProps.playerSpace.name / 40) * this.state.tileWidth,
       });
+    }
+    if (JSON.stringify(this.state.tileFogMapArray !== newTileFogMapArray)) {
+      this.setState({
+        tileFogMapArray: newTileFogMapArray,
+      })
     }
     if (JSON.stringify(this.state.highlightedTileMap !== newHighlightedTileMap)) {
       this.setState({
@@ -391,7 +440,6 @@ export default class Engine extends Component {
     }
     if (JSON.stringify(this.state.fogMap) !== JSON.stringify(newFogMap)) {
       this.setState({
-        finishedUpdatingFogMap: false,
         fogMap: newFogMap,
       });
     }
@@ -403,7 +451,7 @@ export default class Engine extends Component {
     if (JSON.stringify(this.state.wasEchoedTileMap) !== JSON.stringify(newWasEchoedMap)) {
       this.setState({
         wasEchoedTileMap: newWasEchoedMap,
-      })
+      });
     }
   }
 
@@ -475,8 +523,8 @@ export default class Engine extends Component {
   }
 
   getTileFromXY(x, y) {
-    y = Math.floor(y/this.props.tileWidth);
-    x = Math.floor(x/this.props.tileWidth);
+    y = Math.floor(y/this.state.tileWidth);
+    x = Math.floor(x/this.state.tileWidth);
     let index = ((y * 40) + x);
     // console.log(this.state.playerSpace.name, index, this.state.playerX, this.state.playerY);
     return (this.props.gameBoard[index]);
@@ -495,10 +543,10 @@ export default class Engine extends Component {
       return (
         <TileMap
           src={require("../data/images/Magenta-square_100px.gif")}
-          tileSize={this.props.tileWidth}
+          tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.props.tileWidth}
+          sourceWidth={this.state.tileWidth}
           layers={[this.state.highlightedTileMap]}
           renderTile={(tile, src, styles) => {
             this.highlightedTileRanges.push(this.getRangesFromTile(tile));
@@ -524,20 +572,20 @@ export default class Engine extends Component {
     if (this.props.isHuman) {
       return (
         <TileMap
-        src={require("../data/images/fog-nw.gif")}
-        tileSize={this.props.tileWidth}
-        columns={40}
-        rows={40}
-        sourceWidth={this.props.tileWidth}
-        layers={[this.state.tileFogMapArray]}
-        renderTile={this.renderFogTile}
+          src={require("../data/images/fog-nw.gif")}
+          tileSize={this.state.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.state.tileWidth}
+          layers={[this.state.tileFogMapArray]}
+          renderTile={this.renderFogTile}
         />
       );
     }
   }
 
   fixImageStyle = (index, tile) => {
-    return ({ left: ((index - 1) * this.props.tileWidth), overflow: 'hidden' });
+    return ({ left: ((index - 1) * this.state.tileWidth), overflow: 'hidden' });
   }
 
   renderFogTile = (tile, src, styles) => {
@@ -579,10 +627,10 @@ export default class Engine extends Component {
       return (
         <TileMap
           src={require("../data/images/greensquare.jpg")}
-          tileSize={this.props.tileWidth}
+          tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.props.tileWidth}
+          sourceWidth={this.state.tileWidth}
           layers={[this.state.wasPouncedTileMap]}
           renderTile={(tile, src, styles) => {
             return (
@@ -600,10 +648,10 @@ export default class Engine extends Component {
       return (
         <TileMap
           src={require("../data/images/greensquare.jpg")}
-          tileSize={this.props.tileWidth}
+          tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.props.tileWidth}
+          sourceWidth={this.state.tileWidth}
           layers={[this.state.wasEchoedTileMap]}
           renderTile={(tile, src, styles) => {
             return (
@@ -653,17 +701,18 @@ export default class Engine extends Component {
     if (this.props.isHuman) {
       return (
         <TouchableSprite activeOpacity={1} onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
-        <Sprite
-        offset={[0, 0]}
-        repeat={true}
-        src={this.state.srcPriest}
-        steps={[11]}
-        state={0}
-        onPlayStateChanged={this.handlePlayStateChanged}
-        tileHeight={128}
-        ticksPerFrame={this.state.ticksPerFrame}
-        tileWidth={64}
-        />
+          <Sprite
+            offset={[0, 0]}
+            repeat={true}
+            src={this.state.srcPriest}
+            steps={[11]}
+            scale={this.state.spriteScale}
+            state={0}
+            onPlayStateChanged={this.handlePlayStateChanged}
+            tileHeight={128}
+            ticksPerFrame={this.state.ticksPerFrame}
+            tileWidth={64}
+          />
         </TouchableSprite>
       );
     } else {
@@ -674,6 +723,7 @@ export default class Engine extends Component {
             repeat={true}
             src={this.state.srcEvil}
             steps={[11]}
+            scale={this.state.spriteScale}
             state={0}
             onPlayStateChanged={this.handlePlayStateChanged}
             tileHeight={128}
@@ -783,27 +833,27 @@ export default class Engine extends Component {
     if ((!this.props.gameActive) && (this.state.controlsVisible)) {
       this.setState({ controlsVisible: false })
     }
-    if (this.state.controlsVisible && this.props.tileWidth === this.props.zoomedInValue) {
+    if (this.state.controlsVisible && this.state.tileWidth === this.props.zoomedInValue) {
       if (this.props.isHuman) {
           return (
             <View style={this.getPriestControlStyles()}>
               <View style={this.getControlButtonStyles()}>
-                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoNorthOut.png")} source2={require("../data/images/echoNorthIn.png")} onPress={this.echoNorth} />
+                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoNorthOut.png")} source2={require("../data/images/echoNorthIn.png")} onPress={this.echoNorth} />
               </View>
               <View style={this.getControlButtonStyles()}>
-                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoWestOut.png")} source2={require("../data/images/echoWestIn.png")} onPress={this.echoWest} />
-                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoBurstOut.png")} source2={require("../data/images/echoBurstIn.png")} onPress={this.echoBurst} />
-                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoEastOut.png")} source2={require("../data/images/echoEastIn.png")} onPress={this.echoEast} />
+                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoWestOut.png")} source2={require("../data/images/echoWestIn.png")} onPress={this.echoWest} />
+                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoBurstOut.png")} source2={require("../data/images/echoBurstIn.png")} onPress={this.echoBurst} />
+                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoEastOut.png")} source2={require("../data/images/echoEastIn.png")} onPress={this.echoEast} />
               </View>
               <View style={this.getControlButtonStyles()}>
-                <ControlButton tileWidth={this.props.tileWidth} source1={require("../data/images/echoSouthOut.png")} source2={require("../data/images/echoSouthIn.png")} onPress={this.echoSouth} />
+                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoSouthOut.png")} source2={require("../data/images/echoSouthIn.png")} onPress={this.echoSouth} />
               </View>
             </View>
           );
       } else {
           return (
             <View style={this.getMonsterControlStyles()} >
-              <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcfocusOut} source2={this.state.srcfocusIn} onPress={this.pickTarget} />
+              <ControlButton tileWidth={this.state.tileWidth} source1={this.state.srcfocusOut} source2={this.state.srcfocusIn} onPress={this.pickTarget} />
             </View>
           );
         }
@@ -814,31 +864,31 @@ export default class Engine extends Component {
     if (this.state.targetPickerVisible) {
       return (
         <View style={this.getMonsterControlStyles()} >
-          <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcTargetPriestOut} source2={this.state.srcTargetPriestIn} onPress={this.humanPicked} />
-          <ControlButton tileWidth={this.props.tileWidth} source1={this.state.srcTargetShrineOut} source2={this.state.srcTargetShrineIn} onPress={this.shrinePicked} />
+          <ControlButton tileWidth={this.state.tileWidth} source1={this.state.srcTargetPriestOut} source2={this.state.srcTargetPriestIn} onPress={this.humanPicked} />
+          <ControlButton tileWidth={this.state.tileWidth} source1={this.state.srcTargetShrineOut} source2={this.state.srcTargetShrineIn} onPress={this.shrinePicked} />
         </View>
       );
     }
   }
 
   getMonsterControlStyles = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ height: this.props.tileWidth, width: this.props.tileWidth*3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*5, flexDirection: "row", justifyContent: 'space-between' });
+    if (this.state.tileWidth === this.props.zoomedInValue) {
+      return ({ height: this.state.tileWidth, width: this.state.tileWidth*3, left: this.state.playerX - this.state.tileWidth, top: this.state.playerY - this.state.tileWidth*4, flexDirection: "row", justifyContent: 'space-between' });
     } else {
-      return ({ height: this.props.tileWidth, width: this.props.tileWidth*3, left: this.state.playerX - this.props.tileWidth, top: this.state.playerY - this.props.tileWidth*8, flexDirection: "row", justifyContent: 'space-between' });
+      return ({ height: this.state.tileWidth, width: this.state.tileWidth*3, left: this.state.playerX - this.state.tileWidth, top: this.state.playerY - this.state.tileWidth*6, flexDirection: "row", justifyContent: 'space-between' });
     }
   }
 
   getPriestControlStyles = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return { height: this.props.tileWidth * 3, width: this.props.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.props.tileWidth, top: this.state.playerY - (this.props.tileWidth*5) };
+    if (this.state.tileWidth === this.props.zoomedInValue) {
+      return { height: this.state.tileWidth * 3, width: this.state.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.state.tileWidth, top: this.state.playerY - (this.state.tileWidth*5) };
     } else {
-      return { height: this.props.tileWidth * 3, width: this.props.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.props.tileWidth, top: this.state.playerY - (this.props.tileWidth*8) };
+      return { height: this.state.tileWidth * 3, width: this.state.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.state.tileWidth, top: this.state.playerY - (this.state.tileWidth*8) };
     }
   }
 
   getControlButtonStyles = () => {
-    return ({ height: this.props.tileWidth, width: this.props.tileWidth * 3, flexDirection: 'row', justifyContent: 'center', zIndex: 3 });
+    return ({ height: this.state.tileWidth, width: this.state.tileWidth * 3, flexDirection: 'row', justifyContent: 'center', zIndex: 3 });
   }
 
   render() {
@@ -850,12 +900,18 @@ export default class Engine extends Component {
           style={{ backgroundColor: "#000" }}
         >
           <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1 }} {...this._panResponder.panHandlers}>
-            <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.gameBoardWidth, height: this.gameBoardWidth }} >
+            <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.state.tileWidth*40, height: this.state.tileWidth*40 }} >
               <Board
                 gameBoard={this.props.gameBoard}
                 isHuman={this.props.isHuman}
                 boardFinished={this.props.boardFinished}
-                tileWidth={this.props.tileWidth}
+                tileWidth={this.state.tileWidth}
+                tileCashMapArray={this.state.tileCashMapArray}
+                tileBlessedCashMapArray={this.state.tileBlessedCashMapArray}
+                tileDesecratedCashMapArray={this.state.tileDesecratedCashMapArray}
+                tileDecorMapArray={this.state.tileDecorMapArray}
+                tileMapArray={this.state.tileMapArray}
+
               />
 
               {this.renderHighlighted()}
@@ -874,37 +930,37 @@ export default class Engine extends Component {
   }
 
   getSpriteStyle = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({ zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth*3, transform: [{scale: this.state.spriteScale}] });
-    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({ zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
+    if (this.state.tileWidth === this.props.zoomedInValue) {
+      return ({ zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth*3, transform: [{scale: this.state.spriteScale}] });
+    } else if (this.state.tileWidth === this.props.zoomedOutValue) {
+      return ({ zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
     }
 
   }
-
   getPriestStyle = () => {
-    if (this.props.tileWidth === this.props.zoomedInValue) {
-      return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
-    } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return ({zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.props.tileWidth/this.state.spriteScale, transform: [{scale: this.state.spriteScale}] });
+    // console.log("sprite x y", this.state.spriteX, this.state.spriteY);
+    if (this.state.tileWidth === this.props.zoomedInValue) {
+      return ({zIndex: 1, width: this.state.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
+    } else if (this.state.tileWidth === this.props.zoomedOutValue) {
+      return ([ {zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth/this.state.spriteScale}]);
     }
   }
 
-  // this.playerX = (this.props.playerSpace.name % 40) * this.props.tileWidth;
-  // this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.props.tileWidth;
+  // this.playerX = (this.props.playerSpace.name % 40) * this.state.tileWidth;
+  // this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.state.tileWidth;
 
   getOpponentStyle = () => {
     if (this.props.isHuman) {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.monsterSpace.name / 40) * this.props.tileWidth) - this.props.tileWidth * 5) });
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return ({zIndex: 1, left: ((this.props.monsterSpace.name % 40) * this.props.tileWidth), top: (Math.floor(this.props.monsterSpace.name / 40) * this.props.tileWidth - (this.props.tileWidth*11)), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
+      if (this.state.tileWidth === this.props.zoomedInValue) {
+        return ({zIndex: 1, height: this.state.tileWidth * 3, width: this.state.tileWidth, left: ((this.props.monsterSpace.name % 40) * this.state.tileWidth), top: (Math.floor((this.props.monsterSpace.name / 40) * this.state.tileWidth) - this.state.tileWidth * 5) });
+      } else if (this.state.tileWidth === this.props.zoomedOutValue) {
+        return ({zIndex: 1, left: ((this.props.monsterSpace.name % 40) * this.state.tileWidth), top: (Math.floor(this.props.monsterSpace.name / 40) * this.state.tileWidth - (this.state.tileWidth*11)), width: this.state.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
       }
     } else {
-      if (this.props.tileWidth === this.props.zoomedInValue) {
-        return ({zIndex: 1, height: this.props.tileWidth * 3, width: this.props.tileWidth, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.props.tileWidth) - this.props.tileWidth * 5) });
-      } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-        return ({zIndex: 1, left: ((this.props.humanSpace.name % 40) * this.props.tileWidth - this.props.tileWidth), top: (Math.floor(this.props.humanSpace.name / 40) * this.props.tileWidth - (this.props.tileWidth*10)), width: this.props.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
+      if (this.state.tileWidth === this.props.zoomedInValue) {
+        return ({zIndex: 1, height: this.state.tileWidth * 3, width: this.state.tileWidth, left: ((this.props.humanSpace.name % 40) * this.state.tileWidth), top: (Math.floor((this.props.humanSpace.name / 40) * this.state.tileWidth) - this.state.tileWidth * 5) });
+      } else if (this.state.tileWidth === this.props.zoomedOutValue) {
+        return ({zIndex: 1, left: ((this.props.humanSpace.name % 40) * this.state.tileWidth - this.state.tileWidth), top: (Math.floor(this.props.humanSpace.name / 40) * this.state.tileWidth - (this.state.tileWidth*10)), width: this.state.tileWidth/this.state.spriteScale, transform: [{ scale: this.state.spriteScale }] });
       }
     }
   }

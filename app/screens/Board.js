@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Dimensions, PanResponder, Image, Text } from "react-native";
 import PropTypes from "prop-types";
-import { TileMap } from "react-game-kit/native";
+import TileMap from './TileMap';
 
 export default class Board extends Component {
   static contextTypes = {
@@ -18,20 +18,60 @@ export default class Board extends Component {
     this.screenDimensions = Dimensions.get("window");
     this.sourceWidth = this.props.tileWidth;
     this.gameBoardWidth = this.props.tileWidth * 40;
-    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? ((a.isRevealed || a.isSemiRevealed) ? a.imageKey : 0) : a.imageKey);
-    // debug:
-    // this.tileMapArray = this.props.gameBoard.map(a => a.imageKey);
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
     this.tileBlessedCashMapArray = this.props.gameBoard.map(x => x.hasBlessedCache ? 1 : 0);
     this.tileDesecratedCashMapArray = this.props.gameBoard.map(x => x.hasDesecratedCache ? 1 : 0);
     this.tileDecorMapArray = this.props.gameBoard.map(x => (!this.props.isHuman) ? x.imageDecorKey : 0);
-    this.tileHighlightedMapArray = this.props.gameBoard.map(x => x.isHighlighted ? 1 : 0);
+    this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? ((a.isRevealed || a.isSemiRevealed) ? a.imageKey : 0) : a.imageKey);
     this.state = {
       finishedUpdatingFogMap: this.props.boardFinished,
-      tileMap: this.tileMapArray,
+      tileMapArray: this.tileMapArray,
+      tileCashMapArray: this.tileCashMapArray,
+      tileBlessedCashMapArray: this.tileBlessedCashMapArray,
+      tileDesecratedCashMapArray: this.tileDesecratedCashMapArray,
+      tileDecorMapArray: this.tileDecorMapArray,
+      tileWidth: this.props.tileWidth,
     };
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    let newTileCashMapArray = nextProps.gameBoard.map(x => x.hasCache ? 1 : 0);
+    let newTileBlessedCashMapArray = nextProps.gameBoard.map(x => x.hasBlessedCache ? 1 : 0);
+    let newTileDesecratedCashMapArray = nextProps.gameBoard.map(x => x.hasDesecratedCache ? 1 : 0);
+    let newTileDecorMapArray = nextProps.gameBoard.map(x => (!this.props.isHuman) ? x.imageDecorKey : 0);
+    let newTileMapArray = nextProps.gameBoard.map(a => this.props.isHuman ? ((a.isRevealed || a.isSemiRevealed) ? a.imageKey : 0) : a.imageKey);
+    if (JSON.stringify(this.state.tileMapArray) !== JSON.stringify(newTileMapArray)) {
+      this.setState({
+        tileMapArray: newTileMapArray,
+      });
+    }
+    if (JSON.stringify(this.state.tileCashMapArray) !== JSON.stringify(newTileCashMapArray)) {
+      this.setState({
+        tileCashMapArray: newTileCashMapArray,
+      });
+    }
+    if (JSON.stringify(this.state.tileDesecratedCashMapArray) !== JSON.stringify(newTileDesecratedCashMapArray)) {
+      this.setState({
+        tileDesecratedCashMapArray: newTileDesecratedCashMapArray,
+      });
+    }
+    if (JSON.stringify(this.state.tileBlessedCashMapArray) !== JSON.stringify(newTileBlessedCashMapArray)) {
+      this.setState({
+        tileBlessedCashMapArray: newTileBlessedCashMapArray,
+      });
+    }
+    if (JSON.stringify(this.state.tileDecorMapArray) !== JSON.stringify(newTileDecorMapArray)) {
+      this.setState({
+        tileDecorMapArray: newTileDecorMapArray,
+      });
+    }
+    if (this.state.tileWidth !== nextProps.tileWidth) {
+      // console.log("new tileWidthSet");
+      this.setState({
+        tileWidth: nextProps.tileWidth,
+      });
+    }
+  }
 
   getIndexFromTile = (tile) => {
     let { size } = tile;
@@ -42,7 +82,7 @@ export default class Board extends Component {
   }
 
   fixImageStyle = (index, tile) => {
-    return ({ left: ((index - 1) * this.props.tileWidth), overflow: 'hidden' });
+    return ({ left: ((index - 1) * this.state.tileWidth), overflow: 'hidden' });
   }
 
   renderTile = (tile, src, styles) => {
@@ -183,10 +223,10 @@ export default class Board extends Component {
   renderDecorTile = (tile, src, styles) => {
     switch (tile.index) {
       case 1:
-        return <Image resizeMode="stretch" style={[styles, { height: (this.props.tileWidth * 1.8), top: -this.props.tileWidth * 0.6, overflow: 'hidden' }]} source={require("../data/images/tube1.png")} />;
+        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 1.8), top: -this.state.tileWidth * 0.6, overflow: 'hidden' }]} source={require("../data/images/tube1.png")} />;
         break;
       case 2:
-        return <Image resizeMode="stretch" style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth * 0.7, overflow: 'hidden' }, this.fixImageStyle()]} source={require("../data/images/tube2.png")} />;
+        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth * 0.7, overflow: 'hidden' }, this.fixImageStyle()]} source={require("../data/images/tube2.png")} />;
         break;
       default:
         console.log('the imageKey for this tile was not assigned correctly', tile);
@@ -200,11 +240,11 @@ export default class Board extends Component {
         <View>
           <TileMap
             src={require("../data/images/Black_square.jpeg")}
-            tileSize={this.props.tileWidth}
+            tileSize={this.state.tileWidth}
             columns={40}
             rows={40}
-            sourceWidth={this.props.tileWidth}
-            layers={[this.state.tileMap]}
+            sourceWidth={this.state.tileWidth}
+            layers={[this.state.tileMapArray]}
             renderTile={this.renderTile}
           />
         </View>
@@ -216,15 +256,15 @@ export default class Board extends Component {
   // return (
   //   <TileMap
   //     src={require("../data/images/shrine.png")}
-  //     tileSize={this.props.tileWidth}
+  //     tileSize={this.state.tileWidth}
   //     columns={40}
   //     rows={40}
-  //     sourceWidth={this.props.tileWidth}
+  //     sourceWidth={this.state.tileWidth}
   //     layers={[this.tileCashMapArray]}
   //     renderTile={(tile, src, styles) => (
   //       <Image
   //         resizeMode="stretch"
-  //         style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden' }]}
+  //         style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth, overflow: 'hidden' }]}
   //         source={src}
   //       />
   //     )}
@@ -236,15 +276,15 @@ export default class Board extends Component {
       return (
         <TileMap
           src={require("../data/images/shrineShort.png")}
-          tileSize={this.props.tileWidth}
+          tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.props.tileWidth}
-          layers={[this.tileCashMapArray]}
+          sourceWidth={this.state.tileWidth}
+          layers={[this.state.tileCashMapArray]}
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth, overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -258,15 +298,15 @@ export default class Board extends Component {
       return (
         <TileMap
           src={require("../data/images/shrineShort.png")}
-          tileSize={this.props.tileWidth}
+          tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.props.tileWidth}
-          layers={[this.tileBlessedCashMapArray]}
+          sourceWidth={this.state.tileWidth}
+          layers={[this.state.tileBlessedCashMapArray]}
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth, overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -281,15 +321,15 @@ export default class Board extends Component {
       return (
         <TileMap
           src={require("../data/images/shrineShort.png")}
-          tileSize={this.props.tileWidth}
+          tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
-          sourceWidth={this.props.tileWidth}
-          layers={[this.tileDesecratedCashMapArray]}
+          sourceWidth={this.state.tileWidth}
+          layers={[this.state.tileDesecratedCashMapArray]}
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.props.tileWidth * 2), top: -this.props.tileWidth, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth, overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -303,11 +343,11 @@ export default class Board extends Component {
     return (
       <TileMap
         // src={require("../data/images/tube1.png")}
-        tileSize={this.props.tileWidth}
+        tileSize={this.state.tileWidth}
         columns={40}
         rows={40}
-        sourceWidth={this.props.tileWidth}
-        layers={[this.tileDecorMapArray]}
+        sourceWidth={this.state.tileWidth}
+        layers={[this.state.tileDecorMapArray]}
         renderTile={this.renderDecorTile}
       />
     );

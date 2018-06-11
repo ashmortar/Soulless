@@ -31,8 +31,8 @@ class Game extends Component {
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
     this.viewPortHeight = Dimensions.get("window").height;
-    this.zoomedInValue = 50;
-    this.zoomedOutValue = Math.ceil(this.viewPortHeight / this.cellsInRow);
+    this.zoomedInValue = 64;
+    this.zoomedOutValue = 25;
     this.allowedLengthOfWhiteLine = 14; // density
     this.userWon = null;
     this.humanShrinesToWin = 7;
@@ -41,7 +41,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: true,
+      isHuman: false,
       tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -62,6 +62,7 @@ class Game extends Component {
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
+      justZoomed: false,
     };
   }
 
@@ -80,7 +81,7 @@ class Game extends Component {
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
-    // this.adjustFog();
+    this.adjustFog();
     this.setHeartRate();
   }
 
@@ -1098,7 +1099,12 @@ class Game extends Component {
   assignImageFogKeys = () => {
 
     for (let i = 0; i < this.elements.length; i++) {
+      let hadFog = false;
       if ((this.elements[i].isRevealed)) {
+
+        if ((this.elements[i].imageFogKey > 0) && (this.elements[i].imageFogKey < 9)) {
+          hadFog = true;
+        }
 
         if (this.elements[i].imageFogKey) { this.elements[i].imageFogKey = 0; }
 
@@ -1116,6 +1122,7 @@ class Game extends Component {
               this.elements[i - this.cellsInRow + 1].imageFogKey = 3;//ne
           }
           if ((this.elements[i + 1].isRevealed) && (this.elements[i - this.cellsInRow].isRevealed) && (!this.elements[i + 1 - this.cellsInRow].isRevealed)) {
+
               this.elements[i + 1 - this.cellsInRow].imageFogKey = 9;
           }
         }
@@ -1165,10 +1172,33 @@ class Game extends Component {
       if (this.elements[i].imageFogKey > 0) {
         this.elements[i].isSemiRevealed = true;
       }
+      if (this.elements[i].imageFogKey === 9) {
+        this.elements[i].isRevealed = true;
+      }
     }
   }
 
   adjustFog = () => {
+    for (let i = 0; i < this.cellsTotal; i++) {
+      if (this.elements[i].imageFogKey > 0) {
+        if ((i - 1 >= 0) && (i + 1 % this.cellsInRow > 0)) {
+          if ((this.elements[i - 1].isRevealed) && (this.elements[i + 1].isRevealed)) {
+            this.elements[i].imageFogKey = 0;
+            this.elements[i].isRevealed = true;
+          }
+        }
+        if ((i - this.cellsInRow >= 0) && (i + this.cellsInRow < this.cellsTotal)) {
+          if ((this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed)) {
+            this.elements[i].imageFogKey = 0;
+            this.elements[i].isRevealed = true;
+          }
+        }
+      }
+    }
+    this.assignImageFogKeys();
+  }
+
+  adjustFog_old = () => {
     let cellsAround;
     let toReveal = false;
     for (let i = 0; i < this.cellsTotal; i++) {
@@ -1271,7 +1301,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1302,7 +1332,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -1333,7 +1363,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
             cell.isRevealed = true;
@@ -1364,7 +1394,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
             cell.isRevealed = true;
@@ -1395,7 +1425,7 @@ class Game extends Component {
         } else {
           this.humanSpace.wasEchoed = true;
           this.incrementTurnCounter();
-          this.showSplashScreen('hands', false, splashScreenTimer);
+          // this.showSplashScreen('hands', false, splashScreenTimer);
           topLeft.isRevealed = true;
           top.isRevealed = true;
           topRight.isRevealed = true;
@@ -1411,7 +1441,7 @@ class Game extends Component {
         break;
     }
     this.assignImageFogKeys();
-    // this.adjustFog();
+    this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 
@@ -1458,40 +1488,12 @@ class Game extends Component {
           }
           this.resetHighlighted();
           this.changePlayerMode();
+          this.showSplashScreen('hands', true, 1000);
         }
         break;
-      case 'move':
-        if (this.state.isHuman) {
-          this.showHumanMoves();
-          this.setState({ redraw: !this.state.redraw });
-        } else {
-          this.showMonsterMoves();
-          // this.setState({ redraw: !this.state.redraw });
-        }
-        break;
-      case 'sniff':
+      case 'menu':
         this.resetHighlighted();
-        // this.setState({ modalDialogOnly: 1 });
-        this.setState({ modal: 3 });
-        break;
-      case 'listen':
-        this.resetHighlighted();
-        if (this.state.isHuman) {
-          this.setState({ modalDialogOnly: 3 });
-        }
-        else {
-          this.setState({ modal: 4 });
-        }
-        break;
-      case 'echo':
-        this.resetHighlighted();
-        this.setState({ modal: 1 });
-        break;
-      case 'pounce':
-        // this.setState({ modalPounce: 1 });
-        this.resetHighlighted();
-        this.monsterProcessPounce();
-        // this.setState({ modalPounce: 0 });
+        this.setState({ modalLeft: 3 });
         break;
       case 'home':
         this.resetHighlighted();
@@ -1514,14 +1516,21 @@ class Game extends Component {
     if(this.state.tileWidth === this.zoomedInValue) {
       this.setState({
         tileWidth: this.zoomedOutValue,
+        justZoomed: true,
       })
-      this.showSplashScreen('hands', false, 100);
+      // this.showSplashScreen('hands', false, 100);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
+        justZoomed: true
       })
-      this.showSplashScreen('hands', false, 100);
+      // this.showSplashScreen('hands', false, 100);
     }
+    setTimeout(function() {
+      this.setState({
+        justZoomed: false,
+      });
+    }.bind(this), 3000);
   }
 
   incrementTurnCounter = () => {
@@ -1539,7 +1548,7 @@ class Game extends Component {
   // }
 
   changePlayerMode = () => {
-    this.showSplashScreen('hands', true, 1000);
+    // this.showSplashScreen('hands', true, 1000);
     this.handleChangePlayer();
   }
 
@@ -1631,7 +1640,6 @@ class Game extends Component {
         </View>
       )
     }
-
     else if (this.state.modalDialogOnly === 2) {//focus on closest shrine
       let monsterIndex = this.monsterSpace.name;
       let { shrine, distance } = this.findClosestShrine();
@@ -1678,48 +1686,6 @@ class Game extends Component {
         </View>
       )
     }
-    // <NavButton onPress={() => {this.setState({ modal: 0 }); this.incrementTurnCounter();}} text='OK' />
-    else if (this.state.modalDialogOnly === 3) {//LISTEN FOR HUMAN
-      let distance = this.findShortestPath(this.monsterSpace, this.humanSpace);
-      let text1 = 'You listened.';
-      let text2 = `Opponent is ${distance} cells away`;
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
-        </View>
-      );
-    } else if (this.state.modalDialogOnly === 4) {// LISTEN FOR SHRINE
-      let { distance } = this.findClosestShrine();
-      let text1 = 'You listened.';
-      let text2 = `Shrine is ${distance} cells away`;
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-          <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
-        </View>
-      );
-    }
     else if (this.state.modalPounce === 1) {//POUNCE
       let text1;
       let text2;
@@ -1752,103 +1718,89 @@ class Game extends Component {
         </View>
       );
     }
-    else if (this.state.modal === 1) {//ECHO
-      let text1 = 'Choose echo direction:';
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <NavButton onPress={() => {this.echoLocate('north'); this.setState({ modal: 0 });}} text='North' />
-          <NavButton onPress={() => {this.echoLocate('south'); this.setState({ modal: 0 });}} text='South' />
-          <NavButton onPress={() => {this.echoLocate('east'); this.setState({ modal: 0 });}} text='East' />
-          <NavButton onPress={() => {this.echoLocate('west'); this.setState({ modal: 0 });}} text='West' />
-          <NavButton onPress={() => {this.echoLocate('radius'); this.setState({ modal: 0 });}} text='Burst' />
-        </View>
-      );
-    }
-    else if (this.state.modal === 3) {//sniff
-      let text1 = 'Sniff:';
-      return (
-        <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
-        }}>
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 1 }); }} text='player' />
-          <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 2 }); }} text='shrine' />
-        </View>
-      );
-    }
-    else if (this.state.modal === 4) {//listen
-      if (!this.state.isHuman) {
-        let text1 = 'Listen:';
-        return (
-          <View style={{
-
-            borderWidth: 2,
-            borderColor: "#000",
-
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 22,
-            backgroundColor: '#212121',
-          }}>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 3 }); }} text='player' />
-            <NavButton onPress={() => {this.setState({ modal: 0 }); this.setState({ modalDialogOnly: 4 }); }} text='shrine' />
-          </View>
-        );
-      }
-    }
     else if (this.state.modalLeft === 1) {//EXIT
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
+
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
+
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => BackAndroid.exitApp()} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
-
+          </ImageBackground>
         </View>
       );
     }
     else if (this.state.modalLeft === 2) {//HOME
       return (
         <View style={{
-
-          borderWidth: 2,
-          borderColor: "#000",
-
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 22,
-          backgroundColor: '#212121',
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 200,
         }}>
+
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
           <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
           <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          </ImageBackground>
+        </View>
+      );
+    }
+    else if (this.state.modalLeft === 3) {//MENU
+      return (
+        <View style={{
+          backgroundColor: 'transparent',
+          width: Dimensions.get("window").width*0.9,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 300,
+        }}>
 
+          <ImageBackground
+            style={{
+              height: undefined,
+              width: undefined,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+              }}
+            source={require("../data/images/tallWindow.png")}
+            resizeMode={"stretch"}
+          >
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Menu</Text>
+          <NavButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
+          <NavButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
+          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
+          </ImageBackground>
         </View>
       );
     }
@@ -1919,7 +1871,7 @@ class Game extends Component {
 
     if (!this.userWon) {
       item.hasCache = false;
-      this.showSplashScreen('shrine', false, 2000);
+      // this.showSplashScreen('shrine', false, 2000);
     }
 
   }
@@ -2168,14 +2120,10 @@ class Game extends Component {
     />;
     if (this.state.boardFinished) {
       return (
-        <SideMenu
-        menu={menuRight}
-        menuPosition='right'
-        disableGestures={disableGestures}
-      >
-      <SideMenu
-        menu={menuLeft}
-        menuPosition='left'
+
+      <View style={{
+        flex: 1,
+      }}
       >
         <Engine
           gameBoard={this.elements}
@@ -2188,6 +2136,7 @@ class Game extends Component {
           move={this.state.isHuman ? this.moveHuman : this.moveMonster}
           echolocate={this.echoLocate}
           tileWidth={this.state.tileWidth}
+          gameBoardWidth={this.zoomedInValue*15}
           zoomedInValue={this.zoomedInValue}
           zoomedOutValue={this.zoomedOutValue}
           incrementTurnCounter={this.incrementTurnCounter}
@@ -2202,6 +2151,7 @@ class Game extends Component {
           alterZoom={this.alterZoom}
           opponentVisible={this.state.opponentVisible}
           gameActive={true}
+          justZoomed={this.state.justZoomed}
         />
         <Modal
           isVisible={this.state.modal != 0}
@@ -2258,8 +2208,7 @@ class Game extends Component {
         </Modal>
 
         {bar}
-      </SideMenu>
-      </SideMenu>
+      </View>
       )
     }
   }

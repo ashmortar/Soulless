@@ -11,7 +11,7 @@ export default class BoardGenerator {
     this.cellsInRow = 40;
     this.cellsTotal = 1600;
     this.allowedLengthOfWhiteLine = 14 //density
-    
+
   }
 
   generateBoard() {
@@ -24,6 +24,7 @@ export default class BoardGenerator {
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
+    this.adjustFog();
 
     return this.elements;
   }
@@ -1079,24 +1080,24 @@ export default class BoardGenerator {
   }
 
   adjustFog = () => {
-    let cellsAround;
-    let toReveal = false;
     for (let i = 0; i < this.cellsTotal; i++) {
-      toReveal = true;
       if (this.elements[i].imageFogKey > 0) {
-        cellsAround = this.getIndexesOfAvailableCellsAround(i, this.cellsInRow, this.cellsTotal, false);
-        for (let j = 0; j < cellsAround.length; j++) {
-          if ((!this.elements[cellsAround[j]].isRevealed) && (!this.elements[cellsAround[j]].isSemiRevealed)) {
-            toReveal = false;
-            break;
+        if ((i - 1 >= 0) && (i + 1 % this.cellsInRow > 0)) {
+          if ((this.elements[i - 1].isRevealed) && (this.elements[i + 1].isRevealed)) {
+            this.elements[i].imageFogKey = 0;
+            this.elements[i].isRevealed = true;
           }
         }
-        if (toReveal) {
-          this.elements[i].isRevealed = true;
+        if ((i - this.cellsInRow >= 0) && (i + this.cellsInRow < this.cellsTotal)) {
+          if ((this.elements[i - this.cellsInRow].isRevealed) && (this.elements[i + this.cellsInRow].isRevealed)) {
+            this.elements[i].imageFogKey = 0;
+            this.elements[i].isRevealed = true;
+          }
         }
       }
     }
-    this.assignImageFogKeys();
+
+    // this.assignImageFogKeys();
   }
 
   assignImageDecorKeys = () => {
@@ -1168,7 +1169,7 @@ export default class BoardGenerator {
         break;
 
       default:
-        break; 
+        break;
     }
     this.assignImageFogKeys();
     // this.adjustFog();
