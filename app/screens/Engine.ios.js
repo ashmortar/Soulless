@@ -219,7 +219,7 @@ export default class Engine extends Component {
       onStartShouldSetPanResponder: () => true,
 
       onMoveShouldSetPanResponder: (gestureState) => {
-        if (this.state.showHighlighted || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
+        if (this.state.showHighlighted && !this.props.outOfMoves || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           return true;
         } else {
           return false;
@@ -237,7 +237,7 @@ export default class Engine extends Component {
         }
         else if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
-        } else if (this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
+        } else if (!this.props.outOfMoves && this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
         this.previousTouchTimestamp = touches[0].timestamp;
@@ -260,7 +260,7 @@ export default class Engine extends Component {
     });
   }
 
-  animateCamera = () => {
+  animateCamera = (animationDuration) => {
     const { left, top } = this.state;
     let newX = (this.state.playerX - this.screenDimensions.width/2);
     if (newX < 0) {
@@ -275,8 +275,8 @@ export default class Engine extends Component {
       newY = this.yOffsetMax;
     }
     Animated.parallel([
-      Animated.timing(left, { toValue: -newX, duration: 1000}),
-      Animated.timing(top, { toValue: -newY, duration: 1000}),
+      Animated.timing(left, { toValue: -newX, duration: animationDuration}),
+      Animated.timing(top, { toValue: -newY, duration: animationDuration}),
     ]).start();
   }
 
@@ -285,7 +285,16 @@ export default class Engine extends Component {
     Animated.parallel([
       Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 100 }),
       Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 100 })
-    ]).start();
+    ]).start((finished) => {
+      if (finished.finished) {
+        this.animateCamera(1);
+        this.setState({
+          srcPriest: require("../data/images/priestIdle.png"),
+          srcEvil: require("../data/images/priestIdle-ghost.png"),
+          justZoomed: false,
+        });
+      }
+    });
   }
 
   animateSpritePosition = () => {
@@ -342,16 +351,16 @@ export default class Engine extends Component {
         }
       }
       else if (this.getNewSpriteX() - spriteX._value < 0) {
-        if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkLeft.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-left-dropped-down.png"),
+            srcEvil: require("../data/images/monsterWalkLeft.png"),
           });
         }
       }
       else if (this.getNewSpriteX() - spriteX._value > 0) {
-        if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkRight.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-right-dropped-down.png"),
+            srcEvil: require("../data/images/monsterWalkRight.png"),
           });
         }
       }
@@ -408,12 +417,8 @@ export default class Engine extends Component {
   }
 
   componentDidUpdate() {
-    // console.log('update', this.state.spriteX._value, this.getInitialSpriteX(), this.getNewSpriteX());
-    // if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
-    //   this.animateCamera();
-    // }
+
     if (!this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
-      // console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
       this.animateSpritePosition();
     }
     else if (this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
@@ -432,6 +437,21 @@ export default class Engine extends Component {
     if (this.state.spriteScale !== newSpriteScale) {
       this.setState({
         spriteScale: newSpriteScale,
+      });
+    }
+    if (this.props.isHuman !== nextProps.isHuman) {
+      this.setState({
+        justZoomed: true,
+        playerSpace: nextProps.playerSpace,
+        playerX: (nextProps.playerSpace.name % 40) * this.state.tileWidth,
+        playerY: Math.floor(nextProps.playerSpace.name / 40) * this.state.tileWidth,
+      });
+      this.transportSprite();
+    }
+    if (nextProps.outOfMoves) {
+      this.setState({
+        showHighlighted: false,
+        controlsVisible: false,
       });
     }
     if (this.state.tileWidth !== nextProps.tileWidth) {
@@ -454,12 +474,12 @@ export default class Engine extends Component {
         playerY: Math.floor(nextProps.playerSpace.name / 40) * this.state.tileWidth,
       });
     }
-    if (JSON.stringify(this.state.tileFogMapArray !== newTileFogMapArray)) {
+    if (JSON.stringify(this.state.tileFogMapArray) !== JSON.stringify(newTileFogMapArray)) {
       this.setState({
         tileFogMapArray: newTileFogMapArray,
-      })
+      });
     }
-    if (JSON.stringify(this.state.highlightedTileMap !== newHighlightedTileMap)) {
+    if (JSON.stringify(this.state.highlightedTileMap) !== JSON.stringify(newHighlightedTileMap)) {
       this.setState({
         highlightedTileMap: newHighlightedTileMap,
       });
@@ -502,7 +522,6 @@ export default class Engine extends Component {
     } else {
       let left = this.state.initialLeft._value + x - this.state.initialX;
       let top = this.state.initialTop._value + y - this.state.initialY;
-      // console.log(left, this.gameBoardWidth);
       this.setState({
           left:
             left._value > 0 ?
@@ -525,7 +544,6 @@ export default class Engine extends Component {
     if (!this.state.isMoving) {
       let x = touchX - this.state.left._value;
       let y = touchY - this.state.top._value;
-      // console.log("process move", this.highlightedTileRanges, x, y);
       for (let i = 0; i < this.highlightedTileRanges.length; i++) {
         if (
           x > this.highlightedTileRanges[i].xMin &&
@@ -542,7 +560,6 @@ export default class Engine extends Component {
           this.props.move(newPlayerTile);
           this.props.incrementTurnCounter();
         } else {
-          // console.log('check');
           setTimeout(function() {
             if (!this.state.isMoving || !this.state.showHighlighted) {
               this.setState({
@@ -550,7 +567,6 @@ export default class Engine extends Component {
                 controlsVisible: true,
               });
               this.props.resetHighlighted();
-              //--------------------------------------------------------------------------------------------------------------
             }
           }.bind(this), 200);
         }
@@ -562,7 +578,6 @@ export default class Engine extends Component {
     y = Math.floor(y/this.state.tileWidth);
     x = Math.floor(x/this.state.tileWidth);
     let index = ((y * 40) + x);
-    // console.log(this.state.playerSpace.name, index, this.state.playerX, this.state.playerY);
     return (this.props.gameBoard[index]);
   }
 
@@ -575,7 +590,7 @@ export default class Engine extends Component {
     if ((!this.props.gameActive) && (this.state.showHighlighted)) {
       this.setState({ showHighlighted: false })
     }
-    if (this.state.showHighlighted) {
+    if (this.state.showHighlighted && !this.props.outOfMoves) {
       console.log('***');
       console.log(this.state.highlightedTileMap);
       return (
@@ -716,12 +731,14 @@ export default class Engine extends Component {
           this.props.showHumanMoves();
           this.setState({
             controlsVisible: false,
+            showHighlighted: true,
           });
         } else {
           this.props.showMonsterMoves();
           this.setState({
             controlsVisible: false,
             targetPickerVisible: false,
+            showHighlighted: true,
           });
         }
       } else {
