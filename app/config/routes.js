@@ -17,6 +17,7 @@ export default StackNavigator({
     screen: Game,
     navigationOptions: {
       header: () => null,
+      gesturesEnabled: false,
     },
   },
   Connect: {
@@ -29,12 +30,14 @@ export default StackNavigator({
     screen: Waiting,
     navigationOptions: {
       header: () => null,
+      gesturesEnabled: false,
     },
   },
   GameOver: {
     screen: GameOver,
     navigationOptions: {
       header: () => null,
+      gesturesEnabled: false,
     },
-  }
+  },
 });

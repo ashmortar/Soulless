@@ -1,3 +1,4 @@
+//adjust fog disabled
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, ImageBackground, Dimensions, BackAndroid, StatusBar } from 'react-native';
@@ -58,6 +59,7 @@ class Game extends Component {
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
+      justZoomed: false,
     };
   }
 
@@ -76,13 +78,13 @@ class Game extends Component {
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setHeartRate();
   }
 
   componentDidMount() {
     StatusBar.setHidden(true);
-  } 
+  }
 
   setHeartRate = () => {
     const distanceMin = 0;
@@ -1437,7 +1439,7 @@ class Game extends Component {
         break;
     }
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 
@@ -1512,12 +1514,21 @@ class Game extends Component {
     if(this.state.tileWidth === this.zoomedInValue) {
       this.setState({
         tileWidth: this.zoomedOutValue,
+        justZoomed: true,
       })
+      // this.showSplashScreen('hands', false, 100);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
+        justZoomed: true
       })
+      // this.showSplashScreen('hands', false, 100);
     }
+    setTimeout(function() {
+      this.setState({
+        justZoomed: false,
+      });
+    }.bind(this), 3000);
   }
 
   incrementTurnCounter = () => {
@@ -2123,7 +2134,8 @@ class Game extends Component {
           humanSpace={this.humanSpace}
           humanShrinesToWin={this.humanShrinesToWin}
           incrementTurnCounter={this.incrementTurnCounter}
-          isHuman={this.state.isHuman}          
+          isHuman={this.state.isHuman}
+          justZoomed={this.state.justZoomed}
           monsterProcessPounce={this.monsterProcessPounce}
           monsterSanityLevel={this.state.monsterSanityLevel}
           monsterShrinesToWin={this.monsterShrinesToWin}
