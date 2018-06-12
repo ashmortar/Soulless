@@ -1,3 +1,4 @@
+//adjust fog disabled
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, ImageBackground, Dimensions, BackAndroid, StatusBar } from 'react-native';
@@ -37,7 +38,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: false,
+      isHuman: true,
       tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -77,13 +78,13 @@ class Game extends Component {
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setHeartRate();
   }
 
   componentDidMount() {
     StatusBar.setHidden(true);
-  } 
+  }
 
   setHeartRate = () => {
     const distanceMin = 0;
@@ -1438,7 +1439,7 @@ class Game extends Component {
         break;
     }
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 

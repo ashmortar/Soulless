@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { Dimensions, Image, View, PanResponder, TouchableOpacity, Animated } from "react-native";
 import { Loop, Stage, Sprite } from "react-game-kit/native";
 import ControlButton from '../components/Button/ControlButton';
-// import TileMap from './TileMap';
-import { TileMap } from "react-game-kit/native";
+import TileMap from './TileMap';
+// import { TileMap } from "react-game-kit/native";
 const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
 
 import Bar from './Bar';
@@ -29,6 +29,7 @@ export default class Engine extends Component {
 
   constructor(props) {
     super(props);
+    this.cases = [];
     this.screenDimensions = Dimensions.get("window");
     this.gameBoardWidth = this.props.tileWidth * 40;
     this.wasPouncedTileMap = this.props.gameBoard.map(a => a.wasPounced ? 1 : 0);
@@ -192,6 +193,7 @@ export default class Engine extends Component {
 
   componentWillMount() {
     console.log('engine.ios.js');
+    this.getImages();
     // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
@@ -951,6 +953,93 @@ export default class Engine extends Component {
     return testArray;
   }
 
+  getImages = () => {
+    this.cases.push(0);
+    this.cases.push(require("../data/images/wall-t-nw.gif"));
+    // wall top north
+    this.cases.push(require("../data/images/wall-t-n.gif"));
+      // wall top northeast
+    this.cases.push(require("../data/images/wall-t-ne.gif"));
+    // // wall top west
+    this.cases.push(require("../data/images/wall-t-w.gif"));
+    // // wall top east
+    this.cases.push(require("../data/images/wall-t-e.gif"));
+    // wall top southwest
+    this.cases.push(require("../data/images/wall-t-sw.gif"));
+    // wall top south
+    this.cases.push(require("../data/images/wall-t-s.gif"));
+    // wall top southeast
+    this.cases.push(require("../data/images/wall-t-se.gif"));
+    // wall top center
+    this.cases.push(require("../data/images/wall-t-c.gif"));
+    // wall front northwest
+    this.cases.push(require("../data/images/wall-f-nw-2.gif"));
+    // wall front north
+    this.cases.push(require("../data/images/wall-f-n-1.gif"));
+    // wall front northeast
+    this.cases.push(require("../data/images/wall-f-ne-2.gif"));
+    // wall front southwest
+    this.cases.push(require("../data/images/wall-f-sw-2.gif"));
+    // wall front south
+    this.cases.push(require("../data/images/wall-f-s-1.gif"));
+    // wall front southeast
+    this.cases.push(require("../data/images/wall-f-se-2.gif"));
+    // wall front last two rows
+    this.cases.push(require("../data/images/wall-f-n-3.gif"));
+    // floor tile northwest
+    this.cases.push(require("../data/images/floor-nw.gif"));
+    // floor tile north
+    this.cases.push(require("../data/images/floor-n-1.gif"));
+    // floor tile northeast
+    this.cases.push(require("../data/images/floor-ne.gif"));
+    // floor tile west
+    this.cases.push(require("../data/images/floor-w-1.gif"));
+    // floor tile east
+    this.cases.push(require("../data/images/floor-e-1.gif"));
+    // floor tile center
+    this.cases.push(require("../data/images/floor-c-1.gif"));
+    // wall top north/south
+    this.cases.push(require("../data/images/wall-t-n-s.png"));
+    // wall top east/west
+    this.cases.push(require("../data/images/wall-t-e-w.png"));
+    // wall top cap north/south/west -- typo in image name -- this is correct image!!
+    this.cases.push(require("../data/images/wall-t-n-s-e.png"));
+    // wall top cap north/south/east -- typo in image name -- this is correct image!!
+    this.cases.push(require("../data/images/wall-t-n-s-w.png"));
+    // wall top cap north/east/west
+    this.cases.push(require("../data/images/wall-t-n-e-w.png"));
+    // wall top cap east/south/west
+    this.cases.push(require("../data/images/wall-t-e-s-w.png"));
+    // floor tile north 2
+    this.cases.push(require("../data/images/floor-n-2.gif"));
+    // floor tile north 3
+    this.cases.push(require("../data/images/floor-n-3.gif"));
+    // floor tile west 2
+    this.cases.push(require("../data/images/floor-w-2.gif"));
+    // floor tile east 2
+    this.cases.push(require("../data/images/floor-e-2.gif"));
+    // floor tile center 5
+    this.cases.push(require("../data/images/floor-c-5.gif"));
+    // floor tile center 6
+    this.cases.push(require("../data/images/floor-c-6.gif"));
+    // floor tile center 7
+    this.cases.push(require("../data/images/floor-c-7.gif"));
+    // floor tile center 2
+    this.cases.push(require("../data/images/floor-c-2.gif"));
+    // floor tile center 3
+    this.cases.push(require("../data/images/floor-c-3.gif"));
+    // floor tile center 4
+    this.cases.push(require("../data/images/floor-c-4.gif"));
+    // floor tile center 8
+    this.cases.push(require("../data/images/floor-c-8.gif"));
+    // floor tile center 9
+    this.cases.push(require("../data/images/floor-c-9.gif"));
+    // floor tile e2n
+    this.cases.push(require("../data/images/floor-e2n.gif"));
+    // floor tile w2n
+    this.cases.push(require("../data/images/floor-w2n.gif"));
+  }
+
   renderBasement = () => {
     // if (this.state.showHighlighted) {
       // let tileArray = this.getTestTileArray();
@@ -968,131 +1057,131 @@ export default class Engine extends Component {
             switch (tile.index) {
               // wall top northwest
               case 1:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-nw.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[1]} />;
               // wall top north
               case 2:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[2]} />;
                 // wall top northeast
               case 3:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-ne.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[3]} />;
               // // wall top west
               case 4:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-w.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[4]} />;
               // // wall top east
               case 5:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-e.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[5]} />;
               // wall top southwest
               case 6:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-sw.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[6]} />;
               // wall top south
               case 7:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-s.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[7]} />;
               // wall top southeast
               case 8:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-se.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[8]} />;
               // wall top center
               case 9:
               // console.log("tile", tile);
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-c.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[9]} />;
               // wall front northwest
               case 10:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-f-nw-2.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[10]} />;
               // wall front north
               case 11:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-f-n-1.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[11]} />;
               // wall front northeast
               case 12:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-f-ne-2.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[12]} />;
               // wall front southwest
               case 13:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-f-sw-2.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[13]} />;
               // wall front south
               case 14:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-f-s-1.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[14]} />;
               // wall front southeast
               case 15:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-f-se-2.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[15]} />;
               // wall front last two rows
               case 16:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-f-n-3.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[16]} />;
               // floor tile northwest
               case 17:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-nw.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[17]} />;
               // floor tile north
               case 18:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-n-1.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[18]} />;
               // floor tile northeast
               case 19:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-ne.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[19]} />;
               // floor tile west
               case 20:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-w-1.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[20]} />;
               // floor tile east
               case 21:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-e-1.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[21]} />;
               // floor tile center
               case 22:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-1.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[22]} />;
               // wall top north/south
               case 23:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n-s.png")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[23]} />;
               // wall top east/west
               case 24:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-e-w.png")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[24]} />;
               // wall top cap north/south/west -- typo in image name -- this is correct image!!
               case 25:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n-s-e.png")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[25]} />;
               // wall top cap north/south/east -- typo in image name -- this is correct image!!
               case 26:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n-s-w.png")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[26]} />;
               // wall top cap north/east/west
               case 27:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-n-e-w.png")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[27]} />;
               // wall top cap east/south/west
               case 28:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/wall-t-e-s-w.png")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[28]} />;
               // floor tile north 2
               case 29:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-n-2.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[29]} />;
               // floor tile north 3
               case 30:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-n-3.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[30]} />;
               // floor tile west 2
               case 31:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-w-2.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[31]} />;
               // floor tile east 2
               case 32:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-e-2.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[32]} />;
               // floor tile center 5
               case 33:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-5.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[33]} />;
               // floor tile center 6
               case 34:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-6.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[34]} />;
               // floor tile center 7
               case 35:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-7.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[35]} />;
               // floor tile center 2
               case 36:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-2.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[36]} />;
               // floor tile center 3
               case 37:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-3.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[37]} />;
               // floor tile center 4
               case 38:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-4.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[38]} />;
               // floor tile center 8
               case 39:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-8.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[39]} />;
               // floor tile center 9
               case 40:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-c-9.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[40]} />;
               // floor tile e2n
               case 41:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-e2n.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[41]} />;
               // floor tile w2n
               case 42:
-                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/floor-w2n.gif")} />;
+                return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[42]} />;
               default:
                 console.log('the imageKey for this tile was not assigned correctly', tile);
                 break;

@@ -37,6 +37,7 @@ export default StackNavigator({
     screen: GameOver,
     navigationOptions: {
       header: () => null,
+      gesturesEnabled: false,
     },
   },
 });
