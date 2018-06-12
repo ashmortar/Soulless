@@ -8,6 +8,8 @@ import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 import BackStoryCrawl from './BackStoryCrawl';
 
+import AnimatedSplashScreen from './AnimatedSplashScreen';
+
 var io = require('socket.io-client');
 let socket = null;
 const BACKSTORYTIMEOUT = 10000;
@@ -31,6 +33,12 @@ class Home extends Component {
       auth_token: null,
       accessToken: null,
       findingGame: false,
+
+      animationType: 'hands',
+      animationTouchable: true,
+      animationVisible: false,
+      boardFinished: false,
+      animationTimer: 1000,
       crawlVisible: false,
     }
   }
@@ -387,6 +395,41 @@ class Home extends Component {
   }
 
 
+
+  boardFinishedCallback = () => (
+    this.setState({
+      boardFinished: true,
+    })
+  )
+
+  showAnimationCallback = () => (
+    this.setState({
+      animationVisible: false,
+      animateCamera: true,
+    })
+  )
+
+  showSplashScreen = (image, touchable, duration) => {
+    this.setState({
+      animationType: image,
+      animationTouchable: touchable,
+      animationVisible: true,
+      boardFinished: false,
+      animationTimer: duration,
+    })
+  }
+
+  renderAnimator = () => {
+    if (this.state.animationVisible) {
+      return(
+        <View style={{ backgroundColor: '#000', flex: 1, zIndex: 2 }}>
+          <AnimatedSplashScreen boardFinishedCallback={this.boardFinishedCallback} showAnimationCallback={this.animationCallback} animationType={this.state.animationType} touchable={this.state.animationTouchable} animationTimer={this.state.animationTimer} />
+        </View>
+      )
+    }
+  }
+
+
   render() {
     let text = "";
     if (this.state.auth_token !== null) {
@@ -401,6 +444,7 @@ class Home extends Component {
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
         <NavButton onPress={this.handlePressPlayOnlineButton} text={text} />
         {this.renderBackStoryCrawl()}
+
 
         {this.renderConnectingModal()}
       </Container>

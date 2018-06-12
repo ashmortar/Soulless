@@ -86,6 +86,7 @@ export default class Board extends Component {
   }
 
   renderTile = (tile, src, styles) => {
+    console.log('render tile');
     switch (tile.index) {
       // wall top northwest
       case 1:

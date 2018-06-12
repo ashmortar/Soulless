@@ -384,7 +384,7 @@ export default class Engine extends Component {
     const {spriteY } = this.state;
     Animated.timing(spriteY, { toValue: (this.getNewSpriteY()), duration: 1000 }).start();
   }
-  
+
   componentDidMount() {
     this.animateCamera(1000);
   }
@@ -393,7 +393,6 @@ export default class Engine extends Component {
     if (!this.state.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       this.animateSpritePosition();
     } else if (this.state.justZoomed) {
-      console.log("component updated", this.state.justZoomed)
       this.transportSprite();
     }
   }
@@ -927,7 +926,7 @@ export default class Engine extends Component {
   getControlButtonStyles = () => {
     return ({ height: this.state.tileWidth, width: this.state.tileWidth * 3, flexDirection: 'row', justifyContent: 'center', zIndex: 3 });
   }
-  
+
   render() {
     const bar = (
       <Bar
@@ -942,7 +941,7 @@ export default class Engine extends Component {
         monsterShrinesToWin={this.props.monsterShrinesToWin}
         monsterSanityLevel={this.props.monsterSanityLevel}
       />);
-      
+
     return (
       <Loop>
         <Stage
