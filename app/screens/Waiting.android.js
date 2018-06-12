@@ -401,7 +401,7 @@ class Waiting extends Component {
         break;
     }
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 
@@ -1422,7 +1422,7 @@ class Waiting extends Component {
     //   monsterSanityLevel={this.state.monsterSanityLevel}
     //   barActive={(this.state.isHuman == (this.state.turn % 2 === 0))}
     // />;
-    if (this.state.boardFinished) {
+    if (true) {
       return (
 
       <SideMenu
@@ -1434,7 +1434,7 @@ class Waiting extends Component {
           animationVisible={this.state.animationVisible}
           assignImageFogKeys={this.assignImageFogKeys}
           barActive={(this.state.isHuman == (this.state.turn % 2 === 0))}
-          boardFinished={this.state.boardFinished}
+          boardFinished={true}
           echolocate={this.echoLocate}
           focus={this.focus}
           gameActive={true}

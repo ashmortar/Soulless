@@ -2116,7 +2116,7 @@ class Game extends Component {
     //   monsterSanityLevel={this.state.monsterSanityLevel}
     //   barActive={true}
     // />;
-    if (this.state.boardFinished) {
+    if (true) {
       return (
       <View>
         <Engine
@@ -2124,7 +2124,7 @@ class Game extends Component {
           animationVisible={this.state.animationVisible}
           assignImageFogKeys={this.assignImageFogKeys}
           barActive={true}
-          boardFinished={this.state.boardFinished}
+          boardFinished={true}
           echolocate={this.echoLocate}
           focus={this.focus}
           gameActive={true}

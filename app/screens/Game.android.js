@@ -76,7 +76,7 @@ class Game extends Component {
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setHeartRate();
   }
 
@@ -1437,7 +1437,7 @@ class Game extends Component {
         break;
     }
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 
@@ -2105,7 +2105,7 @@ class Game extends Component {
     //   monsterSanityLevel={this.state.monsterSanityLevel}
     //   barActive={true}
     // />;
-    if (this.state.boardFinished) {
+    if (true) {
       return (
       <View>
         <Engine
@@ -2113,7 +2113,7 @@ class Game extends Component {
           animationVisible={this.state.animationVisible}
           assignImageFogKeys={this.assignImageFogKeys}
           barActive={true}
-          boardFinished={this.state.boardFinished}
+          boardFinished={true}
           echolocate={this.echoLocate}
           focus={this.focus}
           gameActive={true}
@@ -2123,7 +2123,7 @@ class Game extends Component {
           humanSpace={this.humanSpace}
           humanShrinesToWin={this.humanShrinesToWin}
           incrementTurnCounter={this.incrementTurnCounter}
-          isHuman={this.state.isHuman}          
+          isHuman={this.state.isHuman}
           monsterProcessPounce={this.monsterProcessPounce}
           monsterSanityLevel={this.state.monsterSanityLevel}
           monsterShrinesToWin={this.monsterShrinesToWin}
