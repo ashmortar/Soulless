@@ -48,6 +48,7 @@ export default class Engine extends Component {
 
   constructor(props) {
     super(props);
+    this.cases = [];
     this.screenDimensions = Dimensions.get("window");
     this.gameBoardWidth = this.props.tileWidth * 40;
     this.wasPouncedTileMap = this.props.gameBoard.map(a => a.wasPounced ? 1 : 0);

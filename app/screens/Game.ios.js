@@ -78,7 +78,7 @@ class Game extends Component {
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setHeartRate();
   }
 
@@ -1275,7 +1275,6 @@ class Game extends Component {
   }
 
   echoLocate = (direction) => {
-    const splashScreenTimer = 500;
     const index = this.humanSpace.name;
     let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
     switch (direction) {
@@ -1514,21 +1513,12 @@ class Game extends Component {
     if(this.state.tileWidth === this.zoomedInValue) {
       this.setState({
         tileWidth: this.zoomedOutValue,
-        justZoomed: true,
-      })
-      // this.showSplashScreen('hands', false, 100);
+      });
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
-        justZoomed: true
-      })
-      // this.showSplashScreen('hands', false, 100);
-    }
-    setTimeout(function() {
-      this.setState({
-        justZoomed: false,
       });
-    }.bind(this), 3000);
+    }
   }
 
   incrementTurnCounter = () => {
@@ -1581,8 +1571,6 @@ class Game extends Component {
       })
     }
   }
-
-
 
   renderModalContent = () => {
     if (this.state.modalDialogOnly === 1) { // focus on young priest
@@ -2071,7 +2059,6 @@ class Game extends Component {
   showAnimationCallback = () => (
     this.setState({
       animationVisible: false,
-      animateCamera: true,
     })
   )
 

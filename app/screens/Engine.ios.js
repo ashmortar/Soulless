@@ -25,6 +25,25 @@ export default class Engine extends Component {
     assignImageFogKeys: PropTypes.func,
     showHumanMoves: PropTypes.func,
     gameActive: PropTypes.bool,
+    echolocate: PropTypes.func,
+    zoomedInValue: PropTypes.number,
+    zoomedOutValue: PropTypes.number,
+    alterZoom: PropTypes.func,
+    resetHighlighted: PropTypes.func,
+    opponentVisible: PropTypes.bool,
+    focus: PropTypes.func,
+    outOfMoves: PropTypes.bool,
+    barActive: PropTypes.bool,
+    onItemSelected: PropTypes.func,
+    shrineAmount: PropTypes.number,
+    shrinesUnclaimed: PropTypes.number,
+    heartBeatTimer: PropTypes.number,
+    humanShrinesToWin: PropTypes.number,
+    monsterShrinesToWin: PropTypes.number,
+    monsterSanityLevel: PropTypes.number,
+    monsterSpace: PropTypes.object,
+    humanSpace: PropTypes.object,
+    showMonsterMoves: PropTypes.func,
   };
 
   constructor(props) {
@@ -95,6 +114,7 @@ export default class Engine extends Component {
       tileDecorMapArray: this.tileDecorMapArray,
       tileMapArray: this.tileMapArray,
       tileWidth: this.props.tileWidth,
+      justZoomed: false,
     };
   }
 
@@ -110,7 +130,7 @@ export default class Engine extends Component {
     if (this.state.tileWidth === this.props.zoomedInValue) {
       return this.state.playerX;
     } else if (this.state.tileWidth === this.props.zoomedOutValue) {
-      return (this.state.playerX - this.state.tileWidth*0.8)
+      return (this.state.playerX - this.state.tileWidth*0.8);
     }
   }
 
@@ -118,7 +138,7 @@ export default class Engine extends Component {
     if (this.props.tileWidth === this.props.zoomedInValue) {
       return this.playerY - this.props.tileWidth;
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return (this.playerY - this.props.tileWidth*2.8)
+      return (this.playerY - this.props.tileWidth*2.8);
     }
   }
 
@@ -126,7 +146,7 @@ export default class Engine extends Component {
     if (this.state.tileWidth === this.props.zoomedInValue) {
       return this.state.playerY - this.props.tileWidth;
     } else if (this.state.tileWidth === this.props.zoomedOutValue) {
-      return (this.state.playerY - this.props.tileWidth*2.8)
+      return (this.state.playerY - this.props.tileWidth*2.8);
     }
   }
 
@@ -171,24 +191,24 @@ export default class Engine extends Component {
 
   getBeginningX = () => {
     return -this.cameraX;
-    if (this.cameraX < 0) {
-      return 0;
-    } else if (this.cameraX > this.xOffsetMax) {
-      return -this.xOffsetMax;
-    } else {
-      return -this.cameraX;
-    }
+    // if (this.cameraX < 0) {
+    //   return 0;
+    // } else if (this.cameraX > this.xOffsetMax) {
+    //   return -this.xOffsetMax;
+    // } else {
+    //   return -this.cameraX;
+    // }
   }
 
   getBeginningY = () => {
     return -this.cameraY;
-    if (this.cameraY < 0) {
-      return 0;
-    } else if (this.cameraY > this.yOffsetMax) {
-      return -this.yOffsetMax;
-    } else {
-      return -this.cameraY;
-    }
+    // if (this.cameraY < 0) {
+    //   return 0;
+    // } else if (this.cameraY > this.yOffsetMax) {
+    //   return -this.yOffsetMax;
+    // } else {
+    //   return -this.cameraY;
+    // }
   }
 
   componentWillMount() {
@@ -197,10 +217,11 @@ export default class Engine extends Component {
     // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-
-      onMoveShouldSetPanResponder: (gestureState) => {
-        if (this.state.showHighlighted && !this.props.outOfMoves || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        // console.log('evt', evt, 'gestureState', gestureState);
+        if (this.state.showHighlighted || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           return true;
         } else {
           return false;
@@ -211,6 +232,9 @@ export default class Engine extends Component {
         let { touches } = evt.nativeEvent;
 
         if (touches[0].timestamp - this.previousTouchTimestamp < 200) {
+          this.setState({
+            justZoomed: true,
+          });
           this.props.alterZoom();
           setTimeout(function() {
             this.animateCamera();
@@ -218,7 +242,7 @@ export default class Engine extends Component {
         }
         else if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
-        } else if (!this.props.outOfMoves && this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
+        } else if (this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
         this.previousTouchTimestamp = touches[0].timestamp;
@@ -263,8 +287,8 @@ export default class Engine extends Component {
   transportSprite = () => {
     const { spriteX, spriteY } = this.state;
     Animated.parallel([
-      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 100 }),
-      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 100 })
+      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1 }),
+      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1 })
     ]).start((finished) => {
       if (finished.finished) {
         this.animateCamera(1);
@@ -283,17 +307,19 @@ export default class Engine extends Component {
     if (this.props.isHuman) { // human
       // down
       if (this.getNewSpriteY() - spriteY._value > 0) {
-        if (this.state.srcPriest != require("../data/images/priestWalkDown.png"))
-        this.setState({
-          srcPriest: require("../data/images/priestWalkDown.png")
-        });
+        if (this.state.srcPriest != require("../data/images/priestWalkDown.png")) {
+          this.setState({
+            srcPriest: require("../data/images/priestWalkDown.png")
+          });
+        }
       }
       //up
       else if (this.getNewSpriteY() - spriteY._value < 0) {
-        if (this.state.srcPriest != require("../data/images/priestWalkUp.png"))
-        this.setState({
-          srcPriest: require("../data/images/priestWalkUp.png")
-        });
+        if (this.state.srcPriest != require("../data/images/priestWalkUp.png")) {
+          this.setState({
+            srcPriest: require("../data/images/priestWalkUp.png")
+          });
+        }
       }
       // left
       else if ((this.getNewSpriteX() - spriteX._value < 0))  {
@@ -397,11 +423,9 @@ export default class Engine extends Component {
   }
 
   componentDidUpdate() {
-
-    if (!this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
+    if (!this.state.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       this.animateSpritePosition();
-    }
-    else if (this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
+    } else if (this.state.justZoomed) {
       this.transportSprite();
     }
   }
@@ -430,12 +454,13 @@ export default class Engine extends Component {
       });
       this.transportSprite();
     }
-    if (nextProps.outOfMoves) {
-      this.setState({
-        showHighlighted: false,
-        controlsVisible: false,
-      });
-    }
+    //DEBUG------vvv------------------------
+    // if (nextProps.outOfMoves) {
+    //   this.setState({
+    //     showHighlighted: false,
+    //     controlsVisible: false,
+    //   });
+    // }
     if (this.state.tileWidth !== nextProps.tileWidth) {
       this.setState({
         tileWidth: nextProps.tileWidth,
@@ -540,7 +565,6 @@ export default class Engine extends Component {
         ) {
           this.setState({
             controlsVisible: false,
-            echoControlsVisible: false,
             targetPickerVisible: false,
           });
           let newPlayerTile = this.getTileFromXY(x, y);
@@ -577,7 +601,8 @@ export default class Engine extends Component {
     if ((!this.props.gameActive) && (this.state.showHighlighted)) {
       this.setState({ showHighlighted: false })
     }
-    if (this.state.showHighlighted && !this.props.outOfMoves) {
+    if (this.state.showHighlighted) {//DEBUG--------------vvv--------------
+    // if (this.state.showHighlighted && !this.props.outOfMoves) {
       console.log('***');
       console.log(this.state.highlightedTileMap);
       return (
@@ -687,7 +712,7 @@ export default class Engine extends Component {
     } else if (!this.props.isHuman) {
       return (
         <TileMap
-          src={require("../data/images/greensquare.jpg")}
+          src={require("../data/images/Magenta-square_100px.gif")}
           tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
@@ -698,7 +723,7 @@ export default class Engine extends Component {
               <TouchableOpacity style={[styles]}>
                 <Image
                   resizeMode="stretch"
-                  style={[styles, { opacity: 0.1 }]}
+                  style={[styles, { opacity: 0.3 }]}
                   source={src}
                 />
               </TouchableOpacity>
@@ -711,7 +736,6 @@ export default class Engine extends Component {
   }
 
   controlSwitch = () => {
-    // console.log('switch')
     if (this.props.gameActive) {
       if (this.state.controlsVisible) {
         if (this.props.isHuman) {
@@ -742,7 +766,7 @@ export default class Engine extends Component {
   renderSprite = () => {
     if (this.props.isHuman) {
       return (
-        <TouchableSprite activeOpacity={1} onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+        <TouchableSprite disabled={this.state.showHighlighted} activeOpacity={1} onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
           <Sprite
             offset={[0, 0]}
             repeat={true}
@@ -759,7 +783,7 @@ export default class Engine extends Component {
       );
     } else {
       return (
-        <TouchableSprite activeOpacity={1} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+        <TouchableSprite disabled={this.state.showHighlighted} activeOpacity={1} style={this.getPriestStyle()} onPress={this.controlSwitch}>
           <Sprite
             offset={[0, 0]}
             repeat={true}
@@ -798,17 +822,17 @@ export default class Engine extends Component {
       } else {
         return (
           <TouchableSprite activeOpacity={1} onStartShouldSetResponder={true} style={this.getOpponentStyle()}>
-          <Sprite
-          offset={[0, 0]}
-          repeat={true}
-          src={this.state.srcPriest}
-          steps={[11]}
-          state={0}
-          onPlayStateChanged={this.handlePlayStateChanged}
-          tileHeight={128}
-          ticksPerFrame={this.state.ticksPerFrame}
-          tileWidth={64}
-          />
+            <Sprite
+              offset={[0, 0]}
+              repeat={true}
+              src={this.state.srcPriest}
+              steps={[11]}
+              state={0}
+              onPlayStateChanged={this.handlePlayStateChanged}
+              tileHeight={128}
+              ticksPerFrame={this.state.ticksPerFrame}
+              tileWidth={64}
+            />
           </TouchableSprite>
         );
       }
@@ -848,7 +872,6 @@ export default class Engine extends Component {
   shrinePicked = () => {
       this.props.focus('shrine');
       this.setState({
-        targetPicker: null,
         targetPickerVisible: false,
         controlsVisible: false,
       })
@@ -857,7 +880,6 @@ export default class Engine extends Component {
   humanPicked = () => {
     this.props.focus('human');
     this.setState({
-      targetPicker: null,
       targetPickerVisible: false,
       controlsVisible: false,
     })
@@ -984,7 +1006,7 @@ export default class Engine extends Component {
       // wall top northeast
     this.cases.push(require("../data/images/wall-t-ne.gif"));
     // // wall top west
-    this.cases.push(require("../data/images/wall-t-w.gif"));
+    this.cases.push(require("../data/images/wall-t-w.gif"));//4
     // // wall top east
     this.cases.push(require("../data/images/wall-t-e.gif"));
     // wall top southwest
@@ -994,7 +1016,7 @@ export default class Engine extends Component {
     // wall top southeast
     this.cases.push(require("../data/images/wall-t-se.gif"));
     // wall top center
-    this.cases.push(require("../data/images/wall-t-c.gif"));
+    this.cases.push(require("../data/images/wall-t-c.gif"));//9
     // wall front northwest
     this.cases.push(require("../data/images/wall-f-nw-2.gif"));
     // wall front north
@@ -1105,6 +1127,7 @@ export default class Engine extends Component {
               // wall top center
               case 9:
               // console.log("tile", tile);
+                // return;
                 return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[9]} />;
               // wall front northwest
               case 10:

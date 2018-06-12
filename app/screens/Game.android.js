@@ -1273,7 +1273,6 @@ class Game extends Component {
   }
 
   echoLocate = (direction) => {
-    const splashScreenTimer = 500;
     const index = this.humanSpace.name;
     let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
     switch (direction) {
@@ -1512,11 +1511,11 @@ class Game extends Component {
     if(this.state.tileWidth === this.zoomedInValue) {
       this.setState({
         tileWidth: this.zoomedOutValue,
-      })
+      });
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
-      })
+      });
     }
   }
 
@@ -1570,8 +1569,6 @@ class Game extends Component {
       })
     }
   }
-
-
 
   renderModalContent = () => {
     if (this.state.modalDialogOnly === 1) { // focus on young priest
@@ -2060,7 +2057,6 @@ class Game extends Component {
   showAnimationCallback = () => (
     this.setState({
       animationVisible: false,
-      animateCamera: true,
     })
   )
 
