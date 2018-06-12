@@ -456,6 +456,11 @@ export default class Engine extends Component {
         playerY: Math.floor(nextProps.playerSpace.name / 40) * this.state.tileWidth,
       });
     }
+    if (JSON.stringify(this.state.tileMapArray) !== JSON.stringify(newTileMapArray)) {
+      this.setState({
+        tileMapArray: newTileMapArray,
+      });
+    }
     if (JSON.stringify(this.state.tileFogMapArray) !== JSON.stringify(newTileFogMapArray)) {
       this.setState({
         tileFogMapArray: newTileFogMapArray,
