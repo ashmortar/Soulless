@@ -38,12 +38,12 @@ export default class TileMap extends Component {
 
   shouldComponentUpdate(nextProps) {
     if (this.props.tileSize !== nextProps.tileSize) {
-      console.log("new size: tilemap should update");
+      // console.log("new size: tilemap should update");
       return true;
     } else {
     for (let i = 0; i < nextProps.layers[0].length; i++) {
       if (nextProps.layers[0][i] !== this.props.layers[0][i]) {
-        console.log("new array: tileMap should update");
+        // console.log("new array: tileMap should update");
         return true;
       }
     }

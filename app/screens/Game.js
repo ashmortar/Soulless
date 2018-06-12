@@ -37,7 +37,7 @@ class Game extends Component {
 
     this.state = {
       redraw: false,
-      isHuman: false,
+      isHuman: true,
       tileWidth: this.zoomedInValue,
       playerSpace: { name: 0 },
       boardFinished: false,
@@ -58,7 +58,6 @@ class Game extends Component {
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
-      justZoomed: false,
     };
   }
 
@@ -1513,21 +1512,12 @@ class Game extends Component {
     if(this.state.tileWidth === this.zoomedInValue) {
       this.setState({
         tileWidth: this.zoomedOutValue,
-        justZoomed: true,
       })
-      // this.showSplashScreen('hands', false, 100);
     } else {
       this.setState({
         tileWidth: this.zoomedInValue,
-        justZoomed: true
       })
-      // this.showSplashScreen('hands', false, 100);
     }
-    setTimeout(function() {
-      this.setState({
-        justZoomed: false,
-      });
-    }.bind(this), 3000);
   }
 
   incrementTurnCounter = () => {
@@ -2133,8 +2123,7 @@ class Game extends Component {
           humanSpace={this.humanSpace}
           humanShrinesToWin={this.humanShrinesToWin}
           incrementTurnCounter={this.incrementTurnCounter}
-          isHuman={this.state.isHuman}
-          justZoomed={this.state.justZoomed}
+          isHuman={this.state.isHuman}          
           monsterProcessPounce={this.monsterProcessPounce}
           monsterSanityLevel={this.state.monsterSanityLevel}
           monsterShrinesToWin={this.monsterShrinesToWin}

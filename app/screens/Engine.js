@@ -94,6 +94,7 @@ export default class Engine extends Component {
       tileDecorMapArray: this.tileDecorMapArray,
       tileMapArray: this.tileMapArray,
       tileWidth: this.props.tileWidth,
+      justZoomed: false,
     };
   }
 
@@ -208,10 +209,11 @@ export default class Engine extends Component {
       onPanResponderGrant: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
         if (touches[0].timestamp - this.previousTouchTimestamp < 200) {
+          this.setState({
+            justZoomed: true,
+          });
           this.props.alterZoom();
-          setTimeout(function() {
-            this.animateCamera();
-          }.bind(this), 1000);
+          console.log("justzoomed true", this.state.justZoomed);
         }
         this.previousTouchTimestamp = touches[0].timestamp;
       },
@@ -232,7 +234,7 @@ export default class Engine extends Component {
     });
   }
 
-  animateCamera = () => {
+  animateCamera = (duration) => {
     const { left, top } = this.state;
     let newX = (this.state.playerX - this.screenDimensions.width/2);
     if (newX < 0) {
@@ -247,17 +249,25 @@ export default class Engine extends Component {
       newY = this.yOffsetMax;
     }
     Animated.parallel([
-      Animated.timing(left, { toValue: -newX, duration: 1000}),
-      Animated.timing(top, { toValue: -newY, duration: 1000}),
+      Animated.timing(left, { toValue: -newX, duration: duration}),
+      Animated.timing(top, { toValue: -newY, duration: duration}),
     ]).start();
   }
 
   transportSprite = () => {
     const { spriteX, spriteY } = this.state;
     Animated.parallel([
-      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 100 }),
-      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 100 })
-    ]).start();
+      Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1 }),
+      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1 })
+    ]).start((finished) => {
+      if (finished.finished) {
+        this.animateCamera(1);
+        this.setState({
+          justZoomed: false,
+        });
+      }
+    });
+
   }
 
   animateSpritePosition = () => {
@@ -376,19 +386,14 @@ export default class Engine extends Component {
   }
   
   componentDidMount() {
-    this.animateCamera();
+    this.animateCamera(1000);
   }
 
   componentDidUpdate() {
-    // console.log('update', this.state.spriteX._value, this.getInitialSpriteX(), this.getNewSpriteX());
-    // if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
-    //   this.animateCamera();
-    // }
-    if (!this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
-      // console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
+    if (!this.state.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       this.animateSpritePosition();
-    } 
-    else if (this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
+    } else if (this.state.justZoomed) {
+      console.log("component updated", this.state.justZoomed)
       this.transportSprite();
     }
   }
@@ -837,7 +842,7 @@ export default class Engine extends Component {
   }
 
   handleCenterCamera = () => {
-    this.animateCamera();
+    this.animateCamera(2000);
   }
 
   renderCameraButton = () => {

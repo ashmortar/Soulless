@@ -1,5 +1,5 @@
  
--- GET A NAME!!! (soulless) 
+-- GET A NAME!!! (soulless)
 -- iphone adjustments
 -- screen shot zoom?
 -- animate camera post zoom?
@@ -7,6 +7,10 @@
 -- fix shrine zIndex bug
 -- simplify play online to be 1 button
 -- make online player change into a "window" modal and animate camera to feedback square if exists
+-- ghost priest walking left(?) animation has arm bleed to far side
+-- camera adjustments:
+  -- figure out smallest viable screen size device and set zoomed in value based off of that.
+  -- set zoomed out camera limits to pull back to edges of board
 
 
 
