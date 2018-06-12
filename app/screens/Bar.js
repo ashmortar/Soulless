@@ -230,7 +230,7 @@ class Bar extends Component {
     const barWait = this.getBarWaitingForOpponent();
     const barEndTurn = this.getBarEndTurn();
     return (
-      <View style={{position: "absolute", bottom: 5, left: 5, height: this.barHeight, width: Dimensions.get("window").width - 10 }}>
+      <View style={{ position: "absolute", bottom: 5, left: 5, height: this.barHeight, width: Dimensions.get("window").width - 10, zIndex: 3 }}>
         {barPlay}
         {barWait}
         {barEndTurn}

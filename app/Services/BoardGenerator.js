@@ -20,7 +20,7 @@ export default class BoardGenerator {
     this.assignHumanStart();
     this.assignMonsterStart();
     this.assignCacheLocations();
-    this.echoLocate('initial');
+    // this.echoLocate('initial');
     this.assignImageKeys();
     this.assignImageDecorKeys();
     this.assignImageFogKeys();

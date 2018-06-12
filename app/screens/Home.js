@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Modal, TouchableHighlight, ActivityIndicator, Dimensions, ImageBackground, AsyncStorage } from "react-native";
+import { TextInput, View, Text, Modal, Dimensions, ImageBackground, AsyncStorage } from "react-native";
 
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
+import BackStoryCrawl from './BackStoryCrawl';
 
 import AnimatedSplashScreen from './AnimatedSplashScreen';
 
 var io = require('socket.io-client');
 let socket = null;
+const BACKSTORYTIMEOUT = 10000;
+
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.object,
@@ -18,6 +21,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.textInput = null;
+    this.timer = null;
     this.state = {
       inputsVisible: false,
       phone: null,
@@ -35,6 +39,7 @@ class Home extends Component {
       animationVisible: false,
       boardFinished: false,
       animationTimer: 1000,
+      crawlVisible: false,
     }
   }
 
@@ -42,6 +47,17 @@ class Home extends Component {
     AsyncStorage.getItem('auth_token').then((value) => this.setState({ auth_token: value}));
     AsyncStorage.getItem('phone').then((value) => this.setState({ phone: value}));
     AsyncStorage.getItem('id').then((value) => this.setState({ id: value}));
+    this.timer = setInterval(function() {
+      if (!this.state.crawlVisible) {
+        this.setState({
+          crawlVisible: true,
+        })
+      }
+    }.bind(this), BACKSTORYTIMEOUT);
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.timer);
   }
 
   setAuthToken = (auth_token) => {
@@ -327,38 +343,6 @@ class Home extends Component {
         </View>
       );
     }
-    // if (this.state.inputsVisible) {
-
-    //   if (this.state.connectedToGame) {
-    //     return (
-    //       <View
-    //       style={{marginTop: 20, width: 150}}
-    //       >
-    //       <NavButton onPress={this.handlePressSendDataButton} text="send mock data" />
-    //       </View>
-    //     )
-    //   }
-    //   else if (this.state.authorized) {
-    //     return (
-    //       <View
-    //       style={{marginTop: 20, width: 150}}
-    //       >
-    //       </View>
-    //     )
-    //   }
-      // else if (this.state.numberVerified) {
-
-      // }
-    //   else {
-
-    //   }
-
-    // }
-    // else {
-    //   return (
-    //     <NavButton onPress={this.handlePressPlayOnlineButton} text="Play online" />
-    //   )
-    // }
   }
 
   setModalVisible = (boolean) => {
@@ -392,6 +376,22 @@ class Home extends Component {
         </View>
       </Modal>
     );
+  }
+
+  dismissCrawl = () => {
+    this.setState({
+      crawlVisible: false,
+    })
+  }
+
+  renderBackStoryCrawl = () => {
+    if (this.state.crawlVisible) {
+      return (
+        <BackStoryCrawl
+          dismissCrawl={this.dismissCrawl}
+        />
+      )
+    }
   }
 
 
@@ -443,6 +443,7 @@ class Home extends Component {
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
         <NavButton onPress={this.handlePressPlayOnlineButton} text={text} />
+        {this.renderBackStoryCrawl()}
 
 
         {this.renderConnectingModal()}
