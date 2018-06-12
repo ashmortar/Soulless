@@ -1236,7 +1236,7 @@ export default class Engine extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth), overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -1259,7 +1259,7 @@ export default class Engine extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth), overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -1286,10 +1286,10 @@ export default class Engine extends Component {
   renderDecorTile = (tile, src, styles) => {
     switch (tile.index) {
       case 1:
-        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 1.8), top: -this.state.tileWidth * 0.6, overflow: 'hidden' }]} source={require("../data/images/tube1.png")} />;
+        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 1.8), overflow: 'hidden' }]} source={require("../data/images/tube1.png")} />;
         break;
       case 2:
-        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth * 0.7, overflow: 'hidden' }, this.fixImageStyle()]} source={require("../data/images/tube2.png")} />;
+        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 2), overflow: 'hidden' }, this.fixImageStyle()]} source={require("../data/images/tube2.png")} />;
         break;
       default:
         console.log('the imageKey for this tile was not assigned correctly', tile);
