@@ -54,7 +54,7 @@ export default class AnimatedSplashScreen extends Component {
       return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/priest-won.png")} />);
     } else if (this.props.animationType === 'evilWon') {
     return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/evil-won.png")} />);
-    }
+    } 
   }
 
   render() {
