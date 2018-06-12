@@ -25,25 +25,6 @@ export default class Engine extends Component {
     assignImageFogKeys: PropTypes.func,
     showHumanMoves: PropTypes.func,
     gameActive: PropTypes.bool,
-    echolocate: PropTypes.func,
-    zoomedInValue: PropTypes.number,
-    zoomedOutValue: PropTypes.number,
-    alterZoom: PropTypes.func,
-    resetHighlighted: PropTypes.func,
-    opponentVisible: PropTypes.bool,
-    focus: PropTypes.func,
-    outOfMoves: PropTypes.bool,
-    barActive: PropTypes.bool,
-    onItemSelected: PropTypes.func,
-    shrineAmount: PropTypes.number,
-    shrinesUnclaimed: PropTypes.number,
-    heartBeatTimer: PropTypes.number,
-    humanShrinesToWin: PropTypes.number,
-    monsterShrinesToWin: PropTypes.number,
-    monsterSanityLevel: PropTypes.number,
-    monsterSpace: PropTypes.object,
-    humanSpace: PropTypes.object,
-    showMonsterMoves: PropTypes.func,
   };
 
   constructor(props) {
@@ -190,24 +171,24 @@ export default class Engine extends Component {
 
   getBeginningX = () => {
     return -this.cameraX;
-    // if (this.cameraX < 0) {
-    //   return 0;
-    // } else if (this.cameraX > this.xOffsetMax) {
-    //   return -this.xOffsetMax;
-    // } else {
-    //   return -this.cameraX;
-    // }
+    if (this.cameraX < 0) {
+      return 0;
+    } else if (this.cameraX > this.xOffsetMax) {
+      return -this.xOffsetMax;
+    } else {
+      return -this.cameraX;
+    }
   }
 
   getBeginningY = () => {
     return -this.cameraY;
-    // if (this.cameraY < 0) {
-    //   return 0;
-    // } else if (this.cameraY > this.yOffsetMax) {
-    //   return -this.yOffsetMax;
-    // } else {
-    //   return -this.cameraY;
-    // }
+    if (this.cameraY < 0) {
+      return 0;
+    } else if (this.cameraY > this.yOffsetMax) {
+      return -this.yOffsetMax;
+    } else {
+      return -this.cameraY;
+    }
   }
 
   componentWillMount() {
@@ -225,7 +206,7 @@ export default class Engine extends Component {
           return false;
         }
       },
-
+      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
       onPanResponderGrant: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
 
@@ -242,7 +223,6 @@ export default class Engine extends Component {
         }
         this.previousTouchTimestamp = touches[0].timestamp;
       },
-
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
         if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
@@ -251,8 +231,8 @@ export default class Engine extends Component {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
       },
-
       onPanResponderRelease: () => {
+        // console.log("on pan responder release");
         this.setState({
           isMoving: false,
         });
@@ -428,6 +408,8 @@ export default class Engine extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     // console.log('engine received props');
+    let newTileMapArray = nextProps.gameBoard.map(a => this.props.isHuman ? ((a.isRevealed || a.isSemiRevealed) ? a.imageKey : 0) : a.imageKey);
+
     let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
     let newWasPouncedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
@@ -700,7 +682,7 @@ export default class Engine extends Component {
     } else if (!this.props.isHuman) {
       return (
         <TileMap
-          src={require("../data/images/Magenta-square_100px.gif")}
+          src={require("../data/images/greensquare.jpg")}
           tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
@@ -711,7 +693,7 @@ export default class Engine extends Component {
               <TouchableOpacity style={[styles]}>
                 <Image
                   resizeMode="stretch"
-                  style={[styles, { opacity: 0.3 }]}
+                  style={[styles, { opacity: 0.1 }]}
                   source={src}
                 />
               </TouchableOpacity>
@@ -1087,7 +1069,7 @@ export default class Engine extends Component {
           columns={40}
           rows={40}
           sourceWidth={this.state.tileWidth}
-          layers={[tileArray]}
+          layers={[this.state.tileMapArray]}
           renderTile={(tile, src, styles) => {
             // console.log(tile);
             switch (tile.index) {
@@ -1230,21 +1212,100 @@ export default class Engine extends Component {
 
   }
 
-  testFunc = (tile, src, styles) => {
-    return (
-      <View style={[styles]}>
-        <Image
-          resizeMode="stretch"
-          style={[styles, { opacity: 0.1 }]}
-          source={src}
+  renderShrines = () => {
+    if (this.props.isHuman) {
+      return (
+        <TileMap
+          src={require("../data/images/shrineShort.png")}
+          tileSize={this.state.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.state.tileWidth}
+          layers={[this.state.tileCashMapArray]}
+          renderTile={(tile, src, styles) => (
+            <Image
+              resizeMode="contain"
+              style={[styles, { height: (this.state.tileWidth), zIndex: 2 }]}
+              source={src}
+            />
+          )}
         />
-      </View>
+      );
+    }
+  }
+
+  renderBlessedShrines = () => {
+    if (this.props.isHuman) {
+      return (
+        <TileMap
+          src={require("../data/images/shrineBlessed.png")}
+          tileSize={this.state.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.state.tileWidth}
+          layers={[this.state.tileBlessedCashMapArray]}
+          renderTile={(tile, src, styles) => (
+            <Image
+              resizeMode="contain"
+              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
+              source={src}
+            />
+          )}
+        />
+      );
+    }
+  }
+
+
+  renderDesecratedShrines = () => {
+    // if (this.props.isHuman) {
+      return (
+        <TileMap
+          src={require("../data/images/shrineDesecrated.png")}
+          tileSize={this.state.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.state.tileWidth}
+          layers={[this.state.tileDesecratedCashMapArray]}
+          renderTile={(tile, src, styles) => (
+            <Image
+              resizeMode="contain"
+              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
+              source={src}
+            />
+          )}
+        />
+      );
+    // }
+  }
+
+
+  renderDecorations = () => {
+    return (
+      <TileMap
+        // src={require("../data/images/tube1.png")}
+        tileSize={this.state.tileWidth}
+        columns={40}
+        rows={40}
+        sourceWidth={this.state.tileWidth}
+        layers={[this.state.tileDecorMapArray]}
+        renderTile={this.renderDecorTile}
+      />
     );
   }
 
-  renderTile = (tile, src, styles) => {
-    console.log('render tile');
-    return (<Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={require("../data/images/Magenta-square_100px.gif")} />);
+  renderDecorTile = (tile, src, styles) => {
+    switch (tile.index) {
+      case 1:
+        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 1.8), top: -this.state.tileWidth * 0.6, overflow: 'hidden' }]} source={require("../data/images/tube1.png")} />;
+        break;
+      case 2:
+        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth * 0.7, overflow: 'hidden' }, this.fixImageStyle()]} source={require("../data/images/tube2.png")} />;
+        break;
+      default:
+        console.log('the imageKey for this tile was not assigned correctly', tile);
+        break;
+    }
   };
 
 
@@ -1275,6 +1336,11 @@ export default class Engine extends Component {
             <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.state.tileWidth*40, height: this.state.tileWidth*40, backgroundColor: '#000' }} >
 
               {this.renderBasement()}
+              {this.renderShrines()}
+              {this.renderBlessedShrines()}
+              {this.renderDesecratedShrines()}
+              {this.renderDecorations()}
+
               {this.renderHighlighted()}
               {this.renderFog()}
               {this.renderLastTurn()}
