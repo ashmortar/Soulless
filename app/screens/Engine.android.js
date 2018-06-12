@@ -337,16 +337,16 @@ export default class Engine extends Component {
         }
       }
       else if (this.getNewSpriteX() - spriteX._value < 0) {
-        if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkLeft.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-left-dropped-down.png"),
+            srcEvil: require("../data/images/monsterWalkLeft.png"),
           });
         }
       }
       else if (this.getNewSpriteX() - spriteX._value > 0) {
-        if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkRight.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-right-dropped-down.png"),
+            srcEvil: require("../data/images/monsterWalkRight.png"),
           });
         }
       }
