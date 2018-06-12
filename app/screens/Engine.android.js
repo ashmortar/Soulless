@@ -4,9 +4,11 @@ import { Dimensions, Image, View, PanResponder, TouchableOpacity, Animated } fro
 import { Loop, Stage, Sprite } from "react-game-kit/native";
 import ControlButton from '../components/Button/ControlButton';
 import TileMap from './TileMap';
-const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
-
+import Bar from './Bar';
 import Board from "./Board";
+
+
+const TouchableSprite = Animated.createAnimatedComponent(TouchableOpacity);
 
 export default class Engine extends Component {
   static propTypes = {
@@ -189,7 +191,6 @@ export default class Engine extends Component {
   }
 
   componentWillMount() {
-    console.log('engine.android.js');
     // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
@@ -208,6 +209,9 @@ export default class Engine extends Component {
         let { touches } = evt.nativeEvent;
         if (touches[0].timestamp - this.previousTouchTimestamp < 200) {
           this.props.alterZoom();
+          setTimeout(function() {
+            this.animateCamera();
+          }.bind(this), 1000);
         }
         this.previousTouchTimestamp = touches[0].timestamp;
       },
@@ -242,10 +246,10 @@ export default class Engine extends Component {
     } else if (newY > this.yOffsetMax) {
       newY = this.yOffsetMax;
     }
-    setTimeout(function() {Animated.parallel([
+    Animated.parallel([
       Animated.timing(left, { toValue: -newX, duration: 1000}),
       Animated.timing(top, { toValue: -newY, duration: 1000}),
-    ]).start()}.bind(this), 2500);
+    ]).start();
   }
 
   transportSprite = () => {
@@ -259,7 +263,7 @@ export default class Engine extends Component {
   animateSpritePosition = () => {
     const { spriteX, spriteY } = this.state;
 
-    if (this.props.isHuman) {
+    if (this.props.isHuman) { // human
       // down
       if (this.getNewSpriteY() - spriteY._value > 0) {
         if (this.state.srcPriest != require("../data/images/priestWalkDown.png"))
@@ -292,35 +296,35 @@ export default class Engine extends Component {
       }
     }
 
-    else {
-      if (this.getNewSpriteX() - spriteX._value < 0)  {
+    else { // monster
+      // down animation
+      // console.log("animate monster", this.getNewSpriteY(), spriteY._value, this.getNewSpriteX(), spriteX._value)
+      if (this.getNewSpriteY() - spriteY._value > 0 && this.getNewSpriteX() === spriteX._value) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkDown.png")) {
+          this.setState({
+            srcEvil: require("../data/images/monsterWalkDown.png"),
+          });
+        }
+      }
+      else if (this.getNewSpriteY() - spriteY._value < 0 && this.getNewSpriteX() === spriteX._value) {
+        if (this.state.srcEvil != require("../data/images/monsterWalkUp.png")) {
+          this.setState({
+            srcEvil: require("../data/images/monsterWalkUp.png"),
+          })
+        }
+      }
+      else if (this.getNewSpriteX() - spriteX._value < 0) {
         if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-left-dropped-down.png")
+            srcEvil: require("../data/images/monster-move-left-dropped-down.png"),
           });
         }
       }
       else if (this.getNewSpriteX() - spriteX._value > 0) {
         if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
           this.setState({
-            srcEvil: require("../data/images/monster-move-right-dropped-down.png")
+            srcEvil: require("../data/images/monster-move-right-dropped-down.png"),
           });
-        }
-      }
-      else {
-        if (this.getNewSpriteY() - spriteY._value > 0) {//down
-          if (this.state.srcEvil != require("../data/images/monster-move-left-dropped-down.png")) {
-            this.setState({
-              srcEvil: require("../data/images/monster-move-left-dropped-down.png")
-            });
-          }
-        }
-        else if (this.getNewSpriteY() - spriteY._value < 0) {
-          if (this.state.srcEvil != require("../data/images/monster-move-right-dropped-down.png")) {
-            this.setState({
-              srcEvil: require("../data/images/monster-move-right-dropped-down.png")
-            });
-          }
         }
       }
     }
@@ -371,11 +375,15 @@ export default class Engine extends Component {
     Animated.timing(spriteY, { toValue: (this.getNewSpriteY()), duration: 1000 }).start();
   }
 
+  componentDidMount() {
+    this.animateCamera();
+  }
+
   componentDidUpdate() {
     // console.log('update', this.state.spriteX._value, this.getInitialSpriteX(), this.getNewSpriteX());
-    if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
-      this.animateCamera();
-    }
+    // if (!this.props.animationVisible || (this.beginningX !== (this.playerX - (this.screenDimensions.width / 2))) || this.beginningY !== (this.playerY - (this.screenDimensions.height / 2))) {
+    //   this.animateCamera();
+    // }
     if (!this.props.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       // console.log('animation should begin', this.state.playerX, this.state.spriteX._value);
       this.animateSpritePosition();
@@ -828,6 +836,31 @@ export default class Engine extends Component {
     }
   }
 
+  handleCenterCamera = () => {
+    this.animateCamera();
+  }
+
+  renderCameraButton = () => {
+    return (
+      <View
+        style={{
+          width: this.props.zoomedInValue,
+          height: this.props.zoomedInValue,
+          margin: 5,
+          zIndex: 3,
+          position: "absolute",
+          top: 0,
+          end: 0,
+
+        }}
+      >
+        <TouchableOpacity style={{flex: 1}} onPress={this.handleCenterCamera}>
+          <Image source={require("../data/images/finderButton.png")} resizeMode="contain" />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   renderControls = () => {
     if ((!this.props.gameActive) && (this.state.controlsVisible)) {
       this.setState({ controlsVisible: false })
@@ -891,15 +924,31 @@ export default class Engine extends Component {
   }
 
   render() {
+    const bar = (
+      <Bar
+        outOfMoves={this.props.outOfMoves}
+        barActive={this.props.barActive}
+        isHuman={this.props.isHuman}
+        onItemSelected={this.props.onItemSelected}
+        shrineAmount={this.props.shrineAmount}
+        shrinesUnclaimed={this.props.shrinesUnclaimed}
+        heartBeatTimer={this.props.heartBeatTimer}
+        humanShrinesToWin={this.props.humanShrinesToWin}
+        monsterShrinesToWin={this.props.monsterShrinesToWin}
+        monsterSanityLevel={this.props.monsterSanityLevel}
+      />);
+
     return (
       <Loop>
         <Stage
           height={this.screenDimensions.height}
           width={this.screenDimensions.width}
-          style={{ backgroundColor: "#000" }}
+          style={{ backgroundColor: "#212121" }}
         >
           <View style={{width: this.screenDimensions.width, height: this.screenDimensions.height, zIndex: 1 }} {...this._panResponder.panHandlers}>
-            <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.state.tileWidth*40, height: this.state.tileWidth*40 }} >
+            {this.renderCameraButton()}
+            {bar}
+            <Animated.View style={{ position: 'absolute', left: this.state.left, top: this.state.top, width: this.state.tileWidth*40, height: this.state.tileWidth*40, backgroundColor: '#000' }} >
               <Board
                 gameBoard={this.props.gameBoard}
                 isHuman={this.props.isHuman}
