@@ -401,7 +401,7 @@ class Waiting extends Component {
         break;
     }
     this.assignImageFogKeys();
-    this.adjustFog();
+    // this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
 
