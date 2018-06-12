@@ -290,7 +290,7 @@ export default class Board extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -303,7 +303,7 @@ export default class Board extends Component {
     if (this.props.isHuman) {
       return (
         <TileMap
-          src={require("../data/images/shrineShort.png")}
+          src={require("../data/images/shrineBlessed.png")}
           tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
@@ -312,7 +312,7 @@ export default class Board extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -326,7 +326,7 @@ export default class Board extends Component {
     // if (this.props.isHuman) {
       return (
         <TileMap
-          src={require("../data/images/shrineShort.png")}
+          src={require("../data/images/shrineDesecrated.png")}
           tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
@@ -335,7 +335,7 @@ export default class Board extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}

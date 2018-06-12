@@ -25,6 +25,25 @@ export default class Engine extends Component {
     assignImageFogKeys: PropTypes.func,
     showHumanMoves: PropTypes.func,
     gameActive: PropTypes.bool,
+    echolocate: PropTypes.func,
+    zoomedInValue: PropTypes.number,
+    zoomedOutValue: PropTypes.number,
+    alterZoom: PropTypes.func,
+    resetHighlighted: PropTypes.func,
+    opponentVisible: PropTypes.bool,
+    focus: PropTypes.func,
+    outOfMoves: PropTypes.bool,
+    barActive: PropTypes.bool,
+    onItemSelected: PropTypes.func,
+    shrineAmount: PropTypes.number,
+    shrinesUnclaimed: PropTypes.number,
+    heartBeatTimer: PropTypes.number,
+    humanShrinesToWin: PropTypes.number,
+    monsterShrinesToWin: PropTypes.number,
+    monsterSanityLevel: PropTypes.number,
+    monsterSpace: PropTypes.object,
+    humanSpace: PropTypes.object,
+    showMonsterMoves: PropTypes.func,
   };
 
   constructor(props) {
@@ -170,42 +189,39 @@ export default class Engine extends Component {
 
   getBeginningX = () => {
     return -this.cameraX;
-    if (this.cameraX < 0) {
-      return 0;
-    } else if (this.cameraX > this.xOffsetMax) {
-      return -this.xOffsetMax;
-    } else {
-      return -this.cameraX;
-    }
+    // if (this.cameraX < 0) {
+    //   return 0;
+    // } else if (this.cameraX > this.xOffsetMax) {
+    //   return -this.xOffsetMax;
+    // } else {
+    //   return -this.cameraX;
+    // }
   }
 
   getBeginningY = () => {
     return -this.cameraY;
-    if (this.cameraY < 0) {
-      return 0;
-    } else if (this.cameraY > this.yOffsetMax) {
-      return -this.yOffsetMax;
-    } else {
-      return -this.cameraY;
-    }
+    // if (this.cameraY < 0) {
+    //   return 0;
+    // } else if (this.cameraY > this.yOffsetMax) {
+    //   return -this.yOffsetMax;
+    // } else {
+    //   return -this.cameraY;
+    // }
   }
 
   componentWillMount() {
     console.log('engine.ios.js');
-    // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => {
-        // console.log('evt', evt, 'gestureState', gestureState);
+      onStartShouldSetPanResponder: () => true,
+
+      onMoveShouldSetPanResponder: (gestureState) => {
         if (this.state.showHighlighted || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           return true;
         } else {
           return false;
         }
       },
-      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
+
       onPanResponderGrant: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
 
@@ -222,6 +238,7 @@ export default class Engine extends Component {
         }
         this.previousTouchTimestamp = touches[0].timestamp;
       },
+
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
         if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
@@ -230,8 +247,8 @@ export default class Engine extends Component {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
       },
+
       onPanResponderRelease: () => {
-        // console.log("on pan responder release");
         this.setState({
           isMoving: false,
         });
@@ -664,7 +681,7 @@ export default class Engine extends Component {
     } else if (!this.props.isHuman) {
       return (
         <TileMap
-          src={require("../data/images/greensquare.jpg")}
+          src={require("../data/images/Magenta-square_100px.gif")}
           tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
@@ -675,7 +692,7 @@ export default class Engine extends Component {
               <TouchableOpacity style={[styles]}>
                 <Image
                   resizeMode="stretch"
-                  style={[styles, { opacity: 0.1 }]}
+                  style={[styles, { opacity: 0.3 }]}
                   source={src}
                 />
               </TouchableOpacity>

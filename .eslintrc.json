@@ -35,6 +35,18 @@
     "indent": "off",
     "no-loop-func": "off",
     "max-len": "off",
-    "no-lonely-if": "off"
+    "no-lonely-if": "off",
+    "arrow-body-style": "off",
+    "consistent-return": "off",
+    "object-curly-spacing": "off",
+    "comma-dangle": "off",
+    "no-use-before-define": "off",
+    "no-confusing-arrow": "off",
+    "no-mixed-operators": "off",
+    "space-infix-ops": "off",
+    "brace-style": "off",
+    "spaced-comment": "off",
+    "prefer-arrow-callback": "off",
+    "func-names": "off"
   }
 }

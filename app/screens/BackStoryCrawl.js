@@ -19,15 +19,16 @@ export default class BackStoryCrawl extends Component {
   }
 
   animateIn = () => {
+    const { opacity } = this.state;
     Animated.timing(opacity, { toValue: 0.7, duration: this.animationTimer }).start();
   }
 
   componentDidMount() {
     const { opacity, top } = this.state;
     Animated.sequence([
-      Animated.timing(opacity, {toValue: 0.7, duration: this.animationTimer }),
-      Animated.timing(top, {toValue: -this.screenDimensions.height, duration: this.textCrawlDuration}),
-      Animated.timing(opacity, {toValue: 0, duration: this.animationTimer})
+      Animated.timing(opacity, { toValue: 0.7, duration: this.animationTimer }),
+      Animated.timing(top, { toValue: -this.screenDimensions.height, duration: this.textCrawlDuration }),
+      Animated.timing(opacity, { toValue: 0, duration: this.animationTimer })
     ]).start((finished) => {
       if (finished.finished) {
         this.props.dismissCrawl();

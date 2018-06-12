@@ -25,6 +25,25 @@ export default class Engine extends Component {
     assignImageFogKeys: PropTypes.func,
     showHumanMoves: PropTypes.func,
     gameActive: PropTypes.bool,
+    echolocate: PropTypes.func,
+    zoomedInValue: PropTypes.number,
+    zoomedOutValue: PropTypes.number,
+    alterZoom: PropTypes.func,
+    resetHighlighted: PropTypes.func,
+    opponentVisible: PropTypes.bool,
+    focus: PropTypes.func,
+    outOfMoves: PropTypes.bool,
+    barActive: PropTypes.bool,
+    onItemSelected: PropTypes.func,
+    shrineAmount: PropTypes.number,
+    shrinesUnclaimed: PropTypes.number,
+    heartBeatTimer: PropTypes.number,
+    humanShrinesToWin: PropTypes.number,
+    monsterShrinesToWin: PropTypes.number,
+    monsterSanityLevel: PropTypes.number,
+    monsterSpace: PropTypes.object,
+    humanSpace: PropTypes.object,
+    showMonsterMoves: PropTypes.func,
   };
 
   constructor(props) {
@@ -42,7 +61,7 @@ export default class Engine extends Component {
     this.cameraX = this.getCameraX();
     this.cameraY = this.getCameraY();
     this.beginningX = this.getBeginningX();
-    this.beginningY = this.getBeginningY()
+    this.beginningY = this.getBeginningY();
     this.feedbackSquare = null;
     this.previousTouchTimestamp = 0;
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
@@ -57,7 +76,6 @@ export default class Engine extends Component {
       spriteX: new Animated.Value(this.getInitialSpriteX()),
       playerY: this.playerY,
       spriteY: new Animated.Value(this.getInitialSpriteY()),
-      isZooming: false,
       isMoving: false,
       initialX: null,
       offsetLeft: 0,
@@ -69,19 +87,14 @@ export default class Engine extends Component {
       showHighlighted: false,
       fogMap: this.props.gameBoard.map(a => a.isRevealed ? 0 : 1),
       tileFogMapArray: this.tileFogMapArray,
-      spritePlaying: true,
       spriteScale: this.props.tileWidth / this.props.zoomedInValue,
       wasPouncedTileMap: this.wasPouncedTileMap,
       wasEchoedTileMap: this.wasEchoedTileMap,
       controlsVisible: true,
-      echoControlsVisible: false,
       targetPickerVisible: false,
-      targetPicker: null,
       srcPriest: require("../data/images/priestIdle.png"),
       srcEvil: require("../data/images/priestIdle-ghost.png"),
       ticksPerFrame: 6,
-      srcpounceOut: require("../data/images/pounceIcon.png"),
-      srcpounceIn: require("../data/images/pounceIcon.png"),
       srcfocusOut: require("../data/images/focusOut.png"),
       srcfocusIn: require("../data/images/focusIn.png"),
       srcTargetPriestOut: require("../data/images/targetPriestOut.png"),
@@ -110,7 +123,7 @@ export default class Engine extends Component {
     if (this.state.tileWidth === this.props.zoomedInValue) {
       return this.state.playerX;
     } else if (this.state.tileWidth === this.props.zoomedOutValue) {
-      return (this.state.playerX - this.state.tileWidth*0.8)
+      return (this.state.playerX - this.state.tileWidth*0.8);
     }
   }
 
@@ -118,7 +131,7 @@ export default class Engine extends Component {
     if (this.props.tileWidth === this.props.zoomedInValue) {
       return this.playerY - this.props.tileWidth;
     } else if (this.props.tileWidth === this.props.zoomedOutValue) {
-      return (this.playerY - this.props.tileWidth*2.8)
+      return (this.playerY - this.props.tileWidth*2.8);
     }
   }
 
@@ -126,7 +139,7 @@ export default class Engine extends Component {
     if (this.state.tileWidth === this.props.zoomedInValue) {
       return this.state.playerY - this.props.tileWidth;
     } else if (this.state.tileWidth === this.props.zoomedOutValue) {
-      return (this.state.playerY - this.props.tileWidth*2.8)
+      return (this.state.playerY - this.props.tileWidth*2.8);
     }
   }
 
@@ -142,7 +155,8 @@ export default class Engine extends Component {
         for (let i = 0; i < this.props.gameBoard.length; i++) {
           if (this.props.gameBoard[i].wasEchoed) {
             this.feedbackSquare = this.props.gameBoard[i];
-            return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));          }
+            return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));
+          }
         }
       } else {
         return (this.playerY - (this.screenDimensions.height / 2));
@@ -171,62 +185,60 @@ export default class Engine extends Component {
 
   getBeginningX = () => {
     return -this.cameraX;
-    if (this.cameraX < 0) {
-      return 0;
-    } else if (this.cameraX > this.xOffsetMax) {
-      return -this.xOffsetMax;
-    } else {
-      return -this.cameraX;
-    }
+    // if (this.cameraX < 0) {
+    //   return 0;
+    // } else if (this.cameraX > this.xOffsetMax) {
+    //   return -this.xOffsetMax;
+    // } else {
+    //   return -this.cameraX;
+    // }
   }
 
   getBeginningY = () => {
     return -this.cameraY;
-    if (this.cameraY < 0) {
-      return 0;
-    } else if (this.cameraY > this.yOffsetMax) {
-      return -this.yOffsetMax;
-    } else {
-      return -this.cameraY;
-    }
+    // if (this.cameraY < 0) {
+    //   return 0;
+    // } else if (this.cameraY > this.yOffsetMax) {
+    //   return -this.yOffsetMax;
+    // } else {
+    //   return -this.cameraY;
+    // }
   }
 
   componentWillMount() {
-    // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => {
-        // console.log('evt', evt, 'gestureState', gestureState);
+      onStartShouldSetPanResponder: () => true,
+
+      onMoveShouldSetPanResponder: (gestureState) => {
         if (this.state.showHighlighted || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           return true;
         } else {
           return false;
         }
       },
-      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
-      onPanResponderGrant: (evt, gestureState) => {
+
+      onPanResponderGrant: (evt) => {
         let { touches } = evt.nativeEvent;
         if (touches[0].timestamp - this.previousTouchTimestamp < 200) {
           this.setState({
             justZoomed: true,
           });
           this.props.alterZoom();
-          console.log("justzoomed true", this.state.justZoomed);
+          console.log("just zoomed true", this.state.justZoomed);
         }
         this.previousTouchTimestamp = touches[0].timestamp;
       },
+
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
-        if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
+        if (gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
         } else if (this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
       },
+
       onPanResponderRelease: () => {
-        // console.log("on pan responder release");
         this.setState({
           isMoving: false,
         });
@@ -234,23 +246,23 @@ export default class Engine extends Component {
     });
   }
 
-  animateCamera = (duration) => {
+  animateCamera = (animationDuration) => {
     const { left, top } = this.state;
-    let newX = (this.state.playerX - this.screenDimensions.width/2);
+    let newX = (this.state.playerX - (this.screenDimensions.width / 2));
     if (newX < 0) {
       newX = 0;
     } else if (newX > this.xOffsetMax) {
       newX = this.xOffsetMax;
     }
-    let newY = (this.state.playerY - this.screenDimensions.height/2);
+    let newY = (this.state.playerY - (this.screenDimensions.height / 2));
     if (newY < 0) {
       newY = 0;
     } else if (newY > this.yOffsetMax) {
       newY = this.yOffsetMax;
     }
     Animated.parallel([
-      Animated.timing(left, { toValue: -newX, duration: duration}),
-      Animated.timing(top, { toValue: -newY, duration: duration}),
+      Animated.timing(left, { toValue: -newX, duration: animationDuration }),
+      Animated.timing(top, { toValue: -newY, duration: animationDuration }),
     ]).start();
   }
 
@@ -258,7 +270,7 @@ export default class Engine extends Component {
     const { spriteX, spriteY } = this.state;
     Animated.parallel([
       Animated.timing(spriteX, { toValue: this.getNewSpriteX(), duration: 1 }),
-      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1 })
+      Animated.timing(spriteY, { toValue: this.getNewSpriteY(), duration: 1 }),
     ]).start((finished) => {
       if (finished.finished) {
         this.animateCamera(1);
@@ -267,7 +279,6 @@ export default class Engine extends Component {
         });
       }
     });
-
   }
 
   animateSpritePosition = () => {
@@ -276,20 +287,22 @@ export default class Engine extends Component {
     if (this.props.isHuman) { // human
       // down
       if (this.getNewSpriteY() - spriteY._value > 0) {
-        if (this.state.srcPriest != require("../data/images/priestWalkDown.png"))
-        this.setState({
-          srcPriest: require("../data/images/priestWalkDown.png")
-        });
+        if (this.state.srcPriest != require("../data/images/priestWalkDown.png")) {
+          this.setState({
+            srcPriest: require("../data/images/priestWalkDown.png")
+          });
+        }
       }
-      //up
+      // up
       else if (this.getNewSpriteY() - spriteY._value < 0) {
-        if (this.state.srcPriest != require("../data/images/priestWalkUp.png"))
-        this.setState({
-          srcPriest: require("../data/images/priestWalkUp.png")
-        });
+        if (this.state.srcPriest != require("../data/images/priestWalkUp.png")) {
+          this.setState({
+            srcPriest: require("../data/images/priestWalkUp.png")
+          });
+        }
       }
       // left
-      else if ((this.getNewSpriteX() - spriteX._value < 0))  {
+      else if ((this.getNewSpriteX() - spriteX._value < 0)) {
         if (this.state.srcPriest != require("../data/images/priest-walk-left.png")) {
           this.setState({
             srcPriest: require("../data/images/priest-walk-left.png")
@@ -320,7 +333,7 @@ export default class Engine extends Component {
         if (this.state.srcEvil != require("../data/images/monsterWalkUp.png")) {
           this.setState({
             srcEvil: require("../data/images/monsterWalkUp.png"),
-          })
+          });
         }
       }
       else if (this.getNewSpriteX() - spriteX._value < 0) {
@@ -433,7 +446,7 @@ export default class Engine extends Component {
     if (JSON.stringify(this.state.tileFogMapArray !== newTileFogMapArray)) {
       this.setState({
         tileFogMapArray: newTileFogMapArray,
-      })
+      });
     }
     if (JSON.stringify(this.state.highlightedTileMap !== newHighlightedTileMap)) {
       this.setState({
@@ -478,7 +491,6 @@ export default class Engine extends Component {
     } else {
       let left = this.state.initialLeft._value + x - this.state.initialX;
       let top = this.state.initialTop._value + y - this.state.initialY;
-      // console.log(left, this.gameBoardWidth);
       this.setState({
           left:
             left._value > 0 ?
@@ -500,7 +512,6 @@ export default class Engine extends Component {
     if (!this.state.isMoving) {
       let x = touchX - this.state.left._value;
       let y = touchY - this.state.top._value;
-      // console.log("process move", this.highlightedTileRanges, x, y);
       for (let i = 0; i < this.highlightedTileRanges.length; i++) {
         if (
           x > this.highlightedTileRanges[i].xMin &&
@@ -510,7 +521,6 @@ export default class Engine extends Component {
         ) {
           this.setState({
             controlsVisible: false,
-            echoControlsVisible: false,
             targetPickerVisible: false,
           });
           let newPlayerTile = this.getTileFromXY(x, y);
@@ -518,7 +528,7 @@ export default class Engine extends Component {
           this.props.incrementTurnCounter();
         } else {
           // console.log('check');
-          setTimeout(function() {
+          setTimeout(function () {
             if (!this.state.isMoving || !this.state.showHighlighted) {
               this.setState({
                 showHighlighted: false,
@@ -534,10 +544,9 @@ export default class Engine extends Component {
   }
 
   getTileFromXY(x, y) {
-    y = Math.floor(y/this.state.tileWidth);
-    x = Math.floor(x/this.state.tileWidth);
-    let index = ((y * 40) + x);
-    // console.log(this.state.playerSpace.name, index, this.state.playerX, this.state.playerY);
+    const top = Math.floor(y/this.state.tileWidth);
+    const left = Math.floor(x/this.state.tileWidth);
+    let index = ((top * 40) + left);
     return (this.props.gameBoard[index]);
   }
 
@@ -548,7 +557,7 @@ export default class Engine extends Component {
 
   renderHighlighted = () => {
     if ((!this.props.gameActive) && (this.state.showHighlighted)) {
-      this.setState({ showHighlighted: false })
+      this.setState({ showHighlighted: false });
     }
     if (this.state.showHighlighted) {
       return (
@@ -595,7 +604,7 @@ export default class Engine extends Component {
     }
   }
 
-  fixImageStyle = (index, tile) => {
+  fixImageStyle = (index) => {
     return ({ left: ((index - 1) * this.state.tileWidth), overflow: 'hidden' });
   }
 
@@ -603,28 +612,28 @@ export default class Engine extends Component {
     switch (tile.index) {
       case 1://nw
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-nw.gif")} />;
-        break;
+
       case 2://n
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-n.gif")} />;
-        break;
+
       case 3://ne
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-ne.gif")} />;
-        break;
+
       case 4://e
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-e.gif")} />;
-        break;
+
       case 5://se
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-se.gif")} />;
-        break;
+
       case 6://s
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-s.gif")} />;
-        break;
+
       case 7://sw
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-sw.gif")} />;
-        break;
+
       case 8://w
         return <Image resizeMode="stretch" style={[styles, { opacity: 1 }, this.fixImageStyle()]} source={require("../data/images/fog-w.gif")} />;
-        break;
+
       case 9://full
         break;
       default:
@@ -658,7 +667,7 @@ export default class Engine extends Component {
     } else if (!this.props.isHuman) {
       return (
         <TileMap
-          src={require("../data/images/greensquare.jpg")}
+          src={require("../data/images/Magenta-square_100px.gif")}
           tileSize={this.state.tileWidth}
           columns={40}
           rows={40}
@@ -669,7 +678,7 @@ export default class Engine extends Component {
               <TouchableOpacity style={[styles]}>
                 <Image
                   resizeMode="stretch"
-                  style={[styles, { opacity: 0.1 }]}
+                  style={[styles, { opacity: 0.3 }]}
                   source={src}
                 />
               </TouchableOpacity>
@@ -682,7 +691,6 @@ export default class Engine extends Component {
   }
 
   controlSwitch = () => {
-    // console.log('switch')
     if (this.props.gameActive) {
       if (this.state.controlsVisible) {
         if (this.props.isHuman) {
@@ -767,17 +775,17 @@ export default class Engine extends Component {
       } else {
         return (
           <TouchableSprite activeOpacity={1} onStartShouldSetResponder={true} style={this.getOpponentStyle()}>
-          <Sprite
-          offset={[0, 0]}
-          repeat={true}
-          src={this.state.srcPriest}
-          steps={[11]}
-          state={0}
-          onPlayStateChanged={this.handlePlayStateChanged}
-          tileHeight={128}
-          ticksPerFrame={this.state.ticksPerFrame}
-          tileWidth={64}
-          />
+            <Sprite
+              offset={[0, 0]}
+              repeat={true}
+              src={this.state.srcPriest}
+              steps={[11]}
+              state={0}
+              onPlayStateChanged={this.handlePlayStateChanged}
+              tileHeight={128}
+              ticksPerFrame={this.state.ticksPerFrame}
+              tileWidth={64}
+            />
           </TouchableSprite>
         );
       }
@@ -817,19 +825,17 @@ export default class Engine extends Component {
   shrinePicked = () => {
       this.props.focus('shrine');
       this.setState({
-        targetPicker: null,
         targetPickerVisible: false,
         controlsVisible: false,
-      })
+      });
   }
 
   humanPicked = () => {
     this.props.focus('human');
     this.setState({
-      targetPicker: null,
       targetPickerVisible: false,
       controlsVisible: false,
-    })
+    });
 }
 
   movementSwitch = () => {
@@ -862,12 +868,12 @@ export default class Engine extends Component {
           <Image source={require("../data/images/finderButton.png")} resizeMode="contain" />
         </TouchableOpacity>
       </View>
-    )
+    );
   }
 
   renderControls = () => {
     if ((!this.props.gameActive) && (this.state.controlsVisible)) {
-      this.setState({ controlsVisible: false })
+      this.setState({ controlsVisible: false });
     }
     if (this.state.controlsVisible && this.state.tileWidth === this.props.zoomedInValue) {
       if (this.props.isHuman) {
@@ -987,19 +993,15 @@ export default class Engine extends Component {
     } else if (this.state.tileWidth === this.props.zoomedOutValue) {
       return ({ zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth*7, transform: [{scale: this.state.spriteScale}] });
     }
-
   }
+
   getPriestStyle = () => {
-    // console.log("sprite x y", this.state.spriteX, this.state.spriteY);
     if (this.state.tileWidth === this.props.zoomedInValue) {
       return ({zIndex: 1, width: this.state.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
     } else if (this.state.tileWidth === this.props.zoomedOutValue) {
-      return ([ {zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth/this.state.spriteScale}]);
+      return ([{zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth/this.state.spriteScale}]);
     }
   }
-
-  // this.playerX = (this.props.playerSpace.name % 40) * this.state.tileWidth;
-  // this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.state.tileWidth;
 
   getOpponentStyle = () => {
     if (this.props.isHuman) {
@@ -1017,9 +1019,7 @@ export default class Engine extends Component {
     }
   }
 
-  handlePlayStateChanged = (state) => {
-    this.setState({
-      spritePlaying: state ? true : false,
-    });
+  handlePlayStateChanged = () => {
+    //necessary but unused
   }
 }

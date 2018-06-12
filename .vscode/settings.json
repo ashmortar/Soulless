@@ -2,6 +2,10 @@
   "java.configuration.updateBuildConfiguration": "interactive",
   "cSpell.words": [
     "echolocate",
-    "gamefield"
+    "gamefield",
+    "greensquare",
+    "in",
+    "justzoomed",
+    "srcfocus"
   ]
 }
