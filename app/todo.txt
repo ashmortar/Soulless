@@ -5,15 +5,16 @@
 -- animate camera post zoom?
 -- fix demonspell link to work for verification
 -- fix online positional bugs
--- fix online priest echo bug
 -- fix shrine zIndex bug
 -- simplify play online to be 1 button
 -- make online player change into a "window" modal and animate camera to feedback square if exists
 
+
+
 ==== wishlist =====
 -- make A.I. monster and after interval waiting for online player prompt user to play single player
 -- make one player mode! - in one player mode make credit crawl after winning
-
+-- check/standardize all image sizes
 
 
 +++++ Questions for Rick +++
