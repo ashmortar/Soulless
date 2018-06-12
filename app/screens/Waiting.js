@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
-import { AsyncStorage, View, Dimensions, Text, ImageBackground, BackAndroid } from 'react-native';
+import { View, Dimensions, Text, ImageBackground, BackAndroid } from 'react-native';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
@@ -258,7 +258,6 @@ class Waiting extends Component {
   }
 
   echoLocate = (direction) => {
-    const splashScreenTimer = 500;
     const index = this.humanSpace.name;
     let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
     switch (direction) {
@@ -1296,6 +1295,7 @@ class Waiting extends Component {
           this.setState({ playerSpace: this.monsterSpace});
         }
         this.setState({ readyToBeginPlaying: true });
+        this.echoLocate('initial');
         console.log('***ready to play?');
         console.log(this.state.readyToBeginPlaying);
         this.boardPieceCounter = 0;

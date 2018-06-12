@@ -10,6 +10,8 @@ import BackStoryCrawl from './BackStoryCrawl';
 
 var io = require('socket.io-client');
 let socket = null;
+const BACKSTORYTIMEOUT = 10000;
+
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.object,
@@ -43,7 +45,7 @@ class Home extends Component {
           crawlVisible: true,
         })
       }
-    }.bind(this), 5000);
+    }.bind(this), BACKSTORYTIMEOUT);
   }
 
   componentWillUnmount = () => {
