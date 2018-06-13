@@ -1231,8 +1231,8 @@ class Game extends Component {
         }
       }
     }
-    let numberOfTubes1 = 3;
-    let numberOfTubes2 = 4;
+    let numberOfTubes1 = 3;//3
+    let numberOfTubes2 = 4;//4
     for (let i = 0; i < numberOfTubes1; i++) {
       this.elements[greyBottomWalls[Math.floor(Math.random() * greyBottomWalls.length)]].imageDecorKey = 1;
     }

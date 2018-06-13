@@ -217,38 +217,46 @@ export default class Engine extends Component {
     // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // console.log(this.props.isHuman);
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-
-      onMoveShouldSetPanResponder: (gestureState) => {
-        if ((this.state.showHighlighted && !this.props.outOfMoves) || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        // console.log('evt', evt, 'gestureState', gestureState);
+        if (this.state.showHighlighted || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           return true;
         } else {
           return false;
         }
       },
-
-      onPanResponderGrant: (evt) => {
+      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
+      onPanResponderGrant: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
+
         if (touches[0].timestamp - this.previousTouchTimestamp < 200) {
           this.setState({
             justZoomed: true,
           });
           this.props.alterZoom();
-          console.log("just zoomed true", this.state.justZoomed);
+          setTimeout(function() {
+            this.animateCamera();
+          }.bind(this), 1000);
+        }
+        else if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
+          this.processPan(touches[0].pageX, touches[0].pageY);
+        } else if (this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
+          this.processMove(touches[0].pageX, touches[0].pageY);
         }
         this.previousTouchTimestamp = touches[0].timestamp;
       },
-
       onPanResponderMove: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
-        if (gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
+        if (gestureState.dx > 10 || gestureState.dx < -10  || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
-        } else if (!this.props.outOfMoves && this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
+        } else if (this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
           this.processMove(touches[0].pageX, touches[0].pageY);
         }
       },
-
       onPanResponderRelease: () => {
+        // console.log("on pan responder release");
         this.setState({
           isMoving: false,
         });
@@ -446,12 +454,13 @@ export default class Engine extends Component {
       });
       this.transportSprite();
     }
-    if (nextProps.outOfMoves) {
-      this.setState({
-        showHighlighted: false,
-        controlsVisible: false,
-      });
-    }
+    //DEBUG------vvv------------------------
+    // if (nextProps.outOfMoves) {
+    //   this.setState({
+    //     showHighlighted: false,
+    //     controlsVisible: false,
+    //   });
+    // }
     if (this.state.tileWidth !== nextProps.tileWidth) {
       this.setState({
         tileWidth: nextProps.tileWidth,
@@ -475,7 +484,7 @@ export default class Engine extends Component {
     if (JSON.stringify(this.state.tileMapArray) !== JSON.stringify(newTileMapArray)) {
       this.setState({
         tileMapArray: newTileMapArray,
-      })
+      });
     }
     if (JSON.stringify(this.state.tileFogMapArray) !== JSON.stringify(newTileFogMapArray)) {
       this.setState({
@@ -592,7 +601,8 @@ export default class Engine extends Component {
     if ((!this.props.gameActive) && (this.state.showHighlighted)) {
       this.setState({ showHighlighted: false })
     }
-    if (this.state.showHighlighted && !this.props.outOfMoves) {
+    if (this.state.showHighlighted) {//DEBUG--------------vvv--------------
+    // if (this.state.showHighlighted && !this.props.outOfMoves) {
       console.log('***');
       console.log(this.state.highlightedTileMap);
       return (
@@ -756,7 +766,7 @@ export default class Engine extends Component {
   renderSprite = () => {
     if (this.props.isHuman) {
       return (
-        <TouchableSprite activeOpacity={1} onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+        <TouchableSprite disabled={this.state.showHighlighted} activeOpacity={1} onStartShouldSetResponder={true} style={this.getPriestStyle()} onPress={this.controlSwitch}>
           <Sprite
             offset={[0, 0]}
             repeat={true}
@@ -773,7 +783,7 @@ export default class Engine extends Component {
       );
     } else {
       return (
-        <TouchableSprite activeOpacity={1} style={this.getPriestStyle()} onPress={this.controlSwitch}>
+        <TouchableSprite disabled={this.state.showHighlighted} activeOpacity={1} style={this.getPriestStyle()} onPress={this.controlSwitch}>
           <Sprite
             offset={[0, 0]}
             repeat={true}
@@ -996,7 +1006,7 @@ export default class Engine extends Component {
       // wall top northeast
     this.cases.push(require("../data/images/wall-t-ne.gif"));
     // // wall top west
-    this.cases.push(require("../data/images/wall-t-w.gif"));
+    this.cases.push(require("../data/images/wall-t-w.gif"));//4
     // // wall top east
     this.cases.push(require("../data/images/wall-t-e.gif"));
     // wall top southwest
@@ -1006,7 +1016,7 @@ export default class Engine extends Component {
     // wall top southeast
     this.cases.push(require("../data/images/wall-t-se.gif"));
     // wall top center
-    this.cases.push(require("../data/images/wall-t-c.gif"));
+    this.cases.push(require("../data/images/wall-t-c.gif"));//9
     // wall front northwest
     this.cases.push(require("../data/images/wall-f-nw-2.gif"));
     // wall front north
@@ -1117,6 +1127,7 @@ export default class Engine extends Component {
               // wall top center
               case 9:
               // console.log("tile", tile);
+                // return;
                 return <Image resizeMode="stretch" style={[styles, this.fixImageStyle()]} source={this.cases[9]} />;
               // wall front northwest
               case 10:
@@ -1264,7 +1275,7 @@ export default class Engine extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth), overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -1287,7 +1298,7 @@ export default class Engine extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.state.tileWidth*1.5), top: -this.state.tileWidth*0.5, overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth), overflow: 'hidden', zIndex: 2 }]}
               source={src}
             />
           )}
@@ -1314,10 +1325,10 @@ export default class Engine extends Component {
   renderDecorTile = (tile, src, styles) => {
     switch (tile.index) {
       case 1:
-        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 1.8), top: -this.state.tileWidth * 0.6, overflow: 'hidden' }]} source={require("../data/images/tube1.png")} />;
+        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 1.8), overflow: 'hidden' }]} source={require("../data/images/tube1.png")} />;
         break;
       case 2:
-        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 2), top: -this.state.tileWidth * 0.7, overflow: 'hidden' }, this.fixImageStyle()]} source={require("../data/images/tube2.png")} />;
+        return <Image resizeMode="contain" style={[styles, { height: (this.state.tileWidth * 2), overflow: 'hidden' }, this.fixImageStyle()]} source={require("../data/images/tube2.png")} />;
         break;
       default:
         console.log('the imageKey for this tile was not assigned correctly', tile);
