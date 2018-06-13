@@ -1,6 +1,8 @@
  
 -- iphone adjustments
 
+-- young priest android control bug
+
 -- camera adjustments:
   -- feedback camera is bugged
   -- figure out smallest viable screen size device and set zoomed in value based off of that.
@@ -8,12 +10,10 @@
 
 -- fix shrine zIndex bug
 
-
 -- make online player change into a "window" modal and animate camera to feedback square if exists
 
 -- simplify play online to be 1 button
 
--- screen shot zoom?
 
 -- GET A NAME!!! (soulless)
 -- fix demonspell link to work for verification and have correct text
@@ -23,6 +23,7 @@
 -- make A.I. monster and after interval waiting for online player prompt user to play single player
 -- make one player mode! - in one player mode make credit crawl after winning
 -- check/standardize all image sizes
+-- screen shot zoom?
 
 
 +++++ Questions for Rick +++

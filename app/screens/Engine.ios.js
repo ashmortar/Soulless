@@ -55,14 +55,16 @@ export default class Engine extends Component {
     this.wasEchoedTileMap = this.props.gameBoard.map(a => a.wasEchoed ? 1 : 0);
     this.highlightedTileRanges = [];
     this.playerTileRanges = [];
-    this.xOffsetMax = this.gameBoardWidth - this.screenDimensions.width;
-    this.yOffsetMax = this.gameBoardWidth - this.screenDimensions.height;
+    this.xOffsetLarge = 64*40 - this.screenDimensions.width;
+    this.xOffsetSmall = 25*40 - this.screenDimensions.width;
+    this.yOffsetLarge = 64*40 - this.screenDimensions.height;
+    this.yOffsetSmall = 25*40 - this.screenDimensions.height;
     this.playerX = (this.props.playerSpace.name % 40) * this.props.tileWidth;
     this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.props.tileWidth;
-    this.cameraX = this.getCameraX();
-    this.cameraY = this.getCameraY();
+    this.cameraX = this.getinitialCameraX();
+    this.cameraY = this.getInitialCameraY();
     this.beginningX = this.getBeginningX();
-    this.beginningY = this.getBeginningY()
+    this.beginningY = this.getBeginningY();
     this.feedbackSquare = null;
     this.previousTouchTimestamp = 0;
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
@@ -152,84 +154,101 @@ export default class Engine extends Component {
     }
   }
 
+  getInitialCameraY = () => {
+    if ((this.playerY - (this.screenDimensions.height / 2)) < 0) {
+      return 0;
+    } else if ((this.playerY - (this.screenDimensions.height / 2)) > this.yOffsetLarge) {
+      return this.yOffsetLarge;
+    } else {
+      return (this.playerY - (this.screenDimensions.height / 2));
+    }
+  }
+
   getCameraY = () => {
-      if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
-        for (let i = 0; i < this.props.gameBoard.length; i++) {
-          if (this.props.gameBoard[i].wasPounced) {
-            this.feedbackSquare = this.props.gameBoard[i];
-            return ((Math.floor(this.feedbackSquare.name / 40) * this.state.tileWidth) - (this.screenDimensions.height / 2));
-          }
-        }
-      } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
-        for (let i = 0; i < this.props.gameBoard.length; i++) {
-          if (this.props.gameBoard[i].wasEchoed) {
-            this.feedbackSquare = this.props.gameBoard[i];
-            return ((Math.floor(this.feedbackSquare.name / 40) * this.props.tileWidth) - (this.screenDimensions.height / 2));          }
-        }
+    if (this.state.tileWidth === this.props.zoomedInValue) {
+      if ((this.state.playerY - (this.screenDimensions.height / 2)) < 0) {
+        return 0;
+      } else if ((this.state.playerY - (this.screenDimensions.height / 2)) > this.yOffsetLarge) {
+        return this.yOffsetLarge;
       } else {
-        return (this.playerY - (this.screenDimensions.height / 2));
+        return (this.state.playerY - (this.screenDimensions.height / 2));
       }
+    } else {
+      if ((this.state.playerY - (this.screenDimensions.height / 2)) < 0) {
+        return 0;
+      } else if ((this.state.playerY - (this.screenDimensions.height / 2)) > this.yOffsetSmall) {
+        return this.yOffsetSmall;
+      } else {
+        return (this.state.playerY - (this.screenDimensions.height / 2));
+      }
+    }
+  }
+
+  getInitialCameraX = () => {
+    if ((this.playerX - (this.screenDimensions.width / 2)) < 0) {
+      return 0;
+    } else if ((this.playerX - (this.screenDimensions.width / 2)) > this.xOffsetLarge) {
+      return this.xOffsetLarge;
+    } else {
+      return (this.playerX - (this.screenDimensions.width / 2));
+    }
   }
 
   getCameraX = () => {
-      if (this.props.turnCounter === 0 && this.wasPouncedTileMap.includes(1)) {
-        for (let i = 0; i < this.props.gameBoard.length; i++) {
-          if (this.props.gameBoard[i].wasPounced) {
-            this.feedbackSquare = this.props.gameBoard[i];
-            return (((this.feedbackSquare.name % 40) * this.state.tileWidth) - (this.screenDimensions.width / 2));
-          }
-        }
-      } else if (this.props.turnCounter === 0 && this.wasEchoedTileMap.includes(1)) {
-        for (let i = 0; i < this.props.gameBoard.length; i++) {
-          if (this.props.gameBoard[i].wasEchoed) {
-            this.feedbackSquare = this.props.gameBoard[i];
-            return (((this.feedbackSquare.name % 40) * this.props.tileWidth) - (this.screenDimensions.width / 2));
-          }
-        }
+    if (this.state.tileWidth === this.props.zoomedInValue) {
+      if ((this.state.playerX - (this.screenDimensions.width / 2)) < 0) {
+        return 0;
+      } else if ((this.state.playerX - (this.screenDimensions.width / 2)) > this.xOffsetLarge) {
+        return this.xOffsetLarge;
       } else {
-        return (this.playerX - (this.screenDimensions.width / 2));
+        return (this.state.playerX - (this.screenDimensions.width / 2));
       }
+    } else {
+      if ((this.state.playerX - (this.screenDimensions.width / 2)) < 0) {
+        return 0;
+      } else if ((this.state.playerX - (this.screenDimensions.width / 2)) > this.xOffsetSmall) {
+        return this.xOffsetSmall;
+      } else {
+        return (this.state.playerX - (this.screenDimensions.width / 2));
+      }
+    }
   }
 
   getBeginningX = () => {
-    return -this.cameraX;
-    // if (this.cameraX < 0) {
-    //   return 0;
-    // } else if (this.cameraX > this.xOffsetMax) {
-    //   return -this.xOffsetMax;
-    // } else {
-    //   return -this.cameraX;
-    // }
+    // return -this.cameraX;
+    if (this.cameraX < 0) {
+      return 0;
+    } else if (this.cameraX > this.xOffsetLarge) {
+      return -this.xOffsetLarge;
+    } else {
+      return -this.cameraX;
+    }
   }
 
   getBeginningY = () => {
-    return -this.cameraY;
-    // if (this.cameraY < 0) {
-    //   return 0;
-    // } else if (this.cameraY > this.yOffsetMax) {
-    //   return -this.yOffsetMax;
-    // } else {
-    //   return -this.cameraY;
-    // }
+    // return -this.cameraY;
+    if (this.cameraY < 0) {
+      return 0;
+    } else if (this.cameraY > this.yOffsetLarge) {
+      return -this.yOffsetLarge;
+    } else {
+      return -this.cameraY;
+    }
   }
 
   componentWillMount() {
     console.log('engine.ios.js');
     this.getImages();
-    // console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    // console.log(this.props.isHuman);
+    
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => {
-        // console.log('evt', evt, 'gestureState', gestureState);
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (gestureState) => {
         if (this.state.showHighlighted || gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           return true;
         } else {
           return false;
         }
       },
-      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {},
       onPanResponderGrant: (evt, gestureState) => {
         let { touches } = evt.nativeEvent;
 
@@ -238,7 +257,7 @@ export default class Engine extends Component {
             justZoomed: true,
           });
           this.props.alterZoom();
-          setTimeout(function() {
+          setTimeout(function () {
             this.animateCamera();
           }.bind(this), 1000);
         }
@@ -268,18 +287,8 @@ export default class Engine extends Component {
 
   animateCamera = (animationDuration) => {
     const { left, top } = this.state;
-    let newX = (this.state.playerX - this.screenDimensions.width/2);
-    if (newX < 0) {
-      newX = 0;
-    } else if (newX > this.xOffsetMax) {
-      newX = this.xOffsetMax;
-    }
-    let newY = (this.state.playerY - this.screenDimensions.height/2);
-    if (newY < 0) {
-      newY = 0;
-    } else if (newY > this.yOffsetMax) {
-      newY = this.yOffsetMax;
-    }
+    let newX = this.getCameraX();
+    let newY = this.getCameraY();
     Animated.parallel([
       Animated.timing(left, { toValue: -newX, duration: animationDuration}),
       Animated.timing(top, { toValue: -newY, duration: animationDuration}),
