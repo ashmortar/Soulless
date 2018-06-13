@@ -288,10 +288,6 @@ class Waiting extends Component {
         if (index - this.cellsInRow < 0 || this.elements[index - this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.setState({
-            monsterFeedback: true,
-            feedbackSquare: this.humanSpace,
-          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -328,10 +324,6 @@ class Waiting extends Component {
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.setState({
-            monsterFeedback: true,
-            feedbackSquare: this.humanSpace,
-          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -367,10 +359,6 @@ class Waiting extends Component {
         if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.setState({
-            monsterFeedback: true,
-            feedbackSquare: this.humanSpace,
-          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -406,10 +394,6 @@ class Waiting extends Component {
         if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.setState({
-            monsterFeedback: true,
-            feedbackSquare: this.humanSpace,
-          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -445,10 +429,6 @@ class Waiting extends Component {
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.setState({
-            monsterFeedback: true,
-            feedbackSquare: this.humanSpace,
-          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -533,6 +513,11 @@ class Waiting extends Component {
           } else {
             this.resetWasEchoed();
           }
+          this.setState({
+            feedbackSquare: null,
+            monsterFeedback: false,
+            humanFeedback: false,
+          })
           this.resetHighlighted();
           this.changePlayerMode();
           this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true })
@@ -873,7 +858,6 @@ class Waiting extends Component {
   }
 
   collectShrine = (item) => {
-    this.setState({ feedbackSquare: item })
     if (this.state.isHuman) {
       if (this.state.shrinesBlessed + 1 >= this.humanShrinesToWin) {
         this.userWon = 'human';
@@ -1346,7 +1330,7 @@ class Waiting extends Component {
 
       this.boardPieceCounter++;
       if (this.boardPieceCounter >= 8) {
-        for(i = 0; i < this.elements.length; i++) {
+        for (let i = 0; i < this.elements.length; i++) {
           if (this.elements[i].hasHuman) {
             this.humanSpace = this.elements[i];
           }
@@ -1383,12 +1367,27 @@ class Waiting extends Component {
           if (this.elements[i].hasMonster) {
             this.monsterSpace = this.elements[i];
           }
+          if (this.elements[i].wasPounced && this.state.isHuman) {
+            this.setState({
+              humanFeedback: true,
+              highlightFeedback: true,
+              feedbackSquare: this.elements[i]
+            });
+          }
+          if (this.elements[i].wasEchoed && !this.state.isHuman) {
+            this.setState({
+              monsterFeedback: true,
+              highlightFeedback: true,
+              feedbackSquare: this.elements[i]
+            });
+          }
         }
 
         if (this.state.isHuman) {
-          this.setState({ playerSpace: this.humanSpace, opponentVisible: false, humanFeedback: false});
+          this.setState({ playerSpace: this.humanSpace, opponentVisible: false});
+          
         } else {
-          this.setState({ playerSpace: this.monsterSpace, opponentVisible: false, monsterFeedback: false});
+          this.setState({ playerSpace: this.monsterSpace, opponentVisible: false});
         }
         this.boardPieceCounter = 0;
         this.setState({ turn: this.state.turn + 1 });
@@ -1396,6 +1395,7 @@ class Waiting extends Component {
       }
     }
   }
+  
 
   postEvent = (event) => {//event = {"data": "sample_data"}
     console.log('postEvent');
@@ -1509,6 +1509,7 @@ class Waiting extends Component {
           heartBeatTimer={this.state.heartBeatTimer}
           highlightFeedback={this.state.highlightFeedback}
           highlightFeedbackCallback={this.highlightFeedbackCallback}
+          humanFeedback={this.state.humanFeedback}
           humanSpace={this.humanSpace}
           humanShrinesToWin={this.humanShrinesToWin}
           incrementTurnCounter={this.incrementTurnCounter}
