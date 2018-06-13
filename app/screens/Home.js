@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Modal, Dimensions, ImageBackground, AsyncStorage } from "react-native";
+import { ActivityIndicator, TextInput, View, Text, Modal, Dimensions, ImageBackground, AsyncStorage } from "react-native";
 
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
@@ -242,8 +242,57 @@ class Home extends Component {
   };
 
   handlePressPlayOnlineButton = () => {
-    this.setModalVisible(true);
+    if (this.state.auth_token === null) {
+      this.setModalVisible(true);
+    } else {
+      this.goOnline();
+    }
   };
+
+  goOnline = () => {
+    this.setState({
+      findingGame: true,
+      modalVisible: true,
+    });
+    fetch("https://demonspell.herokuapp.com/api/games", {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth_token': this.state.auth_token,
+      },
+      method: "POST",
+    }).then((res) => {
+        if (res.error) {
+          console.log('error');
+        }
+        if (res.status===200) {
+          // console.log("successful");
+          // this.launchSocket();
+          res.json()
+          .then((responseJSON) => {
+            let {id, accessToken, player1, player2 } = responseJSON;
+            this.setState({ accessToken: accessToken});
+            // console.log(this.state.accessToken);
+            if (player2) {
+              console.log("working?");
+            }
+            this.handleBeginGame();
+            this.setState({
+              findingGame: false,
+              modalVisible: false,
+            });
+          });
+        }
+    })
+    .catch((e)=>{
+      console.log(e);
+      if (e.error === "Unauthorized") {
+        navigation.connectionLost("THERE WAS AN ERROR WITH YOUR ACCOUNT");
+      } else {
+        navigation.connectionLost(context.props.navigator);
+      }
+      throw e;
+    })
+  }
 
   handlePressLoginButton = () => {
     this.postLogin(this.state.code);
@@ -262,7 +311,7 @@ class Home extends Component {
   }
 
   handlePressSendDataButton = () => {
-    console.log("data pressed")
+    console.log("data pressed");
     this.postEvent();
   }
 
@@ -273,21 +322,20 @@ class Home extends Component {
   }
 
   renderInputs = () => {
-    if (this.state.connectedToGame) {
+    if (this.state.findingGame) {
       return (
         <View>
           <Text style={{
             color: "#fff",
             textAlign: 'center',
             fontFamily: 'Perfect DOS VGA 437',
-          }}>Game initiated, press below to begin</Text>
-
-          <NavButton onPress={this.handleBeginGame} text="begin" />
+          }}>Communicating with the servers</Text>
+          <ActivityIndicator />
           <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
         </View>
       )
     }
-    if (this.state.auth_token !== null) {
+    else if (this.state.auth_token !== null) {
       return (
         <View>
           <Text style={{
@@ -296,7 +344,7 @@ class Home extends Component {
             fontFamily: 'Perfect DOS VGA 437',
           }}>Click below to find a game!</Text>
 
-          <NavButton onPress={this.handlePressHostJoinButton} text="host/join" />
+          <NavButton onPress={this.goOnline} text="host/join" />
           <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
 
         </View>
@@ -356,7 +404,9 @@ class Home extends Component {
         transparent={true}
         visible={this.state.modalVisible}
         onRequestClose={() => {
-          alert('Modal has been closed.');
+          this.setState({
+            modalVisible: false,
+          })
         }}>
         <View style={{width: Dimensions.get("window").width*0.8, height: Dimensions.get("window").height*0.6, marginLeft: "auto", marginRight: "auto"}} >
           <ImageBackground
