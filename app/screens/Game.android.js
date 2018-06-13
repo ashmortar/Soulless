@@ -1277,7 +1277,7 @@ class Game extends Component {
     let { topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight } = this.getNeighboringCells(index);
     switch (direction) {
 
-      case 'initial' :
+      case 'initial':
 
         topLeft.isRevealed = true;
         top.isRevealed = true;
@@ -1294,7 +1294,12 @@ class Game extends Component {
         if (index - this.cellsInRow < 0 || this.elements[index - this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.humanSpace.wasEchoed = true;
+          for (let i = 0; i < this.elements.length; i++) {
+            if (this.elements[i].hasHuman) {
+              this.elements[i].wasEchoed = true;
+              console.log("was echoed set");
+            }
+          }
           this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - this.cellsInRow];
@@ -1325,7 +1330,11 @@ class Game extends Component {
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.humanSpace.wasEchoed = true;
+          for (let i = 0; i < this.elements.length; i++) {
+            if (this.elements[i].hasHuman) {
+              this.elements[i].wasEchoed = true;
+            }
+          }
           this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + 1];
@@ -1356,7 +1365,11 @@ class Game extends Component {
         if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.humanSpace.wasEchoed = true;
+          for (let i = 0; i < this.elements.length; i++) {
+            if (this.elements[i].hasHuman) {
+              this.elements[i].wasEchoed = true;
+            }
+          }
           this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + this.cellsInRow];
@@ -1387,7 +1400,11 @@ class Game extends Component {
         if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.humanSpace.wasEchoed = true;
+          for (let i = 0; i < this.elements.length; i++) {
+            if (this.elements[i].hasHuman) {
+              this.elements[i].wasEchoed = true;
+            }
+          }
           this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - 1];
@@ -1418,7 +1435,11 @@ class Game extends Component {
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
           this.setState({ modalAlert: 1 });
         } else {
-          this.humanSpace.wasEchoed = true;
+          for (let i = 0; i < this.elements.length; i++) {
+            if (this.elements[i].hasHuman) {
+              this.elements[i].wasEchoed = true;
+            }
+          }
           this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           topLeft.isRevealed = true;
@@ -1476,11 +1497,11 @@ class Game extends Component {
     switch (item) {
       case 'endTurn':
         if (this.state.outOfMoves) {
-          if (this.state.isHuman) {
-            this.resetWasPounced();
-          } else {
-            this.resetWasEchoed();
-          }
+          // if (this.state.isHuman) {
+          //   this.resetWasPounced();
+          // } else {
+          //   this.resetWasEchoed();
+          // }
           this.resetHighlighted();
           this.changePlayerMode();
           this.showSplashScreen('hands', true, 1000);
