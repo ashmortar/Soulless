@@ -1840,6 +1840,7 @@ class Game extends Component {
       }
 
       item.hasBlessedCache = true;
+      console.log("hasBlessedShrine");
       this.setState({ shrinesBlessed: this.state.shrinesBlessed + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
     }

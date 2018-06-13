@@ -66,8 +66,10 @@ export default class Engine extends Component {
     this.feedbackSquare = null;
     this.previousTouchTimestamp = 0;
     this.tileCashMapArray = this.props.gameBoard.map(x => x.hasCache ? 1 : 0);
+
     this.tileBlessedCashMapArray = this.props.gameBoard.map(x => x.hasBlessedCache ? 1 : 0);
     this.tileDesecratedCashMapArray = this.props.gameBoard.map(x => x.hasDesecratedCache ? 1 : 0);
+
     this.tileDecorMapArray = this.props.gameBoard.map(x => (!this.props.isHuman) ? x.imageDecorKey : 0);
     this.tileMapArray = this.props.gameBoard.map(a => this.props.isHuman ? ((a.isRevealed || a.isSemiRevealed) ? a.imageKey : 0) : a.imageKey);
     this.tileFogMapArray = this.props.gameBoard.map(x => (this.props.isHuman) ? x.imageFogKey : 0);
@@ -434,6 +436,11 @@ export default class Engine extends Component {
     // console.log('engine received props');
     let newTileMapArray = nextProps.gameBoard.map(a => this.props.isHuman ? ((a.isRevealed || a.isSemiRevealed) ? a.imageKey : 0) : a.imageKey);
 
+    let newTileCashMapArray = nextProps.gameBoard.map(x => x.hasCache ? 1 : 0);
+    let newTileBlessedCashMapArray = nextProps.gameBoard.map(x => x.hasBlessedCache ? 1 : 0);
+    let newTileDesecratedCashMapArray = nextProps.gameBoard.map(x => x.hasDesecratedCache ? 1 : 0);
+    let newTileDecorMapArray = nextProps.gameBoard.map(x => (!this.props.isHuman) ? x.imageDecorKey : 0);
+
     let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
     let newWasPouncedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
@@ -479,6 +486,26 @@ export default class Engine extends Component {
         playerSpace: nextProps.playerSpace,
         playerX: (nextProps.playerSpace.name % 40) * this.state.tileWidth,
         playerY: Math.floor(nextProps.playerSpace.name / 40) * this.state.tileWidth,
+      });
+    }
+    if (JSON.stringify(this.state.tileCashMapArray) !== JSON.stringify(newTileCashMapArray)) {
+      this.setState({
+        tileCashMapArray: newTileCashMapArray,
+      });
+    }
+    if (JSON.stringify(this.state.tileDesecratedCashMapArray) !== JSON.stringify(newTileDesecratedCashMapArray)) {
+      this.setState({
+        tileDesecratedCashMapArray: newTileDesecratedCashMapArray,
+      });
+    }
+    if (JSON.stringify(this.state.tileBlessedCashMapArray) !== JSON.stringify(newTileBlessedCashMapArray)) {
+      this.setState({
+        tileBlessedCashMapArray: newTileBlessedCashMapArray,
+      });
+    }
+    if (JSON.stringify(this.state.tileDecorMapArray) !== JSON.stringify(newTileDecorMapArray)) {
+      this.setState({
+        tileDecorMapArray: newTileDecorMapArray,
       });
     }
     if (JSON.stringify(this.state.tileMapArray) !== JSON.stringify(newTileMapArray)) {
@@ -603,8 +630,8 @@ export default class Engine extends Component {
     }
     if (this.state.showHighlighted) {//DEBUG--------------vvv--------------
     // if (this.state.showHighlighted && !this.props.outOfMoves) {
-      console.log('***');
-      console.log(this.state.highlightedTileMap);
+      // console.log('***');
+      // console.log(this.state.highlightedTileMap);
       return (
         <TileMap
           src={require("../data/images/Magenta-square_100px.gif")}
@@ -1264,6 +1291,16 @@ export default class Engine extends Component {
 
   renderBlessedShrines = () => {
     if (this.props.isHuman) {
+      //DEBUG
+      if (this.state.tileBlessedCashMapArray.includes(1)) {
+        console.log('blessed shrines tile map');
+        console.log(this.state.tileBlessedCashMapArray);
+      }
+      for (let i = 0; i < 1600; i++) {
+        if (this.state.tileBlessedCashMapArray[i] === 1) {
+          console.log('BLESSED SHRINE');
+        }
+      }
       return (
         <TileMap
           src={require("../data/images/shrineBlessed.png")}
@@ -1275,7 +1312,7 @@ export default class Engine extends Component {
           renderTile={(tile, src, styles) => (
             <Image
               resizeMode="contain"
-              style={[styles, { height: (this.state.tileWidth), overflow: 'hidden', zIndex: 2 }]}
+              style={[styles, { height: (this.state.tileWidth), zIndex: 2 }]}
               source={src}
             />
           )}
