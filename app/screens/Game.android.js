@@ -58,7 +58,17 @@ class Game extends Component {
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
+      monsterFeedback: false,
+      humanFeedback: false,
+      feedbackSquare: null,
+      highlightFeedback: true,
     };
+  }
+
+  highlightFeedbackCallback = () => {
+    this.setState({
+      highlightFeedback: false,
+    });
   }
 
   componentWillMount() {
@@ -1294,6 +1304,10 @@ class Game extends Component {
         if (index - this.cellsInRow < 0 || this.elements[index - this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
+          this.setState({
+            monsterFeedback: true,
+            feedbackSquare: this.humanSpace,
+          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -1330,6 +1344,10 @@ class Game extends Component {
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
+          this.setState({
+            monsterFeedback: true,
+            feedbackSquare: this.humanSpace,
+          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -1365,6 +1383,10 @@ class Game extends Component {
         if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
+          this.setState({
+            monsterFeedback: true,
+            feedbackSquare: this.humanSpace,
+          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -1400,6 +1422,10 @@ class Game extends Component {
         if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
           this.setState({ modalAlert: 1 });
         } else {
+          this.setState({
+            monsterFeedback: true,
+            feedbackSquare: this.humanSpace,
+          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -1435,6 +1461,10 @@ class Game extends Component {
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
           this.setState({ modalAlert: 1 });
         } else {
+          this.setState({
+            monsterFeedback: true,
+            feedbackSquare: this.humanSpace,
+          });
           for (let i = 0; i < this.elements.length; i++) {
             if (this.elements[i].hasHuman) {
               this.elements[i].wasEchoed = true;
@@ -1497,13 +1527,14 @@ class Game extends Component {
     switch (item) {
       case 'endTurn':
         if (this.state.outOfMoves) {
-          // if (this.state.isHuman) {
-          //   this.resetWasPounced();
-          // } else {
-          //   this.resetWasEchoed();
-          // }
+          if (this.state.isHuman) {
+            this.resetWasPounced();
+          } else {
+            this.resetWasEchoed();
+          }
           this.resetHighlighted();
           this.changePlayerMode();
+          this.setState({ highlightFeedback: true });
           this.showSplashScreen('hands', true, 1000);
         }
         break;
@@ -1852,6 +1883,7 @@ class Game extends Component {
   }
 
   collectShrine = (item) => {
+    this.setState({ feedbackSquare: item })
     if (this.state.isHuman) {
       if (this.state.shrinesBlessed + 1 >= this.humanShrinesToWin) {
         this.userWon = 'human';
@@ -1859,8 +1891,10 @@ class Game extends Component {
       }
 
       item.hasBlessedCache = true;
+      item.wasEchoed = true;
       this.setState({ shrinesBlessed: this.state.shrinesBlessed + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
+      this.setState({ monsterFeedback: true });
     }
     else {
       if (this.state.shrinesDesecrated + 1 >= this.monsterShrinesToWin) {
@@ -1872,6 +1906,7 @@ class Game extends Component {
       this.state.monsterSanityLevel -= 15;
       this.setState({ shrinesDesecrated: this.state.shrinesDesecrated + 1 });
       this.setState({ shrinesUnclaimed: this.state.shrinesUnclaimed - 1 });
+      this.setState({ humanFeedback: true });
     }
 
     if (!this.userWon) {
@@ -2056,12 +2091,14 @@ class Game extends Component {
         isHuman: false,
         playerSpace: this.monsterSpace,
         opponentVisible: false,
+        humanFeedback: false,
       });
     } else {
       this.setState({
         isHuman: true,
         playerSpace: this.humanSpace,
         opponentVisible: false,
+        monsterFeedback: false,
       });
     }
     this.setState({ turnCounter: 0 });
@@ -2132,15 +2169,20 @@ class Game extends Component {
           barActive={true}
           boardFinished={true}
           echolocate={this.echoLocate}
+          feedbackSquare={this.state.feedbackSquare}
           focus={this.focus}
           gameActive={true}
           gameBoard={this.elements}
           gameBoardWidth={this.zoomedInValue*15}
           heartBeatTimer={this.state.heartBeatTimer}
+          highlightFeedback={this.state.highlightFeedback}
+          highlightFeedbackCallback={this.highlightFeedbackCallback}
+          humanFeedback={this.state.humanFeedback}
           humanSpace={this.humanSpace}
           humanShrinesToWin={this.humanShrinesToWin}
           incrementTurnCounter={this.incrementTurnCounter}
           isHuman={this.state.isHuman}
+          monsterFeedback={this.state.monsterFeedback}
           monsterProcessPounce={this.monsterProcessPounce}
           monsterSanityLevel={this.state.monsterSanityLevel}
           monsterShrinesToWin={this.monsterShrinesToWin}

@@ -294,7 +294,7 @@ export default class Board extends Component {
   }
 
   renderBlessedShrines = () => {
-    if (this.props.isHuman) {
+    // if (this.props.isHuman) {
       return (
         <TileMap
           src={require("../data/images/shrineBlessed.png")}
@@ -312,7 +312,7 @@ export default class Board extends Component {
           )}
         />
       );
-    }
+    // }
   }
 
 
