@@ -61,7 +61,7 @@ export default class Engine extends Component {
     this.yOffsetSmall = 25*40 - this.screenDimensions.height;
     this.playerX = (this.props.playerSpace.name % 40) * this.props.tileWidth;
     this.playerY = Math.floor(this.props.playerSpace.name / 40) * this.props.tileWidth;
-    this.cameraX = this.getinitialCameraX();
+    this.cameraX = this.getInitialCameraX();
     this.cameraY = this.getInitialCameraY();
     this.beginningX = this.getBeginningX();
     this.beginningY = this.getBeginningY();
@@ -239,7 +239,7 @@ export default class Engine extends Component {
   componentWillMount() {
     console.log('engine.ios.js');
     this.getImages();
-    
+
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: (gestureState) => {
