@@ -1007,9 +1007,15 @@ export default class Engine extends Component {
 
   getPriestControlStyles = () => {
     if (this.state.tileWidth === this.props.zoomedInValue) {
-      return { height: this.state.tileWidth * 3, width: this.state.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.state.tileWidth, top: this.state.playerY - (this.state.tileWidth*5) };
+      if (this.state.playerX < this.state.tileWidth*35) {
+        return { height: this.state.tileWidth * 3, width: this.state.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.state.tileWidth, top: this.state.playerY - (this.state.tileWidth*5), zIndex: 3 };
+      } else {
+        return {height: this.state.tileWidth * 3, width: this.state.tileWidth * 3, flexDirection: 'column', left: this.state.playerX - this.state.tileWidth*3, top: this.state.playerY - (this.state.tileWidth*5), zIndex: 3 };
+      }
+    } else if (this.state.playerX < this.state.tileWidth * 35) {
+      return { height: this.state.tileWidth * 3, width: this.state.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.state.tileWidth, top: this.state.playerY - (this.state.tileWidth*8), zIndex: 3 };
     } else {
-      return { height: this.state.tileWidth * 3, width: this.state.tileWidth * 3, flexDirection: 'column', left: this.state.playerX + this.state.tileWidth, top: this.state.playerY - (this.state.tileWidth*8) };
+      return { height: this.state.tileWidth * 3, width: this.state.tileWidth * 3, flexDirection: 'column', left: this.state.playerX - this.state.tileWidth*3, top: this.state.playerY - (this.state.tileWidth*8), zIndex: 3 }
     }
   }
 
