@@ -418,7 +418,7 @@ export default class Engine extends Component {
   }
 
   componentDidUpdate() {
-    console.log("update", this.state.feedbackSquare)
+    console.log("update", this.state.wasEchoedTileMap.includes(1))
     if (!this.state.justZoomed && (this.getNewSpriteX() !== this.state.spriteX._value || this.getNewSpriteY() !== this.state.spriteY._value)) {
       this.animateSpritePosition();
     } else if (this.state.justZoomed) {
@@ -431,7 +431,7 @@ export default class Engine extends Component {
     let newHighlightedTileMap = nextProps.gameBoard.map(x => x.isHighlighted ? 1 : 0);
     let newFogMap = nextProps.gameBoard.map(x => x.isRevealed ? 0 : 1);
     let newWasPouncedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
-    let newWasEchoedMap = nextProps.gameBoard.map(x => x.wasPounced ? 1 : 0);
+    let newWasEchoedMap = nextProps.gameBoard.map(x => x.wasEchoed ? 1 : 0);
     let newSpriteScale = nextProps.tileWidth / nextProps.zoomedInValue;
     let newTileFogMapArray = nextProps.gameBoard.map(x => (this.props.isHuman) ? x.imageFogKey : 0);
     if (this.props.isHuman !== nextProps.isHuman) {
@@ -674,8 +674,39 @@ export default class Engine extends Component {
     }
   }
 
+  showFeedbackWithCamera = () => {
+    const DURATION = 1000;
+    const { left, top } = this.state;
+    let { feedbackX, feedbackY } = this.getFeedbackCoordinates();
+    let playerX = this.getCameraX();
+    let playerY = this.getCameraY();
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(left, { toValue: -feedbackX, duration: DURATION}),
+        Animated.timing(top, { toValue: -feedbackY, duration: DURATION})
+      ]),
+      Animated.parallel([
+        Animated.timing(left, { toValue: -playerX, duration: DURATION}),
+        Animated.timing(top, { toValue: -playerY, duration: DURATION})
+      ])
+    ]).start((finished) => {
+      if (finished.finished) {
+        this.props.highlightFeedbackCallback();
+      }
+    });
+  }
+
+  getFeedbackCoordinates = () => {
+    let x = ((this.props.feedbackSquare.name % 40) * this.state.tileWidth) - this.screenDimensions.width/2;
+    let y = (Math.floor(this.props.feedbackSquare.name / 40) * this.state.tileWidth) - this.screenDimensions.height/2;
+    return { feedbackX: x, feedbackY: y };
+  }
+
   renderLastTurn = () => {
-    if (this.props.isHuman) {
+    if (this.props.isHuman && this.props.humanFeedback) {
+      if (this.props.highlightFeedback) {
+        this.showFeedbackWithCamera();
+      }
       return (
         <TileMap
           src={require("../data/images/greensquare.jpg")}
@@ -688,7 +719,7 @@ export default class Engine extends Component {
             return (
               <TouchableOpacity style={[styles]}>
                 <View
-                  style={[styles, { opacity: 0.3, backgroundColor: 'red' }]}
+                  style={[styles, { opacity: 1, backgroundColor: 'red' }]}
                 />
               </TouchableOpacity>
             );
@@ -696,7 +727,10 @@ export default class Engine extends Component {
           }
         />
       );
-    } else if (!this.props.isHuman) {
+    } else if (!this.props.isHuman && this.props.monsterFeedback) {
+      if (this.props.highlightFeedback) {
+        this.showFeedbackWithCamera();
+      }
       return (
         <TileMap
           src={require("../data/images/Magenta-square_100px.gif")}
@@ -708,10 +742,8 @@ export default class Engine extends Component {
           renderTile={(tile, src, styles) => {
             return (
               <TouchableOpacity style={[styles]}>
-                <Image
-                  resizeMode="stretch"
-                  style={[styles, { opacity: 0.3 }]}
-                  source={src}
+                <View
+                  style={[styles, { opacity: 1, backgroundColor: '#ff00ff' }]}
                 />
               </TouchableOpacity>
             );
