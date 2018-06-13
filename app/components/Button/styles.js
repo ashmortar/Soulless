@@ -7,7 +7,7 @@ export default EStyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 30,
     height: 30,
     minWidth: 40,
     padding: 10,
