@@ -210,8 +210,8 @@ export default class Engine extends Component {
     // return -this.cameraX;
     if (this.cameraX < 0) {
       return 0;
-    } else if (this.cameraX > this.xOffsetMax) {
-      return -this.xOffsetMax;
+    } else if (this.cameraX > this.xOffsetLarge) {
+      return -this.xOffsetLarge;
     } else {
       return -this.cameraX;
     }
@@ -221,8 +221,8 @@ export default class Engine extends Component {
     // return -this.cameraY;
     if (this.cameraY < 0) {
       return 0;
-    } else if (this.cameraY > this.yOffsetMax) {
-      return -this.yOffsetMax;
+    } else if (this.cameraY > this.yOffsetLarge) {
+      return -this.yOffsetLarge;
     } else {
       return -this.cameraY;
     }
