@@ -36,7 +36,7 @@ class HowTo extends Component {
   getExplanationStyle = () => {
     return ({
       justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
-      left: 25 * 4, marginTop: 5, width: Dimensions.get("window").width - 25 * 4, fontSize: 13,
+      left: 25 * 4, marginTop: 5, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,
     });
   }
 
@@ -56,7 +56,7 @@ class HowTo extends Component {
             tileHeight={64}
             ticksPerFrame={8}
             tileWidth={64}
-            scale={0.5}
+            scale={0.4}
 
           />
         </Loop>
@@ -77,7 +77,7 @@ class HowTo extends Component {
           alignItems: 'center',
           justifyContent: 'center',
           marginTop: 50,
-          marginBottom: 35
+          marginBottom: 30
         }}>
           <Text style={{
             fontFamily: 'Perfect DOS VGA 437',
@@ -101,7 +101,7 @@ class HowTo extends Component {
           <Text style={{
             fontFamily: 'Perfect DOS VGA 437',
             color: '#fff',
-            fontSize: 13,
+            fontSize: 12,
             textAlign: 'center',
 
           }} >{`As a young priest, your goal is to collect enough shrines to weaken the Evil, save your mentor and escape.
@@ -137,18 +137,20 @@ As the Evil, you need to find and kill your opponent, or collect enough shrines 
         </View>
 
 
-        <View style={this.getBlockStyles()}>
+        <View style={{flex: 2, flexDirection: 'column'}}>
+          <View style={this.getBlockStyles()}>
           <View style={{ marginLeft: 25 }}>
-            <ControlButton tileWidth={25} source1={require("../data/images/targetPriestOut.png")} source2={require("../data/images/targetPriestIn.png")} onPress={()=>{}} />
+          <ControlButton tileWidth={25} source1={require("../data/images/targetPriestOut.png")} source2={require("../data/images/targetPriestIn.png")} onPress={()=>{}} />
           </View>
           <Text style={this.getExplanationStyle()} >Focus on priest.</Text>
-        </View>
+          </View>
 
-        <View style={this.getBlockStyles()}>
+          <View style={this.getBlockStyles()}>
           <View style={{ marginLeft: 25 }}>
-            <ControlButton tileWidth={25} source1={require("../data/images/targetShrineOut.png")} source2={require("../data/images/targetShrineIn.png")} onPress={()=>{}} />
+          <ControlButton tileWidth={25} source1={require("../data/images/targetShrineOut.png")} source2={require("../data/images/targetShrineIn.png")} onPress={()=>{}} />
           </View>
           <Text style={this.getExplanationStyle()} >Focus on a closest shrine.</Text>
+          </View>
         </View>
 
 
@@ -173,11 +175,11 @@ As the Evil, you need to find and kill your opponent, or collect enough shrines 
         <View style={{flexDirection: 'column', marginTop: 10}}>
           <Image
             style={{width: Dimensions.get("window").width* 0.6, height: 50, marginTop: 5, marginLeft: Dimensions.get("window").width* 0.2}}
-            source={require("../data/images/barSanityLevelScreenshot.png")}
+            source={require("../data/images/barSanityLevelScreenshot2.png")}
             resizeMode="contain"
           />
           <Text style={{
-            justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', textAlign: 'center', marginLeft: Dimensions.get("window").width* 0.05, marginTop: 5, width: Dimensions.get("window").width* 0.9, fontSize: 13,
+            justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', textAlign: 'center', marginLeft: Dimensions.get("window").width* 0.05, marginTop: 5, width: Dimensions.get("window").width* 0.9, fontSize: 12,
           }} >Shows you how far the old priest is from being fully possessed. It goes down every time Evil finds a shrine. When sanity level turns zero the game is over for the priest.</Text>
         </View>
 
