@@ -429,6 +429,15 @@ class Home extends Component {
     }
   }
 
+  handlePressHowToButton = () => {
+    this.props.navigation.navigate('HowTo');
+
+  }
+
+  handlePressAboutButton = () => {
+    this.props.navigation.navigate('About');
+
+  }
 
   render() {
     let text = "";
@@ -443,6 +452,10 @@ class Home extends Component {
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
         <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
         <NavButton onPress={this.handlePressPlayOnlineButton} text={text} />
+
+        <NavButton onPress={this.handlePressHowToButton} text="how to play" />
+        <NavButton onPress={this.handlePressAboutButton} text="about" />
+
         {this.renderBackStoryCrawl()}
 
 
