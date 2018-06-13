@@ -117,6 +117,7 @@ export default class Engine extends Component {
       tileDesecratedCashMapArray: this.tileDesecratedCashMapArray,
       tileDecorMapArray: this.tileDecorMapArray,
       tileMapArray: this.tileMapArray,
+      tileShrineTopArray: this.getShrineTopsTileMap,
       tileWidth: this.props.tileWidth,
       justZoomed: false,
     };
@@ -1274,6 +1275,43 @@ export default class Engine extends Component {
         />
       );
 
+  }
+
+  getShrineTopsTileMap = () => {
+    let tileShrineTopArray = [];
+    for (let j = 0; j < 1600; j++) {
+      tileShrineTopArray.push(0);
+    }
+    for (let i = 0; i < 1600; i++) {
+      if (this.state.tileCashMapArray[i] === 1) {
+        if (i - 400 >= 0) {
+          tileShrineTopArray[i - 400] = 1;
+        }
+      }
+    }
+    return tileShrineTopArray;
+  }
+
+  renderShrineTops = () => {
+    if (this.props.isHuman) {
+      return (
+        <TileMap
+          src={require("../data/images/shrineShort.png")}//??
+          tileSize={this.state.tileWidth}
+          columns={40}
+          rows={40}
+          sourceWidth={this.state.tileWidth}
+          layers={[this.state.tileShrineTopArray]}
+          renderTile={(tile, src, styles) => (
+            <Image
+              resizeMode="contain"
+              style={[styles, { height: (this.state.tileWidth), zIndex: 2 }]}
+              source={src}
+            />
+          )}
+        />
+      );
+    }
   }
 
   renderShrines = () => {
