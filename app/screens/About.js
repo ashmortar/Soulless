@@ -83,7 +83,7 @@ class About extends Component {
           <Text style={{
             fontFamily: 'Perfect DOS VGA 437',
             color: '#fff',
-            fontSize: 20,
+            fontSize: 24,
             marginBottom: 15,
             marginLeft: Dimensions.get("window").width* 0.05,
           }} >Development</Text>
@@ -146,7 +146,7 @@ class About extends Component {
           <Text style={{
             fontFamily: 'Perfect DOS VGA 437',
             color: '#fff',
-            fontSize: 20,
+            fontSize: 24,
             marginLeft: Dimensions.get("window").width* 0.05,
             marginTop: 20,
 

@@ -568,7 +568,7 @@ export default class Engine extends Component {
                 controlsVisible: true,
               });
               this.props.resetHighlighted();
-              
+
             }
           }.bind(this), 200);
         }

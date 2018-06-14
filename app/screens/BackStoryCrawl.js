@@ -11,7 +11,7 @@ export default class BackStoryCrawl extends Component {
     super(props);
     this.screenDimensions = Dimensions.get("window");
     this.animationTimer = 2000;
-    this.textCrawlDuration = 40000;
+    this.textCrawlDuration = 80000;
     this.state = {
       opacity: new Animated.Value(0),
       top: new Animated.Value(this.screenDimensions.height),
@@ -92,4 +92,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
