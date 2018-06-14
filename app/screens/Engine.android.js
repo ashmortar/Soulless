@@ -1068,10 +1068,6 @@ export default class Engine extends Component {
   }
 
   getPriestStyle = () => {
-    // let zI = 1;//newzIndex
-    // if (this.props.gameBoard[this.state.playerSpace.name + 400].hasCache) {
-    //   zI = 3;
-    // }
     if (this.state.tileWidth === this.props.zoomedInValue) {
       return ({zIndex: 1, width: this.state.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
     } else if (this.state.tileWidth === this.props.zoomedOutValue) {
