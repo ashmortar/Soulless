@@ -899,7 +899,14 @@ class Waiting extends Component {
     let cellsAll = [];
     let distance = null;
     cells.push(this.elements[index]);
-    for (let s = 0; s < this.state.shrinesDesecrated + 1; s++) {
+    let monsterMoveLength;
+    if (this.state.shrinesDesecrated > 2) {
+      monsterMoveLength = 2;
+    }
+    else {
+      monsterMoveLength = this.state.shrinesDesecrated;
+    }
+    for (let s = 0; s < monsterMoveLength + 1; s++) {
       cells.forEach((cell) => {
         indexesOfAvailableCellsAround = this.getIndexesOfAvailableCellsAround(cell.name, this.cellsInRow, this.cellsTotal, true);
         indexesOfAvailableCellsAround.forEach((i) => {
@@ -1388,7 +1395,7 @@ class Waiting extends Component {
         this.boardPieceCounter = 0;
         this.setState({ turn: this.state.turn + 1 });
         // this.showSplashScreen('hands', false, 100);
-        
+
       }
 
 
