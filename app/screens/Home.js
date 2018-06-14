@@ -325,12 +325,12 @@ class Home extends Component {
     if (this.state.findingGame) {
       return (
         <View>
+          <ActivityIndicator size="large" color="#8F72AD" style={{padding: 10}}/>
           <Text style={{
             color: "#fff",
             textAlign: 'center',
             fontFamily: 'Perfect DOS VGA 437',
           }}>Communicating with the servers</Text>
-          <ActivityIndicator />
           <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
         </View>
       )
@@ -429,9 +429,17 @@ class Home extends Component {
   }
 
   dismissCrawl = () => {
+    clearInterval(this.timer);
     this.setState({
       crawlVisible: false,
-    })
+    });
+    this.timer = setInterval(function() {
+      if (!this.state.crawlVisible) {
+        this.setState({
+          crawlVisible: true,
+        })
+      }
+    }.bind(this), BACKSTORYTIMEOUT);
   }
 
   renderBackStoryCrawl = () => {

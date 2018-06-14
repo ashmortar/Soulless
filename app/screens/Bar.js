@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, View, StyleSheet, Dimensions, Image, ImageBackground } from 'react-native';
 import { Loop, Sprite } from 'react-game-kit/native';
-
+import ControlButton from '../components/Button/ControlButton';
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
 import { Header } from '../components/Header';
@@ -61,20 +61,14 @@ class Bar extends Component {
   renderMenuButton = () => {
     // let marginLeft = Dimensions.get("window").width / 3 + 25;
       return(
-        <TouchableOpacity
-          onPress={()=>{this.props.onItemSelected('menu');}}
-        >
-          <View style={{
-            padding: 5,
-            borderRadius: 25,
-            borderColor: '#D57A66',
-            borderWidth: 2,
-            backgroundColor: '#343434',
-            marginRight: Dimensions.get("window").width / 10,
-          }}>
-            <Text style={{ color: '#fff' }}>menu</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={{flex: 2, alignItems: "flex-end", marginRight: 10}} >
+          <ControlButton
+            source1={require("../data/images/menuButtonOut.png")}
+            source2={require("../data/images/menuButtonIn.png")}
+            onPress={()=>{this.props.onItemSelected('menu')}}
+            tileWidth={this.barSectionHeight}
+          />
+        </View>
       );
   }
 
@@ -136,7 +130,7 @@ class Bar extends Component {
 
         return(
           <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
-          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginTop: this.barSectionHeight/2}}>
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: this.barSectionHeight/2}}>
 
             {/* <Text style={{color: '#fff', fontFamily: 'Perfect DOS VGA 437', fontSize: this.barSectionHeight/2.5, flex: 1,}}>{text1}</Text> */}
 

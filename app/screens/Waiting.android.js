@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
-import { View, Dimensions, Text, ImageBackground, BackAndroid } from 'react-native';
-import { Container } from '../components/Container';
+import { View, Dimensions, Text, ImageBackground, BackAndroid, ActivityIndicator } from 'react-native';
 import { NavButton } from '../components/Button';
-import { Header } from '../components/Header';
-import { Blurb } from '../components/Blurb';
 import BoardGenerator from '../Services/BoardGenerator';
 import Engine from './Engine';
 import Menu from './Menu';
@@ -28,7 +25,6 @@ class Waiting extends Component {
     this.phone = null;
     this.player_id = 0;
     this.player_number = 0;
-    this.player2Ready = false;
     this.elements = null;
     this.boardReady = false;
     this.generator = new BoardGenerator();
@@ -74,6 +70,8 @@ class Waiting extends Component {
       humanFeedback: false,
       feedbackSquare: null,
       highlightFeedback: true,
+      waiting: true,
+      player2Ready: false,
     }
     //turn: odd - priest; even - evil
   }
@@ -1217,11 +1215,6 @@ class Waiting extends Component {
       //generate board
       this.makeBoard();
       // console.log("game prep", this.elements);
-      //if board.done and player2.ready
-      if (this.player2Ready) {
-        //then post board event
-        // this.postEvent({"board": this.elements});
-      }
     }
     else if (this.player_number === 2) {
       this.makeEmptyBoard();
@@ -1302,6 +1295,7 @@ class Waiting extends Component {
     console.log("this is the message", message);
     if (message.ready) {
       console.log('player2 ready!');
+      this.setState({player2Ready: true})
       this.player2Ready = true;
       if (this.player_number === 1) {
 
@@ -1440,12 +1434,48 @@ class Waiting extends Component {
 
   renderWaiting = () => {
     if (!this.state.readyToBeginPlaying) {
+      let text1;
+      let text2;
+      if (this.state.player2Ready) {
+        text1 = "Connected to another player!"
+        text2 = "building the basement.."
+      } else {
+        text1 = "Waiting for another player to join"
+        text2 = "thanks for your patience!"
+      }
       return (
-        <Container>
-          <Header text="waiting screen" />
-          <Blurb text="waiting for player to join.." />
-          <NavButton onPress={this.handlePressNavButton} text="Back" />
-        </Container>
+        <View style={{ flex: 1, backgroundColor: "#000"}}>
+          <Modal
+            isVisible={this.state.waiting}
+            animationIn="slideInLeft"
+            animationOut="slideOutRight"
+          >
+            <View style={{
+              backgroundColor: 'transparent',
+              width: Dimensions.get("window").width*0.9,
+              marginLeft: "auto",
+              marginRight: "auto",
+              height: 200,
+            }}>
+              <ImageBackground
+                style={{
+                  height: undefined,
+                  width: undefined,
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                  }}
+                source={require("../data/images/tallWindow.png")}
+                resizeMode="stretch"
+              >
+                <ActivityIndicator size="large" color="#8F72AD" style={{padding: 10}}/>
+                <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437' }}>{text1}</Text>
+                <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437' }}>{text2}</Text>
+                <NavButton onPress={() => { this.setState({waiting: false}); this.props.navigation.navigate('Home'); }} text="go back" />
+              </ImageBackground>
+            </View>
+          </Modal>
+        </View>
       );
     }
   }
