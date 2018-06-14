@@ -1379,7 +1379,7 @@ class Waiting extends Component {
 
         if (this.state.isHuman) {
           this.setState({ playerSpace: this.humanSpace, opponentVisible: false});
-          
+
         } else {
           this.setState({ playerSpace: this.monsterSpace, opponentVisible: false});
         }
@@ -1389,7 +1389,7 @@ class Waiting extends Component {
       }
     }
   }
-  
+
 
   postEvent = (event) => {//event = {"data": "sample_data"}
     console.log('postEvent');
@@ -1520,10 +1520,7 @@ class Waiting extends Component {
     if (true) {
       return (
 
-      <SideMenu
-        menu={menuLeft}
-        menuPosition='left'
-      >
+      <View>
         <Engine
           alterZoom={this.alterZoom}
           animationVisible={this.state.animationVisible}
@@ -1620,7 +1617,7 @@ class Waiting extends Component {
           {this.renderModalContent()}
         </Modal>
 
-      </SideMenu>
+      </View>
       )
     }
   }
