@@ -174,7 +174,7 @@ As the Evil, you need to find and kill your opponent, or collect enough shrines 
 
         <View style={{flexDirection: 'column', marginTop: 10}}>
           <Image
-            style={{width: Dimensions.get("window").width* 0.6, height: 50, marginTop: 5, marginLeft: Dimensions.get("window").width* 0.2}}
+            style={{width: Dimensions.get("window").width* 0.6, height: 70, marginTop: 5, marginLeft: Dimensions.get("window").width* 0.2}}
             source={require("../data/images/barSanityLevelScreenshot2.png")}
             resizeMode="contain"
           />
@@ -185,10 +185,10 @@ As the Evil, you need to find and kill your opponent, or collect enough shrines 
 
 
 
-        <NavButton onPress={this.handlePressNavButton} text="back" />
       </View>
     );
   }
 }
+// <NavButton onPress={this.handlePressNavButton} text="back" />
 
 export default HowTo;

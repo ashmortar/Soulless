@@ -40,7 +40,7 @@ class About extends Component {
             fontSize: 38,
             alignItems: 'center',
             justifyContent: 'center',
-          }}>About us</Text>
+          }}>About</Text>
         </View>
 
 
@@ -59,16 +59,31 @@ class About extends Component {
             fontSize: 12,
             textAlign: 'center',
 
-          }} >{`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam venenatis accumsan suscipit.
-
-Ut felis odio, condimentum id tellus in, elementum fermentum nunc. Vivamus vel est sem. Suspendisse pharetra massa turpis. `}</Text>
+          }} >{`This is a game, created as an internship project at EyeCue Lab over the course of 7 weeks. Written in JavaScript, React Native.`}</Text>
         </View>
+
+
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 50,
+          marginBottom: 30
+        }}>
+          <Text style={{
+            fontFamily: 'Perfect DOS VGA 437',
+            color: '#fff',
+            fontSize: 38,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>Credits</Text>
+        </View>
+
 
         <View>
           <Text style={{
             fontFamily: 'Perfect DOS VGA 437',
             color: '#fff',
-            fontSize: 13,
+            fontSize: 20,
             marginBottom: 15,
             marginLeft: Dimensions.get("window").width* 0.05,
           }} >Development</Text>
@@ -131,8 +146,9 @@ Ut felis odio, condimentum id tellus in, elementum fermentum nunc. Vivamus vel e
           <Text style={{
             fontFamily: 'Perfect DOS VGA 437',
             color: '#fff',
-            fontSize: 13,
+            fontSize: 20,
             marginLeft: Dimensions.get("window").width* 0.05,
+            marginTop: 20,
 
           }} >Art work</Text>
         </View>
