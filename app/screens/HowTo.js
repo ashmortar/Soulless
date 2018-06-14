@@ -41,7 +41,7 @@ class HowTo extends Component {
   }
 
   getBlockStyles = () => {
-    return ({flex: 1, flexDirection: 'row'});
+    return ({flex: 1, flexDirection: 'row', alignItems: 'center' });
   }
 
   renderHeartBeat = () => {
@@ -65,19 +65,22 @@ class HowTo extends Component {
 
   render() {
     return (
-      <ScrollView style={{
-        flex: 1,
-        backgroundColor: '#212121',
-        flexDirection: 'column',
-        height: Dimensions.get("window").height,
-      }}>
+      <ScrollView 
+        contentContainerStyle={{ justifyContent: 'space-between'}}
+        style={{
+          flex: 1,
+          backgroundColor: '#212121',
+          flexDirection: 'column',
+          height: Dimensions.get("window").height,
+        }}
+      >
 
 
         <View style={{
           alignItems: 'center',
           justifyContent: 'center',
           marginTop: 50,
-          marginBottom: 30
+          marginBottom: 30,
         }}>
           <Text style={{
             fontFamily: 'Perfect DOS VGA 437',
@@ -86,44 +89,59 @@ class HowTo extends Component {
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-          }}>How to play a game</Text>
+          }}>How to Play</Text>
+        </View>
+        <View style={[this.getBlockStyles(), {height: 20}]}>
+          <Loop>
+            <Sprite
+              offset={[0, 0]}
+              repeat={true}
+              src={require("../data/images/priestIdle.png")}
+              steps={[15]}
+              state={0}
+              tileHeight={128}
+              ticksPerFrame={8}
+              tileWidth={64}
+              scale={0.4}
+            />
+          </Loop>
+          <Text style={[this.getExplanationStyle()]} >{`Levi, the young priest.  Your goal is to bless enough shrines to weaken the Evil possessing your mentor John and escape.`} </Text>
+        </View>
+        <View style={[this.getBlockStyles(), { marginTop: 10, marginBottom: 20 }]}>
+          <Loop>
+            <Sprite
+              offset={[0, 0]}
+              repeat={true}
+              src={require("../data/images/priestIdle-ghost.png")}
+              steps={[11]}
+              state={0}
+              tileHeight={128}
+              ticksPerFrame={8}
+              tileWidth={64}
+              scale={0.4}
+            />
+          </Loop>
+          <Text style={this.getExplanationStyle()} >{`John, the possessed priest. As the Evil possessing him your goal is to find and kill Levi, or desecrate enough shrines to fully possess John. To kill Levi you need to approach within 1 square.`} </Text>
         </View>
 
 
-
-
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: Dimensions.get("window").width * 0.8,
-          marginLeft: Dimensions.get("window").width * 0.1,
-          marginBottom: 20,
-        }}>
-          <Text style={{
-            fontFamily: 'Perfect DOS VGA 437',
-            color: '#fff',
-            fontSize: 12,
-            textAlign: 'center',
-
-          }} >{`As a young priest, your goal is to bless enough shrines to weaken the Evil, save your mentor and escape.
-
-As the Evil, you need to find and kill your opponent, or desecrate enough shrines to fully possess the old priest. To kill opponent you need to be at least 1 square away from him.`}</Text>
-        </View>
-
-
-
-        <View style={this.getBlockStyles(), { marginTop: 10, marginBottom: 20 }}>
+        <View style={[this.getBlockStyles(), { marginTop: 10, marginBottom: 20 }]}>
           <Image
             style={{width: 50, height: 50, marginTop: 5, marginLeft: 14}}
             source={require("../data/images/shrineShort.png")}
             resizeMode="contain"
           />
-          <Text style={this.getExplanationStyle()} >{`Shrine. To bless a shrine, a young priest needs to be on the same square as the shrine. To desecrate, the Evil needs to be at least 1 square away from it. Every time Evil desecrates a shrine, the possessed priest's sanity goes down, and Evil can move further.`} </Text>
+          <Text style={this.getExplanationStyle()} >{`Shrine. As Levi the player must move onto a shrine's space to bless it. As John the player must move within 1 square fo the shrine to desecrate it. After desecrating a shrine John's sanity will decrease and Levi will come one step closers to losing.  Levi will also gain additional movement after desecrating a shrine`} </Text>
         </View>
 
 
+        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 45, marginBottom: 10}}>
+          <Text style={{
+            justifyContent: 'center', alignItems: 'center', color: '#fff', fontFamily: 'Perfect DOS VGA 437', marginTop: 5, fontSize: 24,
+          }}>Controls</Text>
+        </View>
 
-        <View style={this.getBlockStyles(), { marginTop: 10, marginBottom: 5 }}>
+        <View style={[this.getBlockStyles(), { marginTop: 10, marginBottom: 5 }]}>
           <Image
             style={{width: 60, height: 60, marginTop: 5, marginLeft: 14}}
             source={require("../data/images/highlightedRoute_priest.png")}
@@ -141,17 +159,7 @@ As the Evil, you need to find and kill your opponent, or desecrate enough shrine
           />
         </View>
 
-
-
-        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 45, marginBottom: 10}}>
-          <Text style={{
-            justifyContent: 'center', alignItems: 'center', color: '#fff', fontFamily: 'Perfect DOS VGA 437', marginTop: 5, fontSize: 24,
-          }}>Controls</Text>
-        </View>
-
-
-
-        <View style={[this.getBlockStyles(), { marginBottom: 40 }]}>
+        <View style={[this.getBlockStyles(), { marginTop: 10, marginBottom: 5 }]}>
             <View style={this.getPriestControlStyles()}>
               <View style={this.getControlButtonStyles()}>
                 <ControlButton tileWidth={25} source1={require("../data/images/echoNorthOut.png")} source2={require("../data/images/echoNorthIn.png")} onPress={()=>{}} />
@@ -166,39 +174,35 @@ As the Evil, you need to find and kill your opponent, or desecrate enough shrine
               </View>
             </View>
             <Text style={{justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
-            left: 25 * 4, marginTop: 25, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,}} >Echo locate. Reveals the map in specified direction. (Young priest only.)</Text>
+            left: 25 * 4, marginTop: 25, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,}} >Echo. Since losing his vision Levi must Echo to reveal the basement.  Tap a direction to echo in that direction or tap the center to echo in a burst around Levi.</Text>
         </View>
 
 
-        <View style={this.getBlockStyles()}>
+        <View style={[this.getBlockStyles(), { marginTop: 10, marginBottom: 5 }]}>
           <View style={{ marginLeft: 25 }}>
             <ControlButton tileWidth={25} source1={require("../data/images/focusOut.png")} source2={require("../data/images/focusIn.png")} onPress={()=>{}} />
           </View>
           <Text style={{
             justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
             left: 25 * 4, marginTop: 0, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,
-          }} >Focus. Gives you direction and distance to the target. (Evil only.)</Text>
+          }} >Focus. The Evil possessing John can focus its power to detect nearby shrines or Levi to reveal direction and distance</Text>
         </View>
 
 
-        <View style={{flex: 2, flexDirection: 'column', marginTop: 10}}>
-          <View style={this.getBlockStyles()}>
+        <View style={[this.getBlockStyles(), { marginTop: 10, marginBottom: 5 }]}>
           <View style={{ marginLeft: 25 }}>
-          <ControlButton tileWidth={25} source1={require("../data/images/targetPriestOut.png")} source2={require("../data/images/targetPriestIn.png")} onPress={()=>{}} />
+            <ControlButton tileWidth={25} source1={require("../data/images/targetPriestOut.png")} source2={require("../data/images/targetPriestIn.png")} onPress={()=>{}} />
           </View>
-          <Text style={this.getExplanationStyle()} >Focus on priest.</Text>
-          </View>
-
-          <View style={this.getBlockStyles()}>
-          <View style={{ marginLeft: 25 }}>
-          <ControlButton tileWidth={25} source1={require("../data/images/targetShrineOut.png")} source2={require("../data/images/targetShrineIn.png")} onPress={()=>{}} />
-          </View>
-          <Text style={this.getExplanationStyle()} >Focus on a closest shrine.</Text>
-          </View>
+          <Text style={this.getExplanationStyle()} >Focus on Levi.</Text>
         </View>
 
-
-
+        <View style={[this.getBlockStyles(), { marginTop: 10, marginBottom: 5 }]}>
+          <View style={{ marginLeft: 25 }}>
+            <ControlButton tileWidth={25} source1={require("../data/images/targetShrineOut.png")} source2={require("../data/images/targetShrineIn.png")} onPress={()=>{}} />
+          </View>
+          <Text style={this.getExplanationStyle()} >Focus on the closest shrine.</Text>
+        </View>
+        
 
         <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 45, marginBottom: 10}}>
           <Text style={{
@@ -212,17 +216,17 @@ As the Evil, you need to find and kill your opponent, or desecrate enough shrine
           </View>
           {this.renderHeartBeat()}
           <Text style={{justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
-          left: 25 * 4, marginTop: 25, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,}} >Heartbeat. The closer the opponent, the faster it beats.</Text>
+          left: 25 * 4, marginTop: 25, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,}} >Heartbeat. The closer your opponent, the faster it beats.</Text>
         </View>
 
 
-        <View style={this.getBlockStyles(), { marginTop: 10 }}>
+        <View style={[this.getBlockStyles(), { marginTop: 10 }]}>
           <Image
             style={{width: 50, height: 25, marginTop: 5, marginLeft: 14}}
             source={require("../data/images/barShrineScreenshot.png")}
             resizeMode="contain"
           />
-          <Text style={this.getExplanationStyle()} >Shrine counter. Shows how many shrines you have collected.</Text>
+          <Text style={this.getExplanationStyle()} >Shrine counter. Shows how many shrines you have collected versus how many you need to win the game.</Text>
         </View>
 
 
@@ -234,7 +238,7 @@ As the Evil, you need to find and kill your opponent, or desecrate enough shrine
           />
           <Text style={{
             justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', textAlign: 'center', marginLeft: Dimensions.get("window").width* 0.05, marginTop: 5, width: Dimensions.get("window").width* 0.9, fontSize: 12,
-          }} >{`The possessed priest's sanity level bar. Shows you how far the old priest is from being fully possessed. It goes down every time Evil finds a shrine. When sanity level turns zero the game is over for the priest.`}</Text>
+          }} >{`The John's sanity level bar. Shows you how far he is from being fully possessed. It decreases whenever a shrine is desecrated. When it reaches zero the Evil wins`}</Text>
         </View>
 
 
