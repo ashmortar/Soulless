@@ -1390,7 +1390,7 @@ class Waiting extends Component {
         }
         this.boardPieceCounter = 0;
         this.setState({ turn: this.state.turn + 1 });
-        this.showSplashScreen('hands', false, 100);
+        // this.showSplashScreen('hands', false, 100);
       }
     }
   }
