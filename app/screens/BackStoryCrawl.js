@@ -42,14 +42,16 @@ export default class BackStoryCrawl extends Component {
 
 
   render() {
-    const paragraph1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et turpis non massa iaculis luctus eget eu nulla. Pellentesque euismod finibus dui ut porta. In ac luctus ante, eu pretium mi. Nam ultricies eros quis eros accumsan facilisis. Nam molestie, urna aliquet sollicitudin cursus, nunc nunc blandit tellus, et viverra diam nisi in turpis. Donec sem mi, sodales vel ipsum at, interdum sodales purus. Vivamus laoreet, odio sed venenatis porttitor, est tellus facilisis felis, a accumsan leo ante non mauris. Aliquam placerat lectus eu nisl sollicitudin pharetra. Nunc aliquet sapien et lorem congue laoreet. Quisque eros neque, luctus ac sagittis sit amet, vulputate vel justo. Nunc pellentesque lorem ut diam viverra, non vestibulum nulla sagittis. Mauris sit amet luctus ipsum. Nunc in molestie metus.";
-    const paragraph2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et turpis non massa iaculis luctus eget eu nulla. Pellentesque euismod finibus dui ut porta. In ac luctus ante, eu pretium mi. Nam ultricies eros quis eros accumsan facilisis. Nam molestie, urna aliquet sollicitudin cursus, nunc nunc blandit tellus, et viverra diam nisi in turpis. Donec sem mi, sodales vel ipsum at, interdum sodales purus. Vivamus laoreet, odio sed venenatis porttitor, est tellus facilisis felis, a accumsan leo ante non mauris. Aliquam placerat lectus eu nisl sollicitudin pharetra. Nunc aliquet sapien et lorem congue laoreet. Quisque eros neque, luctus ac sagittis sit amet, vulputate vel justo. Nunc pellentesque lorem ut diam viverra, non vestibulum nulla sagittis. Mauris sit amet luctus ipsum. Nunc in molestie metus.";
       return (
         <TouchableWithoutFeedback onPress={this.props.dismissCrawl}>
           <Animated.View style={[styles.background, this.animatedOpacity()]}>
             <Animated.View style={[this.animatedCrawl()]}>
-              <Text style={styles.text}>{paragraph1}</Text>
-              <Text style={styles.text}>{paragraph2}</Text>
+              <Text style={styles.text}>{text1}</Text>
+              <Text style={styles.text}>{text2}</Text>
+              <Text style={styles.text}>{text3}</Text>
+              <Text style={styles.text}>{text4}</Text>
+              <Text style={styles.text}>{text5}</Text>
+              <Text style={styles.text}>{text6}</Text>
             </Animated.View>
           </Animated.View>
         </TouchableWithoutFeedback>
@@ -57,6 +59,17 @@ export default class BackStoryCrawl extends Component {
     }
   }
 
+const text1 = "In 1967, two priests, John, a seasoned exorcist, and his young apprentice, Levi were sent to a rural Mississippi town to investigate claims of demon possession.";
+
+const text2 = "Once they arrived, things were not as they had expected. The townsfolk worshipped the demon and sabotaged their attempt to drive it from its altar. Levi barely escaped the battle losing his eyes in the process. John, however, was overwhelmed by the evil and that madness drove him deeper into the altar.";
+
+const text3 = "Without the ability to see or help from townsfolk, Levi’s only choice was to re-enter the altar once more to free his colleague...";
+
+const text4 = "...";
+
+const text5 = "In order to weaken the evil’s grip on John, Levi needs to find and destroy 7 cursed shrines in the darkness.";
+
+const text6 = "However, Levi must work quickly. John’s humanity is dwindling rapidly;  if Levi cannot find the shrines in time, he will lose John completely and become the next sacrifice.";
 
 const styles = StyleSheet.create({
   background: {
@@ -71,7 +84,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontFamily: 'Perfect DOS VGA 437',
+    fontFamily: 'Perfect DOS VGA 437 Win',
     opacity: 1,
     fontSize: 18,
     textAlign: 'center',
