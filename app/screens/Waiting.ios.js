@@ -42,6 +42,7 @@ class Waiting extends Component {
     this.monsterShrinesToWin = 7;
     this.animationCallback = this.showAnimationCallback;
     this.boardPieceCounter = 0;
+    this.outOfMoves = false;
     this.state = {
       readyToBeginPlaying: false,
       redraw: false,
@@ -506,7 +507,7 @@ class Waiting extends Component {
     // console.log('onItemSelected', item);
     switch (item) {
       case 'endTurn'://--------------------------------------------------------------endTurn
-        if (this.state.outOfMoves) {
+        if (this.state.outOfMoves || this.outOfMoves) {
           if (this.state.isHuman) {
             this.resetWasPounced();
           } else {
@@ -519,7 +520,8 @@ class Waiting extends Component {
           })
           this.resetHighlighted();
           this.changePlayerMode();
-          this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true })
+          this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true });
+          this.outOfMoves = false;
         }
         break;
       case 'menu':
@@ -559,6 +561,9 @@ class Waiting extends Component {
     this.setState({ turnCounter: this.state.turnCounter + 1 });
     if (this.state.turnCounter >= 1) {
       this.setState({ outOfMoves: true });
+
+      this.outOfMoves = true;
+      this.onItemSelected('endTurn');
     }
   }
 

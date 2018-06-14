@@ -20,6 +20,7 @@ class Game extends Component {
     this.assignCacheCounter = 0;
     this.assignMonsterCounter = 0;
 
+    // this.outOfMoves = false;
     this.elements = [];
     this.humanSpace = null;
     this.monsterSpace = null;
@@ -1527,7 +1528,9 @@ class Game extends Component {
     // console.log('onItemSelected', item);
     switch (item) {
       case 'endTurn':
+      console.log('end turn');
         if (this.state.outOfMoves) {
+          console.log('out of moves');
           if (this.state.isHuman) {
             this.resetWasPounced();
           } else {
@@ -1576,6 +1579,9 @@ class Game extends Component {
     this.setState({ turnCounter: this.state.turnCounter + 1 });
     if (this.state.turnCounter >= 1) {
       this.setState({ outOfMoves: true });
+      // this.outOfMoves = true;
+
+      // this.onItemSelected('endTurn');
     }
   }
 
@@ -2123,6 +2129,7 @@ class Game extends Component {
     }
     this.setState({ turnCounter: 0 });
     this.setState({ outOfMoves: false });
+    // this.outOfMoves = false;
   }
 
 
