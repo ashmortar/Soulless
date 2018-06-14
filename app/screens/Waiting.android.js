@@ -56,7 +56,7 @@ class Waiting extends Component {
       modal: 0,
       modalLeft: 0,
       modalDialogOnly: 0,
-      modalPounce: 0,
+      modalYourTurn: 0,
       modalAlert: 0,
       turnCounter: 0,
       turn: 0,
@@ -495,7 +495,7 @@ class Waiting extends Component {
         array.push(this.elements[i]);
       }
       arrayJSON = JSON.parse(JSON.stringify(array));
-      this.postEvent({"endTurn": arrayJSON});
+      this.postEvent({"sender": this.player_number, "endTurn": arrayJSON});
     }
     // this.setState({ turn: this.state.turn + 1 })
     // this.postEvent({"endTurn": "sample"});
@@ -700,11 +700,9 @@ class Waiting extends Component {
         </View>
       )
     }
-    else if (this.state.modalPounce === 1) {//POUNCE
+    else if (this.state.modalYourTurn === 1) {//your turn
       let text1;
-      let text2;
-      text1 = 'You pounced.';
-      text2 = 'There is nothing here.';
+      text1 = 'Your turn.';
       return (
         <View style={{
           backgroundColor: 'transparent',
@@ -726,8 +724,7 @@ class Waiting extends Component {
             >
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
+            <NavButton onPress={() => this.setState({modalYourTurn: 0})} text='OK' />
           </ImageBackground>
         </View>
       );
@@ -1391,6 +1388,13 @@ class Waiting extends Component {
         this.boardPieceCounter = 0;
         this.setState({ turn: this.state.turn + 1 });
         // this.showSplashScreen('hands', false, 100);
+
+      }
+
+
+      if (message.sender != this.player_number) {
+        console.log('=========================================');
+        this.setState({ modalYourTurn: 1 })
       }
     }
   }
@@ -1602,7 +1606,7 @@ class Waiting extends Component {
         </Modal>
 
         <Modal
-          isVisible={this.state.modalPounce != 0}
+          isVisible={this.state.modalYourTurn != 0}
           animationIn="slideInLeft"
           animationOut="slideOutRight"
           swipeDirection="right"
