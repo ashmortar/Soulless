@@ -65,7 +65,7 @@ class HowTo extends Component {
 
   render() {
     return (
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={{ justifyContent: 'space-between'}}
         style={{
           flex: 1,
@@ -131,7 +131,7 @@ class HowTo extends Component {
             source={require("../data/images/shrineShort.png")}
             resizeMode="contain"
           />
-          <Text style={this.getExplanationStyle()} >{`Shrine. As Levi the player must move onto a shrine's space to bless it. As John the player must move within 1 square fo the shrine to desecrate it. After desecrating a shrine John's sanity will decrease and Levi will come one step closers to losing.  Levi will also gain additional movement after desecrating a shrine`} </Text>
+          <Text style={this.getExplanationStyle()} >{`Shrine. As Levi the player must move onto a shrine's space to bless it. As John the player must move within 1 square fo the shrine to desecrate it. After desecrating a shrine John's sanity will decrease and Levi will come one step closers to losing.  Levi will also gain additional movement after desecrating first two shrines`} </Text>
         </View>
 
 
@@ -202,7 +202,7 @@ class HowTo extends Component {
           </View>
           <Text style={this.getExplanationStyle()} >Focus on the closest shrine.</Text>
         </View>
-        
+
 
         <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 45, marginBottom: 10}}>
           <Text style={{
