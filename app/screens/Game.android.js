@@ -62,6 +62,7 @@ class Game extends Component {
       humanFeedback: false,
       feedbackSquare: null,
       highlightFeedback: true,
+      shrineIndexAdjustment: false,
     };
   }
 
@@ -1955,6 +1956,24 @@ class Game extends Component {
     this.setHeartRate();
     this.monsterProcessPounce();
     this.checkForVisiblePriest();
+    this.checkForShrineZIndex(this.monsterSpace);
+  }
+
+  checkForShrineZIndex = (space) => {
+    let { top } = this.getNeighboringCells(space.name);
+    let tippyTop = this.elements[top.name - 40];
+    if (
+      top.hasCache || tippyTop.hasCache ||
+      top.hasBlessedCache || tippyTop.hasBlessedCache ||
+      top.hasDesecratedCache || tippyTop.hasDesecratedCache) {
+        this.setState({
+          shrineIndexAdjustment: true,
+        });
+      } else if (this.state.shrineIndexAdjustment) {
+        this.setState({
+          shrineIndexAdjustment: false,
+        });
+      }
   }
 
   checkForVisiblePriest = () => {
@@ -2081,6 +2100,7 @@ class Game extends Component {
     }
     this.humanSpace = item;
     this.resetHighlighted();
+    this.checkForShrineZIndex(item);
     this.setState({ playerSpace: item });
     this.setHeartRate();
   }
@@ -2194,6 +2214,7 @@ class Game extends Component {
           playerSpace={this.state.playerSpace}
           resetHighlighted={this.resetHighlighted}
           showHumanMoves={this.showHumanMoves}
+          shrineIndexAdjustment={this.state.shrineIndexAdjustment}
           tilesInRow={this.cellsInRow}
           shrineAmount={this.state.isHuman ? this.state.shrinesBlessed : this.state.shrinesDesecrated}
           shrinesUnclaimed={this.state.shrinesUnclaimed}

@@ -44,6 +44,7 @@ export default class Engine extends Component {
     monsterSpace: PropTypes.object,
     humanSpace: PropTypes.object,
     showMonsterMoves: PropTypes.func,
+    shrineIndexAdjustment: PropTypes.bool,
   };
 
   constructor(props) {
@@ -1068,10 +1069,19 @@ export default class Engine extends Component {
   }
 
   getPriestStyle = () => {
-    if (this.state.tileWidth === this.props.zoomedInValue) {
-      return ({zIndex: 1, width: this.state.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
-    } else if (this.state.tileWidth === this.props.zoomedOutValue) {
-      return ([{zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth/this.state.spriteScale}]);
+    if (this.props.shrineIndexAdjustment) {
+      if (this.state.tileWidth === this.props.zoomedInValue) {
+        return ({zIndex: 4, width: this.state.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
+      } else if (this.state.tileWidth === this.props.zoomedOutValue) {
+        return ([{zIndex: 4, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth/this.state.spriteScale}]);
+      }
+    }
+    else {
+      if (this.state.tileWidth === this.props.zoomedInValue) {
+        return ({zIndex: 1, width: this.state.tileWidth, left: this.state.spriteX, top: this.state.spriteY });
+      } else if (this.state.tileWidth === this.props.zoomedOutValue) {
+        return ([{zIndex: 1, left: this.state.spriteX, top: this.state.spriteY, width: this.state.tileWidth/this.state.spriteScale}]);
+      }
     }
   }
 

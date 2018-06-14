@@ -1,7 +1,7 @@
 
 -- iphone adjustments
   -- buttons.
-  -- shrine and decorations are sma  ll. (fix shrines and maybe leave decorations as is. no one cares about decorations that much.)
+  -- shrine and decorations are small. (fix shrines and maybe leave decorations as is. no one cares about decorations that much.)
   -- decorations stopped showing.
   -- when sprite has a queue of movements, it goes crazy.
   -- ONLINE game.
@@ -11,9 +11,8 @@
 -- end turn automatically
 -- make pan and move more distinct
 
--- fix shrine zIndex bug
 
--- make online player change into a "window" modal and animate camera to feedback square if exists
+-- make online player change into a "window" modal
 
 
 
