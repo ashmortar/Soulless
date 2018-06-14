@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View, Text, Modal, Dimensions, ImageBackground, AsyncStorage, Image } from "react-native";
+import { TextInput, View, Text, Modal, Dimensions, ImageBackground, AsyncStorage, Image, ScrollView } from "react-native";
 
 import { Container } from '../components/Container';
 import { NavButton } from '../components/Button';
@@ -65,7 +65,7 @@ class HowTo extends Component {
 
   render() {
     return (
-      <View style={{
+      <ScrollView style={{
         flex: 1,
         backgroundColor: '#212121',
         flexDirection: 'column',
@@ -85,6 +85,7 @@ class HowTo extends Component {
             fontSize: 38,
             alignItems: 'center',
             justifyContent: 'center',
+            textAlign: 'center',
           }}>How to play a game</Text>
         </View>
 
@@ -104,9 +105,48 @@ class HowTo extends Component {
             fontSize: 12,
             textAlign: 'center',
 
-          }} >{`As a young priest, your goal is to collect enough shrines to weaken the Evil, save your mentor and escape.
+          }} >{`As a young priest, your goal is to bless enough shrines to weaken the Evil, save your mentor and escape.
 
-As the Evil, you need to find and kill your opponent, or collect enough shrines to fully possess the old priest.`}</Text>
+As the Evil, you need to find and kill your opponent, or desecrate enough shrines to fully possess the old priest. To kill opponent you need to be at least 1 square away from him.`}</Text>
+        </View>
+
+
+
+        <View style={this.getBlockStyles(), { marginTop: 10, marginBottom: 20 }}>
+          <Image
+            style={{width: 50, height: 50, marginTop: 5, marginLeft: 14}}
+            source={require("../data/images/shrineShort.png")}
+            resizeMode="contain"
+          />
+          <Text style={this.getExplanationStyle()} >{`Shrine. To bless a shrine, a young priest needs to be on the same square as the shrine. To desecrate, the Evil needs to be at least 1 square away from it. Every time Evil desecrates a shrine, the possessed priest's sanity goes down, and Evil can move further.`} </Text>
+        </View>
+
+
+
+        <View style={this.getBlockStyles(), { marginTop: 10, marginBottom: 5 }}>
+          <Image
+            style={{width: 60, height: 60, marginTop: 5, marginLeft: 14}}
+            source={require("../data/images/highlightedRoute_priest.png")}
+            resizeMode="contain"
+          />
+          <Text style={{
+            justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
+            left: 25 * 4, marginTop: 5, width: Dimensions.get("window").width - 25 * 8, fontSize: 12,
+          }} >Highlighted route. Tap your character to see a highlighted route, then choose the square and tap it to make a move. </Text>
+          <Image
+            style={{width: 60, height: 60, position: 'absolute',
+            left: Dimensions.get("window").width - 25 * 3, marginTop: 5}}
+            source={require("../data/images/highlightedRoute_evil.png")}
+            resizeMode="contain"
+          />
+        </View>
+
+
+
+        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 45, marginBottom: 10}}>
+          <Text style={{
+            justifyContent: 'center', alignItems: 'center', color: '#fff', fontFamily: 'Perfect DOS VGA 437', marginTop: 5, fontSize: 24,
+          }}>Controls</Text>
         </View>
 
 
@@ -125,7 +165,8 @@ As the Evil, you need to find and kill your opponent, or collect enough shrines 
                 <ControlButton tileWidth={25} source1={require("../data/images/echoSouthOut.png")} source2={require("../data/images/echoSouthIn.png")} onPress={()=>{}} />
               </View>
             </View>
-            <Text style={this.getExplanationStyle()} >Echo locate. Reveals the map in specified direction. (Young priest only.)</Text>
+            <Text style={{justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
+            left: 25 * 4, marginTop: 25, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,}} >Echo locate. Reveals the map in specified direction. (Young priest only.)</Text>
         </View>
 
 
@@ -133,11 +174,14 @@ As the Evil, you need to find and kill your opponent, or collect enough shrines 
           <View style={{ marginLeft: 25 }}>
             <ControlButton tileWidth={25} source1={require("../data/images/focusOut.png")} source2={require("../data/images/focusIn.png")} onPress={()=>{}} />
           </View>
-          <Text style={this.getExplanationStyle()} >Focus. Gives you direction and distance to the target. (Evil only.)</Text>
+          <Text style={{
+            justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
+            left: 25 * 4, marginTop: 0, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,
+          }} >Focus. Gives you direction and distance to the target. (Evil only.)</Text>
         </View>
 
 
-        <View style={{flex: 2, flexDirection: 'column'}}>
+        <View style={{flex: 2, flexDirection: 'column', marginTop: 10}}>
           <View style={this.getBlockStyles()}>
           <View style={{ marginLeft: 25 }}>
           <ControlButton tileWidth={25} source1={require("../data/images/targetPriestOut.png")} source2={require("../data/images/targetPriestIn.png")} onPress={()=>{}} />
@@ -154,11 +198,21 @@ As the Evil, you need to find and kill your opponent, or collect enough shrines 
         </View>
 
 
+
+
+        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 45, marginBottom: 10}}>
+          <Text style={{
+            justifyContent: 'center', alignItems: 'center', color: '#fff', fontFamily: 'Perfect DOS VGA 437', marginTop: 5, fontSize: 24,
+          }}>Status bar</Text>
+        </View>
+
+
         <View style={this.getBlockStyles()}>
           <View style={{}}>
           </View>
           {this.renderHeartBeat()}
-          <Text style={this.getExplanationStyle()} >Heartbeat. The closer the opponent, the faster it beats.</Text>
+          <Text style={{justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
+          left: 25 * 4, marginTop: 25, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,}} >Heartbeat. The closer the opponent, the faster it beats.</Text>
         </View>
 
 
@@ -180,12 +234,56 @@ As the Evil, you need to find and kill your opponent, or collect enough shrines 
           />
           <Text style={{
             justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', textAlign: 'center', marginLeft: Dimensions.get("window").width* 0.05, marginTop: 5, width: Dimensions.get("window").width* 0.9, fontSize: 12,
-          }} >Shows you how far the old priest is from being fully possessed. It goes down every time Evil finds a shrine. When sanity level turns zero the game is over for the priest.</Text>
+          }} >{`The possessed priest's sanity level bar. Shows you how far the old priest is from being fully possessed. It goes down every time Evil finds a shrine. When sanity level turns zero the game is over for the priest.`}</Text>
         </View>
 
 
 
-      </View>
+
+
+        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 45, marginBottom: 10}}>
+          <Text style={{
+            justifyContent: 'center', alignItems: 'center', color: '#fff', fontFamily: 'Perfect DOS VGA 437', marginTop: 5, fontSize: 24,
+          }}>Other</Text>
+        </View>
+
+
+
+        <View style={this.getBlockStyles(), { marginTop: 10, marginBottom: 15 }}>
+          <Image
+            style={{width: 50, height: 50, marginTop: 0, marginLeft: 14}}
+            source={require("../data/images/finderButton.png")}
+            resizeMode="contain"
+          />
+          <Text style={{
+            justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
+            left: 25 * 4, marginTop: 20, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,
+          }} >Locate your character on map. </Text>
+        </View>
+
+
+        <View style={this.getBlockStyles()}>
+          <Image
+            style={{width: 60, height: 100, marginTop: 5, marginLeft: 5}}
+            source={require("../data/images/Screenshot_zoomIn.png")}
+            resizeMode="contain"
+          />
+          <Image
+            style={{width: 60, height: 100, marginTop: 5, marginLeft: 5}}
+            source={require("../data/images/Screenshot_zoomOut.png")}
+            resizeMode="contain"
+          />
+          <Text style={{
+            justifyContent: 'flex-start', color: '#fff', fontFamily: 'Perfect DOS VGA 437', position: 'absolute',
+            left: 25 * 6, marginTop: 20, width: Dimensions.get("window").width - 25 * 4, fontSize: 12,
+          }} >Double tap to zoom. </Text>
+
+        </View>
+
+
+
+
+      </ScrollView>
     );
   }
 }
