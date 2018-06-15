@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, ImageBackground, Dimensions, BackAndroid, StatusBar } from 'react-native';
 import { NavButton } from '../components/Button';
+import WideButton from '../components/Button/WideButton';
 import Cell from '../data/Cell';
 import Engine from './Engine';
 import Menu from './Menu';
@@ -1497,8 +1498,7 @@ class Game extends Component {
     let text2 = "Can't echo locate in that direction."
     return (
         <View style={{
-          backgroundColor: 'transparent',
-          width: Dimensions.get("window").width*0.9,
+          width: Dimensions.get("window").width*0.8,
           marginLeft: "auto",
           marginRight: "auto",
           height: 200,
@@ -1514,10 +1514,9 @@ class Game extends Component {
             source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
             >
-
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.setState({ modalAlert: 0})} text='OK' />
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10}}>{text2}</Text>
+            <WideButton onPress={() => this.setState({ modalAlert: 0})} text='OK' />
           </ImageBackground>
         </View>
     );
@@ -1670,9 +1669,9 @@ class Game extends Component {
             resizeMode={"stretch"}
             >
 
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 20}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',padding: 10,}}>{text2}</Text>
+            <WideButton onPress={() => this.closeModalDialogOnly()} text='OK' />
           </ImageBackground>
         </View>
       )
@@ -1716,9 +1715,9 @@ class Game extends Component {
             resizeMode={"stretch"}
             >
 
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10,}}>{text2}</Text>
+            <WideButton onPress={() => this.closeModalDialogOnly()} text='OK' />
           </ImageBackground>
         </View>
       )
@@ -1750,7 +1749,7 @@ class Game extends Component {
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
+            <WideButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
           </ImageBackground>
         </View>
       );
@@ -1777,9 +1776,9 @@ class Game extends Component {
             resizeMode={"stretch"}
           >
 
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
-          <NavButton onPress={() => BackAndroid.exitApp()} text='Yes' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>Are you sure you want to exit?</Text>
+          <WideButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
           </ImageBackground>
         </View>
       );
@@ -1805,9 +1804,9 @@ class Game extends Component {
             source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
           >
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
-          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>Are you sure you want to exit?</Text>
+          <WideButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
           </ImageBackground>
         </View>
       );
@@ -1833,10 +1832,10 @@ class Game extends Component {
             source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
           >
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Menu</Text>
-          <NavButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
-          <NavButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>Menu</Text>
+          <WideButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
+          <WideButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
           </ImageBackground>
         </View>
       );

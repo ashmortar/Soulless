@@ -5,6 +5,7 @@ import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
 import { View, Dimensions, Text, ImageBackground, BackAndroid, ActivityIndicator } from 'react-native';
 import { NavButton } from '../components/Button';
+import WideButton from '../components/Button/WideButton';
 import BoardGenerator from '../Services/BoardGenerator';
 import Engine from './Engine';
 import Menu from './Menu';
@@ -479,7 +480,7 @@ class Waiting extends Component {
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.setState({ modalAlert: 0})} text='OK' />
+            <WideButton onPress={() => this.setState({ modalAlert: 0})} text='OK' />
           </ImageBackground>
         </View>
     );

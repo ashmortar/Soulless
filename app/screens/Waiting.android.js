@@ -4,6 +4,7 @@ import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
 import { View, Dimensions, Text, ImageBackground, BackAndroid, ActivityIndicator } from 'react-native';
 import { NavButton } from '../components/Button';
+import WideButton from '../components/Button/WideButton';
 import BoardGenerator from '../Services/BoardGenerator';
 import Engine from './Engine';
 import Menu from './Menu';
@@ -478,7 +479,7 @@ class Waiting extends Component {
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.setState({ modalAlert: 0})} text='OK' />
+            <WideButton onPress={() => this.setState({ modalAlert: 0})} text='OK' />
           </ImageBackground>
         </View>
     );
@@ -643,7 +644,7 @@ class Waiting extends Component {
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+            <WideButton onPress={() => this.closeModalDialogOnly()} text='OK' />
           </ImageBackground>
         </View>
       )
@@ -690,7 +691,7 @@ class Waiting extends Component {
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+            <WideButton onPress={() => this.closeModalDialogOnly()} text='OK' />
           </ImageBackground>
         </View>
       )
@@ -722,7 +723,7 @@ class Waiting extends Component {
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
+            <WideButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
           </ImageBackground>
         </View>
       );
@@ -750,8 +751,8 @@ class Waiting extends Component {
           >
 
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
-          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); BackAndroid.exitApp();}} text='Yes' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          <WideButton onPress={() => {this.setState({ modalLeft: 0 }); BackAndroid.exitApp();}} text='Yes' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
           </ImageBackground>
         </View>
       );
@@ -778,8 +779,8 @@ class Waiting extends Component {
             resizeMode={"stretch"}
           >
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
-          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          <WideButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
           </ImageBackground>
         </View>
       );
@@ -806,9 +807,9 @@ class Waiting extends Component {
             resizeMode={"stretch"}
           >
           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Menu</Text>
-          <NavButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
-          <NavButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
+          <WideButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
+          <WideButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
           </ImageBackground>
         </View>
       );
@@ -1471,7 +1472,7 @@ class Waiting extends Component {
                 <ActivityIndicator size="large" color="#8F72AD" style={{padding: 10}}/>
                 <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437' }}>{text1}</Text>
                 <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437' }}>{text2}</Text>
-                <NavButton onPress={() => { this.setState({waiting: false}); this.props.navigation.navigate('Home'); }} text="go back" />
+                <WideButton onPress={() => { this.setState({waiting: false}); this.props.navigation.navigate('Home'); }} text="go back" />
               </ImageBackground>
             </View>
           </Modal>

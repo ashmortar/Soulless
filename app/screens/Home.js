@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { ActivityIndicator, TextInput, View, Text, Modal, Dimensions, ImageBackground, AsyncStorage } from "react-native";
 
 import { Container } from '../components/Container';
-import { NavButton } from '../components/Button';
+
 import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 import BackStoryCrawl from './BackStoryCrawl';
+import WideButton from '../components/Button/WideButton';
 
 import AnimatedSplashScreen from './AnimatedSplashScreen';
 
@@ -324,70 +325,84 @@ class Home extends Component {
   renderInputs = () => {
     if (this.state.findingGame) {
       return (
-        <View>
-          <ActivityIndicator size="large" color="#8F72AD" style={{padding: 10}}/>
-          <Text style={{
-            color: "#fff",
-            textAlign: 'center',
-            fontFamily: 'Perfect DOS VGA 437',
-          }}>Communicating with the servers</Text>
-          <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
+        <View style={{alignItems: 'center', justifyContent: 'center', height: 300 }}>
+          <View style={{flex: 2, justifyContent: 'center'}}>
+            <ActivityIndicator size="large" color="#8F72AD" style={{padding: 10}}/>
+            <Text style={{
+              color: "#fff",
+              textAlign: 'center',
+              fontFamily: 'Perfect DOS VGA 437',
+              padding: 5,
+            }}>Communicating with the servers</Text>
+          </View>
+          <View style={{flex: 1}} >
+            <WideButton onPress={() => this.setModalVisible(false)} text="cancel" />
+          </View>
         </View>
       )
     }
     else if (this.state.auth_token !== null) {
       return (
-        <View>
-          <Text style={{
-            color: "#fff",
-            textAlign: 'center',
-            fontFamily: 'Perfect DOS VGA 437',
-          }}>Click below to find a game!</Text>
-
-          <NavButton onPress={this.goOnline} text="host/join" />
-          <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
-
+        <View style={{alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{flex: 2, justifyContent: 'space-evenly'}}>
+            <Text style={{
+              color: "#fff",
+              textAlign: 'center',
+              fontFamily: 'Perfect DOS VGA 437',
+              padding: 5,
+            }}>Click below to find a game!</Text>
+          </View>
+          <View style={{flex: 1}} >
+            <WideButton onPress={this.goOnline} text="host/join" />
+            <WideButton onPress={() => this.setModalVisible(false)} text="cancel" />
+          </View>
         </View>
       );
     } else if (this.state.numberVerified) {
       return (
-        <View>
-          <Text style={{
-            color: "#fff",
-            textAlign: 'center',
-            fontFamily: 'Perfect DOS VGA 437',
-          }}>Enter the code in your SMS</Text>
-          <TextInput
-            ref={input => {this.textInput = input}}
-            keyboardType={"numeric"}
-            style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff', width: 150, marginLeft: "auto", marginRight: "auto", marginTop: 10}}
-            onChangeText={(code) => this.setState({code})}
-          />
-
-          <NavButton onPress={this.handlePressLoginButton} text="login" />
-          <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
-
+        <View style={{alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{flex: 2, justifyContent: 'space-evenly'}}>
+            <Text style={{
+              color: "#fff",
+              textAlign: 'center',
+              fontFamily: 'Perfect DOS VGA 437',
+              padding: 5,
+            }}>Enter the code in your SMS</Text>
+            <TextInput
+              ref={input => {this.textInput = input}}
+              keyboardType={"numeric"}
+              style={{ textAlign: 'center', borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff', height: 40, width: Dimensions.get("window").width*0.75, marginLeft: "auto", marginRight: "auto"}}
+              onChangeText={(code) => this.setState({code})}
+            />
+          </View>
+          <View style={{flex: 1}}>
+            <WideButton onPress={this.handlePressLoginButton} text="login" />
+            <WideButton onPress={() => this.setModalVisible(false)} text="cancel" />
+          </View>
         </View>
       )
     } else {
       return (
-        <View>
-          <Text style={{
-            color: "#fff",
-            textAlign: 'center',
-            fontFamily: 'Perfect DOS VGA 437',
-          }}>Enter you phone number and press the button below to receive an SMS code for verification</Text>
-          <TextInput
-            ref={input => {this.textInput = input}}
-            keyboardType={"numeric"}
-            style={{height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff', width: 150, marginLeft: "auto", marginRight: "auto", marginTop: 10}}
-            onChangeText={(phone) => this.setState({phone})}
+        <View style={{alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{flex: 2, justifyContent: 'space-evenly'}}>
+            <Text style={{
+              color: "#fff",
+              textAlign: 'center',
+              fontFamily: 'Perfect DOS VGA 437',
+              padding: 5,
+            }}>Enter you phone number and press the button below to receive an SMS code for verification</Text>
+            <TextInput
+              ref={input => {this.textInput = input}}
+              keyboardType={"numeric"}
+              style={{ textAlign: 'center', borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff', height: 40, width: Dimensions.get("window").width*0.75, marginLeft: "auto", marginRight: "auto"}}
+              onChangeText={(phone) => this.setState({phone})}
 
-          />
-
-          <NavButton onPress={this.handlePressGetCodeButton} text="get code" />
-          <NavButton onPress={() => this.setModalVisible(false)} text="cancel" />
-
+            />
+          </View>
+          <View style={{flex: 1}} >
+            <WideButton onPress={this.handlePressGetCodeButton} text="get code" />
+            <WideButton onPress={() => this.setModalVisible(false)} text="cancel" />
+          </View>
         </View>
       );
     }
@@ -408,18 +423,18 @@ class Home extends Component {
             modalVisible: false,
           })
         }}>
-        <View style={{width: Dimensions.get("window").width*0.8, height: Dimensions.get("window").height*0.6, marginLeft: "auto", marginRight: "auto"}} >
+        <View style={{width: Dimensions.get("window").width*0.8, height: Dimensions.get("window").height*0.4, marginLeft: "auto", marginRight: "auto"}} >
           <ImageBackground
             style={{
               height: undefined,
               width: undefined,
               flex: 1,
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               alignItems: 'center',
               flexDirection: 'column',
               }}
             source={require("../data/images/tallWindow.png")}
-            resizeMode="contain"
+            resizeMode="stretch"
           >
             {this.renderInputs()}
           </ImageBackground>
@@ -500,19 +515,20 @@ class Home extends Component {
   render() {
     let text = "";
     if (this.state.auth_token !== null) {
-      text = "find an online game";
+      text = "play online";
     } else {
-      text = "log in to play online";
+      text = "log in";
     }
     return (
       <Container>
         <Header text="Home Screen" />
         <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
-        <NavButton onPress={this.handlePressPlayLocallyButton} text="Play locally" />
-        <NavButton onPress={this.handlePressPlayOnlineButton} text={text} />
-
-        <NavButton onPress={this.handlePressHowToButton} text="how to play" />
-        <NavButton onPress={this.handlePressAboutButton} text="about" />
+        <View style={{alignItems: 'center', justifyContent: 'space-evenly', position: 'absolute', bottom: 30, height: 300}}>
+          <WideButton onPress={this.handlePressPlayLocallyButton} text="play locally" />
+          <WideButton onPress={this.handlePressPlayOnlineButton} text={text} />
+          <WideButton onPress={this.handlePressHowToButton} text="how to play" />
+          <WideButton onPress={this.handlePressAboutButton} text="about" />
+        </View>
 
         {this.renderBackStoryCrawl()}
 

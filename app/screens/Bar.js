@@ -9,6 +9,7 @@ import { Header } from '../components/Header';
 import { Blurb } from '../components/Blurb';
 
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
+import WideButton from '../components/Button/WideButton';
 // import ProgressBarClassic from 'react-native-progress-bar-classic';
 // var ProgressBar = require('react-native-progress-bar');
 
@@ -79,23 +80,9 @@ class Bar extends Component {
 
     if (this.props.outOfMoves) {
       return(
-        <TouchableOpacity
-          onPress={()=>{this.props.onItemSelected('endTurn');}}
-          disabled={!this.props.outOfMoves}
-          isVisible={this.props.outOfMoves}
-        >
-          <View style={{
-            padding: 15,
-            borderRadius: 25,
-            borderColor: '#D57A66',
-            borderWidth: 2,
-            backgroundColor: '#343434',
-            marginLeft: marginLeft,
-            marginTop: Dimensions.get("window").height / 10,
-          }}>
-            <Text style={{ color: '#fff' }}>End your turn</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={{flex: 1}}>
+          <WideButton onPress={()=>{this.props.onItemSelected('endTurn')}} text="End Turn" />
+        </View>
       );
     }
   }
@@ -206,7 +193,7 @@ class Bar extends Component {
 
         return(
           <ImageBackground style={{flexDirection: 'column', height: undefined, width: undefined, flex: 1 }} source={require("../data/images/mainWindow.png")} resizeMode="stretch" >
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: this.barSectionHeight*2, padding: 5, marginTop: 15}}>
 
           {this.renderButton()}
 
