@@ -706,6 +706,7 @@ class Game extends Component {
   assignHumanStart = () => {
     if (this.humanSpace) {
       this.humanSpace.isRevealed = false;
+      this.humanSpace.hasHuman = false;
     }
     let cell = this.getRandomCell();
     while (cell.value < 1) {
@@ -1973,7 +1974,10 @@ class Game extends Component {
     if (
       top.hasCache || tippyTop.hasCache ||
       top.hasBlessedCache || tippyTop.hasBlessedCache ||
-      top.hasDesecratedCache || tippyTop.hasDesecratedCache) {
+      top.hasDesecratedCache || tippyTop.hasDesecratedCache ||
+      top.hasMonster || tippyTop.hasMonster ||
+      top.hasHuman || tippyTop.hasHuman  
+    ) {
         this.setState({
           shrineIndexAdjustment: true,
         });

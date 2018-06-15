@@ -622,6 +622,7 @@ export default class BoardGenerator {
   assignHumanStart = () => {
     if (this.humanSpace) {
       this.humanSpace.isRevealed = false;
+      this.humanSpace.hasHuman = false;
     }
     let cell = this.getRandomCell();
     while (cell.value < 1) {
@@ -635,7 +636,7 @@ export default class BoardGenerator {
   assignMonsterStart = () => {
     let cell = this.getRandomCell();
     let distance = this.findShortestPath(cell, this.humanSpace);
-    while (distance < 25) {
+    while (distance < 40) {
       // console.log(`assign monster counter: ${this.assignMonsterCounter}`);
       this.assignMonsterCounter++;
       cell = this.getRandomCell();

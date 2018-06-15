@@ -1,8 +1,6 @@
--- back story crawl
--- extra player space bug
+
 -- turn off extra turns
 -- look at hands image rights
--- button styling
 -- icon for 
 
 -- readme, merge to 

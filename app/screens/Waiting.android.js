@@ -930,6 +930,7 @@ class Waiting extends Component {
     this.resetHighlighted();
     this.setHeartRate();
     this.monsterProcessPounce();
+    this.checkForShrineZIndex(item);
     this.checkForVisiblePriest();
   }
 
@@ -1057,8 +1058,29 @@ class Waiting extends Component {
     }
     this.humanSpace = item;
     this.resetHighlighted();
+    this.checkForShrineZIndex(item);
     this.setState({ playerSpace: item });
     this.setHeartRate();
+  }
+
+  checkForShrineZIndex = (space) => {
+    let { top } = this.getNeighboringCells(space.name);
+    let tippyTop = this.elements[top.name - 40];
+    if (
+      top.hasCache || tippyTop.hasCache ||
+      top.hasBlessedCache || tippyTop.hasBlessedCache ||
+      top.hasDesecratedCache || tippyTop.hasDesecratedCache ||
+      top.hasMonster || tippyTop.hasMonster ||
+      top.hasHuman || tippyTop.hasHuman  
+    ) {
+        this.setState({
+          shrineIndexAdjustment: true,
+        });
+      } else if (this.state.shrineIndexAdjustment) {
+        this.setState({
+          shrineIndexAdjustment: false,
+        });
+      }
   }
 
   boardFinishedCallback = () => (
