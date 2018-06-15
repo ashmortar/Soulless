@@ -726,8 +726,7 @@ class Waiting extends Component {
             >
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>{text1}</Text>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10,}}>{text2}</Text>
-            <WideButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
+            <WideButton onPress={() => this.setState({modalYourTurn: 0})} text='OK' />
           </ImageBackground>
         </View>
       );
