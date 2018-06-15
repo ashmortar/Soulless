@@ -1877,14 +1877,17 @@ class Game extends Component {
 
 
   gameOver = () => {
-    this.animationCallback = () => {
-      this.props.navigation.navigate('GameOver');
-    }
     if (this.userWon === 'human') {
-      this.showSplashScreen('priestWon', false, 2000);
+      // this.showSplashScreen('priestWon', false, 2000);
+      this.animationCallback = () => {
+        this.props.navigation.navigate('GameOver', { priestWon: true });
+      }
     }
     else if (this.userWon === 'monster') {
-      this.showSplashScreen('evilWon', false, 2000);
+      // this.showSplashScreen('evilWon', false, 2000);
+      this.animationCallback = () => {
+        this.props.navigation.navigate('GameOver', { priestWon: false });
+      }
     }
   }
 

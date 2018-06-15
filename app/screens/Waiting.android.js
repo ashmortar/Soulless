@@ -63,8 +63,8 @@ class Waiting extends Component {
       turn: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
-      shrinesBlessed: 0,
-      shrinesDesecrated: 0,
+      shrinesBlessed: 6,
+      shrinesDesecrated: 6,
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
@@ -847,14 +847,17 @@ class Waiting extends Component {
 
 
   gameOver = () => {
-    this.animationCallback = () => {
-      this.props.navigation.navigate('GameOver');
-    }
     if (this.userWon === 'human') {
-      this.showSplashScreen('priestWon', false, 2000);
+      // this.showSplashScreen('priestWon', false, 2000);
+      this.animationCallback = () => {
+        this.props.navigation.navigate('GameOver', { priestWon: true });
+      }
     }
     else if (this.userWon === 'monster') {
-      this.showSplashScreen('evilWon', false, 2000);
+      // this.showSplashScreen('evilWon', false, 2000);
+      this.animationCallback = () => {
+        this.props.navigation.navigate('GameOver', { priestWon: false });
+      }
     }
   }
 

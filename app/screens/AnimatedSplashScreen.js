@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, StyleSheet, TouchableOpacity } from 'react-native';
+import { Animated, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 
 export default class AnimatedSplashScreen extends Component {
   static propTypes = {
@@ -53,8 +53,8 @@ export default class AnimatedSplashScreen extends Component {
     } else if (this.props.animationType === 'priestWon') {
       return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/priest-won.png")} />);
     } else if (this.props.animationType === 'evilWon') {
-    return (<Animated.Image style={[{width: 150}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/evil-won.png")} />);
-    } 
+    return (<Animated.Image style={[{width: Dimensions.get("window").width}, this.animatedOpacity()]} resizeMode="contain" source={require("../data/images/LoseScreen.jpg")} />);
+    }
   }
 
   render() {
