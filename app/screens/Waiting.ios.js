@@ -643,9 +643,9 @@ class Waiting extends Component {
             resizeMode={"stretch"}
             >
 
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 20}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',padding: 10,}}>{text2}</Text>
+            <WideButton onPress={() => this.closeModalDialogOnly()} text='OK' />
           </ImageBackground>
         </View>
       )
@@ -690,9 +690,9 @@ class Waiting extends Component {
             resizeMode={"stretch"}
             >
 
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
-            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.closeModalDialogOnly()} text='OK' />
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 20}}>{text1}</Text>
+            <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',padding: 10,}}>{text2}</Text>
+            <WideButton onPress={() => this.closeModalDialogOnly()} text='OK' />
           </ImageBackground>
         </View>
       )
@@ -724,7 +724,7 @@ class Waiting extends Component {
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text1}</Text>
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>{text2}</Text>
-            <NavButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
+            <WideButton onPress={() => this.setState({modalPounce: 0})} text='OK' />
           </ImageBackground>
         </View>
       );
@@ -751,9 +751,9 @@ class Waiting extends Component {
             resizeMode={"stretch"}
           >
 
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
-          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); BackAndroid.exitApp();}} text='Yes' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>Are you sure you want to exit?</Text>
+          <WideButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
           </ImageBackground>
         </View>
       );
@@ -779,9 +779,9 @@ class Waiting extends Component {
             source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
           >
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Are you sure you want to exit?</Text>
-          <NavButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
+          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>Are you sure you want to exit?</Text>
+          <WideButton onPress={() => {this.setState({ modalLeft: 0 }); this.props.navigation.navigate('Home');}} text='Yes' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='No' />
           </ImageBackground>
         </View>
       );
@@ -807,10 +807,10 @@ class Waiting extends Component {
             source={require("../data/images/tallWindow.png")}
             resizeMode={"stretch"}
           >
-          <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437',}}>Menu</Text>
-          <NavButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
-          <NavButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
-          <NavButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
+           <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>Menu</Text>
+          <WideButton onPress={() => this.setState({ modalLeft: 2 })} text='Home' />
+          <WideButton onPress={() => this.setState({ modalLeft: 1 })} text='Exit' />
+          <WideButton onPress={() => this.setState({ modalLeft: 0 })} text='Cancel' />
           </ImageBackground>
         </View>
       );
