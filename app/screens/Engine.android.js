@@ -596,12 +596,13 @@ export default class Engine extends Component {
   }
 
   renderHighlighted = () => {
-    if ((!this.props.gameActive) && (this.state.showHighlighted)) {
-      this.setState({ showHighlighted: false });
-    }
-    if (this.state.showHighlighted ) {
-      return (
-        <TileMap
+    if (!this.props.outOfMoves) {
+      if ((!this.props.gameActive) && (this.state.showHighlighted)) {
+        this.setState({ showHighlighted: false });
+      }
+      if (this.state.showHighlighted ) {
+        return (
+          <TileMap
           src={require("../data/images/Magenta-square_100px.gif")}
           tileSize={this.state.tileWidth}
           columns={40}
@@ -612,19 +613,21 @@ export default class Engine extends Component {
             this.highlightedTileRanges.push(this.getRangesFromTile(tile));
             return (
               <TouchableOpacity style={[styles]}>
-                <Image
-                  resizeMode="stretch"
-                  style={[styles, { opacity: 0.1 }]}
-                  source={src}
-                />
+              <Image
+              resizeMode="stretch"
+              style={[styles, { opacity: 0.1 }]}
+              source={src}
+              />
               </TouchableOpacity>
             );
-            }
           }
+        }
         />
       );
     } else {
       this.highlightedTileRanges = [];
+    }
+
     }
   };
 
@@ -757,29 +760,32 @@ export default class Engine extends Component {
   }
 
   controlSwitch = () => {
-    if (this.props.gameActive) {
-      if (this.state.controlsVisible) {
-        if (this.props.isHuman) {
-          this.props.showHumanMoves();
-          this.setState({
-            controlsVisible: false,
-            showHighlighted: true,
-          });
+    if (!this.props.outOfMoves) {
+      if (this.props.gameActive) {
+        if (this.state.controlsVisible) {
+          if (this.props.isHuman) {
+            this.props.showHumanMoves();
+            this.setState({
+              controlsVisible: false,
+              showHighlighted: true,
+            });
+          } else {
+            this.props.showMonsterMoves();
+            this.setState({
+              controlsVisible: false,
+              targetPickerVisible: false,
+              showHighlighted: true,
+            });
+          }
         } else {
-          this.props.showMonsterMoves();
           this.setState({
-            controlsVisible: false,
+            controlsVisible: true,
             targetPickerVisible: false,
-            showHighlighted: true,
+            showHighlighted: false,
           });
         }
-      } else {
-        this.setState({
-          controlsVisible: true,
-          targetPickerVisible: false,
-          showHighlighted: false,
-        });
       }
+
     }
   }
 
@@ -940,35 +946,38 @@ export default class Engine extends Component {
   }
 
   renderControls = () => {
-    if ((!this.props.gameActive) && (this.state.controlsVisible)) {
-      this.setState({ controlsVisible: false });
-    }
-    if (this.state.controlsVisible && this.state.tileWidth === this.props.zoomedInValue) {
-      if (this.props.isHuman) {
+    if (!this.props.outOfMoves) {
+      if ((!this.props.gameActive) && (this.state.controlsVisible)) {
+        this.setState({ controlsVisible: false });
+      }
+      if (this.state.controlsVisible && this.state.tileWidth === this.props.zoomedInValue) {
+        if (this.props.isHuman) {
           return (
             <View style={this.getPriestControlStyles()}>
-              <View style={this.getControlButtonStyles()}>
-                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoNorthOut.png")} source2={require("../data/images/echoNorthIn.png")} onPress={this.echoNorth} />
-              </View>
-              <View style={this.getControlButtonStyles()}>
-                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoWestOut.png")} source2={require("../data/images/echoWestIn.png")} onPress={this.echoWest} />
-                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoBurstOut.png")} source2={require("../data/images/echoBurstIn.png")} onPress={this.echoBurst} />
-                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoEastOut.png")} source2={require("../data/images/echoEastIn.png")} onPress={this.echoEast} />
-              </View>
-              <View style={this.getControlButtonStyles()}>
-                <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoSouthOut.png")} source2={require("../data/images/echoSouthIn.png")} onPress={this.echoSouth} />
-              </View>
+            <View style={this.getControlButtonStyles()}>
+            <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoNorthOut.png")} source2={require("../data/images/echoNorthIn.png")} onPress={this.echoNorth} />
+            </View>
+            <View style={this.getControlButtonStyles()}>
+            <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoWestOut.png")} source2={require("../data/images/echoWestIn.png")} onPress={this.echoWest} />
+            <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoBurstOut.png")} source2={require("../data/images/echoBurstIn.png")} onPress={this.echoBurst} />
+            <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoEastOut.png")} source2={require("../data/images/echoEastIn.png")} onPress={this.echoEast} />
+            </View>
+            <View style={this.getControlButtonStyles()}>
+            <ControlButton tileWidth={this.state.tileWidth} source1={require("../data/images/echoSouthOut.png")} source2={require("../data/images/echoSouthIn.png")} onPress={this.echoSouth} />
+            </View>
             </View>
           );
-      } else {
+        } else {
           return (
             <View style={this.getMonsterControlStyles()} >
-              <ControlButton tileWidth={this.state.tileWidth} source1={this.state.srcfocusOut} source2={this.state.srcfocusIn} onPress={this.pickTarget} />
+            <ControlButton tileWidth={this.state.tileWidth} source1={this.state.srcfocusOut} source2={this.state.srcfocusIn} onPress={this.pickTarget} />
             </View>
           );
         }
       }
+
     }
+  }
 
   renderTargetPicker = () => {
     if (this.state.targetPickerVisible) {
