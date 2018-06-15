@@ -1,11 +1,10 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-
 export default EStyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '$primaryBlue',
+    backgroundColor: '#212121',
     height: 100,
     position: 'absolute',
     top: 100,
@@ -16,5 +15,6 @@ export default EStyleSheet.create({
     fontWeight: '$regularWeight',
     fontSize: '$headerSize / 3',
     textAlign: 'center',
+    fontFamily: 'Perfect DOS VGA 437',
   },
 });

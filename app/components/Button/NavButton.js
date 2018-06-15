@@ -6,9 +6,9 @@ import styles from './styles';
 
 const NavButton = ({ text, onPress }) => (
   <TouchableOpacity style={styles.container} onPress={onPress}>
-    <View style={styles.wrapper}>
+  <View style={styles.wrapper}>
       <Text style={styles.text}>{text}</Text>
-    </View>
+  </View>
   </TouchableOpacity>
 );
 

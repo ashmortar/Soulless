@@ -29,6 +29,13 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
+  NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil];
+  UIImageView *loadingView = [nibObjects objectAtIndex:0];
+  loadingView.frame = self.window.bounds;
+  rootView.loadingView = loadingView;
+
+
   return YES;
 }
 
