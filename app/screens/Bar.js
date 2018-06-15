@@ -173,7 +173,7 @@ class Bar extends Component {
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: this.barSectionHeight, padding: 5, marginTop: 5, marginLeft: 5}}>
 
             <Text style={{color: '#fff', marginLeft: Dimensions.get("window").width / 27, marginTop: Dimensions.get("window").height / 10, alignItems: 'center', justifyContent: 'center', fontFamily: 'Perfect DOS VGA 437', fontSize: 26}}>Waiting for opponent</Text>
-
+            {this.renderMenuButton()}
           </View>
         </ImageBackground>
       )
