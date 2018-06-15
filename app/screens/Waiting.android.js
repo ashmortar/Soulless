@@ -446,7 +446,9 @@ class Waiting extends Component {
         break;
     }
     this.assignImageFogKeys();
-    this.incrementTurnCounter();
+    if (direction !== "initial") {
+      this.incrementTurnCounter();
+    }
     // this.adjustFog();
 
   }

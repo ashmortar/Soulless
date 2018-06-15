@@ -521,9 +521,9 @@ class Home extends Component {
         textAlign: 'center',
         fontFamily: 'Perfect DOS VGA 437',
         fontSize: 60,
-        marginTop: '55%',
+        marginTop: '45%',
       }
-    )
+    );
   }
 
   render() {
