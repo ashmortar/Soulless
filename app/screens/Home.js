@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ActivityIndicator, TextInput, View, Text, Modal, Dimensions, ImageBackground, AsyncStorage } from "react-native";
+import { ActivityIndicator, TextInput, View, Text, Modal, Dimensions, ImageBackground, AsyncStorage, StatusBar } from "react-native";
 
 import { Container } from '../components/Container';
 
@@ -45,6 +45,7 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
+    StatusBar.setHidden(true);
     AsyncStorage.getItem('auth_token').then((value) => this.setState({ auth_token: value}));
     AsyncStorage.getItem('phone').then((value) => this.setState({ phone: value}));
     AsyncStorage.getItem('id').then((value) => this.setState({ id: value}));
@@ -513,6 +514,18 @@ class Home extends Component {
 
   }
 
+  getTitleStyle = () => {
+    return (
+      {
+        color: "#fff",
+        textAlign: 'center',
+        fontFamily: 'Perfect DOS VGA 437',
+        fontSize: 60,
+        marginTop: '45%',
+      }
+    );
+  }
+
   render() {
     let text = "";
     if (this.state.auth_token !== null) {
@@ -523,7 +536,8 @@ class Home extends Component {
     return (
       <Container>
         <ImageBackground style={{height: Dimensions.get("window").height, width: Dimensions.get("window").width}} source={require('../data/images/MainTitle.jpg')} resizeMode="stretch">
-          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 128, width: 256, marginTop: (Dimensions.get("window").height - 128)/2, marginLeft: (Dimensions.get("window").width - 256)/2}} >
+          <Text style={this.getTitleStyle()}>Soulless</Text>
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 128, width: 256, marginTop: '10%', marginLeft: (Dimensions.get("window").width - 256)/2}} >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 64}}>
               <WideButton onPress={this.handlePressPlayLocallyButton} text="play locally" />
               <WideButton onPress={this.handlePressPlayOnlineButton} text={text} />

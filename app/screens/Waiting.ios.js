@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
-import { View, Dimensions, Text, ImageBackground, BackAndroid, ActivityIndicator } from 'react-native';
+import { View, Dimensions, Text, ImageBackground, ActivityIndicator, StatusBar } from 'react-native';
 import { NavButton } from '../components/Button';
 import WideButton from '../components/Button/WideButton';
 import BoardGenerator from '../Services/BoardGenerator';
@@ -1242,7 +1242,8 @@ class Waiting extends Component {
 
 
   componentDidMount() {
-    console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken, this.props.navigation.state.params.phone);
+    StatusBar.setHidden(true);
+    // console.log("waiting", this.props.navigation.state.params.auth_token, this.props.navigation.state.params.accessToken, this.props.navigation.state.params.phone);
     // AsyncStorage.getItem('auth_token').then((value) => console.log ("auth_token", value));
 
 

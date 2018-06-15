@@ -10,8 +10,8 @@ export default class BackStoryCrawl extends Component {
   constructor(props) {
     super(props);
     this.screenDimensions = Dimensions.get("window");
-    this.animationTimer = 2000;
-    this.textCrawlDuration = 80000;
+    this.animationTimer = 1000;
+    this.textCrawlDuration = 70000;
     this.state = {
       opacity: new Animated.Value(0),
       top: new Animated.Value(this.screenDimensions.height),
@@ -44,7 +44,7 @@ export default class BackStoryCrawl extends Component {
   render() {
       return (
         <TouchableWithoutFeedback onPress={this.props.dismissCrawl}>
-          <Animated.View style={[styles.background, this.animatedOpacity()]}>
+          <Animated.View style={[styles.background, {height: Dimensions.get("window").height}, this.animatedOpacity()]}>
             <Animated.View style={[this.animatedCrawl()]}>
               <Text style={styles.text}>{text1}</Text>
               <Text style={styles.text}>{text2}</Text>
