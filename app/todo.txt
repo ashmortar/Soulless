@@ -1,5 +1,4 @@
 
---show feedback
 -- readme, merge to master
 
 --generate signing key and release build for our phones
