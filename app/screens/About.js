@@ -145,17 +145,6 @@ class About extends Component {
 
 
 
-          <View>
-            <Text style={{
-              fontFamily: 'Perfect DOS VGA 437',
-              color: '#fff',
-              fontSize: 24,
-              marginLeft: Dimensions.get("window").width* 0.05,
-              marginTop: 20,
-
-            }} >Art work</Text>
-          </View>
-
 
 
         </View>
@@ -163,5 +152,17 @@ class About extends Component {
     );
   }
 }
+
+          // <View>
+          //   <Text style={{
+          //     fontFamily: 'Perfect DOS VGA 437',
+          //     color: '#fff',
+          //     fontSize: 24,
+          //     marginLeft: Dimensions.get("window").width* 0.05,
+          //     marginTop: 20,
+          //
+          //   }} >Art work</Text>
+          // </View>
+
 
 export default About;
