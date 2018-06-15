@@ -521,19 +521,22 @@ class Home extends Component {
     }
     return (
       <Container>
-        <Header text="Home Screen" />
-        <Blurb text="This is a statement that tells you something fun, cool or interesting. I guess it could be rules. Who knows?" />
-        <View style={{alignItems: 'center', justifyContent: 'space-evenly', position: 'absolute', bottom: 30, height: 300}}>
-          <WideButton onPress={this.handlePressPlayLocallyButton} text="play locally" />
-          <WideButton onPress={this.handlePressPlayOnlineButton} text={text} />
-          <WideButton onPress={this.handlePressHowToButton} text="how to play" />
-          <WideButton onPress={this.handlePressAboutButton} text="about" />
-        </View>
+        <ImageBackground style={{height: Dimensions.get("window").height, width: Dimensions.get("window").width}} source={require('../data/images/MainTitle.jpg')} resizeMode="stretch">
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: 150, marginTop: 350}} >
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 64}}>
+              <WideButton onPress={this.handlePressPlayLocallyButton} text="play locally" />
+              <WideButton onPress={this.handlePressPlayOnlineButton} text={text} />
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 64}}>
+              <WideButton onPress={this.handlePressHowToButton} text="how to play" />
+              <WideButton onPress={this.handlePressAboutButton} text="about" />
+            </View>
+          </View>
+          {this.renderBackStoryCrawl()}
 
-        {this.renderBackStoryCrawl()}
 
-
-        {this.renderConnectingModal()}
+          {this.renderConnectingModal()}
+        </ImageBackground>
       </Container>
     );
   }

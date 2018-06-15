@@ -43,7 +43,9 @@ export default class WideButton extends Component {
             onPressIn={this._onPressIn}
             onPressOut={this._onPressOut}
           >
-            <Text style={this.getTextStyle()}>{this.props.text}</Text>
+            <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+              <Text style={this.getTextStyle()}>{this.props.text}</Text>
+            </View>
           </TouchableWithoutFeedback>
         </ImageBackground>
     );
