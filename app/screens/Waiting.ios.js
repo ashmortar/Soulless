@@ -446,7 +446,10 @@ class Waiting extends Component {
         break;
       }
       this.assignImageFogKeys();
-      if (direction !== "initial") {
+      if (direction === 'initial') {
+        this.incrementTurnCounter(true);
+      }
+      else {
         this.incrementTurnCounter();
       }
       // this.adjustFog();
@@ -505,12 +508,13 @@ class Waiting extends Component {
     // console.log('onItemSelected', item);
     switch (item) {
       case 'endTurn'://--------------------------------------------------------------endTurn
-        if (this.state.outOfMoves || this.outOfMoves) {
-          if (this.state.isHuman) {
-            this.resetWasPounced();
-          } else {
-            this.resetWasEchoed();
-          }
+        if ((!this.userWon)) {
+          if (this.state.outOfMoves || this.outOfMoves) {
+            if (this.state.isHuman) {
+              this.resetWasPounced();
+            } else {
+              this.resetWasEchoed();
+            }
           this.setState({
             feedbackSquare: null,
             monsterFeedback: false,
@@ -550,18 +554,43 @@ class Waiting extends Component {
       });
     } else {
       this.setState({
-        tileWid;th: this.zoomedInValue,
+        tileWidth: this.zoomedInValue,
       })
     }
   }
 
-  incrementTurnCounter = () => {
+  incrementTurnCounter = (initial = false) => {
+
+    console.log("incrementTurnCounter-----------------------------------------------------");
+    console.log(initial);
     this.setState({ turnCounter: this.state.turnCounter + 1 });
     if (this.state.turnCounter >= 1) {
       this.setState({ outOfMoves: true });
 
       this.outOfMoves = true;
-      this.onItemSelected('endTurn');
+      if (!initial) {
+        this.onItemSelected('endTurn');
+      }
+      else {
+        if ((!this.userWon)) {
+          if (this.state.outOfMoves || this.outOfMoves) {
+            if (this.state.isHuman) {
+              this.resetWasPounced();
+            } else {
+              this.resetWasEchoed();
+            }
+            this.setState({
+              feedbackSquare: null,
+              monsterFeedback: false,
+              humanFeedback: false,
+            })
+            this.resetHighlighted();
+            this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true })
+            this.outOfMoves = false;
+          }
+
+        }
+      }
     }
   }
 
@@ -843,17 +872,19 @@ class Waiting extends Component {
     }
   }
 
-
   gameOver = () => {
+    console.log('GAMEOVER');
     if (this.userWon === 'human') {
+      this.postEvent({"gameOver": "human"});
       // this.showSplashScreen('priestWon', false, 2000);
-      this.props.navigation.navigate('GameOver', { priestWon: true });
+      // this.props.navigation.navigate('GameOver', { priestWon: true });
       // this.animationCallback = () => {
       // }
     }
     else if (this.userWon === 'monster') {
+      this.postEvent({"gameOver": "monster"});
       // this.showSplashScreen('evilWon', false, 2000);
-      this.props.navigation.navigate('GameOver', { priestWon: false });
+      // this.props.navigation.navigate('GameOver', { priestWon: false });
       // this.animationCallback = () => {
       // }
     }
@@ -887,7 +918,7 @@ class Waiting extends Component {
 
     if (!this.userWon) {
       item.hasCache = false;
-      this.showSplashScreen('shrine', false, 2000);
+      // this.showSplashScreen('shrine', false, 2000);
     }
   }
 
@@ -1330,7 +1361,8 @@ class Waiting extends Component {
     console.log("this is the message", message);
     if (message.ready) {
       console.log('player2 ready!');
-      this.setState({player2Ready: true});
+      this.setState({player2Ready: true})
+      this.player2Ready = true;
       if (this.player_number === 1) {
 
         for (let j = 0; j < 8; j++) {
@@ -1358,7 +1390,7 @@ class Waiting extends Component {
 
       this.boardPieceCounter++;
       if (this.boardPieceCounter >= 8) {
-        for(let i = 0; i < this.elements.length; i++) {
+        for (let i = 0; i < this.elements.length; i++) {
           if (this.elements[i].hasHuman) {
             this.humanSpace = this.elements[i];
           }
@@ -1395,18 +1427,18 @@ class Waiting extends Component {
           if (this.elements[i].hasMonster) {
             this.monsterSpace = this.elements[i];
           }
-        }
-        if (this.elements[i].wasPounced && this.state.isHuman) {
-          this.setState({
-            humanFeedback: true,
-            feedbackSquare: this.elements[i]
-          });
-        }
-        if (this.elements[i].wasEchoed && !this.state.isHuman) {
-          this.setState({
-            monsterFeedback: true,
-            feedbackSquare: this.elements[i]
-          });
+          if (this.elements[i].wasPounced && this.state.isHuman) {
+            this.setState({
+              humanFeedback: true,
+              feedbackSquare: this.elements[i]
+            });
+          }
+          if (this.elements[i].wasEchoed && !this.state.isHuman) {
+            this.setState({
+              monsterFeedback: true,
+              feedbackSquare: this.elements[i]
+            });
+          }
         }
         if (this.state.isHuman) {
           this.setState({ playerSpace: this.humanSpace, opponentVisible: false});
@@ -1424,6 +1456,17 @@ class Waiting extends Component {
       if (message.sender != this.player_number) {
         console.log('=========================================');
         this.setState({ modalYourTurn: 1 })
+      }
+    }
+    else if (message.gameOver) {
+      this.setState({ modalYourTurn: 0 })
+      if (message.gameOver === "human") {
+        this.props.navigation.navigate('GameOver', { priestWon: true });
+
+      }
+      else if (message.gameOver === "monster") {
+        this.props.navigation.navigate('GameOver', { priestWon: false });
+
       }
     }
   }
@@ -1508,7 +1551,7 @@ class Waiting extends Component {
                 <ActivityIndicator size="large" color="#8F72AD" style={{padding: 10}}/>
                 <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437' }}>{text1}</Text>
                 <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437' }}>{text2}</Text>
-                <NavButton onPress={() => { this.setState({waiting: false}); this.props.navigation.navigate('Home'); }} text="go back" />
+                <WideButton onPress={() => { this.setState({waiting: false}); this.props.navigation.navigate('Home'); }} text="go back" />
               </ImageBackground>
             </View>
           </Modal>
@@ -1572,7 +1615,7 @@ class Waiting extends Component {
           gameBoardWidth={this.zoomedInValue*15}
           heartBeatTimer={this.state.heartBeatTimer}
           highlightFeedback={this.state.highlightFeedback}
-          highlightFeedbackCallback={this.state.highlightFeedbackCallback}
+          highlightFeedbackCallback={this.highlightFeedbackCallback}
           humanFeedback={this.state.humanFeedback}
           humanSpace={this.humanSpace}
           humanShrinesToWin={this.humanShrinesToWin}

@@ -444,7 +444,10 @@ class Waiting extends Component {
         break;
     }
     this.assignImageFogKeys();
-    if (direction !== "initial") {
+    if (direction === 'initial') {
+      this.incrementTurnCounter(true);
+    }
+    else {
       this.incrementTurnCounter();
     }
     // this.adjustFog();
@@ -484,6 +487,7 @@ class Waiting extends Component {
 
 
   changePlayerMode = () => {//-------------------------------------------------------new
+    console.log('changePlayerMode');
     for (let j = 0; j < 8; j++) {
       let array = [];
       // array.push(j);
@@ -503,7 +507,7 @@ class Waiting extends Component {
     // console.log('onItemSelected', item);
     switch (item) {
       case 'endTurn'://--------------------------------------------------------------endTurn
-        if (!this.userWon) {
+        if ((!this.userWon)) {
           if (this.state.outOfMoves || this.outOfMoves) {
             if (this.state.isHuman) {
               this.resetWasPounced();
@@ -556,13 +560,38 @@ class Waiting extends Component {
     }
   }
 
-  incrementTurnCounter = () => {
+  incrementTurnCounter = (initial = false) => {
+
+    console.log("incrementTurnCounter-----------------------------------------------------");
+    console.log(initial);
     this.setState({ turnCounter: this.state.turnCounter + 1 });
     if (this.state.turnCounter >= 1) {
       this.setState({ outOfMoves: true });
 
       this.outOfMoves = true;
-      this.onItemSelected('endTurn');
+      if (!initial) {
+        this.onItemSelected('endTurn');
+      }
+      else {
+        if ((!this.userWon)) {
+          if (this.state.outOfMoves || this.outOfMoves) {
+            if (this.state.isHuman) {
+              this.resetWasPounced();
+            } else {
+              this.resetWasEchoed();
+            }
+            this.setState({
+              feedbackSquare: null,
+              monsterFeedback: false,
+              humanFeedback: false,
+            })
+            this.resetHighlighted();
+            this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true })
+            this.outOfMoves = false;
+          }
+
+        }
+      }
     }
   }
 
@@ -832,7 +861,7 @@ class Waiting extends Component {
       }
       else if (this.elements[i].hasCache) {
         this.elements[i].wasPounced = true;
-        shrine = false;//DEBUG
+        shrine = true;
         index = i;
       }
     });
