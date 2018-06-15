@@ -522,12 +522,6 @@ class Home extends Component {
         fontFamily: 'Perfect DOS VGA 437',
         fontSize: 60,
         marginTop: '55%',
-        borderBottomWidth: 5,
-        width: Dimensions.get('window').width*0.8,
-        borderColor: '#fff',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-
       }
     )
   }
