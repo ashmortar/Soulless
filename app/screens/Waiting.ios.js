@@ -525,6 +525,7 @@ class Waiting extends Component {
           this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false });
           this.outOfMoves = false;
         }
+      }
         break;
       case 'menu':
         this.resetHighlighted();
