@@ -45,8 +45,9 @@ class GameOver extends Component {
   render() {
     // const menu = this.getMenu();
     let src;
-    if (this.props.priestWon) {
+    if (this.props.navigation.state.params.priestWon) {
       src = require('../data/images/MainTitlePixel.png');//temporary
+      console.log('priestWon');
     }
     else {
       src = require('../data/images/LoseScreen.jpg');

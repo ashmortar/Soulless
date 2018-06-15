@@ -317,7 +317,7 @@ class Waiting extends Component {
           }
         }
         break;
-        
+
         case 'east':
 
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
@@ -419,7 +419,7 @@ class Waiting extends Component {
           }
         }
         break;
-        
+
       case 'radius':
 
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
@@ -448,7 +448,7 @@ class Waiting extends Component {
     this.assignImageFogKeys();
     this.incrementTurnCounter();
     // this.adjustFog();
- 
+
   }
 
   generateCustomAlert = () => {
@@ -845,15 +845,15 @@ class Waiting extends Component {
   gameOver = () => {
     if (this.userWon === 'human') {
       // this.showSplashScreen('priestWon', false, 2000);
-      this.animationCallback = () => {
-        this.props.navigation.navigate('GameOver', { priestWon: true });
-      }
+      this.props.navigation.navigate('GameOver', { priestWon: true });
+      // this.animationCallback = () => {
+      // }
     }
     else if (this.userWon === 'monster') {
       // this.showSplashScreen('evilWon', false, 2000);
-      this.animationCallback = () => {
-        this.props.navigation.navigate('GameOver', { priestWon: false });
-      }
+      this.props.navigation.navigate('GameOver', { priestWon: false });
+      // this.animationCallback = () => {
+      // }
     }
   }
 
@@ -1074,7 +1074,7 @@ class Waiting extends Component {
       top.hasBlessedCache || tippyTop.hasBlessedCache ||
       top.hasDesecratedCache || tippyTop.hasDesecratedCache ||
       top.hasMonster || tippyTop.hasMonster ||
-      top.hasHuman || tippyTop.hasHuman  
+      top.hasHuman || tippyTop.hasHuman
     ) {
         this.setState({
           shrineIndexAdjustment: true,
