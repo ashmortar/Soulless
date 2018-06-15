@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ImageBackground, Dimensions, BackAndroid, StatusBar } from 'react-native';
-import { NavButton } from '../components/Button';
+import { Text, View, ImageBackground, Dimensions, StatusBar } from 'react-native';
 import WideButton from '../components/Button/WideButton';
 import Cell from '../data/Cell';
 import Engine from './Engine';
