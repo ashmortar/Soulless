@@ -522,12 +522,12 @@ class Home extends Component {
     return (
       <Container>
         <ImageBackground style={{height: Dimensions.get("window").height, width: Dimensions.get("window").width}} source={require('../data/images/MainTitle.jpg')} resizeMode="stretch">
-          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: 150, marginTop: 350}} >
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 128, width: 256, marginTop: (Dimensions.get("window").height - 128)/2, marginLeft: (Dimensions.get("window").width - 256)/2}} >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 64}}>
               <WideButton onPress={this.handlePressPlayLocallyButton} text="play locally" />
               <WideButton onPress={this.handlePressPlayOnlineButton} text={text} />
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 64}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 64}}>
               <WideButton onPress={this.handlePressHowToButton} text="how to play" />
               <WideButton onPress={this.handlePressAboutButton} text="about" />
             </View>
