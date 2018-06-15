@@ -1,40 +1,31 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { StyleSheet } from 'react-native';
 
 export default EStyleSheet.create({
+  grid: {
+    marginTop: 10,
+    marginBottom: 0,
+    justifyContent: "flex-start"
+  },
+  cell: {
+    flex: 1
+  },
+  space: {
+    backgroundColor: "#542a0e",
+    borderColor: "#603101",
+    borderLeftWidth: 0.5,
+    borderRightWidth: 0.5,
+  },
+  wallTop: {
+    backgroundColor: "#000",
+  },
+  wallFacing: {
+    backgroundColor: "#888"
+  },
+  highlighted: {
+    backgroundColor: "#ff00ff"
+  },
   container: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
-    marginBottom: 40
-  },
-  wrapper: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    marginTop: 60,
-    marginBottom: 40,
-    height: 100,
-  },
-  separator: {
-    backgroundColor: '#000',
-    height: StyleSheet.hairlineWidth,
-    flex: 1,
-    marginLeft: 20,
-  },
-  // icon: {
-  //   width: 19,
-  //   marginRight: 11,
-  // },
-  // text: {
-  //   color: '#000',
-  //   fontSize: 14,
-  //   paddingVertical: 20,
-  //   fontWeight: '300',
-  // },
+    marginVertical: 20
+  }
 });
-
-
-// alignItems: 'center',
-// backgroundColor: '#fff',
-// height: 800,

@@ -1,63 +1,67 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GridView from 'react-native-super-grid';
-import { Text, View, TouchableHighlight, Dimensions } from 'react-native';
-import styles from './styles';
+import { Text, View, TouchableHighlight, ScrollView } from 'react-native';
 
+const Grid = ({
+  items,
+  itemDimension,
+  gridDimension,
+  onPress,
+  header,
+  footer,
+  getCellStyle,
+  screenWidth,
+}) => (
+  <View
+    style={{ marginTop: 10, marginBottom: 0, justifyContent: "flex-start", width: (screenWidth - 15), height: (screenWidth - 15) }}
+  >
+    <ScrollView horizontal={true} style={{ width: gridDimension }}>
+      <GridView
+        // ListHeaderComponent={header}
+        // ListFooterComponent={footer}
+        spacing={0}
+        style={{ width: gridDimension }}
+        itemDimension={itemDimension}
+        items={items}
+        fixed={true}
+        renderItem={item => (
+          <TouchableHighlight onPress={() => onPress(item)}>
+            <View
+              style={
+                getCellStyle(item)
+              }
+            >
+              <Text style={{ fontSize: itemDimension * 0.4, textAlign: 'center' }}>{item.name}</Text>
 
-// renderSeparator = () => {
-//   return (
-//     <View
-//       style={{
-//         height: 10,
-//         width: "86%",
-//         backgroundColor: "#ea2323",
-//         marginLeft: "0%"
-//       }}
-//     />
-//   );
-// };
-
-// renderHeader = () => {
-//   return <Text>Header</Text>;
-// };
-//
-// renderFooter = () => {
-//   return <Text>Footer</Text>;
-// };
-
-
-const Grid = ({ items, itemDimension, gridDimension, onPress, header, footer }) => (
-  <View style={{marginTop: 10, marginBottom: 0}}>
-    <GridView
-
-      ListHeaderComponent={header}
-      ListFooterComponent={footer}
-
-      spacing={0}
-      staticDimension={gridDimension}
-
-      itemDimension={itemDimension}
-      items={items}
-
-      style={{marginTop: 0, marginBottom: 0}}
-
-      renderItem={item => (
-        <TouchableHighlight
-          onPress={() => onPress(item)}
-
-        >
-
-          <View style={{ backgroundColor: '#fff', borderWidth: 1, height: itemDimension}}>
-            <Text>{item}</Text>
-          </View>
-
-        </TouchableHighlight>
-      )}
-
-    />
+            </View>
+          </TouchableHighlight>
+        )}
+      />
+    </ScrollView>
   </View>
 );
+// <Text style={{ fontSize: itemDimension * 0.6, textAlign: 'center' }}>{item.hasHuman ? 'H' : null}{item.hasMonster ? 'M' : null}{item.hasCache ? 'C' : null}</Text>
+
+
+
+// <View
+//   style={
+//     item.value
+//       ? {
+//           backgroundColor: "#fff",
+//           borderWidth: 0.5,
+//           height: itemDimension
+//         }
+//       : {
+//           backgroundColor: "#000",
+//           borderWidth: 0.5,
+//           height: itemDimension
+//         }
+//
+//   }
+// >
+
 
 // <GridView
 //
@@ -77,9 +81,12 @@ Grid.propTypes = {
   gridDimension: PropTypes.number,
   onPress: PropTypes.func,
   header: PropTypes.func,
-  footer: PropTypes.func
+  footer: PropTypes.func,
+  getCellStyle: PropTypes.func,
+  screenWidth: PropTypes.number,
 
 };
+
 
 //      renderItem={({ item }) => (
 //   <GridItem

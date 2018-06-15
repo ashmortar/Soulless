@@ -1,8 +1,4 @@
 {
-  "presets": ["babel-preset-react-native"],
-  "env": {
-    "development": {
-      "plugins": ["transform-react-jsx-source"]
-    }
-  }
+  "presets": ["react-native"],
+  "plugins": ["transform-decorators-legacy"]
 }

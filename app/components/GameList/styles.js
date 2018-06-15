@@ -14,6 +14,7 @@ export default EStyleSheet.create({
   text: {
     color: '$darkText',
     fontSize: '$headerSize / 3',
+    fontFamily: 'Perfect DOS VGA 437',
   },
   separator: {
     backgroundColor: '$border',
