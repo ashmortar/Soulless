@@ -509,6 +509,7 @@ class Home extends Component {
   }
 
   handlePressAboutButton = () => {
+    // this.props.navigation.navigate('GameOver', { priestWon: false });
     this.props.navigation.navigate('About');
 
   }
@@ -520,7 +521,12 @@ class Home extends Component {
         textAlign: 'center',
         fontFamily: 'Perfect DOS VGA 437',
         fontSize: 60,
-        marginTop: '40%',
+        marginTop: '55%',
+        borderBottomWidth: 5,
+        width: Dimensions.get('window').width*0.8,
+        borderColor: '#fff',
+        marginLeft: 'auto',
+        marginRight: 'auto'
 
       }
     )
@@ -536,13 +542,13 @@ class Home extends Component {
     return (
       <Container>
         <ImageBackground style={{height: Dimensions.get("window").height, width: Dimensions.get("window").width}} source={require('../data/images/MainTitle.jpg')} resizeMode="stretch">
-        <Text style={this.getTitleStyle()}>Soulless</Text>
-          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: 192, marginTop: '5%'}} >
+          <Text style={this.getTitleStyle()}>Soulless</Text>
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 128, width: 256, marginTop: '10%', marginLeft: (Dimensions.get("window").width - 256)/2}} >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 64}}>
               <WideButton onPress={this.handlePressPlayLocallyButton} text="play locally" />
               <WideButton onPress={this.handlePressPlayOnlineButton} text={text} />
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 64}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 64}}>
               <WideButton onPress={this.handlePressHowToButton} text="how to play" />
               <WideButton onPress={this.handlePressAboutButton} text="about" />
             </View>

@@ -63,8 +63,8 @@ class Waiting extends Component {
       turn: 0,
       outOfMoves: false,
       shrinesUnclaimed: this.cacheTotal,
-      shrinesBlessed: 0,
-      shrinesDesecrated: 0,
+      shrinesBlessed: 6,
+      shrinesDesecrated: 6,
       monsterSanityLevel: 100,
       heartBeatTimer: 8,
       opponentVisible: false,
@@ -317,7 +317,7 @@ class Waiting extends Component {
           }
         }
         break;
-        
+
         case 'east':
 
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
@@ -419,7 +419,7 @@ class Waiting extends Component {
           }
         }
         break;
-        
+
       case 'radius':
 
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
@@ -448,7 +448,7 @@ class Waiting extends Component {
     this.assignImageFogKeys();
     this.incrementTurnCounter();
     // this.adjustFog();
- 
+
   }
 
   generateCustomAlert = () => {
@@ -503,21 +503,24 @@ class Waiting extends Component {
     // console.log('onItemSelected', item);
     switch (item) {
       case 'endTurn'://--------------------------------------------------------------endTurn
-        if (this.state.outOfMoves || this.outOfMoves) {
-          if (this.state.isHuman) {
-            this.resetWasPounced();
-          } else {
-            this.resetWasEchoed();
+        if (!this.userWon) {
+          if (this.state.outOfMoves || this.outOfMoves) {
+            if (this.state.isHuman) {
+              this.resetWasPounced();
+            } else {
+              this.resetWasEchoed();
+            }
+            this.setState({
+              feedbackSquare: null,
+              monsterFeedback: false,
+              humanFeedback: false,
+            })
+            this.resetHighlighted();
+            this.changePlayerMode();
+            this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true })
+            this.outOfMoves = false;
           }
-          this.setState({
-            feedbackSquare: null,
-            monsterFeedback: false,
-            humanFeedback: false,
-          })
-          this.resetHighlighted();
-          this.changePlayerMode();
-          this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true })
-          this.outOfMoves = false;
+
         }
         break;
       case 'menu':
@@ -815,6 +818,7 @@ class Waiting extends Component {
   }
 
   monsterProcessPounce = () => {
+    console.log('process POUNCE');
     this.resetHighlighted();
     let cellsAround = this.getIndexesOfAvailableCellsAround(this.monsterSpace.name, this.cellsInRow, this.cellsTotal, true);
     cellsAround.push(this.monsterSpace.name);
@@ -828,7 +832,7 @@ class Waiting extends Component {
       }
       else if (this.elements[i].hasCache) {
         this.elements[i].wasPounced = true;
-        shrine = true;
+        shrine = false;//DEBUG
         index = i;
       }
     });
@@ -843,14 +847,20 @@ class Waiting extends Component {
 
 
   gameOver = () => {
-    this.animationCallback = () => {
-      this.props.navigation.navigate('GameOver');
-    }
+    console.log('GAMEOVER');
     if (this.userWon === 'human') {
-      this.showSplashScreen('priestWon', false, 2000);
+      this.postEvent({"gameOver": "human"});
+      // this.showSplashScreen('priestWon', false, 2000);
+      // this.props.navigation.navigate('GameOver', { priestWon: true });
+      // this.animationCallback = () => {
+      // }
     }
     else if (this.userWon === 'monster') {
-      this.showSplashScreen('evilWon', false, 2000);
+      this.postEvent({"gameOver": "monster"});
+      // this.showSplashScreen('evilWon', false, 2000);
+      // this.props.navigation.navigate('GameOver', { priestWon: false });
+      // this.animationCallback = () => {
+      // }
     }
   }
 
@@ -1071,7 +1081,7 @@ class Waiting extends Component {
       top.hasBlessedCache || tippyTop.hasBlessedCache ||
       top.hasDesecratedCache || tippyTop.hasDesecratedCache ||
       top.hasMonster || tippyTop.hasMonster ||
-      top.hasHuman || tippyTop.hasHuman  
+      top.hasHuman || tippyTop.hasHuman
     ) {
         this.setState({
           shrineIndexAdjustment: true,
@@ -1424,7 +1434,20 @@ class Waiting extends Component {
         this.setState({ modalYourTurn: 1 })
       }
     }
+    else if (message.gameOver) {
+      this.setState({ modalYourTurn: 0 })
+      if (message.gameOver === "human") {
+        this.props.navigation.navigate('GameOver', { priestWon: true });
+
+      }
+      else if (message.gameOver === "monster") {
+        this.props.navigation.navigate('GameOver', { priestWon: false });
+
+      }
+    }
   }
+
+
 
 
   postEvent = (event) => {//event = {"data": "sample_data"}

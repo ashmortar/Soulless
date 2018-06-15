@@ -318,9 +318,9 @@ class Waiting extends Component {
           }
         }
         break;
-        
+
         case 'east':
-        
+
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
@@ -354,7 +354,7 @@ class Waiting extends Component {
         break;
 
         case 'south':
-        
+
         if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
@@ -420,9 +420,9 @@ class Waiting extends Component {
           }
         }
         break;
-        
+
         case 'radius':
-        
+
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
           this.setState({ modalAlert: 1 });
         } else {
@@ -442,7 +442,7 @@ class Waiting extends Component {
           bottomRight.isRevealed = true;
           break;
         }
-        
+
         default:
         break;
       }
@@ -844,14 +844,17 @@ class Waiting extends Component {
 
 
   gameOver = () => {
-    this.animationCallback = () => {
-      this.props.navigation.navigate('GameOver');
-    }
     if (this.userWon === 'human') {
-      this.showSplashScreen('priestWon', false, 2000);
+      // this.showSplashScreen('priestWon', false, 2000);
+      this.props.navigation.navigate('GameOver', { priestWon: true });
+      // this.animationCallback = () => {
+      // }
     }
     else if (this.userWon === 'monster') {
-      this.showSplashScreen('evilWon', false, 2000);
+      // this.showSplashScreen('evilWon', false, 2000);
+      this.props.navigation.navigate('GameOver', { priestWon: false });
+      // this.animationCallback = () => {
+      // }
     }
   }
 
@@ -1073,7 +1076,7 @@ class Waiting extends Component {
       top.hasBlessedCache || tippyTop.hasBlessedCache ||
       top.hasDesecratedCache || tippyTop.hasDesecratedCache ||
       top.hasMonster || tippyTop.hasMonster ||
-      top.hasHuman || tippyTop.hasHuman  
+      top.hasHuman || tippyTop.hasHuman
     ) {
         this.setState({
           shrineIndexAdjustment: true,

@@ -1380,9 +1380,9 @@ class Game extends Component {
           }
         }
         break;
-        
+
       case 'south':
-      
+
         if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
@@ -1419,7 +1419,7 @@ class Game extends Component {
           }
         }
         break;
-        
+
       case 'west':
 
         if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
@@ -1485,7 +1485,7 @@ class Game extends Component {
           bottomRight.isRevealed = true;
           break;
         }
-        
+
         default:
         break;
       }
@@ -1874,14 +1874,17 @@ class Game extends Component {
 
 
   gameOver = () => {
-    this.animationCallback = () => {
-      this.props.navigation.navigate('GameOver');
-    }
     if (this.userWon === 'human') {
-      this.showSplashScreen('priestWon', false, 2000);
+      // this.showSplashScreen('priestWon', false, 2000);
+      this.props.navigation.navigate('GameOver', { priestWon: true });
+      // this.animationCallback = () => {
+      // }
     }
     else if (this.userWon === 'monster') {
-      this.showSplashScreen('evilWon', false, 2000);
+      // this.showSplashScreen('evilWon', false, 2000);
+      this.props.navigation.navigate('GameOver', { priestWon: false });
+      // this.animationCallback = () => {
+      // }
     }
   }
 
