@@ -425,10 +425,14 @@ export default class Engine extends Component {
     } else if (this.state.justZoomed) {
       this.transportSprite();
     }
-    if (this.props.highlightFeedback && this.props.feedbackSquare !== null) {
+    if (this.props.highlightFeedback && this.props.humanFeedback && this.props.isHuman && this.props.feedbackSquare !== null) {
+      this.showFeedbackWithCamera();
+    }
+    if (this.props.highlightFeedback && this.props.monsterFeedback && !this.props.isHuman && this.props.feedbackSquare !== null) {
       this.showFeedbackWithCamera();
     }
   }
+
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     // console.log('engine received props');
