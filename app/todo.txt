@@ -1,35 +1,6 @@
 
--- iphone adjustments
-  -- buttons.
-  -- shrine and decorations are small. (fix shrines and maybe leave decorations as is. no one cares about decorations that much.)
-  -- decorations stopped showing.
-  -- when sprite has a queue of movements, it goes crazy.
-  -- ONLINE game.
-  -- check if the possessed priest is as slow on the phone.
+-- turn off extra turns
+-- look at hands image rights
+-- icon for 
 
--- window background is wrong size
--- end turn automatically
--- make pan and move more distinct
-
-
--- make online player change into a "window" modal
-
-
-
--- GET A NAME!!! (soulless)
--- fix demonspell link to work for verification and have correct text
-
-
-==== wishlist =====
--- make A.I. monster and after interval waiting for online player prompt user to play single player
--- make one player mode! - in one player mode make credit crawl after winning
--- check/standardize all image sizes
--- screen shot zoom?
-
-
-+++++ Questions for Rick +++
--- pixelize splash screen? or art coming our way?
--- buttons
--- sound effects // art // back story scroll // other incoming assets
--- about
--- rules / how to play
+-- readme, merge to 

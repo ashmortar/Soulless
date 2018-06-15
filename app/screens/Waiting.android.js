@@ -294,7 +294,6 @@ class Waiting extends Component {
               console.log("was echoed set");
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
@@ -318,8 +317,8 @@ class Waiting extends Component {
           }
         }
         break;
-
-      case 'east':
+        
+        case 'east':
 
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
           this.setState({ modalAlert: 1 });
@@ -329,7 +328,6 @@ class Waiting extends Component {
               this.elements[i].wasEchoed = true;
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
@@ -354,7 +352,7 @@ class Waiting extends Component {
         }
         break;
 
-      case 'south':
+        case 'south':
 
         if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
@@ -364,7 +362,6 @@ class Waiting extends Component {
               this.elements[i].wasEchoed = true;
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
@@ -389,7 +386,7 @@ class Waiting extends Component {
         }
         break;
 
-      case 'west':
+        case 'west':
 
         if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
           this.setState({ modalAlert: 1 });
@@ -399,7 +396,6 @@ class Waiting extends Component {
               this.elements[i].wasEchoed = true;
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
@@ -423,7 +419,7 @@ class Waiting extends Component {
           }
         }
         break;
-
+        
       case 'radius':
 
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
@@ -434,7 +430,6 @@ class Waiting extends Component {
               this.elements[i].wasEchoed = true;
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           topLeft.isRevealed = true;
           top.isRevealed = true;
@@ -451,8 +446,9 @@ class Waiting extends Component {
         break;
     }
     this.assignImageFogKeys();
+    this.incrementTurnCounter();
     // this.adjustFog();
-    this.setState({ redraw: !this.state.redraw });
+ 
   }
 
   generateCustomAlert = () => {
@@ -937,6 +933,7 @@ class Waiting extends Component {
     this.resetHighlighted();
     this.setHeartRate();
     this.monsterProcessPounce();
+    this.checkForShrineZIndex(item);
     this.checkForVisiblePriest();
   }
 
@@ -1064,8 +1061,29 @@ class Waiting extends Component {
     }
     this.humanSpace = item;
     this.resetHighlighted();
+    this.checkForShrineZIndex(item);
     this.setState({ playerSpace: item });
     this.setHeartRate();
+  }
+
+  checkForShrineZIndex = (space) => {
+    let { top } = this.getNeighboringCells(space.name);
+    let tippyTop = this.elements[top.name - 40];
+    if (
+      top.hasCache || tippyTop.hasCache ||
+      top.hasBlessedCache || tippyTop.hasBlessedCache ||
+      top.hasDesecratedCache || tippyTop.hasDesecratedCache ||
+      top.hasMonster || tippyTop.hasMonster ||
+      top.hasHuman || tippyTop.hasHuman  
+    ) {
+        this.setState({
+          shrineIndexAdjustment: true,
+        });
+      } else if (this.state.shrineIndexAdjustment) {
+        this.setState({
+          shrineIndexAdjustment: false,
+        });
+      }
   }
 
   boardFinishedCallback = () => (

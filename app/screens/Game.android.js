@@ -706,6 +706,7 @@ class Game extends Component {
   assignHumanStart = () => {
     if (this.humanSpace) {
       this.humanSpace.isRevealed = false;
+      this.humanSpace.hasHuman = false;
     }
     let cell = this.getRandomCell();
     while (cell.value < 1) {
@@ -1317,7 +1318,6 @@ class Game extends Component {
               console.log("was echoed set");
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - this.cellsInRow];
           while (cell.value !== 0) {
@@ -1341,9 +1341,9 @@ class Game extends Component {
           }
         }
         break;
-
-      case 'east':
-
+        
+        case 'east':
+        
         if (index % this.cellsInRow === (this.cellsInRow - 1) || this.elements[index + 1].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
@@ -1356,7 +1356,6 @@ class Game extends Component {
               this.elements[i].wasEchoed = true;
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + 1];
           while (cell.value > 0) {
@@ -1380,9 +1379,9 @@ class Game extends Component {
           }
         }
         break;
-
+        
       case 'south':
-
+      
         if (index + this.cellsInRow > this.cellsTotal || this.elements[index + this.cellsInRow].value < 1) {
           this.setState({ modalAlert: 1 });
         } else {
@@ -1395,7 +1394,6 @@ class Game extends Component {
               this.elements[i].wasEchoed = true;
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index + this.cellsInRow];
           while (cell.value !== 0) {
@@ -1419,10 +1417,10 @@ class Game extends Component {
           }
         }
         break;
-
+        
       case 'west':
 
-        if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
+      if (index % this.cellsInRow === 0 || (this.elements[index-1].value < 1)) {
           this.setState({ modalAlert: 1 });
         } else {
           this.setState({
@@ -1434,7 +1432,6 @@ class Game extends Component {
               this.elements[i].wasEchoed = true;
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           let cell = this.elements[index - 1];
           while (cell.value > 0) {
@@ -1458,9 +1455,9 @@ class Game extends Component {
           }
         }
         break;
-
+        
       case 'radius':
-
+      
         if (topLeft.isRevealed && top.isRevealed && topRight.isRevealed && left.isRevealed && right.isRevealed && bottomLeft.isRevealed && bottom.isRevealed && bottomRight.isRevealed) {
           this.setState({ modalAlert: 1 });
         } else {
@@ -1473,7 +1470,6 @@ class Game extends Component {
               this.elements[i].wasEchoed = true;
             }
           }
-          this.incrementTurnCounter();
           // this.showSplashScreen('hands', false, splashScreenTimer);
           topLeft.isRevealed = true;
           top.isRevealed = true;
@@ -1485,11 +1481,12 @@ class Game extends Component {
           bottomRight.isRevealed = true;
           break;
         }
-
+        
       default:
-        break;
+      break;
     }
     this.assignImageFogKeys();
+    this.incrementTurnCounter();
     // this.adjustFog();
     this.setState({ redraw: !this.state.redraw });
   }
@@ -1980,7 +1977,10 @@ class Game extends Component {
     if (
       top.hasCache || tippyTop.hasCache ||
       top.hasBlessedCache || tippyTop.hasBlessedCache ||
-      top.hasDesecratedCache || tippyTop.hasDesecratedCache) {
+      top.hasDesecratedCache || tippyTop.hasDesecratedCache ||
+      top.hasMonster || tippyTop.hasMonster ||
+      top.hasHuman || tippyTop.hasHuman  
+    ) {
         this.setState({
           shrineIndexAdjustment: true,
         });
