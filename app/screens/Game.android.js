@@ -21,6 +21,7 @@ class Game extends Component {
     this.assignCacheCounter = 0;
     this.assignMonsterCounter = 0;
 
+    // this.outOfMoves = false;
     this.elements = [];
     this.humanSpace = null;
     this.monsterSpace = null;
@@ -1526,7 +1527,9 @@ class Game extends Component {
     // console.log('onItemSelected', item);
     switch (item) {
       case 'endTurn':
+      console.log('end turn');
         if (this.state.outOfMoves) {
+          console.log('out of moves');
           if (this.state.isHuman) {
             this.resetWasPounced();
           } else {
@@ -1575,6 +1578,9 @@ class Game extends Component {
     this.setState({ turnCounter: this.state.turnCounter + 1 });
     if (this.state.turnCounter >= 1) {
       this.setState({ outOfMoves: true });
+      // this.outOfMoves = true;
+
+      // this.onItemSelected('endTurn');
     }
   }
 
@@ -1925,7 +1931,14 @@ class Game extends Component {
     let cellsAll = [];
     let distance = null;
     cells.push(this.elements[index]);
-    for (let s = 0; s < this.state.shrinesDesecrated + 1; s++) {
+    let monsterMoveLength;
+    if (this.state.shrinesDesecrated > 2) {
+      monsterMoveLength = 2;
+    }
+    else {
+      monsterMoveLength = this.state.shrinesDesecrated;
+    }
+    for (let s = 0; s < monsterMoveLength + 1; s++) {
       cells.forEach((cell) => {
         indexesOfAvailableCellsAround = this.getIndexesOfAvailableCellsAround(cell.name, this.cellsInRow, this.cellsTotal, true);
         indexesOfAvailableCellsAround.forEach((i) => {
@@ -2122,6 +2135,7 @@ class Game extends Component {
     }
     this.setState({ turnCounter: 0 });
     this.setState({ outOfMoves: false });
+    // this.outOfMoves = false;
   }
 
 

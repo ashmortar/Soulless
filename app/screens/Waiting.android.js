@@ -42,6 +42,7 @@ class Waiting extends Component {
     this.monsterShrinesToWin = 7;
     this.animationCallback = this.showAnimationCallback;
     this.boardPieceCounter = 0;
+    this.outOfMoves = false;
     this.state = {
       readyToBeginPlaying: false,
       redraw: false,
@@ -56,7 +57,7 @@ class Waiting extends Component {
       modal: 0,
       modalLeft: 0,
       modalDialogOnly: 0,
-      modalPounce: 0,
+      modalYourTurn: 0,
       modalAlert: 0,
       turnCounter: 0,
       turn: 0,
@@ -495,7 +496,7 @@ class Waiting extends Component {
         array.push(this.elements[i]);
       }
       arrayJSON = JSON.parse(JSON.stringify(array));
-      this.postEvent({"endTurn": arrayJSON});
+      this.postEvent({"sender": this.player_number, "endTurn": arrayJSON});
     }
     // this.setState({ turn: this.state.turn + 1 })
     // this.postEvent({"endTurn": "sample"});
@@ -506,7 +507,7 @@ class Waiting extends Component {
     // console.log('onItemSelected', item);
     switch (item) {
       case 'endTurn'://--------------------------------------------------------------endTurn
-        if (this.state.outOfMoves) {
+        if (this.state.outOfMoves || this.outOfMoves) {
           if (this.state.isHuman) {
             this.resetWasPounced();
           } else {
@@ -520,6 +521,7 @@ class Waiting extends Component {
           this.resetHighlighted();
           this.changePlayerMode();
           this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true })
+          this.outOfMoves = false;
         }
         break;
       case 'menu':
@@ -559,6 +561,9 @@ class Waiting extends Component {
     this.setState({ turnCounter: this.state.turnCounter + 1 });
     if (this.state.turnCounter >= 1) {
       this.setState({ outOfMoves: true });
+
+      this.outOfMoves = true;
+      this.onItemSelected('endTurn');
     }
   }
 
@@ -696,11 +701,9 @@ class Waiting extends Component {
         </View>
       )
     }
-    else if (this.state.modalPounce === 1) {//POUNCE
+    else if (this.state.modalYourTurn === 1) {//your turn
       let text1;
-      let text2;
-      text1 = 'You pounced.';
-      text2 = 'There is nothing here.';
+      text1 = 'Your turn.';
       return (
         <View style={{
           backgroundColor: 'transparent',
@@ -896,7 +899,14 @@ class Waiting extends Component {
     let cellsAll = [];
     let distance = null;
     cells.push(this.elements[index]);
-    for (let s = 0; s < this.state.shrinesDesecrated + 1; s++) {
+    let monsterMoveLength;
+    if (this.state.shrinesDesecrated > 2) {
+      monsterMoveLength = 2;
+    }
+    else {
+      monsterMoveLength = this.state.shrinesDesecrated;
+    }
+    for (let s = 0; s < monsterMoveLength + 1; s++) {
       cells.forEach((cell) => {
         indexesOfAvailableCellsAround = this.getIndexesOfAvailableCellsAround(cell.name, this.cellsInRow, this.cellsTotal, true);
         indexesOfAvailableCellsAround.forEach((i) => {
@@ -1386,7 +1396,14 @@ class Waiting extends Component {
         }
         this.boardPieceCounter = 0;
         this.setState({ turn: this.state.turn + 1 });
-        this.showSplashScreen('hands', false, 100);
+        // this.showSplashScreen('hands', false, 100);
+
+      }
+
+
+      if (message.sender != this.player_number) {
+        console.log('=========================================');
+        this.setState({ modalYourTurn: 1 })
       }
     }
   }
@@ -1598,7 +1615,7 @@ class Waiting extends Component {
         </Modal>
 
         <Modal
-          isVisible={this.state.modalPounce != 0}
+          isVisible={this.state.modalYourTurn != 0}
           animationIn="slideInLeft"
           animationOut="slideOutRight"
           swipeDirection="right"
