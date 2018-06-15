@@ -1,7 +1,6 @@
 //adjust fog disabled
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
 import { View, Dimensions, Text, ImageBackground, ActivityIndicator, StatusBar } from 'react-native';
 import { NavButton } from '../components/Button';
@@ -72,7 +71,7 @@ class Waiting extends Component {
       monsterFeedback: false,
       humanFeedback: false,
       feedbackSquare: null,
-      highlightFeedback: true,
+      highlightFeedback: false,
       waiting: true,
       player2Ready: false,
     }
@@ -519,7 +518,7 @@ class Waiting extends Component {
           })
           this.resetHighlighted();
           this.changePlayerMode();
-          this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false, highlightFeedback: true });
+          this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false });
           this.outOfMoves = false;
         }
         break;
@@ -724,7 +723,7 @@ class Waiting extends Component {
             >
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>{text1}</Text>
-            <WideButton onPress={() => this.setState({modalYourTurn: 0})} text='OK' />
+            <WideButton onPress={() => {this.setState({modalYourTurn: 0}); if(this.state.turn !== 0) {this.setState({highlightFeedback: true})}}} text='OK' />
           </ImageBackground>
         </View>
       );
@@ -1400,14 +1399,12 @@ class Waiting extends Component {
         if (this.elements[i].wasPounced && this.state.isHuman) {
           this.setState({
             humanFeedback: true,
-            highlightFeedback: true,
             feedbackSquare: this.elements[i]
           });
         }
         if (this.elements[i].wasEchoed && !this.state.isHuman) {
           this.setState({
             monsterFeedback: true,
-            highlightFeedback: true,
             feedbackSquare: this.elements[i]
           });
         }

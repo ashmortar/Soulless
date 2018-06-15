@@ -441,6 +441,9 @@ export default class Engine extends Component {
     } else if (this.state.justZoomed) {
       this.transportSprite();
     }
+    if (this.props.highlightFeedback && this.props.feedbackSquare !== null) {
+      this.showFeedbackWithCamera();
+    }
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -755,9 +758,6 @@ export default class Engine extends Component {
 
   renderLastTurn = () => {
     if (this.props.isHuman && this.props.humanFeedback) {
-      if (this.props.highlightFeedback) {
-        this.showFeedbackWithCamera();
-      }
       return (
         <TileMap
           src={require("../data/images/greensquare.jpg")}
@@ -779,9 +779,6 @@ export default class Engine extends Component {
         />
       );
     } else if (!this.props.isHuman && this.props.monsterFeedback) {
-      if (this.props.highlightFeedback) {
-        this.showFeedbackWithCamera();
-      }
       return (
         <TileMap
           src={require("../data/images/Magenta-square_100px.gif")}

@@ -1,8 +1,8 @@
 //adjust fog disabled
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ImageBackground, Dimensions, BackAndroid, StatusBar } from 'react-native';
-import { NavButton } from '../components/Button';
+import { Text, View, ImageBackground, Dimensions, StatusBar } from 'react-native';
+
 import Cell from '../data/Cell';
 import Engine from './Engine';
 import WideButton from '../components/Button/WideButton'
@@ -63,7 +63,7 @@ class Game extends Component {
       monsterFeedback: false,
       humanFeedback: false,
       feedbackSquare: null,
-      highlightFeedback: true,
+      highlightFeedback: false,
       shrineIndexAdjustment: true,
     };
   }
@@ -1539,7 +1539,6 @@ class Game extends Component {
           }
           this.resetHighlighted();
           this.changePlayerMode();
-          this.setState({ highlightFeedback: true })
           this.showSplashScreen('hands', true, 1000);
         }
         break;
@@ -2150,11 +2149,14 @@ class Game extends Component {
     })
   )
 
-  showAnimationCallback = () => (
+  showAnimationCallback = () => {
     this.setState({
       animationVisible: false,
-    })
-  )
+    });
+    this.setState({
+      highlightFeedback: true,
+    });
+  }
 
   showSplashScreen = (image, touchable, duration) => {
     this.setState({
@@ -2215,7 +2217,7 @@ class Game extends Component {
           heartBeatTimer={this.state.heartBeatTimer}
           highlightFeedback={this.state.highlightFeedback}
           highlightFeedbackCallback={this.highlightFeedbackCallback}
-          humanFeedback={this.setHeartRate.humanFeedback}
+          humanFeedback={this.state.humanFeedback}
           humanSpace={this.humanSpace}
           humanShrinesToWin={this.humanShrinesToWin}
           incrementTurnCounter={this.incrementTurnCounter}

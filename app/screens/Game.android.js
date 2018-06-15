@@ -62,7 +62,7 @@ class Game extends Component {
       monsterFeedback: false,
       humanFeedback: false,
       feedbackSquare: null,
-      highlightFeedback: true,
+      highlightFeedback: false,
       shrineIndexAdjustment: false,
     };
   }
@@ -1535,7 +1535,6 @@ class Game extends Component {
           }
           this.resetHighlighted();
           this.changePlayerMode();
-          this.setState({ highlightFeedback: true });
           this.showSplashScreen('hands', true, 1000);
         }
         break;
@@ -2149,11 +2148,14 @@ class Game extends Component {
     })
   )
 
-  showAnimationCallback = () => (
+  showAnimationCallback = () => {
     this.setState({
       animationVisible: false,
-    })
-  )
+    });
+    this.setState({
+      highlightFeedback: true,
+    });
+  }
 
   showSplashScreen = (image, touchable, duration) => {
     this.setState({

@@ -1,6 +1,6 @@
---echolocate first turn bug
+
 --show feedback
--- readme, merge to 
+-- readme, merge to master
 
 --generate signing key and release build for our phones
 -- turn off extra turns
