@@ -521,7 +521,7 @@ class Waiting extends Component {
             })
             this.resetHighlighted();
             this.changePlayerMode();
-            this.setState({ outOfMoves: false, turnCounter: 0, opponentVisible: false })
+            this.setState({ turnCounter: 0, opponentVisible: false })
             this.outOfMoves = false;
           }
 
@@ -753,7 +753,7 @@ class Waiting extends Component {
             >
 
             <Text style={{color:'#fff', fontFamily: 'Perfect DOS VGA 437', padding: 10, marginTop: 15}}>{text1}</Text>
-            <WideButton onPress={() => {this.setState({modalYourTurn: 0}); if(this.state.turn !== 0){this.setState({highlightFeedback: true})}}} text='OK' />
+            <WideButton onPress={() => {this.setState({modalYourTurn: 0, outOfMoves: false}); if(this.state.turn !== 0){this.setState({highlightFeedback: true})}}} text='OK' />
           </ImageBackground>
         </View>
       );

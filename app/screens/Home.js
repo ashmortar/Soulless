@@ -509,7 +509,7 @@ class Home extends Component {
   }
 
   handlePressAboutButton = () => {
-    // this.props.navigation.navigate('GameOver', { priestWon: false });
+    // this.props.navigation.navigate('GameOver', { priestWon: true });
     this.props.navigation.navigate('About');
 
   }
