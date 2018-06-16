@@ -258,7 +258,9 @@ export default class Engine extends Component {
         if (gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
         } else if ( this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
-          this.processMove(touches[0].pageX, touches[0].pageY);
+          if (!this.props.outOfMoves) {
+            this.processMove(touches[0].pageX, touches[0].pageY);
+          }
         }
       },
 
