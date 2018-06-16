@@ -257,10 +257,8 @@ export default class Engine extends Component {
         let { touches } = evt.nativeEvent;
         if (gestureState.dx > 10 || gestureState.dx < -10 || gestureState.dy > 10 || gestureState.dy < -10) {
           this.processPan(touches[0].pageX, touches[0].pageY);
-        } else if ( this.state.showHighlighted && this.state.tileWidth === this.props.zoomedInValue) {
-          if (!this.props.outOfMoves) {
+        } else if ( this.state.showHighlighted && (this.state.tileWidth === this.props.zoomedInValue)) {
             this.processMove(touches[0].pageX, touches[0].pageY);
-          }
         }
       },
 
@@ -494,9 +492,11 @@ export default class Engine extends Component {
         highlightedTileMap: newHighlightedTileMap,
       });
       if (newHighlightedTileMap.includes(1)) {
-        this.setState({
-          showHighlighted: true,
-        });
+        if (!this.props.outOfMoves) {
+          this.setState({
+            showHighlighted: true,
+          });
+        }
       } else {
         this.setState({
           showHighlighted: false,
@@ -767,17 +767,21 @@ export default class Engine extends Component {
         if (this.state.controlsVisible) {
           if (this.props.isHuman) {
             this.props.showHumanMoves();
-            this.setState({
-              controlsVisible: false,
-              showHighlighted: true,
-            });
+            if (!this.props.outOfMoves) {
+              this.setState({
+                controlsVisible: false,
+                showHighlighted: true,
+              });
+            }
           } else {
             this.props.showMonsterMoves();
-            this.setState({
-              controlsVisible: false,
-              targetPickerVisible: false,
-              showHighlighted: true,
-            });
+            if (!this.props.outOfMoves) {
+              this.setState({
+                controlsVisible: false,
+                targetPickerVisible: false,
+                showHighlighted: true,
+              });
+            }
           }
         } else {
           this.setState({
